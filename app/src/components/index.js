@@ -1,0 +1,26 @@
+import { platform } from './config.json';
+let TButton;
+if (platform === 'app') {
+    TButton = require('./button/app').default;
+}
+export { TButton };
+export { default as Header } from "./header";
+export { default as Page } from "./page";
+export { default as Icon } from "./icon";
+export { default as CodeButton } from "./code-button";
+export { default as Checkbox } from "./checkbox";
+export { default as DataView } from "./data-view";
+export { default as ScrollTable } from "./scroll-table";
+export { default as Alert } from "./alert";
+export { default as ThemeProvider } from "./theme-provider";
+export { default as Loading } from "./loading";
+export { default as Input } from "./input";
+export { default as TabBar } from "./tabbar";
+export { default as Text } from "./text";
+export { default as Visible } from "./Visible";
+export { default as Comfirm } from "./Comfirm";
+export { default as Tip } from "./Tip";
+export { default as RefreshContainer } from "./RefreshContainer";
+export { default as WebView } from './WebView';
+export { default as Map } from './Map/index';
+export { default as PlatformProvider } from './platform-provider';

@@ -1,0 +1,162 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml> <head>
+<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+<meta content=always name=referrer>
+<title>OpenLayers 3地图示例</title>
+<link href="../ol/ol.css" rel="stylesheet" type="text/css" />
+<style>
+    html,body,#map{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+    }
+    .ol-zoom-in,.ol-zoom-out{
+        height: 3.375em !important;
+         width: 3.375em !important;
+    }
+</style>
+<script type="text/javascript" src="./ol/ol.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="map" style="width: 100%;height: 100%;"></div>
+    <script>
+        //汉南区经纬度
+        var lamarin = ol.proj.fromLonLat([114.04068768, 30.29965997]);
+
+        var view = new ol.View({
+            center: lamarin,
+            zoom: 12
+        });
+
+        const iconMap = {
+            bdz: './map-Icon/bdz.png',
+            zf: './map-Icon/zf.png',
+            lb: './map-Icon/波形图.png',
+            kg: './map-Icon/kg.png',
+            gt: './map-Icon/gt.png',
+            byq: './map-Icon/byq.png',
+            point: './map-Icon/point.png',
+        };
+
+        var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({}),
+            updateWhileAnimating: true,
+            updateWhileInteracting: true,
+        });
+        const imap = {
+            bdzbh: 'bdz',
+            zfbh: 'zf',
+            lbymc: 'lb',
+            kgid: 'kg',
+            gtbh: 'gt',
+            byqbh: 'byq'
+        };
+        var getIconType = (o) => {
+
+            for (var key in o) {
+                if (imap[key]) {
+                    return imap[key]
+                }
+            }
+            return 'normal';
+        };
+        const addIconToVectorLayer = (point) => {
+            const vectorSource = vectorLayer.getSource();
+
+
+
+            //const [longitude, latitude, pointType] = pointList[i];
+            const { pos_x, pos_y, bdzbh } = point;
+            // var iconFeature = new ol.Feature({
+            //     geometry: new ol.geom.Point(ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857')),
+            //     data: pointList[i]
+            // });
+            var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.transform([pos_x, pos_y], 'EPSG:4326', 'EPSG:3857')),
+                data: point
+            });
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 1.0],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    src: iconMap[getIconType({ bdzbh })],
+                    imgSize: [60, 60],
+
+                }),
+                zIndex: 100000
+            });
+            iconFeature.setStyle(iconStyle);
+            vectorSource.addFeature(iconFeature);
+        }
+
+        //return vectorLayer;
+
+
+        const pointList = { "bdzbh": "BDZ001", "bdzmc": "110kv陡埠变电站", "pos_x": 114.04068768, "pos_y": 30.29965997 };
+        //addIconToVectorLayer(pointList);
+        //const vectorLayer = addIconToVectorLayer(pointList);
+
+
+
+
+        // 创建地图
+        var map = new ol.Map({
+            layers: [
+                new ol.layer.Tile({ source: new ol.source.OSM() }),
+                vectorLayer
+            ],
+            view: view,
+            target: 'map',
+            loadTilesWhileAnimating: true,
+        });
+        map.on('singleclick', function (evt) {
+            var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                const { data } = feature.H;
+                onPointClick(data);
+                return feature;
+            });
+            //onPointClick(feature);
+        });
+
+        //开启地图缩放动画
+        // map.once('postrender', function (event) {
+        //     view.animate({
+        //         center: lamarin,
+        //         zoom: 18,
+        //         duration: 4000,
+        //         //mapTypeId: 'roadmap',
+        //     });
+        // });
+
+
+        function onPointClick(data) {
+            console.log(data, 'data');
+            window.postMessage(JSON.stringify(data));
+        }
+
+
+        window.onload = function () {
+
+            const data = [{ "bdzbh": "BDZ002", "bdzmc": "35kv纱帽变电站", "pos_x": 114.08319533, "pos_y": 30.31767905 }, { "bdzbh": "BDZ003", "bdzmc": "35kV水洪变电站", "pos_x": 113.8540864, "pos_y": 30.25663197 }, { "bdzbh": "BDZ004", "bdzmc": "35kV银莲湖变电站", "pos_x": 113.78102407, "pos_y": 30.24061333 }, { "bdzbh": "BDZ005", "bdzmc": "110kV廖家堡变电站", "pos_x": 114.08600092, "pos_y": 30.34437776 }, { "bdzbh": "BDZ006", "bdzmc": "110kV皂角山变电站", "pos_x": 113.96558046, "pos_y": 30.34882486 }, { "bdzbh": "BDZ007", "bdzmc": "220kV马影河变电站", "pos_x": 114.05050993, "pos_y": 30.3277427 }];
+            const a = [[114.0886028, 30.3282028, 'normal', { a: 3 }],
+            [114.0888028, 30.3282028, 'normal', { a: 4 }]];
+            window.document.addEventListener('message', function (e) {
+                const message = e.data
+                const data = JSON.parse(message);
+                //window.postMessage(data.pos_x+';'+data.pos_y);
+                addIconToVectorLayer(data);
+                //alert(message.length);
+            });
+            // setTimeout(() => {
+            //     addIconToVectorLayer(data);
+            // }, 1000);
+        }
+
+
+    </script>
+</body>
+
+</html>

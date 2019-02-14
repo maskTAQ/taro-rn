@@ -1,0 +1,160 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml> <head>
+<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta content=always name=referrer>
+<title>维修点位置</title>
+<link href="../ol/ol.css" rel="stylesheet" type="text/css" />
+<style>
+    html,body,#map{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+    }
+</style>
+<script type="text/javascript" src="./ol/ol.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="map" style="width: 100%;height: 100%;"></div>
+    <script>
+        //汉南区经纬度
+        var lamarin = ol.proj.fromLonLat([114.04068768, 30.29965997]);
+
+        var view = new ol.View({
+            center: lamarin,
+            zoom: 12
+        });
+
+        const iconMap = {
+            bdz: './map-Icon/bdz.png',
+            zf: './map-Icon/zf.png',
+            lb: './map-Icon/波形图.png',
+            kg: './map-Icon/kg.png',
+            gt: './map-Icon/gt.png',
+            byq: './map-Icon/byq.png',
+            point: './map-Icon/point.png',
+        };
+
+        var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({}),
+            updateWhileAnimating: true,
+            updateWhileInteracting: true,
+        });
+        const imap = {
+            bdzbh: 'bdz',
+            zfbh: 'zf',
+            lbymc: 'lb',
+            kgid: 'kg',
+            gtbh: 'gt',
+            byqbh: 'byq',
+            point: 'point'
+        };
+        var getIconType = (o) => {
+
+            for (var key in o) {
+                if (imap[key]) {
+                    return imap[key]
+                }
+            }
+            return 'normal';
+        };
+        const addIconToVectorLayer = (point) => {
+            const vectorSource = vectorLayer.getSource();
+            //const [longitude, latitude, pointType] = pointList[i];
+            const { pos_x, pos_y, bdzbh, ...o } = point;
+            // var iconFeature = new ol.Feature({
+            //     geometry: new ol.geom.Point(ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857')),
+            //     data: pointList[i]
+            // });
+            var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.transform([pos_x, pos_y], 'EPSG:4326', 'EPSG:3857')),
+                data: point
+            });
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 1.0],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    src: o.icon || iconMap[getIconType({ bdzbh })],
+                    imgSize: [60, 60],
+
+                }),
+                zIndex: 100000
+            });
+            iconFeature.setStyle(iconStyle);
+            vectorLayer.getSource().getFeatures().forEach(function(feature){
+                vectorSource.removeFeature(feature);
+            });
+           
+            vectorSource.addFeature(iconFeature);
+        }
+
+        //return vectorLayer;
+
+
+        const pointList = { "bdzbh": "BDZ001", "bdzmc": "110kv陡埠变电站", "pos_x": 114.04068768, "pos_y": 30.29965997 };
+        //addIconToVectorLayer(pointList);
+        //const vectorLayer = addIconToVectorLayer(pointList);
+
+
+
+
+        // 创建地图
+        var map = new ol.Map({
+            layers: [
+                new ol.layer.Tile({ source: new ol.source.OSM() }),
+                vectorLayer
+            ],
+            view: view,
+            target: 'map',
+            loadTilesWhileAnimating: true,
+        });
+        map.on('singleclick', function (evt) {
+            var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                const { data } = feature.H;
+                onPointClick(data);
+                return feature;
+            });
+            //onPointClick(feature);
+        });
+
+        // //开启地图缩放动画
+        // map.once('postrender', function (event) {
+        //     view.animate({
+        //         center: lamarin,
+        //         zoom: 18,
+        //         duration: 4000,
+        //         //mapTypeId: 'roadmap',
+        //     });
+        // });
+
+
+        function onPointClick(data) {
+            console.log(data, 'data');
+            window.postMessage(JSON.stringify(data));
+        }
+
+
+        window.onload = function () {
+            window.document.addEventListener('message', function (e) {
+                var message = e.data
+                var data = JSON.parse(message);
+                addIconToVectorLayer({
+                    pos_x: data.pos_x, pos_y: data.pos_y, icon: './map-Icon/car.png'
+                });
+                view.animate({
+                    center: ol.proj.fromLonLat([data.pos_x, data.pos_y ]),
+                    zoom: 15,
+                    duration: 4000,
+                    //mapTypeId: 'roadmap',
+                });
+
+            });
+
+        };
+    </script>
+</body>
+
+</html>
