@@ -1,9 +1,7 @@
-import { platform } from './config.json';
-let TButton;
-if (platform === 'app') {
-    TButton = require('./button/app').default;
-}
-export { TButton };
+import { ScrollView } from 'react-native';
+import  TButton from './button/app';
+
+export { TButton,ScrollView };
 export { default as Header } from "./header";
 export { default as Page } from "./page";
 export { default as Icon } from "./icon";
@@ -24,3 +22,10 @@ export { default as RefreshContainer } from "./RefreshContainer";
 export { default as WebView } from './WebView';
 export { default as Map } from './Map/index';
 export { default as PlatformProvider } from './platform-provider';
+
+
+export { default as TTag } from './t-tag/index';
+export { default as View } from './view';
+export { default as Image } from './image';
+
+

@@ -6,6 +6,7 @@ export default class TButton extends Component {
     static options = {
         addGlobalClass: true
     }
+    static externalClasses = ['my-class']
     componentWillReceiveProps(nextProps) {
 
     }
@@ -20,7 +21,7 @@ export default class TButton extends Component {
         const { onClick, className } = this.props;
         return (
             <View className={classnames('button', className)} onClick={onClick}>
-                <Text>{this.props.children}</Text>
+                {this.props.children}
             </View>
         )
     }

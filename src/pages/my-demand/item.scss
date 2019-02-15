@@ -1,0 +1,147 @@
+@import './component.scss';
+@import '../../platform.scss';
+.item-box {
+    background: #fff;
+    padding: 20px;
+    border-bottom-width: 1px;
+    //border-bottom-style: solid;
+    border-bottom-color:rgba(0, 0, 0, 0.2);
+}
+
+.item-title {
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.item-title-left{
+    @extend .flex;
+    flex-direction: row;
+}
+.item-title-right{
+    @extend .flex;
+    flex-direction: row;
+}
+.item-name {
+    font-size: 34px;
+    color: #000;
+}
+
+.item-value {
+    font-size: 28px;
+    color: #000;
+}
+
+.item-time {
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+
+.item-info-list {
+    margin-top: 20px;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.item-info-item {
+    @extend .flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+}
+
+.item-info-item-content {
+    @extend .flex;
+    flex: 1;
+    
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-info-item-border {
+    margin: 8px 0;
+    width: 4px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.item-info-item-title {
+    font-size: 30px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.item-info-item-value {
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.item-desc-list {
+    margin-top: 16px;
+}
+
+.item-desc-item {
+    @extend .flex;
+    height: 40px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.item-desc-item-label {
+    font-size: 32px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.item-desc-item-content {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.item-desc-item-text {
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.button {
+    margin-left: 10px;
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 28px;
+    border-radius: 4px;
+    background: #86d4fa;
+    color: #fff;
+}
+
+.placeholder {
+    width: 90px;
+}
+
+.btn-group {
+    @extend .flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.btn {
+    margin-left: 20px;
+    @extend .flex;
+    height: 60px;
+    flex-direction: row;
+    align-items: center;
+    border-bottom-width: 1px;
+    //border-bottom-style: solid;
+    border-bottom-color:rgba(0, 0, 0, 0.2);
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.btn-text {
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.8);
+}

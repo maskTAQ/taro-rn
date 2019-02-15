@@ -51,7 +51,7 @@ const Button = (
     context
 ) => {
     styles = createStyle(context.theme);
-    const { color, fontSize, ...wrapperStyle } = style;
+    const { color, fontSize, ...wrapperStyle } = style ||{};
     const textStyle = { color, fontSize };
     const Wrapper = CreatedWrapper(feedback);
     return (

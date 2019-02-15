@@ -4,6 +4,7 @@ import { Provider } from '@tarojs/redux'
 
 import Index from './pages/index'
 
+
 import configStore from './store'
 
 import './app.scss'
@@ -19,15 +20,19 @@ const store = configStore()
 class App extends Component {
     config = {
     pages: [
+      'pages/my-demand/index',
       'pages/offer-hint/index',
-      'pages/index/index'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    "usingComponents": {
+      "t-tag": "components/t-tag/index",
+      "t-button": "components/t-button/index"
+    },
   }
 
   componentDidMount () {}

@@ -25,7 +25,7 @@ export default class Demo extends Component {
 
     render() {
         return (
-            <View className='contianer'>
+            <View className='container'>
                 
             </View>
         )
