@@ -1,7 +1,7 @@
 var _class, _temp;
 
 import React from 'react';
-import { Component } from "react-native";
+import { Component } from "react";
 import Main from './main';
 import indexStyleSheet from "./index_styles";
 

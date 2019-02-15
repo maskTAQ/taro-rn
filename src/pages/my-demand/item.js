@@ -16,7 +16,8 @@ export default class Item extends Component {
         console.log('点击编辑');
     }
     render() {
-        const { item, index, itemKeyList, itemDescList } = this.props;
+        const { item,  itemKeyList, itemDescList } = this.props;
+        
         return (
             <View className='item-box'>
                 <View className='item-title'>
@@ -31,7 +32,7 @@ export default class Item extends Component {
                 </View>
                 <View className='item-info-list'>
                     {
-                        itemKeyList.map(itemI => (
+                        itemKeyList.map((itemI,index) => (
                             <View className="item-info-item">
                                 <View className='item-info-item-content'>
                                     <Text className='item-info-item-title'>{map[itemI]}</Text>

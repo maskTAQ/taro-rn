@@ -17,7 +17,8 @@ let Item = class Item extends Component {
     console.log('点击编辑');
   }
   render() {
-    const { item, index, itemKeyList, itemDescList } = this.props;
+    const { item, itemKeyList, itemDescList } = this.props;
+
     return <View style={_styleSheet["item-box"]}>
                 <View style={_styleSheet["item-title"]}>
                     <View style={_styleSheet["item-title-left"]}>
@@ -30,7 +31,7 @@ let Item = class Item extends Component {
                     </View>
                 </View>
                 <View style={_styleSheet["item-info-list"]}>
-                    {itemKeyList.map(itemI => <View style={_styleSheet["item-info-item"]}>
+                    {itemKeyList.map((itemI, index) => <View style={_styleSheet["item-info-item"]}>
                                 <View style={_styleSheet["item-info-item-content"]}>
                                     <Text style={_styleSheet["item-info-item-title"]}>{map[itemI]}</Text>
                                     <Text style={_styleSheet["item-info-item-value"]}>{item[itemI]}</Text>
