@@ -18,7 +18,7 @@ import './app.scss'
 const store = configStore()
 
 class App extends Component {
-    config = {
+  config = {
     pages: [
       'pages/my-demand/index',
       'pages/offer-hint/index',
@@ -31,23 +31,25 @@ class App extends Component {
     },
     "usingComponents": {
       "t-tag": "components/t-tag/index",
-      "t-button": "components/t-button/index"
+      "t-button": "components/t-button/index",
+      "t-tabs": "components/t-tabs/index",
+      "t-tab-pane": "components/t-tab-pane/index"
     },
   }
 
-  componentDidMount () {}
+  componentDidMount() { }
 
-  componentDidShow () {}
+  componentDidShow() { }
 
-  componentDidHide () {}
+  componentDidHide() { }
 
-  componentCatchError () {}
+  componentCatchError() { }
 
-  componentDidCatchError () {}
+  componentDidCatchError() { }
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
       <Provider store={store}>
         <Index />

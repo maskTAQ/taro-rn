@@ -1,10 +1,10 @@
 
 
 import { Component } from '@tarojs/taro';
-
-import { View, ScrollView } from '../../components'
+import { View, ScrollView, TTabs, TTabPane, Text } from '../../components'
 import Item from './item';
 
+import './main.scss';
 
 
 
@@ -37,12 +37,12 @@ export default class MyDemand extends Component {
 
 
     state = {
-        activeKey: 'offer',
         list: [item, item, item, item, item],
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
         offerItemKeyList: ['sl', 'ztj', 'dcj'],
         itemDescList: ['mj', 'cgjs', 'shd', 'zwjhsj'],
         offerItemDescList: ['xqbh', 'mj'],
+        current: 0,
     };
     componentWillReceiveProps(nextProps) {
 
@@ -53,15 +53,28 @@ export default class MyDemand extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
+    handleClick(current) {
+        this.setState({
+            current
+        });
+    }
     render() {
-        const { list, itemDescList, itemKeyList } = this.state;
+        const { list, itemDescList, itemKeyList, current } = this.state;
+        const tabList = ["我的需求", "我的报价"]
         return (
             <View className='container'>
-                <ScrollView>
-                    {list.map((item, index) => {
-                        return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
-                    })}
-                </ScrollView>
+                <TTabs current={this.state.current} tabList={tabList} onClick={this.handleClick}>
+                    <TTabPane tabLabel={tabList[0]} current={this.state.current} index={0} >
+                        <ScrollView>
+                            {list.map((item, index) => {
+                                return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                            })}
+                        </ScrollView>
+                    </TTabPane>
+                    <TTabPane tabLabel={tabList[1]} current={this.state.current} index={1}>
+                        <Text>标签页二的内容</Text>
+                    </TTabPane>
+                </TTabs>
             </View>
         )
     }
