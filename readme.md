@@ -2,7 +2,8 @@
     基于taro源码编译成小程序、h5的目标下，复用编译输出的rn代码。
 
 # 为什么不采用taro自带的React Native 端开发流程开发流程
-    [React Native 端开发流程](https://nervjs.github.io/taro/docs/react-native.html)它是基于`Expo`的实现,不支持原生的 SDK。所以没法发挥rn的能力。复用taro编译输出的rn端代码,集成到我们自己搭建的rn依赖环境，来实现90%以上的代码服用了。
+   
+   [React Native 端开发流程](https://nervjs.github.io/taro/docs/react-native.html)它是基于`Expo`的实现,不支持原生的 SDK。所以没法发挥rn的能力。复用taro编译输出的rn端代码,集成到我们自己搭建的rn依赖环境，来实现90%以上的代码服用了。
 
 
 # 需要你在rn端处理什么
