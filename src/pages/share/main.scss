@@ -1,4 +1,11 @@
+@import '../../platform.scss';
 .container{
     height: 100%;
-    background: red;
+    background: white;
+    padding: 0px 20px;
+}
+.box{
+    @extend .flex;
+    align-items: center;
+
 }

@@ -1,35 +1,13 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text } from '../../components'
+import { View, ScrollView, TTabs, TTabPane, Text,TInput } from '../../components'
 import Item from './item';
 
 import './main.scss';
 
-
-
 const item = {
-    id: '562781322',
-
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130'
+   
 };
 
 
@@ -37,12 +15,11 @@ export default class MyDemand extends Component {
 
 
     state = {
-        list: [item, item, item, item, item],
-        itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
-        offerItemKeyList: ['sl', 'ztj', 'dcj'],
-        itemDescList: ['mj', 'cgjs', 'shd', 'zwjhsj'],
-        offerItemDescList: ['xqbh', 'mj'],
+        title:"",
+        title1:"",
+        content:"",
         current: 0,
+        url:"",
     };
     componentWillReceiveProps(nextProps) {
 
@@ -57,13 +34,59 @@ export default class MyDemand extends Component {
         this.setState({
             current
         });
+       
+    }
+    onchangeInput(title){
+        if(title.length >10){
+            return  
+        }
+        else{
+            this.setState({
+                title
+            });
+        }
+      
+       // this.state.title1 = title 
+    }
+    onchangecontent(content){
+        if(content.length >20){
+            return  
+        }
+        else{
+            this.setState({
+                content
+            });
+        }
+      
+       // this.state.title1 = title 
     }
     render() {
-        const { list, itemDescList, itemKeyList, current } = this.state;
-        const tabList = ["我的需求", "我的报价"];
+        const { list, itemDescList, itemKeyList, current ,title,content} = this.state;
+       // const tabList = ["我的需求", "我的报价"];
         return (
             <View className='container'>
-                12
+            <Text className="tit">自定义分享链接内容</Text>
+                <View className="box">
+                <Text>标题</Text>
+                <TInput className="tinput" value={title} onInput={this.onchangeInput} />
+                </View>
+                <View>
+                <Text>内容</Text>
+                <TInput value={content} onInput={this.onchangecontent}/>
+                </View>
+                <View>
+                <Text className="">分享说明：</Text>
+                <View>
+                <Text className="">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
+                <Text className="">2.精选批次，请先筛选后在进行分享</Text>
+                </View>
+                <View>
+                <Text>字数同步啊</Text>
+                 <Text className="">{title}</Text>
+                 <Text className="">{content}</Text>
+                 <Image src={url} />
+                </View>
+                </View>
             </View>
         )
     }
