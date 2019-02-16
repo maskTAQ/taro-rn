@@ -1,0 +1,50 @@
+@import '../../platform.scss';
+@import './component.scss';
+
+.container{
+    height: 100%;
+}
+.user-card{
+    @extend .flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 400px;
+}
+.user-info{
+    @extend .flex;
+    flex-direction: row;
+    padding: 0 30px;
+}
+.user-icon{
+    width: 140px;
+    height: 140px;
+    @include border(1px,solid,red);
+}
+.user-info-detail{
+    @extend .flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.company-name,.mobile{
+    height: 50px;
+    font-size: 24px;
+    color: #000;
+}
+
+.tool{
+    @extend .flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100px;
+    @include border(1px,solid,red);
+}
+
+.tool-item-icon{
+    width: 60px;
+    height: 60px;
+    @include border(1px,solid,red);
+}
+.tool-item-label{
+    font-size: 24px;
+    color: #000;
+}
