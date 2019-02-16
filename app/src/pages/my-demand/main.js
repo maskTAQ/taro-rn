@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import { Component } from "react";
-import { View, ScrollView, TTabs, TTabPane, Text } from '../../components';
+import { View, ScrollView, TTabs, TTabPane } from '../../components';
 import Item from './item';
 
 import mainStyleSheet from "./main_styles";
@@ -46,13 +46,13 @@ let MyDemand = class MyDemand extends Component {
     }, _temp;
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
   handleClick(current) {
     this.setState({
       current
@@ -62,19 +62,18 @@ let MyDemand = class MyDemand extends Component {
     const { list, itemDescList, itemKeyList, current } = this.state;
     const tabList = ["我的需求", "我的报价"];
     return <View style={_styleSheet["container"]}>
-                <TTabs current={this.state.current} tabList={tabList} onClick={this.handleClick}>
-                    <TTabPane tabLabel={tabList[0]} current={this.state.current} index={0}>
-                        <ScrollView>
-                            {list.map((item, index) => {
-              return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />;
-            })}
-                        </ScrollView>
-                    </TTabPane>
-                    <TTabPane tabLabel={tabList[1]} current={this.state.current} index={1}>
-                        <Text>标签页二的内容</Text>
-                    </TTabPane>
-                </TTabs>
-            </View>;
+      <TTabs scroll={true} current={current} tabList={tabList} onClick={this.handleClick}>
+        {tabList.map((item, index) => {
+          return <TTabPane tabLabel={item} current={current} index={index}>
+            <ScrollView>
+              {list.map((item, index) => {
+                return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />;
+              })}
+            </ScrollView>
+          </TTabPane>;
+        })}
+      </TTabs>
+    </View>;
   }
 };
 export { MyDemand as default };

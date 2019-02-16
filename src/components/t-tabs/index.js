@@ -9,9 +9,9 @@ export default class TTabs extends Component {
         addGlobalClass: true
     }
     render() {
-        const { current, tabList, onClick } = this.props;
+        const {scroll, current, tabList, onClick } = this.props;
         return (
-            <AtTabs current={current} tabList={tabList.map(title=>({title}))} onClick={onClick}>
+            <AtTabs scroll={scroll} current={current} tabList={tabList.map(title=>({title}))} onClick={onClick}>
                 {this.props.children}
             </AtTabs>
         )

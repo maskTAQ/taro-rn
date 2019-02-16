@@ -710,6 +710,21 @@
     swiper "^4.4.2"
     weui "^1.1.2"
 
+"@tarojs/taro-rn@^1.2.13":
+  version "1.2.13"
+  resolved "http://registry.npm.taobao.org/@tarojs/taro-rn/download/@tarojs/taro-rn-1.2.13.tgz#8bb47f487d321bd36747d9f1e1fdd472c67afdd4"
+  dependencies:
+    "@tarojs/taro" "1.2.13"
+    base64-js "^1.3.0"
+    react-native-image-zoom-viewer "^2.2.13"
+    react-native-root-siblings "^3.1.0"
+    react-native-root-toast "^3.0.1"
+    react-native-stylekit "^1.0.0"
+
+"@tarojs/taro@1.2.13":
+  version "1.2.13"
+  resolved "http://registry.npm.taobao.org/@tarojs/taro/download/@tarojs/taro-1.2.13.tgz#b77fd1d756f59f6596cde639f95aee7ef3745a47"
+
 "@types/fbemitter@^2.0.32":
   version "2.0.32"
   resolved "http://registry.npm.taobao.org/@types/fbemitter/download/@types/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
@@ -1550,7 +1565,7 @@ base64-js@1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.taobao.org/base64-js/download/base64-js-1.1.2.tgz#d6400cac1c4c660976d90d07a04351d89395f5e8"
 
-base64-js@^1.1.2, base64-js@^1.2.3:
+base64-js@^1.1.2, base64-js@^1.2.3, base64-js@^1.3.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/base64-js/download/base64-js-1.3.0.tgz#cab1e6118f051095e58b5281aea8c1cd22bfc0e3"
 
@@ -5701,6 +5716,16 @@ react-native-gesture-handler@~1.0.14:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
+react-native-image-pan-zoom@^2.1.9:
+  version "2.1.11"
+  resolved "http://registry.npm.taobao.org/react-native-image-pan-zoom/download/react-native-image-pan-zoom-2.1.11.tgz#61bcb69219d95e76a9797d23e4a2e8e0bd654ae9"
+
+react-native-image-zoom-viewer@^2.2.13:
+  version "2.2.25"
+  resolved "http://registry.npm.taobao.org/react-native-image-zoom-viewer/download/react-native-image-zoom-viewer-2.2.25.tgz#61d0978b26d5a07bbbdfe04791818e49d1e538a0"
+  dependencies:
+    react-native-image-pan-zoom "^2.1.9"
+
 react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
@@ -5726,6 +5751,20 @@ react-native-reanimated@1.0.0-alpha.11:
 react-native-reanimated@1.0.0-alpha.12:
   version "1.0.0-alpha.12"
   resolved "http://registry.npm.taobao.org/react-native-reanimated/download/react-native-reanimated-1.0.0-alpha.12.tgz#535c84a9e87c919417aee0fa68f360b3bb9556b0"
+
+react-native-root-siblings@^3.0.0, react-native-root-siblings@^3.1.0:
+  version "3.1.7"
+  resolved "http://registry.npm.taobao.org/react-native-root-siblings/download/react-native-root-siblings-3.1.7.tgz#9af7cf7495311db9fbe929201a3234ed114cfe77"
+  dependencies:
+    prop-types "^15.6.2"
+    static-container "^1.0.0"
+
+react-native-root-toast@^3.0.1:
+  version "3.0.2"
+  resolved "http://registry.npm.taobao.org/react-native-root-toast/download/react-native-root-toast-3.0.2.tgz#85c0c50d300c895a35ea98587b4ad4c9540297ee"
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-root-siblings "^3.0.0"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
@@ -5756,6 +5795,10 @@ react-native-scrollable-tab-view@^0.8.0:
     create-react-class "^15.6.2"
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
+
+react-native-stylekit@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/react-native-stylekit/download/react-native-stylekit-1.0.0.tgz#96fc013345b8d3cd60dfdaced0d47af7a9d5316b"
 
 react-native-svg@8.0.10:
   version "8.0.10"
@@ -6540,6 +6583,10 @@ stacktrace-parser@^0.1.3:
 staged-git-files@1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/staged-git-files/download/staged-git-files-1.1.1.tgz#37c2218ef0d6d26178b1310719309a16a59f8f7b"
+
+static-container@^1.0.0:
+  version "1.3.0"
+  resolved "http://registry.npm.taobao.org/static-container/download/static-container-1.3.0.tgz#e4f7b4be4e42954e3d1955ab7b3974a78b7bad87"
 
 static-extend@^0.1.1:
   version "0.1.2"
