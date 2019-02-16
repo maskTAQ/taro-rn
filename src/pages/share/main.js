@@ -1,7 +1,7 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text, TInput,Image } from '../../components'
+import { View, ScrollView, TTabs, TTabPane, Text, TInput, Image, TButton } from '../../components'
 import Item from './item';
 
 import './main.scss';
@@ -16,12 +16,12 @@ export default class MyDemand extends Component {
 
 
     state = {
-        title: "",
+        title: "请输入标题",
         title1: "",
-        content: "",
+        content: "请输入内容",
         current: 0,
         url: "../share/img/logo.png"
-       // url: "",
+        // url: "",
     };
     componentWillReceiveProps(nextProps) {
 
@@ -67,38 +67,43 @@ export default class MyDemand extends Component {
         // const tabList = ["我的需求", "我的报价"];
         return (
             <View className='container'>
-                <Text className="tit">自定义分享链接内容</Text>
+                <View className="title">
+                    <Text className="tit">自定义分享链接内容</Text>
+                </View>
                 <View className="box">
                     <Text>标题</Text>
                     <TInput className="tinput" value={title} onInput={this.onchangeInput} />
                 </View>
                 <View className="box">
                     <Text>内容</Text>
-                    <view className="tinput">
-                    <TInput className="tinput" value={content} onInput={this.onchangecontent} />                    
-                    </view>
+                    <TInput className="tinput" value={content} onInput={this.onchangecontent} />
                 </View>
-                <view className="line"></view>
-                <View>
-                    <Text className="">分享说明：</Text>
+                <View className="explainline">
+                    <Text className="explain">分享说明：</Text>
                     <View>
-                        <Text className="">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
+                        <Text className="explain">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
                         <view />
                         <view>
-                            <Text className="">2.精选批次，请先筛选后在进行分享</Text>
+                            <Text className="explain">2.精选批次，请先筛选后在进行分享</Text>
                         </view>
                     </View>
                     <View className="card">
-                        <view className="cardTit">
+                        <View className="cardTit">
                             <Text className="">{title}</Text>
-                        </view>
-                        <view className="cardCon">
+                        </View>
+                        <View className="cardCon">
                             <Text className="">{content}</Text>
-                        </view>
-                        <view className="cardlogos">
+                        </View>
+                        <View className="cardlogos">
                             <Image src={imgs} className="logosImg" />
-                        </view>
+                        </View>
                     </View>
+                    <TButton>
+                        <View className="btn-share">
+                            <Text>确定分享</Text>
+                        </View>
+
+                    </TButton>
                 </View>
             </View>
         )

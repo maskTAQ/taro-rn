@@ -2,8 +2,29 @@
 
 .tinput{
     @extend .flex;
-    height: 90px;
+    height: 60px;
     align-items: center;
-    width: 100%;
+    flex: 1px;
+    margin-left: 35px;
     @include border(1px,solid,rgba(0, 0, 0, 0.2));
 }
+.btnshare{
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #32b7f7;
+    height: 85px;
+    width:70%;
+    text-align: center;
+    color: #fff;
+    margin-top: 45px;
+    border-radius: 15px;
+    
+}
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+
+/*postcss-pxtransform rn eject disable*/

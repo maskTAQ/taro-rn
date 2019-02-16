@@ -4,35 +4,68 @@
     background: white;
     padding: 0px 20px;
 }
+.title{
+    margin-bottom: 35px;
+}
+.center{
+    text-align: center;
+}
 .box{
     @extend .flex;
     align-items: center;
-       height: 130px;
+       height: 80px;
        width: 100%;
+       font-size: 30px;
 }
-.tinput{
+.tinputs{
     flex:1px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 .line{
-    height: 10px;
+    height: 30px;
     width: 100%;
     background: #ececec;
+}
+.explainline{
+    margin-top:20px;
 }
 .card{
     position: relative;    
     @include border(1px,solid,rgba(0, 0, 0, 0.2));
     margin-top: 10px;
     height:300px;
-    width:100%;    
+    width:100%;   
+    padding: 15px; 
 }
 .cardlogos{
     position: absolute;
-    bottom: 0px;
-    right:0px;
-    height: 50px;
+    bottom: 10px;
+    right:30px;
 }
 .logosImg{
-    height: 50px;
-    width: 50px
+    height: 150px;
+    width: 150px
+}
+.explain{
+    font-size: 30px;
+}
+.cardTit{
+    font-size: 45px;
+    font-weight: 600;
+    color: #000000;
+}
+.cardCon{
+    font-size: 30px;
+    color: #d5d5d5;
+}
+.btn-share{
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #32b7f7;
+    height: 85px;
+    
+    color: #fff;
+    margin-top: 45px;
+    border-radius: 15px;
 }
