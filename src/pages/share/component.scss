@@ -1,0 +1,7 @@
+.tinput{
+    @extend .flex;
+    height: 45px;
+    align-items: center;
+    width: 100%;
+    @include border(1px,solid,rgba(0, 0, 0, 0.2));
+}
