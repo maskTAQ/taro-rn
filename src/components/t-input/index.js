@@ -6,14 +6,17 @@ export default class TInput extends Component {
     static options = {
         addGlobalClass: true
     }
+    filter(e){
+        this.props.onInput && this.props.onInput(e.target.value);
+    }
     render() {
-        const { className, placeholder, value, onInput } = this.props;
+        const { className, placeholder, value } = this.props;
         return (
             <Input
                 className={classnames('input', className)}
                 placeholder={placeholder}
                 value={value}
-                onInput={onInput}
+                onInput={this.filter}
             >{this.props.children}
             </Input>
         )
