@@ -1,14 +1,17 @@
 
 import { Component } from '@tarojs/taro';
-
+import classnames from 'classnames';
 
 import { View, Text, Image, TTag, TButton, Visible } from '../../components'
 import config from '../../config';
 import './item.scss';
-import deleteImg from './img/delete.png';
-import editImg from './img/edit.png';
+import mobileImg from './img/mobile.png';
+import carImg from './img/car.png';
 const map = config.map.main;
 export default class Item extends Component {
+    state={
+        itemValueList: ['jc', 'y/d', 'gz'],
+    }
     handleDelete() {
         console.log('点击删除');
     }
@@ -16,8 +19,9 @@ export default class Item extends Component {
         console.log('点击编辑');
     }
     render() {
-        const { item,  itemKeyList, itemDescList } = this.props;
-        
+        const { item, itemKeyList, itemDescList } = this.props;
+        const {itemValueList} = this.state;
+        const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
         return (
             <View className='item-box'>
                 <View className='item-title'>
@@ -26,19 +30,46 @@ export default class Item extends Component {
                         <Text className='item-value'>({item.id})</Text>
                     </View>
                     <View className='item-title-right'>
-                        <TTag className="item-tag-mr">长绒棉</TTag>
-                        <TTag>新疆全省</TTag>
+                        <Text className='item-time'>2019-01-01</Text>
                     </View>
+                </View>
+                <View className="TTag-list">
+                    {
+                        tagList.map((tag, index) => {
+                            return (
+                                <TTag
+                                    className={index === tagList.length - 1 ? 'tag-end' : 'tag-mr'}>
+                                    {tag}
+                                </TTag>
+                            )
+                        })
+                    }
+
                 </View>
                 <View className='item-info-list'>
                     {
-                        itemKeyList.map((itemI,index) => (
+                        itemKeyList.map((itemI, index) => (
                             <View className="item-info-item">
                                 <View className='item-info-item-content'>
                                     <Text className='item-info-item-title'>{map[itemI]}</Text>
                                     <Text className='item-info-item-value'>{item[itemI]}</Text>
                                 </View>
                                 <Visible show={index !== itemKeyList.length - 1}>
+                                    <View className='item-info-item-border'></View>
+                                </Visible>
+                            </View>
+                        ))
+                    }
+                </View>
+                <View className='item-info-list'>
+                    {
+                        itemValueList.map((itemI, index) => (
+                            <View className="item-info-item">
+                                <View className='item-info-item-content'>
+                                    <Text className='item-info-item-title'>{map[itemI]}</Text>
+                                    <Text className='item-info-item-value'>{item[itemI]}</Text>
+                                </View>
+                                <Visible show={index !== itemValueList.length - 1}>
                                     <View className='item-info-item-border'></View>
                                 </Visible>
                             </View>
@@ -59,14 +90,14 @@ export default class Item extends Component {
                 <View className='btn-group'>
                     <TButton onClick={() => this.handleDelete(item)}>
                         <View className='btn'>
-                            <Image className='btn-icon' src={deleteImg}></Image>
-                            <Text className='btn-text'>删除</Text>
+                            <Image className='btn-icon' src={mobileImg}></Image>
+                            <Text className='btn-text'>电话</Text>
                         </View>
                     </TButton>
                     <TButton onClick={() => this.handleEdit(item)}>
                         <View className='btn'>
-                            <Image className='btn-icon' src={editImg}></Image>
-                            <Text className='btn-text'>编辑</Text>
+                            <Image className='btn-icon' src={carImg}></Image>
+                            <Text className='btn-text'>购物车</Text>
                         </View>
                     </TButton>
                 </View>

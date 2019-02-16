@@ -25,7 +25,11 @@ const map = {
   
       gys:'供应商',
   
-      xqbh:'需求编号'
+      xqbh:'需求编号',
+      zg:'公重',
+
+      ph:'批号',
+      ck:'仓库',
     }
   };
   const config = {

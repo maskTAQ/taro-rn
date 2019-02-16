@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  "container": {
-    flex:1,
-    paddingTop: 20,
-    backgroundColor: '#fff',
+  "tag-mr": {
+    "marginRight": 10
+  },
+  "tag-end": {
+    "backgroundColor": "#44bdf7",
+    "color": "#fff !important"
   }
 })

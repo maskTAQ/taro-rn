@@ -31,7 +31,15 @@ const item = {
     ztj: '1231',
     dcj: '1331',
 
-    xqbh: '12132987130'
+    xqbh: '12132987130',
+
+    jc: '+120',
+    'y/d': '15720',
+    gz: '45.455',
+
+    ph: "454212552",
+    ck: '中储棉库存厄尔有限责任公司',
+    gys: '河北星宇纺织原料有限责任公司'
 };
 
 
@@ -43,7 +51,7 @@ export default class Home extends Component {
         list: [item, item, item, item, item],
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
         offerItemKeyList: ['sl', 'ztj', 'dcj'],
-        itemDescList: ['mj', 'cgjs', 'shd', 'zwjhsj'],
+        itemDescList: ['ph', 'ck', 'gys'],
         offerItemDescList: ['xqbh', 'mj'],
         current: 0,
     };

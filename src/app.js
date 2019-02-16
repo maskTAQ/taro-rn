@@ -32,10 +32,10 @@ class App extends Component {
       navigationBarTextStyle: 'black'
     },
     "usingComponents": {
-      "t-tag": "components/t-tag/index",
-      "t-button": "components/t-button/index",
-      "t-tabs": "components/t-tabs/index",
-      "t-tab-pane": "components/t-tab-pane/index"
+      // "t-tag": "components/t-tag/index",
+      // "t-button": "components/t-button/index",
+      // "t-tabs": "components/t-tabs/index",
+      // "t-tab-pane": "components/t-tab-pane/index"
     },
   }
 

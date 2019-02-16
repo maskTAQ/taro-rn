@@ -1,6 +1,6 @@
 import { Component } from '@tarojs/taro'
 import Main from './main';
-import './index.scss'
+import './component.scss'
 
 export default class Home extends Component {
   config = {
