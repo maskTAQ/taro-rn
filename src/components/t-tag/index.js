@@ -8,9 +8,8 @@ export default class TTag extends Component {
     }
     render() {
         const { onClick, className } = this.props;
-        console.log(classnames('tag', className),'sadads')
         return (
-            <Text className={classnames('tag', className)} onClick={onClick}>{this.props.children}</Text>
+            <Text className={classnames(className,'tag' )} onClick={onClick}>{this.props.children}</Text>
         )
     }
 }

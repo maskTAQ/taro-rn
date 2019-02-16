@@ -1,54 +1,16 @@
-import React , { Component } from 'react'
-import { View } from 'react-native'
-import { TButton, Text } from "components";
-import { connect } from 'react-redux'
+var _class, _temp;
 
-import { add, minus, asyncAdd } from '../../actions/counter'
+import React from 'react';
+import { Component } from "react";
+import Main from './main';
+import indexStyleSheet from "./index_styles";
 
-import _styleSheet from "./index_styles";
-
-
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
+var _styleSheet = indexStyleSheet;
+let Home = (_temp = _class = class Home extends Component {
+  render() {
+    return <Main />;
   }
-}))
-export default class Home extends Component {
-
-    config = {
-    navigationBarTitleText: '首页'
-  }
-
-  componentWillReceiveProps (nextProps) {
-   
-  }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  render () {
-    return (
-      <View style={_styleSheet["container"]}>
-        <TButton onClick={this.props.add} style={_styleSheet["add_btn"]}>+</TButton>
-        <TButton onClick={this.props.dec} style={_styleSheet["dec_btn"]}>-</TButton>
-        <TButton onClick={this.props.asyncAdd} style={_styleSheet["dec_btn"]}>async</TButton>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
-      </View>
-    )
-  }
-}
-
-
-
+}, _class.config = {
+  navigationBarTitleText: '首页'
+}, _temp);
+export { Home as default };

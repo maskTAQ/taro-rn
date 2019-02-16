@@ -1,7 +1,7 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text, TInput } from '../../components'
+import { View, ScrollView, TTabs, TTabPane, Text, TInput,Image } from '../../components'
 import Item from './item';
 
 import './main.scss';
@@ -21,6 +21,7 @@ export default class MyDemand extends Component {
         content: "",
         current: 0,
         url: "../share/img/logo.png"
+       // url: "",
     };
     componentWillReceiveProps(nextProps) {
 
