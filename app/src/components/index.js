@@ -29,5 +29,6 @@ export { default as View } from './view';
 export { default as Image } from './image';
 export { default as TTabs } from './t-tabs/index';
 export { default as TTabPane } from './t-tab-pane/index';
+export { default as TInput } from './t-input';
 
 

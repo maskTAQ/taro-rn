@@ -4,7 +4,7 @@ import { Component } from '@tarojs/taro';
 
 import { View, Image, TButton, TTabs, TTabPane, Text } from '../../components'
 import './main.scss';
-
+import './component.scss';
 const toolList = [
     {
         icon: '',

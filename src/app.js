@@ -22,9 +22,7 @@ class App extends Component {
     pages: [
       'pages/share/index',
       'pages/user/index',
-      
       'pages/home/index',
-      
       'pages/my-demand/index',
       'pages/offer-hint/index',
     ],

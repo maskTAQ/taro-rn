@@ -1,26 +1,16 @@
 @import '../../platform.scss';
 
-.tinput{
+.line-input {
     @extend .flex;
+    flex: 1;
+    margin-left: 35px;
     height: 60px;
     align-items: center;
-    flex: 1px;
-    margin-left: 35px;
-    @include border(1px,solid,rgba(0, 0, 0, 0.2));
+    font-size: 32px;
+    @include border(1px ,solid, #ccc);
 }
-.btnshare{
-    @extend .flex;
-    justify-content: center;
-    align-items: center;
-    background: #32b7f7;
-    height: 85px;
-    width:70%;
-    text-align: center;
-    color: #fff;
-    margin-top: 45px;
-    border-radius: 15px;
-    
-}
+
+
 /*postcss-pxtransform rn eject enable*/
 
 t-input {

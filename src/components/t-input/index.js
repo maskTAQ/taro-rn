@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Input } from '@tarojs/components'
 import classnames from 'classnames';
-import './index.scss'
+
 export default class TInput extends Component {
     static options = {
         addGlobalClass: true

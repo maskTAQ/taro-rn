@@ -2,7 +2,13 @@
     /*postcss-pxtransform rn eject enable*/
     display: flex;
     /*postcss-pxtransform rn eject disable*/
-   // color: red;
+    // color: red;
+}
+
+.borderSolid {
+    /*postcss-pxtransform rn eject enable*/
+    border-style: solid;
+    /*postcss-pxtransform rn eject disable*/
 }
 
 @mixin border($width, $style, $color) {
@@ -12,7 +18,8 @@
     /*postcss-pxtransform rn eject disable*/
     border-color: $color;
 }
-@mixin border-d($direction,$width, $style, $color) {
+
+@mixin borderD($direction, $width, $style, $color) {
     border-#{$direction}-width: $width;
     /*postcss-pxtransform rn eject enable*/
     border-#{$direction}-style: $style;
