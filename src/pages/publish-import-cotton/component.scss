@@ -5,17 +5,25 @@
     font-size: 28px;
     color: rgb(47, 47, 47);
 }
-
+.btn {
+    @extend .flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background: #32b7f7;
+    height: 85px;
+    margin-top: 45px;
+    border-radius: 15px;
+}
+.picker-btn{
+    @extend .flex;
+    justify-content: center;
+}
 
 /*postcss-pxtransform rn eject enable*/
 
 t-input {
     flex: 1;
 }
-t-button{
-    flex: 1;
-}
-t-picker{
-    margin-top: -200px;
-}
+
 /*postcss-pxtransform rn eject disable*/

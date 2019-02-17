@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native';
-import  TButton from './button/app';
+import  TButton from './button';
 
 export { TButton,ScrollView };
 export { default as Header } from "./header";
@@ -30,5 +30,6 @@ export { default as Image } from './image';
 export { default as TTabs } from './t-tabs/index';
 export { default as TTabPane } from './t-tab-pane/index';
 export { default as TInput } from './t-input';
-
+export { default as TPicker } from './t-picker';
+export { default as TSwitch } from './t-switch';
 

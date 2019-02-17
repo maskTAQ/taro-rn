@@ -6,17 +6,6 @@ export default class TButton extends Component {
     static options = {
         addGlobalClass: true
     }
-    static externalClasses = ['my-class']
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    componentWillUnmount() { }
-
-    componentDidShow() { }
-
-    componentDidHide() { }
-
     render() {
         const { onClick, className } = this.props;
         return (

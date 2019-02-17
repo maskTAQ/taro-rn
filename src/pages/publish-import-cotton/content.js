@@ -80,10 +80,6 @@ export default class Content extends Component {
         aaOption: [{ label: '公重', value: '公重', key: 'aa' }, { label: '毛重', value: '毛重', key: 'aa' }],
         bbOption: [{ label: '自提', value: '自提', key: 'bb' }, { label: '送货上门', value: '送货上门', key: 'bb' }],
     };
-    componentDidMount() {
-        const { onRegister } = this.props;
-        onRegister(this.pickerResultCallBack);
-    }
     showPicker = option => {
         this.setState({
             isPickerVisible: true,
@@ -142,22 +138,27 @@ export default class Content extends Component {
                                 }
                                 {
                                     type === 'picker' && (
+
                                         <TButton
+                                            className="picker-btn"
                                             onClick={() => { this.showPicker(option) }}>
-                                            <Text className="item-input">{String(this.state[key] || placeholder)}</Text>
+                                            <Text className="picker-btn-text">{String(this.state[key] || placeholder)}</Text>
                                         </TButton>
+
                                     )
                                 }
                                 {
                                     type === 'switch' && (
                                         <View className="item-right">
                                             <TButton
+                                                className="picker-btn"
                                                 onClick={() => { this.showPicker(aaOption) }}>
-                                                <Text className="item-input mr">{aa || '请选择'}</Text>
+                                                <Text className="picker-btn-text mr">{aa || '请选择'}</Text>
                                             </TButton>
                                             <TButton
+                                                className="picker-btn"
                                                 onClick={() => { this.showPicker(bbOption) }}>
-                                                <Text className="item-input mr">{bb || '请选择'}</Text>
+                                                <Text className="picker-btn-text mr">{bb || '请选择'}</Text>
                                             </TButton>
                                             <Text className="switch-text">{this.state.f ? '支持' : '不支持'}</Text>
                                             <TSwitch checked={this.state[key]} onChange={this.handleSwitchChange} />
@@ -168,11 +169,8 @@ export default class Content extends Component {
                         )
                     })
                 }
-                <TButton>
-                    <View className="btn" onClick={this.submit}>
-                        <Text className="btn-text">确定分享</Text>
-                    </View>
-
+                <TButton onClick={this.submit} className="btn">
+                    <Text className="btn-text">确定分享</Text>
                 </TButton>
                 <TPicker
                     show={isPickerVisible}

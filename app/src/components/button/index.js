@@ -33,16 +33,16 @@ const CreatedWrapper = feedback =>
     feedback
         ? TouchableOpacity
         : ({ onPress, disabled, ...props }) => (
-              <TouchableWithoutFeedback {...{ onPress, disabled }}>
-                  <View {...props} />
-              </TouchableWithoutFeedback>
-          );
+            <TouchableWithoutFeedback {...{ onPress, disabled }}>
+                <View {...props} />
+            </TouchableWithoutFeedback>
+        );
 const Button = (
     {
         children,
         style,
         onClick,
-        textStyle,
+        //textStyle,
         feedback = true,
         disabled = false,
         disabledButtonStyle,
@@ -51,12 +51,13 @@ const Button = (
     context
 ) => {
     styles = createStyle(context.theme);
+    const { color, fontSize, ...wrapperStyle } = style || {};
+    const textStyle = { color, fontSize };
     const Wrapper = CreatedWrapper(feedback);
-    //console.log(CreatedWrapper(false)(), <Wrapper />)
     return (
         <Wrapper
             style={[
-                style,
+                wrapperStyle,
                 disabled
                     ? Object.assign(styles.disabledButton, disabledButtonStyle)
                     : null
