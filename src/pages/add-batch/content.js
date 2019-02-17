@@ -21,18 +21,6 @@ const list = [
         key: 'a'
     },
     {
-        label: '年度',
-        type: 'input',
-        placeholder: '请选择年份',
-        key: 'b'
-    },
-    {
-        label: '品质',
-        type: 'input',
-        placeholder: '请输入品质信息',
-        key: 'c'
-    },
-    {
         label: '报价(元/吨)',
         type: 'picker',
         placeholder: '请选择报价',
@@ -52,22 +40,33 @@ const list = [
         key: 'f'
     },
     {
-        label: '存放区域',
-        type: 'picker',
-        placeholder: '请输入存放区域',
-        option: [createOption('深圳', 'i'), createOption('广东', 'i')],
-        key: 'i'
-    },
-    {
-        label: '保税库/主港/船期',
-        type: 'input',
-        placeholder: '请输入批次',
+        label: '企业信息：',
+        type: 'view',
+        placeholder: '请输入公司名称',
         key: 'j'
     },
     {
-        label: '提单号',
+        label: '公司',
         type: 'input',
-        placeholder: '请输入批次',
+        placeholder: '请输入公司名称',
+        key: 'j'
+    },
+    {
+        label: '公司类型',
+        type: 'input',
+        placeholder: '请输入公司类型',
+        key: 'k'
+    },
+    {
+        label: '联系电话',
+        type: 'input',
+        placeholder: '请输入联系电话',
+        key: 'k'
+    },
+    {
+        label: '联系人',
+        type: 'input',
+        placeholder: '请输入联系人',
         key: 'k'
     },
 ];
@@ -124,6 +123,19 @@ export default class Content extends Component {
         if (current == 1) {
             list[3].label = '报价(美分/磅)'
         }
+        // const isLoggedIn = list[4].label
+        // console.log(list)
+        // // 这里最好初始化声明为 `null`，初始化又不赋值的话
+        // // 小程序可能会报警为变量为 undefined
+        // let status = null
+        // if (isLoggedIn === "标题") {
+        //   status =  <View className="enterprise">
+        //   <Text className="enterprise-title">企业信息</Text>
+        //  </View>
+        // } else {
+        //   status = <Text></Text>
+        // }
+    
         //console.log(typeof current, current, list, 'list')
         return (
             <View className='content'>
@@ -165,12 +177,13 @@ export default class Content extends Component {
                                         </View>
                                     )
                                 }
+                                {status}
                             </View>
                         )
                     })
                 }
                 <TButton onClick={this.submit} className="btn">
-                    <Text className="btn-text">确定分享</Text>
+                    <Text className="btn-text">马上发布</Text>
                 </TButton>
                 <TPicker
                     show={isPickerVisible}
