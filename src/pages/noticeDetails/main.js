@@ -21,7 +21,7 @@ export default class noticeDetails extends Component {
     };
 
     render() {
-        const { } = this.state;
+        const {recommendNewList } = this.state;
         return (
             <View className='container'>
                 <View className="title">

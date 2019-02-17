@@ -1,0 +1,26 @@
+@import '../../platform.scss';
+
+.tinput{
+    @extend .flex;
+    height: 60px;
+    align-items: center;
+    flex: 1px;
+    margin-left: 35px;
+    @include border(1px,solid,rgba(0, 0, 0, 0.2));
+}
+.Imgdetails{
+    width: 100%;
+    
+}
+.share-img{
+    height:80px;
+    width: 100px;
+    margin-right: 5px;
+}
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+
+/*postcss-pxtransform rn eject disable*/

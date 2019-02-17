@@ -1,65 +1,82 @@
 @import '../../platform.scss';
 @import './component.scss';
-.container{
+.container {
     padding: 0px 20px;
 }
-.title{
-   @extend .flex;
+
+.title {
+    @extend .flex;
+    flex-direction: row;
     align-items: center;
     padding: 20px 0;
 }
-.title-text{
+
+.title-text {
     font-size: 38px;
     color: #000;
 }
-.dataTime-container{
-   @extend .flex;
+
+.dataTime-container {
+    @extend .flex;
+    flex-direction: row;    
     align-items: center;
     justify-content: space-between;
     height: 36px;
 }
-.time,.read-num{
+
+.time,
+.read-num {
     color: #635d5d;
     font-size: 30px;
 }
-.news-details{
+
+.news-details {
     margin-top: 15px;
 }
-.new-detailsText{
+
+.new-detailsText {
     color: rgb(43, 41, 41);
     font-size: 30px;
     line-height: 30px;
 }
-.NewList-container{
+
+.NewList-container {
     margin-top: 15px;
 }
-.newList{
-   @extend .flex;
-    align-items: center;
-    height:85px;
-    @include borderD(bottom,1px,solid,rgba(0, 0, 0, 0.2));
-};
-.more{
+
+.newList {
     @extend .flex;
+    flex-direction: row;    
+    align-items: center;
+    height: 85px;
+    @include borderD(bottom, 1px, solid, rgba(0, 0, 0, 0.2));
+}
+
+;
+.more {
+    @extend .flex;
+    flex-direction: row;    
     align-items: center;
     justify-content: center;
-    height:85px;
+    height: 85px;
 }
-.new-text{
+
+.new-text {
     color: rgb(43, 41, 41);
     font-size: 30px;
-    line-height: 30px;    
+    line-height: 30px;
 }
-.more-text{
+
+.more-text {
     color: rgb(109, 109, 109);
     font-size: 25px;
     line-height: 30px;
-    
 }
-.share{
+
+.share {
     @extend .flex;
+    flex-direction: row;    
     align-items: center;
     justify-content: center;
-    padding: 15px 0;
-   // height: 100px;
+    padding: 15px 0; // height: 100px;
 }
