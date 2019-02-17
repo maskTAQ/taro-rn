@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import { Component } from "react";
-import { View, TTabs, TTabPane } from '../../components';
+import { View, ScrollView, TTabs, TTabPane } from '../../components';
 
 import Content from './content';
 import mainStyleSheet from "./main_styles";
@@ -25,14 +25,18 @@ let publishImportCotton = class publishImportCotton extends Component {
     const { current } = this.state;
     const tabList = ["人民币", "美元"];
     return <View style={_styleSheet["container"]}>
-                <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
-                    {tabList.map((item, index) => {
-          return <TTabPane tabLabel={item} current={current} index={index}>
-                                    <Content current={current} />
-                                </TTabPane>;
-        })}
-                </TTabs>
-                
+                <View style={_styleSheet["tab-box"]}>
+                    <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
+                        {tabList.map((item, index) => {
+            return <TTabPane tabLabel={item} current={current} index={index}>
+
+                                    </TTabPane>;
+          })}
+                    </TTabs>
+                </View>
+                <ScrollView>
+                    <Content current={current} />
+                </ScrollView>
             </View>;
   }
 };

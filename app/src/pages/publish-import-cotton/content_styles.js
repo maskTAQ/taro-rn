@@ -4,7 +4,9 @@ export default StyleSheet.create({
   "borderSolid": {},
   "flex": {},
   "btn": {
-    
+    "flexGrow": 1,
+    "flexShrink": 1,
+    "flexBasis": 0,
     "justifyContent": "center",
     "alignItems": "center",
     "backgroundColor": "#32b7f7",
@@ -40,7 +42,7 @@ export default StyleSheet.create({
     "flexBasis": 0,
     "paddingTop": 0,
     "paddingRight": 10,
-    "paddingBottom": 0,
+    "paddingBottom": 10,
     "paddingLeft": 10
   },
   "switch-text": {
