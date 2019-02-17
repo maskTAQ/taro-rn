@@ -21,19 +21,19 @@ export default class NoticeDetails extends Component {
     };
 
     render() {
-        const {recommendNewList } = this.state;
+        const {recommendnewlist } = this.state;
         return (
             <View className='container'>
                 <View className="title">
                     <Text className="title-text">中国棉花质量指数我是标题我是标题</Text>
                 </View>
-                <View className="dataTime-container">
+                <View className="datatime-container">
                     <Text className="time">2019-2-17</Text>
                     <Text className="read-num">已有23659人阅读</Text>
                 </View>
                 <View className="news-details">
                     <Image className="img-details" src={url}></Image>
-                    <Text className="new-detailsText">
+                    <Text className="new-detailstext">
                         文章内容文章内容文章内容文章内容文章内容文章内容
                 文章内容文章内容文章内容文章内容文章内容文章内容
                 文章内容文章内容文章内容文章内容文章内容文章内容
@@ -46,15 +46,15 @@ export default class NoticeDetails extends Component {
                 <Image className="share-img" src={ShareWechard}></Image>
                 </View>
                 </View>
-                <View className="newList-container">
+                <View className="newlist-container">
                     <View className="title">
                         <Text className="title-text">推荐文章</Text>
                     </View>
                     {
-                        recommendNewList.map((item, index) => {
+                        this.state.recommendNewList.map((item, index) => {
                             return (
 
-                                <View className="newList">
+                                <View className="newlist">
                                     <Text className="new-text">{item}</Text>
 
                                 </View>
