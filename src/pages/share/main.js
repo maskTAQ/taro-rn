@@ -82,10 +82,10 @@ export default class MyDemand extends Component {
                     <Text className="explain">分享说明：</Text>
                     <View>
                         <Text className="explain">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
-                        <view />
-                        <view>
+                        <View />
+                        <View>
                             <Text className="explain">2.精选批次，请先筛选后在进行分享</Text>
-                        </view>
+                        </View>
                     </View>
                     <View className="card">
                         <View className="cardTit">
@@ -98,7 +98,7 @@ export default class MyDemand extends Component {
                             <Image src={imgs} className="logosImg" />
                         </View>
                     </View>
-                    <TButton>
+                    <TButton >
                         <View className="btn-share">
                             <Text>确定分享</Text>
                         </View>
