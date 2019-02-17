@@ -32,7 +32,7 @@ export default class NoticeDetails extends Component {
                     <Text className="read-num">已有23659人阅读</Text>
                 </View>
                 <View className="news-details">
-                    <Image className="Imgdetails" src={url}></Image>
+                    <Image className="img-details" src={url}></Image>
                     <Text className="new-detailsText">
                         文章内容文章内容文章内容文章内容文章内容文章内容
                 文章内容文章内容文章内容文章内容文章内容文章内容
@@ -46,7 +46,7 @@ export default class NoticeDetails extends Component {
                 <Image className="share-img" src={ShareWechard}></Image>
                 </View>
                 </View>
-                <View className="NewList-container">
+                <View className="newList-container">
                     <View className="title">
                         <Text className="title-text">推荐文章</Text>
                     </View>
