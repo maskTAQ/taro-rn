@@ -1,0 +1,35 @@
+@import '../../platform.scss';
+@import './component.scss';
+.content {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.item {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100px;
+    @include borderD(bottom, 1px, solid, #f3f4f4);
+}
+
+.item-label {
+    margin-right: 20px;
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+
+.btn {
+    @extend .flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background: #32b7f7;
+    height: 85px;
+    margin-top: 45px;
+    border-radius: 15px;
+}
+
+.btn-text {
+    color: #fff;
+}
