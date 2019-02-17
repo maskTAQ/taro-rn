@@ -59,17 +59,10 @@ export default class Share extends Component {
                 <View className="share">
                     <Text className="share-title">分享说明：</Text>
                     <View>
-<<<<<<< HEAD
-                        <Text className="explain">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
-                        <View />
-                        <View>
-                            <Text className="explain">2.精选批次，请先筛选后在进行分享</Text>
-=======
                         <Text className="share-desc">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
                         <View />
                         <View>
                             <Text className="share-desc">2.精选批次，请先筛选后在进行分享</Text>
->>>>>>> dc54b0486c1051442c11ef53deb854434b49ab3b
                         </View>
                     </View>
                     <View className="card">
