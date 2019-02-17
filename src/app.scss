@@ -1,4 +1,6 @@
+//下列代码是小程序端的taro-ui样式 编译rn代码时需注释
 @import "~taro-ui/dist/style/components/tabs.scss";
+@import "~taro-ui/dist/style/components/action-sheet.scss";
 page{
     height: 100%;
 }

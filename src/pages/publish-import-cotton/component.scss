@@ -1,0 +1,21 @@
+@import '../../platform.scss';
+
+.item-input {
+    flex: 1;
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+
+
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+t-button{
+    flex: 1;
+}
+t-picker{
+    margin-top: -200px;
+}
+/*postcss-pxtransform rn eject disable*/

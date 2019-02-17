@@ -22,3 +22,4 @@
     3.Text
     4.Image
     5.Tag
+    5.Input

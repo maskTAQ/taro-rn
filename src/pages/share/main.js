@@ -1,18 +1,12 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text, TInput, Image, TButton } from '../../components'
-import Item from './item';
+import { View, Text, TInput, Image, TButton } from '../../components'
 
 import './main.scss';
 import imgs from './img/logo.png'
 
-const item = {
-
-};
-
-
-export default class MyDemand extends Component {
+export default class Share extends Component {
 
 
     state = {
@@ -20,25 +14,8 @@ export default class MyDemand extends Component {
         title1: "",
         content: "请输入内容",
         current: 0,
-        url: "../share/img/logo.png"
-        // url: "",
     };
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    componentWillUnmount() { }
-
-    componentDidShow() { }
-
-    componentDidHide() { }
-    handleClick(current) {
-        this.setState({
-            current
-        });
-
-    }
-    onchangeInput(title) {
+    onchangeInput = title => {
         if (title.length > 10) {
             return
         }
@@ -50,7 +27,7 @@ export default class MyDemand extends Component {
 
         // this.state.title1 = title 
     }
-    onchangecontent(content) {
+    onchangecontent = content => {
         if (content.length > 20) {
             return
         }
@@ -67,32 +44,40 @@ export default class MyDemand extends Component {
         // const tabList = ["我的需求", "我的报价"];
         return (
             <View className='container'>
-                <View className="title">
-                    <Text className="tit">自定义分享链接内容</Text>
+                <View className="title-wrapper">
+                    <Text className="title-text">自定义分享链接内容</Text>
                 </View>
-                <View className="box">
-                    <Text>标题</Text>
-                    <TInput className="tinput" value={title} onInput={this.onchangeInput} />
+                <View className="line">
+                    <Text className="line-label">标题</Text>
+                    <TInput className="line-input" value={title} onInput={this.onchangeInput} />
                 </View>
-                <View className="box">
-                    <Text>内容</Text>
-                    <TInput className="tinput" value={content} onInput={this.onchangecontent} />
+                <View className="line">
+                    <Text className="line-label">内容</Text>
+                    <TInput className="line-input" value={content} onInput={this.onchangecontent} />
                 </View>
-                <View className="explainline">
-                    <Text className="explain">分享说明：</Text>
+
+                <View className="share">
+                    <Text className="share-title">分享说明：</Text>
                     <View>
+<<<<<<< HEAD
                         <Text className="explain">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
                         <View />
                         <View>
                             <Text className="explain">2.精选批次，请先筛选后在进行分享</Text>
+=======
+                        <Text className="share-desc">1.自定义分享微信朋友圈/好友卡片标题，填写对应展示如图</Text>
+                        <View />
+                        <View>
+                            <Text className="share-desc">2.精选批次，请先筛选后在进行分享</Text>
+>>>>>>> dc54b0486c1051442c11ef53deb854434b49ab3b
                         </View>
                     </View>
                     <View className="card">
-                        <View className="cardTit">
-                            <Text className="">{title}</Text>
+                        <View className="">
+                            <Text className="cardTit">{title}</Text>
                         </View>
-                        <View className="cardCon">
-                            <Text className="">{content}</Text>
+                        <View className="">
+                            <Text className="cardCon">{content}</Text>
                         </View>
                         <View className="cardlogos">
                             <Image src={imgs} className="logosImg" />
@@ -100,7 +85,7 @@ export default class MyDemand extends Component {
                     </View>
                     <TButton >
                         <View className="btn-share">
-                            <Text>确定分享</Text>
+                            <Text className="btn-shart-text">确定分享</Text>
                         </View>
 
                     </TButton>
