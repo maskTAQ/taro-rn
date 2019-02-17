@@ -4,9 +4,7 @@ export default StyleSheet.create({
   "borderSolid": {},
   "flex": {},
   "btn": {
-    "flexGrow": 1,
-    "flexShrink": 1,
-    "flexBasis": 0,
+    
     "justifyContent": "center",
     "alignItems": "center",
     "backgroundColor": "#32b7f7",

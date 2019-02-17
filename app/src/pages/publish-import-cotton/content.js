@@ -116,39 +116,39 @@ let Content = class Content extends Component {
     if (current == 1) {
       list[3].label = '报价(美分/磅)';
     }
-    //console.log(typeof current, current, list, 'list')
+    console.log(typeof current, current, list, 'list')
     return <View style={_styleSheet["content"]}>
-                {list.map(item => {
+      {list.map(item => {
         const { type, placeholder, label, option, key } = item;
         return <View style={_styleSheet["item"]}>
-                                <Text style={_styleSheet["item-label"]}>{label}</Text>
-                                {type === 'input' && <TInput value={this.state[key]} onInput={text => this.hanldInputChange(key, text)} placeholder={placeholder} style={_styleSheet["item-input"]} />}
-                                {type === 'picker' && <TButton onClick={() => {
+          <Text style={_styleSheet["item-label"]}>{label}</Text>
+          {type === 'input' && <TInput value={this.state[key]} onInput={text => this.hanldInputChange(key, text)} placeholder={placeholder} style={_styleSheet["item-input"]} />}
+          {type === 'picker' && <TButton onClick={() => {
             this.showPicker(option);
           }} style={_styleSheet["picker-btn"]}>
-                                            <Text style={_styleSheet["picker-btn-text"]}>{String(this.state[key] || placeholder)}</Text>
-                                        </TButton>}
-                                {type === 'switch' && <View style={_styleSheet["item-right"]}>
-                                            <TButton onClick={() => {
+            <Text style={_styleSheet["picker-btn-text"]}>{String(this.state[key] || placeholder)}</Text>
+          </TButton>}
+          {type === 'switch' && <View style={_styleSheet["item-right"]}>
+            <TButton onClick={() => {
               this.showPicker(aaOption);
             }} style={_styleSheet["picker-btn"]}>
-                                                <Text style={[_styleSheet["picker-btn-text"], _styleSheet["mr"]]}>{aa || '请选择'}</Text>
-                                            </TButton>
-                                            <TButton onClick={() => {
+              <Text style={[_styleSheet["picker-btn-text"], _styleSheet["mr"]]}>{aa || '请选择'}</Text>
+            </TButton>
+            <TButton onClick={() => {
               this.showPicker(bbOption);
             }} style={_styleSheet["picker-btn"]}>
-                                                <Text style={[_styleSheet["picker-btn-text"], _styleSheet["mr"]]}>{bb || '请选择'}</Text>
-                                            </TButton>
-                                            <Text style={_styleSheet["switch-text"]}>{this.state.f ? '支持' : '不支持'}</Text>
-                                            <TSwitch checked={this.state[key]} onChange={this.handleSwitchChange} />
-                                        </View>}
-                            </View>;
+              <Text style={[_styleSheet["picker-btn-text"], _styleSheet["mr"]]}>{bb || '请选择'}</Text>
+            </TButton>
+            <Text style={_styleSheet["switch-text"]}>{this.state.f ? '支持' : '不支持'}</Text>
+            <TSwitch checked={this.state[key]} onChange={this.handleSwitchChange} />
+          </View>}
+        </View>;
       })}
-                <TButton onClick={this.submit} style={_styleSheet["btn"]}>
-                    <Text style={_styleSheet["btn-text"]}>确定分享</Text>
-                </TButton>
-                <TPicker show={isPickerVisible} onCancel={this.closePicker} onClose={this.closePicker} option={activeItemOption} onClick={this.handlePickerItemClick} />
-            </View>;
+      <TButton onClick={this.submit} style={_styleSheet["btn"]}>
+        <Text style={_styleSheet["btn-text"]}>确定分享</Text>
+      </TButton>
+      <TPicker show={isPickerVisible} onCancel={this.closePicker} onClose={this.closePicker} option={activeItemOption} onClick={this.handlePickerItemClick} />
+    </View>;
   }
 };
 export { Content as default };
