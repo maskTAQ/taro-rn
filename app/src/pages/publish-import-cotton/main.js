@@ -25,19 +25,19 @@ let publishImportCotton = class publishImportCotton extends Component {
     const { current } = this.state;
     const tabList = ["人民币", "美元"];
     return <View style={_styleSheet["container"]}>
-                <View style={_styleSheet["tab-box"]}>
-                    <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
-                        {tabList.map((item, index) => {
+      
+        <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
+          {tabList.map((item, index) => {
             return <TTabPane tabLabel={item} current={current} index={index}>
-
-                                    </TTabPane>;
+              <ScrollView>
+                <Content current={current} />
+              </ScrollView>
+            </TTabPane>;
           })}
-                    </TTabs>
-                </View>
-                <ScrollView>
-                    <Content current={current} />
-                </ScrollView>
-            </View>;
+        </TTabs>
+      
+
+    </View>;
   }
 };
 export { publishImportCotton as default };

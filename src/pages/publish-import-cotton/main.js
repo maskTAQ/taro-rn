@@ -24,22 +24,22 @@ export default class publishImportCotton extends Component {
         //rn端不需要拿出
         return (
             <View className='container'>
-                <View className="tab-box">
-                    <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
-                        {
-                            tabList.map((item, index) => {
-                                return (
-                                    <TTabPane tabLabel={item} current={current} index={index}>
 
-                                    </TTabPane>
-                                )
-                            })
-                        }
-                    </TTabs>
-                </View>
-                <ScrollView>
-                    <Content current={current} />
-                </ScrollView>
+                <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
+                    {
+                        tabList.map((item, index) => {
+                            return (
+                                <TTabPane tabLabel={item} current={current} index={index}>
+                                    <ScrollView>
+                                        <Content current={current} />
+                                    </ScrollView>
+                                </TTabPane>
+                            )
+                        })
+                    }
+                </TTabs>
+
+
             </View>
         )
     }

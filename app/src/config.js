@@ -32,7 +32,8 @@ const map = {
     dev: true,
     host: '',
     version: '0.0.1',
-    map
+    map,
+    platform:'app'
   };
 
   export default config;
