@@ -11,7 +11,7 @@ import pengyq from './img/pengyq.png'
 
 
 
-export default class noticeDetails extends Component {
+export default class NoticeDetails extends Component {
 
 
     state = {

@@ -4,3 +4,4 @@ export { default as MyDemand } from './my-demand/main';
 export { default as Home } from './home/main';
 export { default as Share } from './share/main';
 export { default as publishImportCotton } from './publish-import-cotton/main';
+export { default as NoticeDetails } from './notice-details';
