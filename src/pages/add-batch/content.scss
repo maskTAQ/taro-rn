@@ -1,0 +1,43 @@
+@import '../../platform.scss';
+@import './component.scss';
+.content {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.item {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    @include borderD(bottom, 1px, solid, #f3f4f4);
+}
+.item-right{
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+.switch-text{
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+
+.picker-btn-text{
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+
+.item-label {
+    margin-right: 20px;
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+.mr{
+    margin-right: 10px;
+}
+
+
+.btn-text {
+    color: #fff;
+}
