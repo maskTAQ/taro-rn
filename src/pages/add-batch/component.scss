@@ -1,22 +1,25 @@
 @import '../../platform.scss';
 
-.tinput{
+.item-input {
+    flex: 1;
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
+.btn {
     @extend .flex;
-    height: 60px;
+    flex: 1;
+    justify-content: center;
     align-items: center;
-    flex: 1px;
-    margin-left: 35px;
-    @include border(1px,solid,#000);
+    background: #32b7f7;
+    height: 85px;
+    margin-top: 45px;
+    border-radius: 15px;
 }
-.Imgdetails{
-    width: 100%;
-    
+.picker-btn{
+    @extend .flex;
+    justify-content: center;
 }
-.share-img{
-    height:80px;
-    width: 100px;
-    margin-right: 5px;
-}
+
 /*postcss-pxtransform rn eject enable*/
 
 t-input {

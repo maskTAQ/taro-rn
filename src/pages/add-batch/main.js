@@ -1,30 +1,32 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, Text, TInput, Image, TButton } from '../../components'
+import { View, TPicker, TTabs, TTabPane } from '../../components'
 
+
+import Content from './content';
 import './main.scss';
-import url from './img/img.png'
-import Share from '../share/main';
-import ShareWechard from './img/ShareWechar.png'
-import pengyq from './img/pengyq.png'
-
-
 
 export default class AddBatch extends Component {
-
-
     state = {
-       
+        current: 0
     };
-
+    handleClick = current => {
+        this.setState({
+            current
+        });
+    }
     render() {
-        const { } = this.state;
+        const { current } = this.state;
+       // const tabList = ["人民币", "美元"];
         return (
             <View className='container'>
-               <View>
-               <Text>企业信息</Text>
-               </View>
+
+                <View tabLabel={item} current={current} index={index}>
+                    <Content current={current} />
+                </View>
+
+
             </View>
         )
     }
