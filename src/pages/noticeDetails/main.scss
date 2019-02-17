@@ -56,3 +56,10 @@
     line-height: 30px;
     
 }
+.share{
+    @extend .flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0;
+   // height: 100px;
+}
