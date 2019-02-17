@@ -76,7 +76,7 @@ export default class Share extends Component {
                             <Image src={imgs} className="logosImg" />
                         </View>
                     </View>
-                    <TButton>
+                    <TButton >
                         <View className="btn-share">
                             <Text className="btn-shart-text">确定分享</Text>
                         </View>
