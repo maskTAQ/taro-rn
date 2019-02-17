@@ -9,16 +9,28 @@
     @extend .flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     height: 100px;
     @include borderD(bottom, 1px, solid, #f3f4f4);
 }
-
+.item-right{
+    @extend .flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+}
+.switch-text{
+    font-size: 28px;
+    color: rgb(47, 47, 47);
+}
 .item-label {
     margin-right: 20px;
     font-size: 28px;
     color: rgb(47, 47, 47);
 }
-
+.mr{
+    margin-right: 10px;
+}
 .btn {
     @extend .flex;
     flex: 1;

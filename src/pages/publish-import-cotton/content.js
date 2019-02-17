@@ -2,7 +2,7 @@
 
 import Taro, { Component } from '@tarojs/taro'
 import PropTypes from 'prop-types';
-import { View, Text, TPicker, TInput, Image, TButton, TTabs, TTabPane } from '../../components'
+import { View, Text, TPicker, TInput, TSwitch, TButton, TTabs, TTabPane } from '../../components'
 
 import './content.scss';
 
@@ -48,7 +48,7 @@ const list = [
     },
     {
         label: '远期交货',
-        type: 'radio',
+        type: 'switch',
         key: 'f'
     },
     {
@@ -74,7 +74,11 @@ const list = [
 export default class Content extends Component {
     state = {
         isPickerVisible: false,
-        activeItemOption: []
+        activeItemOption: [],
+        aa: '',
+        bb: '',
+        aaOption: [{ label: '公重', value: '公重', key: 'aa' }, { label: '毛重', value: '毛重', key: 'aa' }],
+        bbOption: [{ label: '自提', value: '自提', key: 'bb' }, { label: '送货上门', value: '送货上门', key: 'bb' }],
     };
     componentDidMount() {
         const { onRegister } = this.props;
@@ -106,12 +110,25 @@ export default class Content extends Component {
             [key]: text
         });
     }
+    handleSwitchChange = status => {
+        this.setState({
+            f: status
+        });
+    }
     submit() {
         console.log(this.state);
     }
     render() {
 
-        const { isPickerVisible, activeItemOption } = this.state;
+        const { isPickerVisible, activeItemOption, aa, bb, aaOption, bbOption } = this.state;
+        const { current } = this.props;
+        if (current == 0) {
+            list[3].label = '报价(元/吨)'
+        }
+        if (current == 1) {
+            list[3].label = '报价(美分/磅)'
+        }
+        //console.log(typeof current, current, list, 'list')
         return (
             <View className='content'>
                 {
@@ -129,6 +146,22 @@ export default class Content extends Component {
                                             onClick={() => { this.showPicker(option) }}>
                                             <Text className="item-input">{String(this.state[key] || placeholder)}</Text>
                                         </TButton>
+                                    )
+                                }
+                                {
+                                    type === 'switch' && (
+                                        <View className="item-right">
+                                            <TButton
+                                                onClick={() => { this.showPicker(aaOption) }}>
+                                                <Text className="item-input mr">{aa || '请选择'}</Text>
+                                            </TButton>
+                                            <TButton
+                                                onClick={() => { this.showPicker(bbOption) }}>
+                                                <Text className="item-input mr">{bb || '请选择'}</Text>
+                                            </TButton>
+                                            <Text className="switch-text">{this.state.f ? '支持' : '不支持'}</Text>
+                                            <TSwitch checked={this.state[key]} onChange={this.handleSwitchChange} />
+                                        </View>
                                     )
                                 }
                             </View>
