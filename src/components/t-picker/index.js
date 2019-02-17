@@ -29,7 +29,7 @@ export default class TPicker extends Component {
     render() {
         const { show, onCancel, onClose, option } = this.props;
         return (
-            <AtActionSheet isOpened={show} onCancel={onCancel} onClose={onClose} cancelText='取消' title='头部标题可以用通过转义字符换行'>
+            <AtActionSheet isOpened={show} onCancel={onCancel} onClose={onClose} cancelText='取消' >
                 {
                     option.map(item => {
                         const {label,value} = item;

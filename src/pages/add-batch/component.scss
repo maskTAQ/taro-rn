@@ -1,6 +1,14 @@
 @import '../../platform.scss';
 
-.img-details{
+.tinput{
+    @extend .flex;
+    height: 60px;
+    align-items: center;
+    flex: 1px;
+    margin-left: 35px;
+    @include border(1px,solid,rgba(0, 0, 0, 0.2));
+}
+.Imgdetails{
     width: 100%;
     
 }

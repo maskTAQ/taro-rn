@@ -22,7 +22,7 @@ class App extends Component {
     pages: [
       'pages/publish-import-cotton/index',
       'pages/notice-details/index',
-      
+      'pages/add-batch/index',
       'pages/share/index',
       'pages/user/index',
       'pages/home/index',
