@@ -25,7 +25,6 @@ export default StyleSheet.create({
     "color": "#2f2f2f"
   },
   "container": {
-    "height": "100%",
-    "backgroundColor": "white"
+    "height": "100%"
   }
 })
