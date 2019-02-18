@@ -22,7 +22,7 @@ export default class AddBatch extends Component {
         return (
             <View className='container'>
 
-                <View tabLabel={item} current={current} index={index}>
+                <View>
                     <Content current={current} />
                 </View>
 
