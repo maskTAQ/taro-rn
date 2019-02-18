@@ -1,0 +1,12 @@
+@import '../../platform.scss';
+@import './component.scss';
+.container {
+    height: 100%;
+    background: white;
+    padding: 0px 20px;
+}
+.canvas{
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
+}

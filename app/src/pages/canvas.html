@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="200" height="200"></canvas>
+</body>
+<script>
+    const addMethods = (ctx)=>{
+        ctx.setLineWidth = (width)=>{
+            ctx.lineWidth = width;
+        }
+        ctx.setFontSize = fs=>{
+            ctx.dontSize = fs;
+        }
+    }
+   const getDialClock = () => {
+        const width = 200;
+        const height = 200;
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext("2d");
+        addMethods(ctx);
+        const R = width / 2 - 30;//圆半径
+        const r = R - 15;
+
+        //设置坐标轴原点
+        ctx.translate(width / 2, height / 2);
+        ctx.save();
+
+        // 圆心
+        ctx.beginPath();
+        ctx.arc(0, 0, 5, 0, 2 * Math.PI, true);
+        ctx.fill();
+        ctx.closePath();
+        console.log(ctx,'ctx')
+        // 表盘外圆
+        ctx.setLineWidth(2);
+        ctx.beginPath();
+        ctx.arc(0, 0, R, 0, 2 * Math.PI, true);
+        ctx.closePath();
+        ctx.stroke();
+
+        // 表盘刻度（大格）
+        ctx.beginPath();
+        ctx.setLineWidth(5);
+        for (var i = 0; i < 12; i++) {
+            ctx.beginPath();
+            ctx.rotate(Math.PI / 6);
+            ctx.moveTo(R, 0);
+            ctx.lineTo(r, 0);
+            ctx.stroke();
+        }
+        ctx.closePath();
+
+        // 表盘刻度（小格）
+        ctx.beginPath();
+        ctx.setLineWidth(1);
+        for (var i = 0; i < 60; i++) {
+            ctx.beginPath();
+            ctx.rotate(Math.PI / 30);
+            ctx.moveTo(R, 0);
+            ctx.lineTo(R - 10, 0);
+            ctx.stroke();
+        }
+        ctx.closePath();
+
+        // 表盘时刻（数字）
+        ctx.beginPath();
+        ctx.setFontSize(16)//设置字体样式
+        // ctx.setTextBaseline("middle");//字体上下居中，绘制时间
+        for (let i = 1; i < 13; i++) {
+            //利用三角函数计算字体坐标表达式
+            var x = (r - 10) * Math.cos(i * Math.PI / 6 - Math.PI / 2);
+            var y = (r - 10) * Math.sin(i * Math.PI / 6 - Math.PI / 2);
+            let sz = i + '';
+            ctx.fillText(sz, x - 5, y + 5, 15);
+        }
+        ctx.closePath();
+
+
+        // 开始绘制
+        //ctx.draw();
+    }
+    window.onload = getDialClock;
+</script>
+</html>
