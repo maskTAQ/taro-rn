@@ -1,0 +1,9 @@
+@import '../common.scss';
+.container {
+    height: 100%;
+}
+//btn-group样式
+@include item;
+.margin{
+    margin: 20px;
+}

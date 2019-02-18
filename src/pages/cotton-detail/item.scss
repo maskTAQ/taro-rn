@@ -1,0 +1,20 @@
+@import '../common.scss';
+@import '../color.scss';
+@include item;
+.item{
+    margin:20px;
+    @include borderD(bottom,1px,solid,#ccc);
+}
+.btn-detail{
+    @extend .flex;
+    padding: 0 20px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background: $main;
+}
+.btn-detail-text{
+    font-size: 24px;
+    color: #fff;
+}
