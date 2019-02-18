@@ -1,0 +1,34 @@
+@import '../../platform.scss';
+@import './component.scss';
+.container {
+    height: 100%;
+    background: white;
+    padding: 0px 20px;
+}
+.title-name{
+    height: 100px;
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+.title{
+    color: #000;
+    font-size: 40px;
+}
+.line-container{
+    height: 8px;
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+.laber{
+    color: #000;
+    font-size: 35px;
+}
+.content{
+    color: #747474;
+    font-size: 30px;
+}
+.map{
+    margin-top: 15px;
+}
