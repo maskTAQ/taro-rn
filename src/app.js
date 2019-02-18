@@ -20,15 +20,10 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
-<<<<<<< HEAD
+      'pages/cotton-information/index',
       'pages/add-batch/index',
       'pages/publish-import-cotton/index',      
       'pages/notice-details/index',
-=======
-      'pages/publish-import-cotton/index',
-      'pages/notice-details/index',
-      'pages/add-batch/index',
->>>>>>> a18d2f68542d051d7d8cf2dd1d84ab472d0a1f9c
       'pages/share/index',
       'pages/user/index',
       'pages/home/index',
