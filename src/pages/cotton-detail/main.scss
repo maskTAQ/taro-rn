@@ -1,9 +1,63 @@
 @import '../common.scss';
+@import '../color.scss';
 .container {
     height: 100%;
+    position: relative;
 }
+
 //btn-group样式
 @include item;
-.margin{
+.link-btn-group {
+    padding: 0 20px;
+}
+
+.margin {
     margin: 20px;
+}
+
+.link-button {
+    margin-top: 20px;
+    padding: 10px 0;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+.link-button-text {
+    font-size: 30px;
+    color: $main;
+}
+
+.tool-bar {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+}
+
+.tool-item {
+    margin-bottom: 20px;
+    width: 100px;
+    height: 100px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: $main;
+}
+
+.tool-item-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.tool-item-text {
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 24px;
+    color: #fff;
 }

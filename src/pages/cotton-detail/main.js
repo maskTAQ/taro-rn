@@ -3,16 +3,19 @@
 import Taro, { Component } from '@tarojs/taro';
 import classnames from 'classnames';
 
-import { View, TButton, Text } from '../../components'
+import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView } from '../../components'
 
 import Item from './item';
 import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
+import shareImg from './img/share.png';
+import bjImg from './img/bj.png';
+import kfImg from './img/kf.png';
 
 
-const item = {
+const data = {
     id: '562781322',
 
     ysj: '21+',
@@ -43,15 +46,31 @@ const item = {
     ck: '中储棉库存厄尔有限责任公司',
     gys: '河北星宇纺织原料有限责任公司'
 };
-
+const toolMenu = [
+    {
+        icon: shareImg,
+        label: '分享',
+        type: 'share'
+    },
+    {
+        icon: bjImg,
+        label: '报价',
+    },
+    {
+        icon: kfImg,
+        label: '客服',
+        type: 'contact'
+    }
+];
 export default class CottonDetail extends Component {
     state = {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
         offerItemKeyList: ['sl', 'ztj', 'dcj'],
+        itemDescList: ['zhc', 'ck', 'gys'],
         current: 0,
     };
     componentDidShow() {
-        Taro.setNavigationBarTitle({ title: item.id + '|详情' });
+        Taro.setNavigationBarTitle({ title: '218937123' + '|详情' });
     }
 
     componentDidHide() { }
@@ -60,25 +79,78 @@ export default class CottonDetail extends Component {
             current
         });
     }
+    baojia() {
+        console.log('报价')
+    }
     render() {
-        const { itemDescList, itemKeyList } = this.state;
+        const { itemDescList, itemKeyList, current } = this.state;
+        const tabList = ["现货指标", "仓单证书"];
         return (
             <View className="container">
-                <Item item={item} itemDescList={itemDescList} itemKeyList={itemKeyList} />
-                <Card />
-                <View className={classnames('btn-group','margin')}>
-                    <TButton onClick={() => this.handleEdit(item)}>
-                        <View className='btn'>
-                            <Image className='btn-icon' src={scImg}></Image>
-                            <Text className='btn-text'>收藏</Text>
-                        </View>
-                    </TButton>
-                    <TButton onClick={() => this.handleDelete(item)}>
-                        <View className='btn'>
-                            <Image className='btn-icon' src={mobileImg}></Image>
-                            <Text className='btn-text'>联系供应商</Text>
-                        </View>
-                    </TButton>
+                <ScrollView>
+                    <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
+                        {
+                            tabList.map((item, index) => {
+                                return (
+                                    <TTabPane key={item} tabLabel={item} current={current} index={index}>
+                                        <View className="a">
+                                            <Item item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                            <Card />
+                                            <View className={classnames('link-btn-group')}>
+                                                <TButton onClick={() => this.handleEdit(item)}>
+                                                    <View className='link-button'>
+                                                        <Text className='link-button-text'>点击查看186包棉包详情</Text>
+                                                    </View>
+                                                </TButton>
+                                                <TButton onClick={() => this.handleDelete(item)}>
+                                                    <View className='link-button'>
+                                                        <Text className='link-button-text'>点击查看完整现货指标</Text>
+                                                    </View>
+                                                </TButton>
+                                            </View>
+                                            <View className={classnames('btn-group', 'margin')}>
+                                                <TButton onClick={() => this.handleEdit(item)}>
+                                                    <View className='btn'>
+                                                        <Image className='btn-icon' src={scImg}></Image>
+                                                        <Text className='btn-text'>收藏</Text>
+                                                    </View>
+                                                </TButton>
+                                                <TButton onClick={() => this.handleDelete(item)}>
+                                                    <View className='btn'>
+                                                        <Image className='btn-icon' src={mobileImg}></Image>
+                                                        <Text className='btn-text'>联系供应商</Text>
+                                                    </View>
+                                                </TButton>
+                                            </View>
+                                        </View>
+                                    </TTabPane>
+                                )
+                            })
+                        }
+                    </TTabs>
+                </ScrollView>
+                <View className="tool-bar">
+                    {
+                        toolMenu.map(item => {
+                            const { label, icon, type } = item;
+                            return type ? (
+                                <button open-type={type} class="tool-item" key={label}>
+                                    <Image className="tool-item-icon" src={icon}></Image>
+                                    <Text className="tool-item-text">
+                                        {label}
+                                    </Text>
+                                </button>
+                            ) : (
+                                    <View className="tool-item" onClick={this.baojia} key={label}>
+                                        <Image className="tool-item-icon" src={icon}></Image>
+                                        <Text className="tool-item-text">
+                                            {label}
+                                        </Text>
+                                    </View>
+                                )
+
+                        })
+                    }
                 </View>
             </View>
         )
