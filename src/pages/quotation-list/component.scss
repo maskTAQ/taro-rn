@@ -1,20 +1,16 @@
 @import '../../platform.scss';
 
-.line-input {
+.btn{
     @extend .flex;
-    flex: 1;
-    margin-left: 35px;
-    height: 60px;
+    position: fixed;
+    right: 0px;
+    bottom: 50px;
+    padding:0 20px;
+    justify-content: center;
     align-items: center;
-    font-size: 32px;
-    @include border(1px ,solid, #ccc);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    background: #fff;
+    border:1px solid #ccc;
+    z-index: 11;
 }
-
-
-/*postcss-pxtransform rn eject enable*/
-
-t-input {
-    flex: 1;
-}
-
-/*postcss-pxtransform rn eject disable*/
