@@ -3,16 +3,14 @@
 import Taro, { Component } from '@tarojs/taro';
 import classnames from 'classnames';
 
-import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView } from '../../components'
+import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView, FixedTool } from '../../components'
 
 import Item from './item';
 import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
-import shareImg from './img/share.png';
-import bjImg from './img/bj.png';
-import kfImg from './img/kf.png';
+
 
 
 const data = {
@@ -46,22 +44,7 @@ const data = {
     ck: '中储棉库存厄尔有限责任公司',
     gys: '河北星宇纺织原料有限责任公司'
 };
-const toolMenu = [
-    {
-        icon: shareImg,
-        label: '分享',
-        type: 'share'
-    },
-    {
-        icon: bjImg,
-        label: '报价',
-    },
-    {
-        icon: kfImg,
-        label: '客服',
-        type: 'contact'
-    }
-];
+
 export default class CottonDetail extends Component {
     state = {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
@@ -74,7 +57,7 @@ export default class CottonDetail extends Component {
     }
 
     componentDidHide() { }
-    handleClick(current) {
+    handleClick=(current)=>{
         this.setState({
             current
         });
@@ -129,29 +112,7 @@ export default class CottonDetail extends Component {
                         }
                     </TTabs>
                 </ScrollView>
-                <View className="tool-bar">
-                    {
-                        toolMenu.map(item => {
-                            const { label, icon, type } = item;
-                            return type ? (
-                                <button open-type={type} class="tool-item" key={label}>
-                                    <Image className="tool-item-icon" src={icon}></Image>
-                                    <Text className="tool-item-text">
-                                        {label}
-                                    </Text>
-                                </button>
-                            ) : (
-                                    <View className="tool-item" onClick={this.baojia} key={label}>
-                                        <Image className="tool-item-icon" src={icon}></Image>
-                                        <Text className="tool-item-text">
-                                            {label}
-                                        </Text>
-                                    </View>
-                                )
-
-                        })
-                    }
-                </View>
+                <FixedTool />
             </View>
         )
     }

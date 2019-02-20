@@ -30,7 +30,7 @@ export default class Item extends Component {
                         <Text className='item-time'>2019-01-01</Text>
                     </View>
                 </View>
-                <View className="TTag-list">
+                <View className="tag-list">
                     {
                         tagList.map((tag, index) => {
                             return (

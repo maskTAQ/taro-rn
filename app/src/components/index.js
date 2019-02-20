@@ -32,4 +32,4 @@ export { default as TTabPane } from './t-tab-pane/index';
 export { default as TInput } from './t-input';
 export { default as TPicker } from './t-picker';
 export { default as TSwitch } from './t-switch';
-
+export { default as FixedTool } from './fixed-tool';

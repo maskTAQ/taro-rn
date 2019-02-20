@@ -7,14 +7,10 @@
     color: #fff; 
 }
 
-.tool-item-button {
-    margin-bottom: 20px;
-    width: 100px;
-    height: 100px;
-   
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: $main;
+/*postcss-pxtransform rn eject enable*/
+
+.tag-end{
+    background: $main !important;
+    color: #fff!important;
 }
+/*postcss-pxtransform rn eject disable*/

@@ -7,7 +7,7 @@ import {
 import { YellowBox, Platform, StatusBar } from "react-native";
 
 import { Icon, TabBar } from "components";
-import {Login,Home,OfferHint,MyDemand,Share,publishImportCotton,NoticeDetails,Canvas} from "pages";
+import {Login,Home,OfferHint,MyDemand,Share,publishImportCotton,NoticeDetails,Canvas,CottonDetail} from "pages";
 import { iconSource } from 'commons';
 
 Platform.OS == 'android' && StatusBar.setTranslucent(true)
@@ -99,7 +99,8 @@ const AppRouteConfigs = {
     Share,
     publishImportCotton,
     NoticeDetails,
-    Canvas
+    Canvas,
+    CottonDetail
 };
 // 创建一级导航
 const StackNavigator = createStackNavigator(AppRouteConfigs, {

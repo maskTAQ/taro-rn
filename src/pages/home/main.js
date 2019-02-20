@@ -64,7 +64,7 @@ export default class Home extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
-    handleClick(current) {
+    handleClick=(current)=>{
         this.setState({
             current
         });

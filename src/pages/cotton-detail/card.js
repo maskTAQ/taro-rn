@@ -197,7 +197,7 @@ export default class Card extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <View>
                 {
                     cardList.map(card => {
                         const { key, title, list } = card;
@@ -234,7 +234,7 @@ export default class Card extends Component {
                         )
                     })
                 }
-            </ScrollView>
+            </View>
         )
 
     }

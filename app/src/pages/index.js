@@ -6,3 +6,4 @@ export { default as Share } from './share/main';
 export { default as publishImportCotton } from './publish-import-cotton/main';
 export { default as NoticeDetails } from './notice-details';
 export { default as Canvas } from './canvas';
+export {default as CottonDetail} from './cotton-detail/main';
