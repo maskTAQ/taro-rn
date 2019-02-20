@@ -1,0 +1,25 @@
+.map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.location {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+.feedback {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.location-img,.feedback-img{
+    width: 100%;
+    height: 100%;
+}

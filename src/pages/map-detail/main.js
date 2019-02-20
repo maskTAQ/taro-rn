@@ -1,19 +1,19 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, Text, TInput, Image, TButton } from '../../components';
-import { Map } from '@tarojs/components'
 
+
+import { View, Text, TMap, TInput } from '../../components';
+import { AtModal, Button, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
 import './main.scss';
-import ip from './img/ip.png'
-import fk from './img/fk.png'
+
 import icon from './img/icon.png'
 
 
 export default class MapDetail extends Component {
-
-
     state = {
+        isModalVisible: false,
+        feedback:'',
         latitude: 23.099994,
         longitude: 113.324520,
         markers: [{
@@ -25,36 +25,50 @@ export default class MapDetail extends Component {
             height: 30
         }],
     };
-
-    moveToLocation = () => {
-
-        //this.mapCtx.moveToLocation()
-
-
-
-
+    handleClickLocation = () => {
+        console.log('handleClickLocation');
         wx.getLocation({
             type: 'gcj02',
             success: (res) => {
-                var latitude = res.latitude
-
-                var longitude = res.longitude
+                var latitude = res.latitude + (Math.random() * 0.01).toFixed();
+                var longitude = res.longitude + (Math.random() * 0.01).toFixed();
+                console.log({
+                    latitude,
+                    longitude,
+                    key: Date.now()
+                })
                 this.setState({
-                    latitude: 23.0999941+Date.now(),
-                    longitude: 113.3245201+Date.now(),
+                    latitude,
+                    longitude,
                     key: Date.now()
                 });
                 let mpCtx = wx.createMapContext("myMap");
                 mpCtx.moveToLocation(true);
             }
         })
-
-
     }
-
+    handleClickFeedback = () => {
+        console.log('handleClickFeedback');
+        this.setState({
+            isModalVisible: true
+        });
+    }
+    handleClose = () => {
+        this.setState({
+            isModalVisible: false
+        });
+    }
+    submitFeedBack = () => {
+        console.log('提交反馈');
+        this.handleClose();
+    }
+    changeFeedback = v=>{
+        this.setState({
+            feedback:v
+        });
+    }
     render() {
-        const { longitude, latitude, markers } = this.state;
-        console.log('render')
+        const { longitude, latitude, markers, isModalVisible ,feedback} = this.state;
         return (
             <View className='container'>
                 <View className="title-name">
@@ -67,19 +81,29 @@ export default class MapDetail extends Component {
                     <Text className="laber">联系方式：</Text>
                     <Text className="content">我是标题中棉库存有限责任公司</Text></View>
                 <View className="map">
+                    {
+                        !isModalVisible && (
+                            <TMap
+                                onClickLocation={this.handleClickLocation}
+                                onClickFeedback={this.handleClickFeedback}
+                                longitude={longitude}
+                                latitude={latitude}
+                                markers={markers}
+                                id="myMap" showLocation />
+                        )
+                    }
 
-                    <Map longitude={longitude}
-                        latitude={latitude} markers={markers} className="maps" id="myMap" showLocation />
-                    <View className="map-btn">
-                        <TButton onClick={this.moveToLocation}>
-                            <Image className="map-img" src={ip}></Image>
-                        </TButton>
-                        <TButton>
-                            <Image className="map-img" src={fk}></Image>
-                        </TButton>
-
-                    </View>
                 </View>
+                <AtModal
+                    isOpened={isModalVisible}
+                    onClose={this.handleClose}
+                >
+                    <AtModalHeader>投诉建议</AtModalHeader>
+                    <AtModalContent>
+                        <TInput className="input" value={feedback} onInput={this.changeFeedback}/>
+                    </AtModalContent>
+                    <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.submitFeedBack}>确定</Button> </AtModalAction>
+                </AtModal>
             </View>
         )
     }

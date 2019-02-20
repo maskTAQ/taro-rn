@@ -9,3 +9,4 @@ export { default as TInput } from './t-input/index';
 export { default as TPicker } from './t-picker';
 export { default as TSwitch } from './t-switch';
 export { default as FixedTool } from './fixed-tool';
+export { default as TMap } from './t-map';

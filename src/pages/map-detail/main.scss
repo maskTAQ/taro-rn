@@ -2,44 +2,41 @@
 @import './component.scss';
 .container {
     height: 100%;
-    background: white;
     padding: 0px 20px;
-    overflow: hidden;
+    @extend .flex;
+    flex-direction: column;
+    background: #fff;
 }
-.title-name{
+
+.title-name {
     height: 100px;
     @extend .flex;
     flex-direction: row;
     align-items: center;
 }
-.title{
+
+.title {
     color: #000;
     font-size: 40px;
 }
-.line-container{
+
+.line-container {
     height: 80px;
     @extend .flex;
     flex-direction: row;
     align-items: center;
 }
-.laber{
+
+.laber {
     color: #000;
     font-size: 35px;
 }
-.content{
+
+.content {
     color: #747474;
     font-size: 30px;
 }
-.map{
-   // margin-top: 100px;
-    height:75%;
-    position: relative;
-}
-.map-btn{
-    @extend .flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    bottom:15px;
+
+.map {
+    flex: 1;
 }

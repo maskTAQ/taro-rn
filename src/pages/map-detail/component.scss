@@ -1,18 +1,4 @@
 @import '../../platform.scss';
-.maps{
-   // margin-top: 30px;
-    height: 100%;
-    width: 100%;
+.input{
+    border: 1px solid #ccc;
 }
-.map-img{
-    height:90px;
-    width: 90px;
-    padding: 0px 30px;
-}
-/*postcss-pxtransform rn eject enable*/
-
-t-input {
-    flex: 1;
-}
-
-/*postcss-pxtransform rn eject disable*/
