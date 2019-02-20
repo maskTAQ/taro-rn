@@ -20,11 +20,10 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
+      'pages/demand/index',
       'pages/map-detail/index',     
       'pages/cotton-detail/index',
       'pages/quotation-list/index',
-       
-      
       'pages/package-detail/index',
       'pages/cotton-information/index',
       'pages/add-batch/index',

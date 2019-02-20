@@ -1,0 +1,16 @@
+@import '../color.scss';
+.tag-mr{
+    margin-right: 20px;
+}
+.tag-end{
+    background: $main; 
+    color: #fff; 
+}
+
+/*postcss-pxtransform rn eject enable*/
+
+.tag-end{
+    background: $main !important;
+    color: #fff!important;
+}
+/*postcss-pxtransform rn eject disable*/
