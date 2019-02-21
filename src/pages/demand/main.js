@@ -75,7 +75,7 @@ export default class Demand extends Component {
         offerItemKeyList: ['sl', 'ztj', 'dcj'],
         itemDescList: ['zhc', 'ck', 'gys'],
         modal: {
-            visible: true,
+            visible: false,
             data: null
         },
         unit: '吨'
@@ -215,7 +215,7 @@ export default class Demand extends Component {
                                     <Text className="item-label">{label}</Text>
                                     {
                                         type === 'input' ? (
-                                            <TInput className="item-input" />
+                                            <TInput className="item-input" placeholder={placeholder}/>
                                         ) : (
                                                 <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
                                             )

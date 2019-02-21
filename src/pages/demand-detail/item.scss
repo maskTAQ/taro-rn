@@ -1,0 +1,16 @@
+@import '../common.scss';
+@import '../color.scss';
+@import './component.scss';
+@include item;
+
+.item{
+    padding: 0 20px;
+    background: #fff;
+    @include borderD(bottom,1px,solid,#ccc);
+}
+.button{
+    margin-right: 10px;
+}
+.item-desc-list{
+    margin-bottom: 20px;
+}

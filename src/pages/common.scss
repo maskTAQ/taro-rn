@@ -90,7 +90,12 @@
         justify-content: space-between;
         align-items: center;
     }
-    
+    .item-desc-item-left,.item-desc-item-right{
+        @extend .flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
     .item-desc-item-label {
         font-size: 32px;
         color: rgba(0, 0, 0, 0.8);

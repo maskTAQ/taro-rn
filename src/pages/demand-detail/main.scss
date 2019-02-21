@@ -1,0 +1,45 @@
+@import '../common.scss';
+@import '../color.scss';
+@import '../../platform.scss';
+@import './component.scss';
+@include item;
+.container {
+    height: 100%;
+    @extend .flex;
+    flex-direction: column;
+    background: #f4f3f3;
+}
+.list-title{
+    margin: 20px 0;
+    height: 50px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+}
+.list-title-text{
+    font-size: 30px;
+    color: #000;
+}
+.list{
+    flex:1;
+    background: #f4f3f3;
+}
+.list-item{
+    padding: 0 20px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.offer-button{
+    margin: 20px;
+    height: 68px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 8px;
+}
+.offer-button-text{
+    font-size: 30px;
+    color: #fff;
+}

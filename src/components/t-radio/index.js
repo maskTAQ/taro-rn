@@ -15,7 +15,7 @@ export default class TRadio extends Component {
             <View className="container">
                 {
                     option.map(item => {
-                        const { value, label } = item
+                        const { value, label } = item;
                         return (
                             <TButton onClick={() => onCheckdChange(item)}>
                                 <View className="item">
