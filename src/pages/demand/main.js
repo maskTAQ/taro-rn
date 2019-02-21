@@ -1,10 +1,10 @@
 
 
 import { Component } from '@tarojs/taro';
-import classnames from 'classnames';
+import update from 'immutability-helper';
 
-import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
-import { View, TButton, Text, Image, Visible, ScrollView, TTag, TInput, TRadio } from '../../components'
+
+import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../components'
 import config from '../../config';
 import Item from './item';
 import bj from './img/bj.png';
@@ -86,16 +86,34 @@ export default class Demand extends Component {
             current
         });
     }
-    baojia() {
-        console.log('报价')
-    }
     handleOffer(data) {
-        console.log(data, 'handleOffer');
+        this.setState(update(this.state,{
+            modal:{
+                visible:{
+                    $set:true
+                },
+                data:{
+                    $set:data
+                }
+            }
+        }));
     }
     handleUnitChange = item => {
         this.setState({
             unit: item.value
         });
+    }
+    closeModal=()=>{
+        this.setState(update(this.state,{
+            modal:{
+                visible:{
+                    $set:false
+                }
+            }
+        }));
+    }
+    submit=()=>{
+        this.closeModal();
     }
     render() {
         const { itemDescList, itemKeyList, modal, unit } = this.state;
@@ -188,32 +206,25 @@ export default class Demand extends Component {
                         }
                     </ScrollView>
                 </View>
-                <AtModal
-                    isOpened={modal.visible}
-                    onClose={this.handleClose}
-                >
-                    <AtModalHeader>我要报价</AtModalHeader>
-                    <AtModalContent>
-                        {
-                            modalList.map((item) => {
-                                const { label, type, placeholder, option } = item;
-                                return (
-                                    <View className="item">
-                                        <Text className="item-label">{label}</Text>
-                                        {
-                                            type === 'input' ? (
-                                                <TInput className="item-input" />
-                                            ) : (
+                <TModal visible={modal.visible} title="我要报价" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
+                    {
+                        modalList.map((item) => {
+                            const { label, type, placeholder, option } = item;
+                            return (
+                                <View className="item">
+                                    <Text className="item-label">{label}</Text>
+                                    {
+                                        type === 'input' ? (
+                                            <TInput className="item-input" />
+                                        ) : (
                                                 <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
-                                                )
-                                        }
-                                    </View>
-                                )
-                            })
-                        }
-                    </AtModalContent>
-                    <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.submitFeedBack}>确定</Button> </AtModalAction>
-                </AtModal>
+                                            )
+                                    }
+                                </View>
+                            )
+                        })
+                    }
+                </TModal>
             </View>
         )
     }
