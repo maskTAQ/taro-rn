@@ -3,7 +3,8 @@
 import { Component } from '@tarojs/taro';
 import classnames from 'classnames';
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../components'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
+import { View, TButton, Text, Image, Visible, ScrollView, TTag, TInput, TRadio } from '../../components'
 import config from '../../config';
 import Item from './item';
 import bj from './img/bj.png';
@@ -46,12 +47,38 @@ const data = {
     gys: '河北星宇纺织原料有限责任公司'
 };
 const list = [data, data, data, data];
+const modalList = [
+    {
+        label: '数量',
+        type: 'input',
+        placeholder: '请输入数量'
+    },
+    {
+        label: '单位',
+        type: 'radio',
+        option: [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }]
+    },
+    {
+        label: '自提价',
+        type: 'input',
+        placeholder: '请输入自提价'
+    },
+    {
+        label: '到厂家',
+        type: 'input',
+        placeholder: '请输入到厂家'
+    },
+];
 export default class Demand extends Component {
     state = {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
         offerItemKeyList: ['sl', 'ztj', 'dcj'],
         itemDescList: ['zhc', 'ck', 'gys'],
-        current: 0,
+        modal: {
+            visible: true,
+            data: null
+        },
+        unit: '吨'
     };
     componentDidHide() { }
     handleClick = (current) => {
@@ -62,8 +89,16 @@ export default class Demand extends Component {
     baojia() {
         console.log('报价')
     }
+    handleOffer(data) {
+        console.log(data, 'handleOffer');
+    }
+    handleUnitChange = item => {
+        this.setState({
+            unit: item.value
+        });
+    }
     render() {
-        const { itemDescList, itemKeyList, current } = this.state;
+        const { itemDescList, itemKeyList, modal, unit } = this.state;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
         const item = list[0];
         return (
@@ -147,13 +182,38 @@ export default class Demand extends Component {
                         {
                             list.map(data => {
                                 return (
-                                    <Item item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                    <Item onHandleOffer={this.handleOffer} item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
                                 )
                             })
                         }
                     </ScrollView>
                 </View>
-
+                <AtModal
+                    isOpened={modal.visible}
+                    onClose={this.handleClose}
+                >
+                    <AtModalHeader>我要报价</AtModalHeader>
+                    <AtModalContent>
+                        {
+                            modalList.map((item) => {
+                                const { label, type, placeholder, option } = item;
+                                return (
+                                    <View className="item">
+                                        <Text className="item-label">{label}</Text>
+                                        {
+                                            type === 'input' ? (
+                                                <TInput className="item-input" />
+                                            ) : (
+                                                <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
+                                                )
+                                        }
+                                    </View>
+                                )
+                            })
+                        }
+                    </AtModalContent>
+                    <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.submitFeedBack}>确定</Button> </AtModalAction>
+                </AtModal>
             </View>
         )
     }

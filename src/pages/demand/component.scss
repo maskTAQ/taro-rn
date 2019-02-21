@@ -6,11 +6,19 @@
     background: $main; 
     color: #fff; 
 }
-
+.item-input{
+    flex: 1;
+    height: 32px;
+    font-size: 28px;
+    color: #000;
+}
 /*postcss-pxtransform rn eject enable*/
 
 .tag-end{
     background: $main !important;
     color: #fff!important;
+}
+t-input{
+    flex: 1;
 }
 /*postcss-pxtransform rn eject disable*/

@@ -17,7 +17,7 @@ export default class Item extends Component {
         console.log('点击编辑');
     }
     render() {
-        const { item, itemKeyList, itemDescList } = this.props;
+        const { onHandleOffer, item, itemKeyList, itemDescList } = this.props;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
         return (
             <View className='item'>
@@ -71,7 +71,7 @@ export default class Item extends Component {
 
                 </View>
                 <View className="btn-group">
-                    <TButton>
+                    <TButton onClick={() => onHandleOffer(item)}>
                         <View className="btn">
                             <Image src={bj} className="btn-icon" />
                             <Text className="btn-text">我要报价</Text>

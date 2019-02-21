@@ -4,7 +4,7 @@ import { Component } from '@tarojs/taro';
 
 
 import { View, Text, TMap, TInput } from '../../components';
-import { AtModal, Button, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
+import { Button,AtModal , AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
 import './main.scss';
 
 import icon from './img/icon.png'

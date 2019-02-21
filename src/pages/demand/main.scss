@@ -1,6 +1,8 @@
 @import '../common.scss';
 @import '../color.scss';
 @import '../../platform.scss';
+@import './component.scss';
+
 .container {
     height: 100%;
     @extend .flex;
@@ -74,4 +76,20 @@
 .best-price-label {
     font-size: 24px;
     color: #000;
+}
+
+//modal
+.item{
+    @extend .flex;
+    height: 60px;
+    flex-direction: row;
+    align-items: center;
+    @include borderD(bottom,1px,solid,#ccc);
+}
+.item-label{
+    width: 100px;
+    font-size: 28px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
 }
