@@ -20,6 +20,7 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
+      'pages/demand-custom/index',
       'pages/demand-detail/index',
       'pages/demand/index',
       'pages/map-detail/index',     

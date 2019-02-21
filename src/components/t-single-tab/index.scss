@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+   
+}
+
+
+
+.item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-text {
+    font-size: 28px;
+}
