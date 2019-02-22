@@ -1,0 +1,42 @@
+@import '../../platform.scss';
+@import './component.scss';
+.container {
+    height: 100%;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+}
+.content{
+    @extend .flex;
+    flex-direction: row;
+}
+.item{
+    flex:1;
+    @extend .flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item-gc{
+    background: #2ea22f;
+}
+.item-import{
+    background: #3cbaf7;
+}
+.item-icon-box{
+    width: 120px;
+    height: 120px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 120px;
+};
+.item-icon{
+    width: 70px;
+    height: 70px;
+}
+.item-label{
+    margin-top: 40px;
+    font-size: 24px;
+    color: #000;
+}

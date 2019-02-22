@@ -1,0 +1,66 @@
+@import '../color.scss';
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px;
+    height: 100%;
+    background: #f3f3f3;
+}
+
+.top,
+.bottom {
+    flex: 1;
+}
+
+.desc-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.mb {
+    margin-bottom: 20px;
+}
+
+.desc-text {
+    width: 100%;
+    font-size: 28px;
+    text-align: center;
+    color: $color;
+}
+
+.copy {
+    margin-top: 40px;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 12px;
+    border: 1px solid $main;
+    overflow: hidden;
+}
+
+.copy-text-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    background: #fff;
+}
+
+.copy-text {
+    font-size: 28px;
+    color: red;
+}
+
+.copy-btn {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    background: $main;
+    color: #fff;
+    font-size: 28px;
+}

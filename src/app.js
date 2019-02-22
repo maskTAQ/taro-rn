@@ -20,20 +20,21 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
+      'pages/offer-tool/index',
+      'pages/home/index',
       'pages/demand-custom/index',
       'pages/demand-detail/index',
       'pages/demand/index',
-      'pages/map-detail/index',     
+      'pages/map-detail/index',
       'pages/cotton-detail/index',
       'pages/quotation-list/index',
       'pages/package-detail/index',
       'pages/cotton-information/index',
       'pages/add-batch/index',
-      'pages/publish-import-cotton/index',      
+      'pages/publish-import-cotton/index',
       'pages/notice-details/index',
       'pages/share/index',
       'pages/user/index',
-      'pages/home/index',
       'pages/my-demand/index',
       'pages/offer-hint/index',
     ],
@@ -43,15 +44,32 @@ class App extends Component {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
     },
-    "usingComponents": {
-      // "t-tag": "components/t-tag/index",
-      // "t-button": "components/t-button/index",
-      // "t-tabs": "components/t-tabs/index",
-      // "t-tab-pane": "components/t-tab-pane/index"
+    "tabBar": {
+      "color": "#000000",
+      "selectedColor": "#44bdf7",
+      "backgroundColor": "#fff",
+      "list": [
+        {
+          "pagePath": "pages/home/index",
+          "text": "首页"
+        },
+        {
+          "pagePath": "pages/demand/index",
+          "text": "供需"
+        },
+        {
+          "pagePath": "pages/offer-tool/index",
+          "text": "云报价工具"
+        },
+        {
+          "pagePath": 'pages/user/index',
+          "text": "个人"
+        }
+      ]
     },
-    permission:{
-      "scope.userLocation":{
-        "desc":"asdad"
+    permission: {
+      "scope.userLocation": {
+        "desc": "asdad"
       }
     }
   }

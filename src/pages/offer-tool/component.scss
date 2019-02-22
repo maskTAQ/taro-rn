@@ -1,0 +1,12 @@
+@import '../../platform.scss';
+.btn{
+    flex:1;
+    @extend .flex;
+}
+
+/*postcss-pxtransform rn eject enable*/
+
+t-button{
+    flex:1;
+}
+/*postcss-pxtransform rn eject disable*/
