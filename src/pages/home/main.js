@@ -3,7 +3,7 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TTabs, TTabPane, TButton,SearchTool } from '../../components'
+import { View, Image, ScrollView, TTabs, TTabPane, TButton,SearchTool,NoticeTool } from '../../components'
 
 import Item from './item';
 import './main.scss';
@@ -99,6 +99,7 @@ export default class Home extends Component {
                         })
                     }
                 </Swiper>
+                <NoticeTool />
                 <ScrollView>
                     <TTabs scroll={true} current={current} tabList={tabList} onClick={this.handleClick}>
                         {

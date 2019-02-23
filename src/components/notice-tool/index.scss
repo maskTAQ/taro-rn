@@ -1,0 +1,35 @@
+.container {
+    height: 80px;
+    /*postcss-pxtransform rn eject enable*/
+    display: flex;
+    /*postcss-pxtransform rn eject disable*/
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    background: #fff;
+}
+
+.label {
+    font-size: 36px;
+    color: #32B9FA;
+    font-weight: bold;
+}
+.border{
+    margin: 0 20px;
+    width: 5px;
+    height: 40px;
+    background: #32B9FA;
+}
+.content{
+    flex: 1;
+    /*postcss-pxtransform rn eject enable*/
+    display: flex;
+    /*postcss-pxtransform rn eject disable*/
+    flex-direction: row;
+    align-items: center;
+}
+.content-text{
+    font-size: 28px;
+    color: #ccc;
+}
