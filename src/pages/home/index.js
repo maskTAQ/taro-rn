@@ -2,6 +2,7 @@ import { Component } from '@tarojs/taro'
 import Main from './main';
 import './component.scss'
 
+
 export default class Home extends Component {
   config = {
     navigationBarTitleText: '首页'

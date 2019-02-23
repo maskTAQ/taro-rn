@@ -9,7 +9,10 @@ export default class TButton extends Component {
     render() {
         const { onClick, className } = this.props;
         return (
-            <View className={classnames('button', className)} onClick={onClick}>
+            <View className={classnames('button', className)} onClick={e=>{
+                e.stopPropagation();
+                onClick();
+            }}>
                 {this.props.children}
             </View>
         )

@@ -38,8 +38,6 @@ export default class publishImportCotton extends Component {
                         })
                     }
                 </TTabs>
-
-
             </View>
         )
     }

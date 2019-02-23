@@ -1,0 +1,27 @@
+@import '../common.scss';
+@import '../color.scss';
+@import './component.scss';
+@include item;
+.container{
+    margin:20px;
+    @extend .flex;
+    flex-direction: row;
+    background: #fff;
+    border-radius: 20px;
+}
+.container-left{
+   
+}
+.checked-icon{
+    margin: 20px;
+    width: 60px;
+    height: 60px;
+}
+.content{
+    margin-top: 20px;
+    margin-right: 20px;
+    flex:1;
+}
+.btn{
+    margin-bottom: 20px;
+}

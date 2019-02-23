@@ -3,10 +3,11 @@ import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 
 import Index from './pages/index'
-
-
 import configStore from './store'
-
+import homeImg from './tab-img/home.png';
+// import homeActiveImg from './tab-img/home-active.png';
+// import demandImg from './tab-img/demand.png';
+// import demandActiveImg from './tab-img/demand-active.png';
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -20,8 +21,11 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
-      'pages/offer-tool/index',
+      
       'pages/home/index',
+      'pages/user/index',
+      'pages/offer-tool/index',
+      'pages/shopping-car/index',
       'pages/demand-custom/index',
       'pages/demand-detail/index',
       'pages/demand/index',
@@ -34,7 +38,6 @@ class App extends Component {
       'pages/publish-import-cotton/index',
       'pages/notice-details/index',
       'pages/share/index',
-      'pages/user/index',
       'pages/my-demand/index',
       'pages/offer-hint/index',
     ],
@@ -51,19 +54,34 @@ class App extends Component {
       "list": [
         {
           "pagePath": "pages/home/index",
-          "text": "首页"
+          "text": "首页",
+          "iconPath": './tab-img/home.png',
+          "selectedIconPath": './tab-img/home-active.png',
         },
+
         {
           "pagePath": "pages/demand/index",
-          "text": "供需"
+          "text": "供需",
+          "iconPath": './tab-img/demand.png',
+          "selectedIconPath": './tab-img/demand-active.png',
         },
         {
           "pagePath": "pages/offer-tool/index",
-          "text": "云报价工具"
+          "text": "云报价工具",
+          "iconPath": './tab-img/ybj.png',
+          "selectedIconPath": './tab-img/ybj-active.png',
+        },
+        {
+          "pagePath": "pages/shopping-car/index",
+          "text": "购物车",
+          "iconPath": './tab-img/gwc.png',
+          "selectedIconPath": './tab-img/gwc-active.png',
         },
         {
           "pagePath": 'pages/user/index',
-          "text": "个人"
+          "text": "个人",
+          "iconPath": './tab-img/user.png',
+          "selectedIconPath": './tab-img/user-active.png',
         }
       ]
     },

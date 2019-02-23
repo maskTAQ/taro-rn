@@ -10,6 +10,7 @@ import Item from './item';
 import bj from './img/bj.png';
 import editImg from '../../img/edit.png'
 import deleteImg from '../../img/delete.png';
+import { navigate } from '../../actions';
 import './main.scss';
 
 
@@ -87,13 +88,13 @@ export default class Demand extends Component {
         });
     }
     handleOffer(data) {
-        this.setState(update(this.state,{
-            modal:{
-                visible:{
-                    $set:true
+        this.setState(update(this.state, {
+            modal: {
+                visible: {
+                    $set: true
                 },
-                data:{
-                    $set:data
+                data: {
+                    $set: data
                 }
             }
         }));
@@ -103,17 +104,20 @@ export default class Demand extends Component {
             unit: item.value
         });
     }
-    closeModal=()=>{
-        this.setState(update(this.state,{
-            modal:{
-                visible:{
-                    $set:false
+    closeModal = () => {
+        this.setState(update(this.state, {
+            modal: {
+                visible: {
+                    $set: false
                 }
             }
         }));
     }
-    submit=()=>{
+    submit = () => {
         this.closeModal();
+    }
+    goDemandDetail() {
+        navigate({ routeName: 'demand-detail' });
     }
     render() {
         const { itemDescList, itemKeyList, modal, unit } = this.state;
@@ -183,7 +187,7 @@ export default class Demand extends Component {
                                     <Text className="best-price-value">15003</Text>
                                     <Text className="best-price-label">平台最优价格</Text>
                                 </View>
-                                <TButton>
+                                <TButton onClick={this.goDemandDetail}>
                                     <View className="btn">
                                         <Image src={bj} className="btn-icon" />
                                         <Text className="btn-text">查看资源</Text>
@@ -215,7 +219,7 @@ export default class Demand extends Component {
                                     <Text className="item-label">{label}</Text>
                                     {
                                         type === 'input' ? (
-                                            <TInput className="item-input" placeholder={placeholder}/>
+                                            <TInput className="item-input" placeholder={placeholder} />
                                         ) : (
                                                 <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
                                             )

@@ -4,6 +4,7 @@ import { Component } from '@tarojs/taro';
 import { View, Text, TTag, TButton, Visible } from '../../components'
 import config from '../../config';
 import './item.scss';
+import { navigate ,call} from '../../actions';
 const map = config.map.main;
 export default class Item extends Component {
     state = {
@@ -14,6 +15,9 @@ export default class Item extends Component {
     }
     handleEdit() {
         console.log('点击编辑');
+    }
+    goMapDetail(){
+        navigate({routeName:'map-detail'});
     }
     render() {
         const { item, itemKeyList, itemDescList } = this.props;
@@ -68,7 +72,7 @@ export default class Item extends Component {
                                     <Text className='item-desc-item-text'>{item[itemI]}</Text>
                                     {
                                         itemI === 'mj' && (
-                                            <TButton>
+                                            <TButton onClick={this.goMapDetail}>
                                                 <View className="button">
                                                     <Text className="button-text">详情</Text>
                                                 </View>

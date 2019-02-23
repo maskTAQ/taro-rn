@@ -3,10 +3,11 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TTabs, TTabPane, Text } from '../../components'
+import { View, Image, ScrollView, TTabs, TTabPane, TButton } from '../../components'
 
 import Item from './item';
 import './main.scss';
+import { navigate } from '../../actions';
 
 
 
@@ -64,10 +65,13 @@ export default class Home extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
-    handleClick=(current)=>{
+    handleClick = (current) => {
         this.setState({
             current
         });
+    }
+    goCottonDetail() {
+        navigate({ routeName: 'cotton-detail' });
     }
     render() {
         const { list, itemDescList, itemKeyList, current } = this.state;
@@ -102,7 +106,11 @@ export default class Home extends Component {
                                     <TTabPane tabLabel={item} current={current} index={index}>
 
                                         {list.map((item, index) => {
-                                            return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                            return (
+                                                <TButton onClick={this.goCottonDetail}>
+                                                    <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                                </TButton>
+                                            )
                                         })}
 
                                     </TTabPane>

@@ -5,22 +5,30 @@ import classnames from 'classnames';
 import { View, Text, Image, TTag, TButton, Visible } from '../../components'
 import config from '../../config';
 import './item.scss';
+import { navigate ,call} from '../../actions';
 import mobileImg from './img/mobile.png';
 import carImg from './img/car.png';
 const map = config.map.main;
 export default class Item extends Component {
-    state={
+    state = {
         itemValueList: ['jc', 'y/d', 'gz'],
     }
     handleDelete() {
         console.log('点击删除');
     }
-    handleEdit() {
-        console.log('点击编辑');
+    call(mobile) {
+        call(mobile)
+    }
+    goShoppingCart(params) {
+        console.log('点击购物车');
+        navigate({
+            routeName: 'shopping-car',
+            params
+        })
     }
     render() {
         const { item, itemKeyList, itemDescList } = this.props;
-        const {itemValueList} = this.state;
+        const { itemValueList } = this.state;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
         return (
             <View className='item-box'>
@@ -88,13 +96,13 @@ export default class Item extends Component {
 
                 </View>
                 <View className='btn-group'>
-                    <TButton onClick={() => this.handleDelete(item)}>
+                    <TButton onClick={() => this.call('13888888888')}>
                         <View className='btn'>
                             <Image className='btn-icon' src={mobileImg}></Image>
                             <Text className='btn-text'>电话</Text>
                         </View>
                     </TButton>
-                    <TButton onClick={() => this.handleEdit(item)}>
+                    <TButton onClick={() => this.goShoppingCart(item)}>
                         <View className='btn'>
                             <Image className='btn-icon' src={carImg}></Image>
                             <Text className='btn-text'>购物车</Text>

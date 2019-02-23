@@ -10,6 +10,7 @@ import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
+import { navigate, call } from '../../actions';
 
 
 
@@ -57,13 +58,22 @@ export default class CottonDetail extends Component {
     }
 
     componentDidHide() { }
-    handleClick=(current)=>{
+    handleClick = (current) => {
         this.setState({
             current
         });
     }
     baojia() {
         console.log('报价')
+    }
+    goQuotationList(){
+        navigate({ routeName: 'quotation-list' });
+    }
+    goPackageDetail(){
+        navigate({ routeName: 'package-detail' });
+    }
+    goShoppingCar() {
+        navigate({ routeName: 'shopping-car' });
     }
     render() {
         const { itemDescList, itemKeyList, current } = this.state;
@@ -80,25 +90,25 @@ export default class CottonDetail extends Component {
                                             <Item item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
                                             <Card />
                                             <View className={classnames('link-btn-group')}>
-                                                <TButton onClick={() => this.handleEdit(item)}>
+                                                <TButton onClick={() => this.goPackageDetail(item)}>
                                                     <View className='link-button'>
                                                         <Text className='link-button-text'>点击查看186包棉包详情</Text>
                                                     </View>
                                                 </TButton>
-                                                <TButton onClick={() => this.handleDelete(item)}>
+                                                <TButton onClick={() => this.goQuotationList(item)}>
                                                     <View className='link-button'>
                                                         <Text className='link-button-text'>点击查看完整现货指标</Text>
                                                     </View>
                                                 </TButton>
                                             </View>
                                             <View className={classnames('btn-group', 'margin')}>
-                                                <TButton onClick={() => this.handleEdit(item)}>
+                                                <TButton onClick={() => this.goShoppingCar(item)}>
                                                     <View className='btn'>
                                                         <Image className='btn-icon' src={scImg}></Image>
                                                         <Text className='btn-text'>收藏</Text>
                                                     </View>
                                                 </TButton>
-                                                <TButton onClick={() => this.handleDelete(item)}>
+                                                <TButton onClick={() => call('1388888888')}>
                                                     <View className='btn'>
                                                         <Image className='btn-icon' src={mobileImg}></Image>
                                                         <Text className='btn-text'>联系供应商</Text>

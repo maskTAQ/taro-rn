@@ -2,9 +2,9 @@ import { Component } from '@tarojs/taro'
 import Main from './main';
 import './component.scss'
 
-export default class MyDemand extends Component {
+export default class ShoppingCart extends Component {
   config = {
-    navigationBarTitleText: '我的供需'
+    navigationBarTitleText: '购物车'
   }
   render() {
     return <Main />

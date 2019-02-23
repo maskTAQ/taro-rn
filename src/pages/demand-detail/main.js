@@ -2,12 +2,12 @@
 
 import { Component } from '@tarojs/taro';
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../components'
+import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../components'
 import Item from './item';
 import config from '../../config';
 import './main.scss';
 import mobileImg from '../../img/mobile.png';
-
+import { navigate ,call} from '../../actions';
 const map = config.map.main;
 
 const data = {
@@ -50,7 +50,12 @@ export default class DemandDetail extends Component {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
         itemDescList: ['cd', 'mj', 'shd', 'zwjhsj'],
     };
-
+    goMapDetail(){
+        navigate({routeName:'map-detail'});
+    }
+    call(){
+        call('1388888888');
+    }
     render() {
         const { itemDescList, itemKeyList } = this.state;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
@@ -108,7 +113,7 @@ export default class DemandDetail extends Component {
                                                 <Text className='item-desc-item-label'>供应商:</Text>
                                                 <View className="item-desc-item-right">
                                                     <Text className='item-desc-item-text'>xx有限公司</Text>
-                                                    <TButton>
+                                                    <TButton onClick={this.goMapDetail}>
                                                         <View className="button">
                                                             <Text className="button-text">详情</Text>
                                                         </View>
@@ -118,7 +123,7 @@ export default class DemandDetail extends Component {
                                             </View>
                                         </View>
                                         <View className="btn-group">
-                                            <TButton>
+                                            <TButton onClick={this.call}>
                                                 <View className="btn">
                                                     <Image className="btn-icon" src={mobileImg}></Image>
                                                     <Text className="btn-text">电话</Text>
