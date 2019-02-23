@@ -2,9 +2,11 @@
 
 import Taro, { Component } from '@tarojs/taro'
 import PropTypes from 'prop-types';
-import { View, Text, TPicker, TInput, TSwitch, TButton, TTabs, TTabPane } from '../../components'
+import { View, Text, TPicker, TInput, TSwitch, TButton, Image, TTabPane } from '../../components'
 
 import './content.scss';
+import checkedImg from '../../img/checked.png';
+import uncheckedImg from '../../img/unchecked.png';
 
 const createOption = function (v, key) {
     return {
@@ -13,7 +15,7 @@ const createOption = function (v, key) {
         key
     }
 }
-const list = [
+const listTop = [
     {
         label: '批次',
         type: 'input',
@@ -21,61 +23,64 @@ const list = [
         key: 'a'
     },
     {
-        label: '报价(元/吨)',
+        label: '报价类型',
         type: 'picker',
-        placeholder: '请选择报价',
-        option: [createOption(12, 'd'), createOption(15, 'd')],
-        key: 'd'
+        placeholder: '请选择报价类型',
+        option: [createOption('一口价', 'offerType'), createOption('基差', 'offerType')],
+        key: 'offerType'
+    },
+    {
+        label: '报价(元/吨)',
+        type: 'input',
+        placeholder: '请输入报价',
+        key: 'b'
     },
     {
         label: '选择基差',
         type: 'picker',
         placeholder: '请输入基差',
         option: [createOption(12, 'e'), createOption(13, 'e')],
-        key: 'e'
+        key: 'c'
     },
     {
         label: '远期交货',
         type: 'switch',
-        key: 'f'
-    },
-    {
-        label: '企业信息：',
-        type: 'view',
-        placeholder: '请输入公司名称',
-        key: 'j'
-    },
+        key: 'd'
+    }
+];
+const listBotton = [
     {
         label: '公司',
         type: 'input',
         placeholder: '请输入公司名称',
-        key: 'j'
+        key: 'f'
     },
     {
         label: '公司类型',
         type: 'input',
         placeholder: '请输入公司类型',
-        key: 'k'
+        key: 'i'
     },
     {
         label: '联系电话',
         type: 'input',
         placeholder: '请输入联系电话',
-        key: 'k'
+        key: 'j'
     },
     {
         label: '联系人',
         type: 'input',
         placeholder: '请输入联系人',
         key: 'k'
-    },
-];
+    }
+]
 export default class Content extends Component {
     state = {
         isPickerVisible: false,
         activeItemOption: [],
         aa: '',
         bb: '',
+        offerType: '一口价',
         aaOption: [{ label: '公重', value: '公重', key: 'aa' }, { label: '毛重', value: '毛重', key: 'aa' }],
         bbOption: [{ label: '自提', value: '自提', key: 'bb' }, { label: '送货上门', value: '送货上门', key: 'bb' }],
     };
@@ -93,6 +98,7 @@ export default class Content extends Component {
     }
     handlePickerItemClick = data => {
         if (data) {
+            console.log(data, 'data');
             const { key, value } = data;
             this.setState({
                 [key]: value
@@ -113,34 +119,29 @@ export default class Content extends Component {
     submit() {
         console.log(this.state);
     }
+    toggleCheckedStatus = () => {
+        this.setState({
+            f: !this.state.f
+        });
+    }
+    getFilterListTop = list => {
+        const { offerType } = this.state;
+        const result = [...list];
+        if (offerType === '一口价') {
+            result.splice(3, 1);
+        } else {
+            result.splice(2, 1);
+        }
+        return result;
+    }
     render() {
 
-        const { isPickerVisible, activeItemOption, aa, bb, aaOption, bbOption } = this.state;
-        const { current } = this.props;
-        if (current == 0) {
-            list[3].label = '报价(元/吨)'
-        }
-        if (current == 1) {
-            list[3].label = '报价(美分/磅)'
-        }
-        // const isLoggedIn = list[4].label
-        // console.log(list)
-        // // 这里最好初始化声明为 `null`，初始化又不赋值的话
-        // // 小程序可能会报警为变量为 undefined
-        // let status = null
-        // if (isLoggedIn === "标题") {
-        //   status =  <View className="enterprise">
-        //   <Text className="enterprise-title">企业信息</Text>
-        //  </View>
-        // } else {
-        //   status = <Text></Text>
-        // }
-    
-        //console.log(typeof current, current, list, 'list')
+        const { isPickerVisible, activeItemOption, aa, bb, aaOption, bbOption, offerType } = this.state;
+
         return (
             <View className='content'>
                 {
-                    list.map(item => {
+                    this.getFilterListTop(listTop).map(item => {
                         const { type, placeholder, label, option, key } = item;
                         return (
                             <View className="item">
@@ -173,17 +174,35 @@ export default class Content extends Component {
                                                 <Text className="picker-btn-text mr">{bb || '请选择'}</Text>
                                             </TButton>
                                             <Text className="switch-text">{this.state.f ? '支持' : '不支持'}</Text>
-                                            <TSwitch checked={this.state[key]} onChange={this.handleSwitchChange} />
+                                            <TButton onClick={this.toggleCheckedStatus}>
+                                                <Image className="switch-icon" src={this.state.f ? checkedImg : uncheckedImg} />
+                                            </TButton>
                                         </View>
                                     )
                                 }
-                                {status}
+
                             </View>
                         )
                     })
                 }
-                <TButton onClick={this.submit} className="btn">
-                    <Text className="btn-text">马上发布</Text>
+                <View className="title">
+                    <Text className="title-text">企业信息</Text>
+                </View>
+                {
+                    listBotton.map(item => {
+                        const { type, placeholder, label, option, key } = item;
+                        return (
+                            <View className="item">
+                                <Text className="item-label">{label}</Text>
+                                {
+                                    type === 'input' && <TInput value={this.state[key]} onInput={text => this.hanldInputChange(key, text)} className="item-input" placeholder={placeholder} />
+                                }
+                            </View>
+                        )
+                    })
+                }
+                <TButton onClick={this.submit} className="submit-button">
+                    <Text className="submit-button-text">马上发布</Text>
                 </TButton>
                 <TPicker
                     show={isPickerVisible}

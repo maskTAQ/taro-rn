@@ -3,7 +3,7 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TTabs, TTabPane, TButton } from '../../components'
+import { View, Image, ScrollView, TTabs, TTabPane, TButton,SearchTool } from '../../components'
 
 import Item from './item';
 import './main.scss';
@@ -78,6 +78,7 @@ export default class Home extends Component {
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
+                <SearchTool />
                 <Swiper
                     className='swiper'
                     indicatorColor='#999'

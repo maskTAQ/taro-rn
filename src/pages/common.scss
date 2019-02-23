@@ -1,7 +1,6 @@
 @import '../platform.scss';
 @mixin item{
     .item-box {
-        background: #fff;
         padding: 20px;
         @include borderD(bottom,1px,solid,rgba(0, 0, 0, 0.2));
     }

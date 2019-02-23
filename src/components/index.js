@@ -13,3 +13,4 @@ export { default as TMap } from './t-map';
 export { default as TRadio } from './t-radio';
 export { default as TModal } from './t-modal';
 export { default as TSTab } from './t-single-tab';
+export { default as SearchTool } from './serch-tool';

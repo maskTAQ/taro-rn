@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Input } from '@tarojs/components'
-import classnames from 'classnames';
 
 export default class TInput extends Component {
     static options = {
@@ -11,9 +10,10 @@ export default class TInput extends Component {
     }
     render() {
         const { className, placeholder, value } = this.props;
+        console.log(className,'className')
         return (
             <Input
-                className={classnames('input', className)}
+                className={className}
                 placeholder={placeholder}
                 value={value}
                 onInput={this.filter}

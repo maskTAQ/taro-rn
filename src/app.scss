@@ -2,6 +2,17 @@
 @import "~taro-ui/dist/style/components/tabs.scss";
 @import "~taro-ui/dist/style/components/action-sheet.scss";
 @import "~taro-ui/dist/style/components/modal.scss";
-page{
+page {
     height: 100%;
 }
+
+//自定义组件再被t-button包裹的时候宽度不是百分百
+/*postcss-pxtransform rn eject enable*/
+
+item {
+    width: 100%;
+}
+t{
+    width: 100%;
+}
+/*postcss-pxtransform rn eject disable*/

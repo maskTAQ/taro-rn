@@ -11,18 +11,28 @@
     @extend .flex;
     flex-direction: row;
 }
+.mb{
+    margin-bottom: 40px;
+}
 .item{
     flex:1;
     @extend .flex;
     flex-direction: column;
     align-items: center;
 }
-.item-gc{
-    background: #2ea22f;
+.item-bg-1{
+    background: #fd9727;
 }
-.item-import{
+.item-bg-2{
     background: #3cbaf7;
 }
+.item-bg-3{
+    background: #2ea22f;
+}
+.item-bg-4{
+    background: #159588;
+}
+
 .item-icon-box{
     width: 120px;
     height: 120px;

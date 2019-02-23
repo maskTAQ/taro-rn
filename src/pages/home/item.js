@@ -26,6 +26,7 @@ export default class Item extends Component {
             params
         })
     }
+    
     render() {
         const { item, itemKeyList, itemDescList } = this.props;
         const { itemValueList } = this.state;
