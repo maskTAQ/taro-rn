@@ -119,6 +119,9 @@ export default class Demand extends Component {
     goDemandDetail() {
         navigate({ routeName: 'demand-detail' });
     }
+    goDemandCustom() {
+        navigate({ routeName: 'demand-custom' });
+    }
     render() {
         const { itemDescList, itemKeyList, modal, unit } = this.state;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
@@ -169,7 +172,7 @@ export default class Demand extends Component {
                         </View>
                         <View className="bottom">
                             <View className="bottom-left">
-                                <TButton>
+                                <TButton onClick={this.goDemandCustom}>
                                     <View className="btn">
                                         <Image src={editImg} className="btn-icon" />
                                         <Text className="btn-text">修改</Text>
