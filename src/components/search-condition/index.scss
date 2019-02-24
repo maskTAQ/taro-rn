@@ -6,7 +6,7 @@
     width: 100%;
     padding: 0 20px;
     background: #fff;
-    @include borderD(bottom, 1px, solid, #ccc);
+    @include borderD(bottom, 1px, solid,  $main);
 }
 
 .title {

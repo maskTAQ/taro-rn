@@ -129,13 +129,15 @@ export default class Home extends Component {
                                             show={searchConditionVisible}
                                             onToggle={this.toggleSearchConditionVisible}
                                             label={tabList[current]} current={current} onShowPicker={this.showPicker} />
-                                        {list.map((item, index) => {
-                                            return (
-                                                <TButton onClick={this.goCottonDetail}>
-                                                    <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
-                                                </TButton>
-                                            )
-                                        })}
+                                        <View className="list">
+                                            {list.map((item, index) => {
+                                                return (
+                                                    <TButton onClick={this.goCottonDetail}>
+                                                        <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                                    </TButton>
+                                                )
+                                            })}
+                                        </View>
 
                                     </TTabPane>
                                 )
