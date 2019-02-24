@@ -1,42 +1,129 @@
 @import '../../platform.scss';
 @import './component.scss';
+@import '../color.scss';
 .container {
     height: 100%;
-    padding: 0px 20px;
+    background: #bbb;
+}
+
+.row {
     @extend .flex;
     flex-direction: column;
+    padding: 0 20px;
     background: #fff;
 }
 
-.title-name {
-    height: 100px;
-    @extend .flex;
-    flex-direction: row;
-    align-items: center;
-}
-
 .title {
-    color: #000;
-    font-size: 40px;
-}
-
-.line-container {
     height: 80px;
     @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-text {
+    font-size: 34px;
+    color: #000;
+}
+
+.group {
+    margin-bottom: 10px;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.item {
+    margin-right: 20px;
+    height: 50px;
+    padding: 0 20px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #dfdede;
+}
+
+.item-text {
+    font-size: 28px;
+}
+
+.picker-row {
+    margin-bottom: 10px;
+    @extend .flex;
+    justify-content: row;
+}
+
+.list {
+    margin-top: 20px;
+    background: #fff;
+}
+
+.list-item {
+    @extend .flex;
+    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 20px;
+    @include borderD(bottom, 1px, solid, #ccc);
+}
+
+.list-item-label {
+    width: 140px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.list-item-label-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.list-item-content {
+    flex: 1;
+    height: 100%;
+    @extend .flex;
     flex-direction: row;
     align-items: center;
 }
 
-.laber {
+
+
+.toogle-img,
+.date-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.toogle-text,.date-text{
+    font-size: 28px;
     color: #000;
-    font-size: 35px;
+}
+.range-text{
+    margin: 0 20px;
+    font-size: 28px;
+    color: #000;
+}
+.date-text-box{
+    flex:1;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.btn {
+    margin:40px 20px;
+    margin-bottom: 100px;
+    height: 80px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 10px;
 }
 
-.content {
-    color: #747474;
+.btn-text {
     font-size: 30px;
-}
-
-.map {
-    flex: 1;
+    color: #fff;
 }
