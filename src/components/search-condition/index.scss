@@ -1,0 +1,79 @@
+@import '../../platform.scss';
+@import '../../pages/color.scss';
+.container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 0 20px;
+    background: #fff;
+    @include borderD(bottom, 1px, solid, #ccc);
+}
+
+.title {
+    height: 60px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-text {
+    font-size: 30px;
+    color: $main;
+}
+
+.classify-box-title {
+    height: 60px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.classify-box-title-text {
+    font-size: 30px;
+    color: #000;
+}
+
+.item-row {
+    margin-bottom: 10px;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.item {
+    margin-right: 10px;
+    height: 46px;
+    padding: 0 40px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    @include border(1px, solid, #ccc);
+}
+
+.item-text {
+    font-size: 26px;
+    color: #000;
+}
+
+.btn-group {
+    margin-bottom: 20px;
+    height: 60px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn {
+    padding: 0 20px;
+    height: 50px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    @include border(1px, solid, #000);
+}
+
+.btn-text {
+    font-size: 32px;
+    color: #000;
+}

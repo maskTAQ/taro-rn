@@ -3,7 +3,7 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TTabs, TTabPane, TButton,SearchTool,NoticeTool } from '../../components'
+import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition } from '../../components'
 
 import Item from './item';
 import './main.scss';
@@ -55,6 +55,8 @@ export default class Home extends Component {
         itemDescList: ['ph', 'ck', 'gys'],
         offerItemDescList: ['xqbh', 'mj'],
         current: 0,
+        pickerVisible: false,
+        searchConditionVisible: false
     };
     componentWillReceiveProps(nextProps) {
 
@@ -73,8 +75,25 @@ export default class Home extends Component {
     goCottonDetail() {
         navigate({ routeName: 'cotton-detail' });
     }
+    showPicker = showPicker => {
+        console.log(showPicker, 'showPicker')
+        this.setState({
+            pickerVisible: true
+        });
+    }
+    toggleSearchConditionVisible = () => {
+        this.setState({
+            searchConditionVisible: !this.state.searchConditionVisible
+        });
+    }
+    closePicker = () => {
+        console.log('close')
+        this.setState({
+            pickerVisible: false
+        });
+    }
     render() {
-        const { list, itemDescList, itemKeyList, current } = this.state;
+        const { list, itemDescList, itemKeyList, current, pickerVisible, searchConditionVisible } = this.state;
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
@@ -106,7 +125,10 @@ export default class Home extends Component {
                             tabList.map((item, index) => {
                                 return (
                                     <TTabPane tabLabel={item} current={current} index={index}>
-
+                                        <SearchCondition
+                                            show={searchConditionVisible}
+                                            onToggle={this.toggleSearchConditionVisible}
+                                            label={tabList[current]} current={current} onShowPicker={this.showPicker} />
                                         {list.map((item, index) => {
                                             return (
                                                 <TButton onClick={this.goCottonDetail}>
@@ -121,6 +143,12 @@ export default class Home extends Component {
                         }
                     </TTabs>
                 </ScrollView>
+                <TPicker
+                    show={pickerVisible}
+                    option={[{ label: 1, value: 1 }]}
+                    onClick={this.closePicker}
+                    onCancel={this.closePicker}
+                    onClose={this.closePicker} />
             </View>
         )
     }

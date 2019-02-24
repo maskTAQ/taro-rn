@@ -6,9 +6,6 @@ export default class TPicker extends Component {
     static options = {
         addGlobalClass: true
     }
-    filter(e) {
-        this.props.onInput && this.props.onInput(e.target.value);
-    }
     getItemByLabel(l){
          const { option } = this.props;
         

@@ -1,6 +1,5 @@
 .container {
     position: absolute;
-    width: 100%;
     left: 0;
     right: 0;
     z-index: 1;
@@ -27,10 +26,9 @@
 .icon-btn-group {
     /*postcss-pxtransform rn eject enable*/
     display: flex;
-    margin-right: 20px;
     /*postcss-pxtransform rn eject disable*/
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
 }
 
 .mr {
