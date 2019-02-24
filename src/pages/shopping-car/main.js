@@ -5,7 +5,7 @@ import update from 'immutability-helper';
 
 
 import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../components'
-import Item from './item';
+import ShoppingCarItem from './item';
 import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';
 import './main.scss';
@@ -72,9 +72,9 @@ export default class ShoppingCart extends Component {
         isAllChecked: false
     };
     componentDidHide() { }
-    toggleCheckedStatus=()=>{
+    toggleCheckedStatus = () => {
         this.setState({
-            isAllChecked:!this.state.isAllChecked
+            isAllChecked: !this.state.isAllChecked
         });
     }
 
@@ -87,7 +87,7 @@ export default class ShoppingCart extends Component {
                         {
                             list.map(data => {
                                 return (
-                                    <Item onHandleOffer={this.handleOffer} item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                    <ShoppingCarItem onHandleOffer={this.handleOffer} item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
                                 )
                             })
                         }

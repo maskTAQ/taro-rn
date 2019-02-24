@@ -3,7 +3,7 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition,Item } from '../../components'
+import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
 
 //import Item from './item';
 import './main.scss';
@@ -76,7 +76,6 @@ export default class Home extends Component {
         navigate({ routeName: 'cotton-detail' });
     }
     showPicker = showPicker => {
-        console.log(showPicker, 'showPicker')
         this.setState({
             pickerVisible: true
         });
@@ -87,13 +86,12 @@ export default class Home extends Component {
         });
     }
     closePicker = () => {
-        console.log('close')
         this.setState({
             pickerVisible: false
         });
     }
     render() {
-        const { list, itemDescList, itemKeyList, current, pickerVisible, searchConditionVisible } = this.state;
+        const { list, current, pickerVisible, searchConditionVisible } = this.state;
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
@@ -130,10 +128,10 @@ export default class Home extends Component {
                                             onToggle={this.toggleSearchConditionVisible}
                                             label={tabList[current]} current={current} onShowPicker={this.showPicker} />
                                         <View className="list">
-                                            {list.map((item, index) => {
+                                            {list.map(() => {
                                                 return (
                                                     <TButton onClick={this.goCottonDetail}>
-                                                        <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                                        <MainItem />
                                                     </TButton>
                                                 )
                                             })}

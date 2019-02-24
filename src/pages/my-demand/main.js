@@ -1,11 +1,11 @@
 
 
 import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text } from '../../components'
-import Item from './item';
+import { View, ScrollView, TTabs, TTabPane, MainItem, TButton ,Image} from '../../components'
 
 import './main.scss';
-
+import refreshImg from './img/refresh.png';
+import editImg from './img/edit.png';
 
 
 const item = {
@@ -59,7 +59,7 @@ export default class MyDemand extends Component {
         });
     }
     render() {
-        const { list, itemDescList, itemKeyList, current } = this.state;
+        const { list, current } = this.state;
         const tabList = ["我的需求", "我的报价"];
         return (
             <View className='container'>
@@ -69,8 +69,32 @@ export default class MyDemand extends Component {
                             return (
                                 <TTabPane tabLabel={item} current={current} index={index}>
                                     <ScrollView>
-                                        {list.map((item, index) => {
-                                            return <Item item={item} index={index} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                        {list.map(() => {
+                                            return (
+                                                <MainItem border={false}>
+                                                    <View className="tool-btn-group">
+                                                        <TButton>
+                                                            <View className="btn">
+                                                                <Text className="btn-text">删除</Text>
+                                                            </View>
+                                                        </TButton>
+                                                        <View className="btn-group-right">
+                                                            <TButton>
+                                                                <View className="btn mr">
+                                                                        <Image className="btn-icon" src={refreshImg}/>
+                                                                    <Text className="btn-text">刷新</Text>
+                                                                </View>
+                                                            </TButton>
+                                                            <TButton>
+                                                                <View className="btn">
+                                                                <Image className="btn-icon" src={editImg}/>
+                                                                    <Text className="btn-text">编辑</Text>
+                                                                </View>
+                                                            </TButton>
+                                                        </View>
+                                                    </View>
+                                                </MainItem>
+                                            )
                                         })}
                                     </ScrollView>
                                 </TTabPane>

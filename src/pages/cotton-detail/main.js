@@ -3,9 +3,8 @@
 import Taro, { Component } from '@tarojs/taro';
 import classnames from 'classnames';
 
-import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView, FixedTool } from '../../components'
+import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView, FixedTool, MainItem } from '../../components'
 
-import Item from './item';
 import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
@@ -66,10 +65,10 @@ export default class CottonDetail extends Component {
     baojia() {
         console.log('报价')
     }
-    goQuotationList(){
+    goQuotationList() {
         navigate({ routeName: 'quotation-list' });
     }
-    goPackageDetail(){
+    goPackageDetail() {
         navigate({ routeName: 'package-detail' });
     }
     goShoppingCar() {
@@ -87,7 +86,7 @@ export default class CottonDetail extends Component {
                                 return (
                                     <TTabPane key={item} tabLabel={item} current={current} index={index}>
                                         <View className="a">
-                                            <Item item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                                            <MainItem item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
                                             <Card />
                                             <View className={classnames('link-btn-group')}>
                                                 <TButton onClick={() => this.goPackageDetail(item)}>

@@ -1,8 +1,13 @@
 @import '../../platform.scss';
 .container {
-    padding: 10px 20px;
     background: #fff;
+    
+}
+.border{
     @include borderD(bottom, 1px, solid, rgba(0, 0, 0, 0.2));
+}
+.content{
+    padding: 10px 20px;
 }
 
 .top {
