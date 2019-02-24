@@ -3,9 +3,9 @@
 import { Component } from '@tarojs/taro';
 
 import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition } from '../../components'
+import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition,Item } from '../../components'
 
-import Item from './item';
+//import Item from './item';
 import './main.scss';
 import { navigate } from '../../actions';
 

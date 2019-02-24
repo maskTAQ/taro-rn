@@ -1,0 +1,174 @@
+@import '../../platform.scss';
+.container {
+    padding: 10px 20px;
+    background: #fff;
+    @include borderD(bottom, 1px, solid, rgba(0, 0, 0, 0.2));
+}
+
+.top {
+    height: 60px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-left,
+.top-right {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.title {
+    font-size: 28px;
+    color: #2E2E2E;
+}
+
+.time {
+    font-size: 26px;
+    color: #2E2E2E;
+}
+
+.center {
+    height: 100px;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.center-left {
+    flex: 1;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.item {
+    margin-right: 10px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-label {
+    font-size: 30px;
+    color: #000;
+}
+
+.item-value {
+    font-size: 30px;
+    color: #1cbb24;
+}
+
+.center-right {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tag {
+    height: 42px;
+    padding: 0 30px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    background: red;
+}
+
+.xh {
+    background: #1cbb24;
+}
+
+.cd {
+    background: #3cbaf7;
+}
+
+.tag-text {
+    font-size: 30px;
+    color: #fff;
+}
+
+.bottom {
+    @extend .flex;
+    justify-content: row;
+}
+
+.bottom-left,
+.bottom-right {
+    flex: 1;
+}
+
+.bottom-text-box {
+    height: 50px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.bottom-text {
+    font-size: 30px;
+    color: #000;
+}
+
+.bottom-right-bottom {
+    height: 86px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bottom-right-bottom-right {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.bottom-right-bottom-left {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.price {
+    font-size: 32px;
+    color: #BC0000;
+}
+
+.weight {
+    font-size: 32px;
+    color: #32B9FA;
+}
+
+.btn-group {
+    width: 130px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn {
+    @extend .flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-icon-box {
+    margin-bottom: 10px;
+    width: 56px;
+    height: 56px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #32B9FA;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.btn-text {
+    font-size: 20px;
+    color: #000;
+}
