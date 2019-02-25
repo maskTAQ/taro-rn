@@ -1,5 +1,7 @@
+//映射关系
 const map = {
   main: {
+    dj:'等级',
     ysj: '颜色级',
     cd: '长度',
     ql: '强力',
@@ -18,17 +20,17 @@ const map = {
     zwjhsj: '最晚交货时间',
     cgjs: '采购结束',
 
-    sl: '数量',
-    ztj: '自提价',
-    dcj: '到场价',
+    sl:'数量',
+    ztj:'自提价',
+    dcj:'到场价',
 
-    gys: '供应商',
+    gys:'供应商',
 
-    xqbh: '需求编号',
-    zg: '公重',
-    zhc: '扎花厂',
-    ph: '批号',
-    ck: '仓库',
+    xqbh:'需求编号',
+    zg:'公重',
+    zhc:'扎花厂',
+    ph:'批号',
+    ck:'仓库',
   }
 };
 const config = {
@@ -36,7 +38,7 @@ const config = {
   host: '',
   version: '0.0.1',
   map,
-  platform: 'app'
+  platform:'h5'
 };
 
 export default config;

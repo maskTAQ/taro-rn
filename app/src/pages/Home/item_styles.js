@@ -1,6 +1,16 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
+  "borderSolid": {},
+  "item-info-item-border": {
+    "marginTop": 4,
+    "marginRight": 0,
+    "marginBottom": 4,
+    "marginLeft": 0,
+    "width": 2,
+    "height": 20,
+    "backgroundColor": "rgba(0, 0, 0, 0.2)"
+  },
   "item-box": {
     "backgroundColor": "#fff",
     "paddingTop": 10,
@@ -10,23 +20,17 @@ export default StyleSheet.create({
     "borderBottomWidth": 0.5,
     "borderBottomColor": "rgba(0, 0, 0, 0.2)"
   },
-  "item-info-item-title": {
-    "fontSize": 15,
-    "color": "rgba(0, 0, 0, 0.8)"
-  },
   "item-title": {
     "flexDirection": "row",
     "justifyContent": "space-between",
-    "alignItems": "center",
-    "color": "red"
+    "alignItems": "center"
   },
   "item-title-left": {
     "flexDirection": "row",
-    "color": "red"
+    "alignItems": "center"
   },
   "item-title-right": {
-    "flexDirection": "row",
-    "color": "red"
+    "flexDirection": "row"
   },
   "item-name": {
     "fontSize": 17,
@@ -41,66 +45,51 @@ export default StyleSheet.create({
     "color": "rgba(0, 0, 0, 0.6)"
   },
   "tag-list": {
-    "flexDirection": "row",
-    "color": "red"
+    "flexDirection": "row"
   },
   "item-info-list": {
     "marginTop": 10,
-    "flexDirection": "row",
-    "color": "red"
+    "flexDirection": "row"
   },
   "item-info-item": {
     "flexGrow": 1,
     "flexShrink": 1,
     "flexBasis": 0,
     "flexDirection": "row",
-    "alignItems": "center",
-    "color": "red"
+    "alignItems": "center"
   },
   "item-info-item-content": {
     "flexGrow": 1,
     "flexShrink": 1,
     "flexBasis": 0,
     "flexDirection": "column",
-    "alignItems": "center",
-    "color": "red"
+    "alignItems": "center"
   },
-  "item-info-item-border": {
-    "marginTop": 4,
-    "marginRight": 0,
-    "marginBottom": 4,
-    "marginLeft": 0,
-    "width": 2,
-    "height": 20,
-    "backgroundColor": "rgba(0, 0, 0, 0.2)"
-  },
-  "flex": {
-    "color": "red"
-  },
+  "flex": {},
   "item-desc-item": {
-    "color": "red",
-    "height": 20,
+    "height": 30,
     "flexDirection": "row",
     "justifyContent": "space-between",
-    "alignItems": "flex-end"
+    "alignItems": "center"
   },
   "item-desc-item-content": {
-    "color": "red",
     "flexDirection": "row"
   },
   "btn-group": {
-    "color": "red",
     "flexDirection": "row",
     "justifyContent": "flex-end"
   },
   "btn": {
-    "color": "red",
     "marginLeft": 10,
     "height": 30,
     "flexDirection": "row",
     "alignItems": "center",
     "borderBottomWidth": 0.5,
     "borderBottomColor": "rgba(0, 0, 0, 0.2)"
+  },
+  "item-info-item-title": {
+    "fontSize": 15,
+    "color": "rgba(0, 0, 0, 0.8)"
   },
   "item-info-item-value": {
     "fontSize": 12,

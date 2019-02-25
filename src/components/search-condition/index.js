@@ -1,7 +1,6 @@
-import Taro, { Component } from '@tarojs/taro'
-import classnames from 'classnames';
-
-import { View, Visible, TButton, TPicker, Text } from '../index';
+import React from 'react';
+import { Component } from '../../platform';
+import { View, Visible, TButton, Text } from '../../ui';
 
 
 import './index.scss';

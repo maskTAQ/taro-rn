@@ -1,7 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components';
-import { TInput, TButton, Image } from '../index';
+import React from 'react';
+import { Component } from '../../platform';
 
+import { TInput, TButton, Image } from '../../ui';
 import searchImg from './img/search.png';
 import qrImg from './img/qr.png';
 import './index.scss'

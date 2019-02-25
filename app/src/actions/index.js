@@ -10,7 +10,9 @@ const back = () => {
 const navigate = (...p) => {
     return store.dispatch(NavigationActions.navigate(...p));
 };
-
+const call=()=>{
+    console.log('call')
+}
 export default {
-    back, navigate
+    back, navigate,
 }

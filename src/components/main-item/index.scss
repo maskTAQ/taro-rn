@@ -96,7 +96,7 @@
 
 .bottom {
     @extend .flex;
-    justify-content: row;
+    flex-direction: row;
 }
 
 .bottom-left,
@@ -108,7 +108,7 @@
     height: 50px;
     @extend .flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: flex-start;
     align-items: center;
 }
 

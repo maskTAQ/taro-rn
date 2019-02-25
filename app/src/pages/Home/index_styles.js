@@ -6,6 +6,6 @@ export default StyleSheet.create({
   },
   "tag-end": {
     "backgroundColor": "#44bdf7",
-    "color": "#fff !important"
+    "color": "#fff"
   }
 })

@@ -1,16 +1,13 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { Swiper, SwiperItem } from '@tarojs/components'
-import { View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, } from '../../ui';
+import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
 
-//import Item from './item';
 import './main.scss';
 import { navigate } from '../../actions';
-
-
-
 const item = {
     id: '562781322',
 
@@ -45,9 +42,7 @@ const item = {
 
 
 export default class Home extends Component {
-
-
-    state = {
+        state = {
         bannerList: ['https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png'],
         list: [item, item, item, item, item],
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
@@ -91,7 +86,7 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { list, current, pickerVisible, searchConditionVisible } = this.state;
+        const { list, current, pickerVisible, searchConditionVisible,bannerList } = this.state;
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
@@ -131,7 +126,7 @@ export default class Home extends Component {
                                             {list.map(() => {
                                                 return (
                                                     <TButton onClick={this.goCottonDetail}>
-                                                        <MainItem />
+                                                        <MainItem border={true} />
                                                     </TButton>
                                                 )
                                             })}

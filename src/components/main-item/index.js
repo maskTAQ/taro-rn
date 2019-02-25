@@ -1,7 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
-import classnames from 'classnames';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { View, Text, Image, TButton } from '../index';
+import { View, Text, Image, TButton } from '../../ui';
 import { navigate, call } from '../../actions';
 import config from '../../config';
 import './index.scss'

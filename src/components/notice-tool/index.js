@@ -1,8 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components';
-import { TInput, TButton, Image } from '../index';
+import React from 'react';
+import { Component } from '../../platform';
 
-
+import {View,Text } from '../../ui';
 import './index.scss'
 export default class NoticeTool extends Component {
     static options = {
