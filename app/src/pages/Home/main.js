@@ -8,7 +8,6 @@ import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../compone
 
 import mainStyleSheet from "./main_styles";
 import { navigate } from '../../actions';
-
 var _styleSheet = mainStyleSheet;
 const item = {
   id: '562781322',
@@ -88,7 +87,7 @@ let Home = class Home extends Component {
   }
 
   render() {
-    const { list, current, pickerVisible, searchConditionVisible,bannerList } = this.state;
+    const { list, current, pickerVisible, searchConditionVisible, bannerList } = this.state;
     const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
     return <View style={_styleSheet["container"]}>
                 <SearchTool />

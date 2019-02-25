@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component } from '../../platform';
+import classnames from 'classnames';
 
 import { View, Text, Image, TButton } from '../../ui';
 import { navigate, call } from '../../actions';

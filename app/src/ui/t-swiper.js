@@ -7,7 +7,7 @@ const SwiperWrapper = ({ style, children }) => {
   const { height, } = style;
   return (
     <View style={{ height }}>
-      <Swiper style={style} showsButtons={true}>
+      <Swiper style={style} showsButtons={false}>
         {children}
       </Swiper>
     </View>
