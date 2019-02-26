@@ -3,11 +3,11 @@ import { View } from 'react-native';
 
 import Swiper from 'react-native-swiper';
 
-const SwiperWrapper = ({ style, children }) => {
+const SwiperWrapper = ({ style,autoplay, children }) => {
   const { height, } = style;
   return (
     <View style={{ height }}>
-      <Swiper style={style} showsButtons={false}>
+      <Swiper style={style} showsButtons={false} autoplay={autoplay}>
         {children}
       </Swiper>
     </View>

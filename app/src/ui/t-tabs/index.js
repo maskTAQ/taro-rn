@@ -1,13 +1,11 @@
 
 import React from 'react';
-import {
-  Text,
-} from 'react-native';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 export default (props) => {
-  const { current,onClick } = props;
+  const { current, onClick } = props;
+
   return <ScrollableTabView
     //style={{marginTop: 20, }}
     initialPage={current}
@@ -18,9 +16,7 @@ export default (props) => {
       height: 2,
       backgroundColor: '#6c8fd3'
     }}
-    onChangeTab={item=>{
-      onClick && onClick(item.i);
-    }}
+    //onChangeTab={onChangeTab}
     renderTabBar={() => <ScrollableTabBar />}
   >
     {props.children}

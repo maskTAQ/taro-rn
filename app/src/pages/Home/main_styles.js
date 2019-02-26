@@ -13,8 +13,7 @@ export default StyleSheet.create({
     "height": 150
   },
   "banner-item": {
-    "width": "100%",
-    "height": 150
+    "width": "100%"
   },
   "list": {
     "marginTop": 30

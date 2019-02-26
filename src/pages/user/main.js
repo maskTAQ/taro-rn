@@ -1,9 +1,10 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 import classnames from 'classnames';
 
-import { View, Image, TButton, TTabs, TTabPane, Text } from '../../components';
+import { View, Image, TButton, Text } from '../../ui';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';

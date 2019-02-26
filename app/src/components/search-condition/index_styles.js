@@ -9,6 +9,7 @@ export default StyleSheet.create({
   "container": {
     "position": "absolute",
     "top": 0,
+    zIndex:1,
     "width": "100%",
     "paddingTop": 0,
     "paddingRight": 10,
