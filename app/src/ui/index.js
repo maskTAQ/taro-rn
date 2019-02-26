@@ -11,6 +11,10 @@ export { default as TInput } from './t-input';
 export { default as TPicker } from './t-picker';
 export { default as TSwitch } from './t-switch';
 export { default as Image } from './image';
+const TModal = ()=>null;
+const TRadio = ()=>null;
 // export { default as TRadio } from './t-radio';
-// export { default as TModal } from './t-modal';
+ export {
+    TModal,TRadio
+ }
 // export { default as TSTab } from './t-single-tab';

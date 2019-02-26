@@ -6,6 +6,7 @@
     }
     
     .item-title {
+        height: 50px;
         @extend .flex;
         flex-direction: row;
         justify-content: space-between;

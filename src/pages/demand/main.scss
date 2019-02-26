@@ -2,7 +2,6 @@
 @import '../color.scss';
 @import '../../platform.scss';
 @import './component.scss';
-
 .container {
     height: 100%;
     @extend .flex;
@@ -12,14 +11,12 @@
 
 //btn-group样式
 @include item;
-/*postcss-pxtransform rn eject enable*/
-
 .demand-list {
     flex: 1;
+    /*postcss-pxtransform rn eject enable*/
     overflow: scroll;
+    /*postcss-pxtransform rn eject disable*/
 }
-
-/*postcss-pxtransform rn eject disable*/
 
 .condition {
     //margin: 10px;
@@ -31,7 +28,7 @@
 .condition-title {
     margin-bottom: 10px;
     @extend .flex;
-    padding:0 20px;
+    padding: 0 20px;
     height: 60px;
     flex-direction: column;
     justify-content: center;
@@ -79,14 +76,15 @@
 }
 
 //modal
-.item{
+.item {
     @extend .flex;
     height: 60px;
     flex-direction: row;
     align-items: center;
-    @include borderD(bottom,1px,solid,#ccc);
+    @include borderD(bottom, 1px, solid, #ccc);
 }
-.item-label{
+
+.item-label {
     width: 100px;
     font-size: 28px;
     @extend .flex;

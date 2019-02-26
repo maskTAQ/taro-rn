@@ -1,10 +1,10 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
+
 import update from 'immutability-helper';
-
-
-import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../components'
+import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../ui'
 import config from '../../config';
 import Item from './item';
 import bj from './img/bj.png';

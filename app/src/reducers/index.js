@@ -3,7 +3,7 @@ import counter from './counter'
 import AppNavigator from "src/Router";
 
 const defaultNav = AppNavigator.router.getStateForAction(
-    AppNavigator.router.getActionForPathAndParams("Home")
+    AppNavigator.router.getActionForPathAndParams("Demand")
 );
 
 const isNeedRedirectToLogin = [];
