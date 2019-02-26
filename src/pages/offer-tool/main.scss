@@ -8,6 +8,7 @@
     background: #fff;
 }
 .content{
+    height: 200px;
     @extend .flex;
     flex-direction: row;
 }

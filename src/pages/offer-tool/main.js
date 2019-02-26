@@ -1,9 +1,9 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
-
-import { View, Image, TButton } from '../../components';
+import { View, Image, TButton,Text } from '../../ui';
 import './main.scss';
 import cloudImg from '../../img/cloud.png';
 import {navigate} from '../../actions';

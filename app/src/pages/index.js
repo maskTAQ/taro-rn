@@ -8,3 +8,4 @@ export { default as NoticeDetails } from './notice-details';
 export { default as Canvas } from './canvas';
 export { default as CottonDetail } from './cotton-detail/main';
 export { default as Demand } from './demand';
+export { default as OfferTool } from './offer-tool';
