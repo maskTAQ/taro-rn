@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Component } from '../../platform';
-import classnames from 'classnames';
 
-import { View, Image, TButton, Text } from '../../ui';
+import classnames from 'classnames';
+import { View, Image, TButton, Text, ScrollView } from '../../ui';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -117,82 +117,84 @@ export default class User extends Component {
     }
     render() {
         return (
-            <View className="container">
-                <View className="user-card">
-                    <View className="user-info">
-                        <Image className="user-icon" src={logoImg} />
-                        <View className="user-info-detail">
-                            <Text className="company-name">苏州易贸通进出口有限公司</Text>
-                            <Text className="mobile">135****2591</Text>
+            <ScrollView>
+                <View className="container">
+                    <View className="user-card">
+                        <View className="user-info">
+                            <Image className="user-icon" src={logoImg} />
+                            <View className="user-info-detail">
+                                <Text className="company-name">苏州易贸通进出口有限公司</Text>
+                                <Text className="mobile">135****2591</Text>
+                            </View>
+                        </View>
+                        <View className="tool">
+                            {
+                                toolList.map(item => {
+                                    const { icon, label } = item;
+                                    return (
+                                        <View className="tool-item">
+                                            <Image src={icon} className="tool-item-icon" />
+                                            <Text className="tool-item-label">{label}</Text>
+                                        </View>
+                                    )
+                                })
+                            }
                         </View>
                     </View>
-                    <View className="tool">
-                        {
-                            toolList.map(item => {
-                                const { icon, label } = item;
-                                return (
-                                    <View className="tool-item">
-                                        <Image src={icon} className="tool-item-icon" />
-                                        <Text className="tool-item-label">{label}</Text>
-                                    </View>
-                                )
-                            })
-                        }
+                    <View className="list-group">
+                        <View className="list mb" >
+                            {
+                                listTop.map((item, i) => {
+                                    const { icon, label, value, routeName } = item;
+                                    return (
+                                        <TButton onClick={() => {
+                                            routeName && navigate({ routeName: item.routeName })
+                                        }}>
+                                            <View className={classnames('item', {
+                                                'item-border': i !== listTop.length - 1
+                                            })}>
+                                                <View className="item-left">
+                                                    <Image className="item-icon" src={icon} />
+                                                    <Text className="item-label">{label}</Text>
+                                                </View>
+                                                <View className="item-right">
+                                                    {value ? <Text className="item-value">{value}</Text>:null}
+                                                    <Image src={rightImg} className="item-right-icon" />
+                                                </View>
+                                            </View>
+                                        </TButton>
+                                    )
+                                })
+                            }
+                        </View>
+                        <View className="list" >
+                            {
+                                listBottom.map((item, i) => {
+                                    const { icon, label, value, routeName } = item;
+                                    return (
+                                        <TButton onClick={() => {
+                                            routeName && navigate({ routeName: item.routeName })
+                                        }}>
+                                            <View className={classnames('item', {
+                                                'item-border': i !== listBottom.length - 1
+                                            })}>
+                                                <View className="item-left">
+                                                    <Image className="item-icon" src={icon} />
+                                                    <Text className="item-label">{label}</Text>
+                                                </View>
+                                                <View className="item-right">
+                                                    {value ? <Text className="item-value">{value}</Text>:null}
+                                                    <Image src={rightImg} className="item-right-icon" />
+                                                </View>
+                                            </View>
+                                        </TButton>
+                                    )
+                                })
+                            }
+                        </View>
                     </View>
                 </View>
-                <View className="list-group">
-                    <View className="list mb" >
-                        {
-                            listTop.map((item, i) => {
-                                const { icon, label, value, routeName } = item;
-                                return (
-                                    <TButton onClick={() => {
-                                        routeName && navigate({ routeName: item.routeName })
-                                    }}>
-                                        <View className={classnames('item', {
-                                            'item-border': i !== listTop.length - 1
-                                        })}>
-                                            <View className="item-left">
-                                                <Image className="item-icon" src={icon} />
-                                                <Text className="item-label">{label}</Text>
-                                            </View>
-                                            <View className="item-right">
-                                                {value && <Text className="item-value">{value}</Text>}
-                                                <Image src={rightImg} className="item-right-icon" />
-                                            </View>
-                                        </View>
-                                    </TButton>
-                                )
-                            })
-                        }
-                    </View>
-                    <View className="list" >
-                        {
-                            listBottom.map((item, i) => {
-                                const { icon, label, value, routeName } = item;
-                                return (
-                                    <TButton onClick={() => {
-                                        routeName && navigate({ routeName: item.routeName })
-                                    }}>
-                                        <View className={classnames('item', {
-                                            'item-border': i !== listBottom.length - 1
-                                        })}>
-                                            <View className="item-left">
-                                                <Image className="item-icon" src={icon} />
-                                                <Text className="item-label">{label}</Text>
-                                            </View>
-                                            <View className="item-right">
-                                                {value && <Text className="item-value">{value}</Text>}
-                                                <Image src={rightImg} className="item-right-icon" />
-                                            </View>
-                                        </View>
-                                    </TButton>
-                                )
-                            })
-                        }
-                    </View>
-                </View>
-            </View>
+            </ScrollView>
         )
     }
 }

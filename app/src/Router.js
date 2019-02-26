@@ -10,7 +10,7 @@ import { Icon, TabBar } from "components";
 import {Login,Home,OfferHint,
     MyDemand,Share,publishImportCotton,
     NoticeDetails,Canvas,CottonDetail,Demand,
-    OfferTool} from "pages";
+    OfferTool,User} from "pages";
 import { iconSource } from 'commons';
 
 Platform.OS == 'android' && StatusBar.setTranslucent(true)
@@ -105,7 +105,8 @@ const AppRouteConfigs = {
     Canvas,
     CottonDetail,
     Demand,
-    OfferTool
+    OfferTool,
+    User
 };
 // 创建一级导航
 const StackNavigator = createStackNavigator(AppRouteConfigs, {
