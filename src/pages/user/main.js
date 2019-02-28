@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Component } from '../../platform';
+import { connect } from '@tarojs/redux';
 
 import classnames from 'classnames';
 import { View, Image, TButton, Text, ScrollView } from '../../ui';
@@ -94,7 +95,7 @@ const listBottom = [
         routeName: ''
     }
 ];
-
+@connect(state=>state)
 export default class User extends Component {
 
 

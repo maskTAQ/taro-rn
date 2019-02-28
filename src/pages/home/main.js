@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Component } from '../../platform';
+import { connect } from '@tarojs/redux';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
-
+import { get } from '../../api/base';
 import './main.scss';
 import { navigate } from '../../actions';
 const item = {
@@ -40,9 +41,9 @@ const item = {
     gys: '河北星宇纺织原料有限责任公司'
 };
 
-
+@connect(state => state)
 export default class Home extends Component {
-        state = {
+    state = {
         bannerList: ['https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png'],
         list: [item, item, item, item, item],
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
@@ -59,10 +60,16 @@ export default class Home extends Component {
 
     componentWillUnmount() { }
 
-    componentDidShow() { }
+    componentDidShow() {
+        get({ url: 'https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html' })
+            .then(res => {
+                console.log(res, 'res');
+            })
+    }
 
     componentDidHide() { }
     handleClick = (current) => {
+        this.props.dispatch({ type: 'ADD' });
         this.setState({
             current
         });
@@ -86,7 +93,7 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { list, current, pickerVisible, searchConditionVisible,bannerList } = this.state;
+        const { list, current, pickerVisible, searchConditionVisible, bannerList } = this.state;
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
