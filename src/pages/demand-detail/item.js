@@ -1,10 +1,11 @@
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { View, Text, TTag, TButton, Visible } from '../../components'
+import { View, Text, TTag, TButton, Visible } from '../../ui'
 import config from '../../config';
 import './item.scss';
-import { navigate ,call} from '../../actions';
+import { navigate} from '../../actions';
 const map = config.map.main;
 export default class Item extends Component {
     state = {

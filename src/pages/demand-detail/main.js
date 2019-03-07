@@ -1,8 +1,9 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../components'
+import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../ui'
 import Item from './item';
 import config from '../../config';
 import './main.scss';

@@ -1,25 +1,18 @@
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
 
-import { View, Text, Image, TTag, TButton, Visible } from '../../components'
-import config from '../../config';
+import { View, Text, Image } from '../../ui'
 import './item.scss';
-import deleteImg from './img/delete.png';
-import editImg from './img/edit.png';
-const map = config.map.main;
 export default class Item extends Component {
-    handleDelete() {
-        console.log('点击删除');
-    }
-    handleEdit() {
-        console.log('点击编辑');
-    }
     render() {
         const { item } = this.props;
         return (
             <View className='item'>
-                <Image src={item.imgSrc} className="item-icon" />
+                <View className="item-icon-box">
+                    <Image src={item.imgSrc} className="item-icon" />
+                </View>
                 <View className="item-content">
                     <Text className="item-title">{item.title}</Text>
                     <View className="item-content-bottom">

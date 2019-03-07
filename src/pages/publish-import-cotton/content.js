@@ -1,8 +1,9 @@
 
 
-import Taro, { Component } from '@tarojs/taro'
-import PropTypes from 'prop-types';
-import { View, Text, TPicker, TInput, Image, TButton } from '../../components'
+import React from 'react';
+import { Component } from '../../platform';
+
+import { View, Text, TPicker, TInput, Image, TButton } from '../../ui'
 
 import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';

@@ -1,9 +1,10 @@
 
 
-import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, Text } from '../../components'
-import Item from './item';
+import React from 'react';
+import { Component } from '../../platform';
 
+import { View, ScrollView, TTabs, TTabPane } from '../../ui';
+import Item from './item';
 import './main.scss';
 
 

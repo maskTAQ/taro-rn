@@ -21,25 +21,40 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
-      
+      'pages/shopping-car/index',
+      'pages/share/index',
+      'pages/quotation-list/index',
+      'pages/publish-import-cotton/index',
+      'pages/package-detail/index',
+      'pages/offer-tool/index',
+      'pages/offer-hint/index',
+      'pages/notice-details/index',
+      'pages/my-demand/index',
+      'pages/map-detail/index',
+      'pages/demand-detail/index',
+      'pages/demand-custom/index',
+      'pages/demand/index',
+      'pages/cotton-information/index',
+      'pages/cotton-detail/index',
+      'pages/add-batch/index',
       'pages/user/index',
       'pages/home/index',
-      'pages/offer-tool/index',
-      'pages/shopping-car/index',
-      'pages/demand-custom/index',
-      'pages/demand-detail/index',
-      'pages/demand/index',
-      'pages/map-detail/index',
-      'pages/cotton-detail/index',
-      'pages/quotation-list/index',
-      'pages/package-detail/index',
-      'pages/cotton-information/index',
-      'pages/add-batch/index',
-      'pages/publish-import-cotton/index',
-      'pages/notice-details/index',
-      'pages/share/index',
-      'pages/my-demand/index',
-      'pages/offer-hint/index',
+     
+     
+      
+     
+      
+      
+     
+      
+      
+     
+     
+     
+      
+     
+      
+      
     ],
     window: {
       backgroundTextStyle: 'light',

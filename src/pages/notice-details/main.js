@@ -1,11 +1,9 @@
-
-
-import { Component } from '@tarojs/taro';
-import { View, Text, TInput, Image, TButton } from '../../components'
+import React from 'react';
+import { Component } from '../../platform';
+import { View, Text, Image } from '../../ui'
 
 import './main.scss';
 import url from './img/img.png'
-import Share from '../share/main';
 import ShareWechard from './img/ShareWechar.png'
 import pengyq from './img/pengyq.png'
 

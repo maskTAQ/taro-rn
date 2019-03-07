@@ -1,8 +1,8 @@
-
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 import classnames from 'classnames';
 
-import { View, Text, ScrollView } from '../../components'
+import { View, Text } from '../../ui'
 import './card.scss';
 
 const data = {

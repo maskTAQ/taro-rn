@@ -22,6 +22,7 @@ import logoImg from '../../img/logo.png';
 import './main.scss';
 import './component.scss';
 import { navigate } from '../../actions';
+import { login } from '../../api';
 const toolList = [
     {
         icon: scImg,
@@ -95,7 +96,7 @@ const listBottom = [
         routeName: ''
     }
 ];
-@connect(state=>state)
+@connect(state => state)
 export default class User extends Component {
 
 
@@ -108,7 +109,19 @@ export default class User extends Component {
 
     componentWillUnmount() { }
 
-    componentDidShow() { }
+    componentDidShow() {
+        login({
+            i:6,
+            t:0,
+            //from:'wxapp',
+            m:'zh_dianc',
+            sign:'0a382e9b7fa70f12a3301fa1ceb39ea0',
+            openid:'oc7pZ5K0I9Ild3lh6Zjj1Zu4TFec'
+        })
+        .then(res=>{
+            console.log(res,'login res');
+        })
+    }
 
     componentDidHide() { }
     handleClick(current) {
@@ -159,7 +172,7 @@ export default class User extends Component {
                                                     <Text className="item-label">{label}</Text>
                                                 </View>
                                                 <View className="item-right">
-                                                    {value ? <Text className="item-value">{value}</Text>:null}
+                                                    {value ? <Text className="item-value">{value}</Text> : null}
                                                     <Image src={rightImg} className="item-right-icon" />
                                                 </View>
                                             </View>
@@ -184,7 +197,7 @@ export default class User extends Component {
                                                     <Text className="item-label">{label}</Text>
                                                 </View>
                                                 <View className="item-right">
-                                                    {value ? <Text className="item-value">{value}</Text>:null}
+                                                    {value ? <Text className="item-value">{value}</Text> : null}
                                                     <Image src={rightImg} className="item-right-icon" />
                                                 </View>
                                             </View>

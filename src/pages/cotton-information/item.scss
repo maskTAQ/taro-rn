@@ -1,33 +1,44 @@
 @import './component.scss';
 @import '../../platform.scss';
-
-.item{
+.item {
     @extend .flex;
     flex-direction: row;
     padding: 6px 10px;
     background: #fff;
 }
-.item-icon{
+
+.item-icon-box {
     margin-right: 10px;
     width: 200px;
     height: 200px;
 }
-.item-content{
+
+.item-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.item-content {
+    flex: 1;
     @extend .flex;
     flex-direction: column;
     justify-content: space-between;
 }
-.item-title{
+
+.item-title {
     font-size: 32px;
     color: #101010;
 }
-.item-content-bottom{
+
+.item-content-bottom {
     @extend .flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-.item-time,.item-readme{
+
+.item-time,
+.item-readme {
     font-size: 28px;
     color: #919191;
 }

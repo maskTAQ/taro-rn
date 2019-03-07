@@ -1,7 +1,8 @@
 
 
-import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, TSTab } from '../../components'
+import React from 'react';
+import { Component } from '../../platform';
+import { View, ScrollView, TSTab } from '../../ui'
 
 
 import Content from './content';

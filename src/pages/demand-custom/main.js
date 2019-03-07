@@ -1,16 +1,13 @@
 
 
-import { Component } from '@tarojs/taro';
-import classnames from 'classnames';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { View, Text, Image, TInput, TSTab, TButton, TRadio, TPicker } from '../../components';
-import { Button, AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
+import { View, Text, Image, TInput, TSTab, TButton, TRadio, TPicker } from '../../ui';
 import './main.scss';
 
 import checkedImg from '../../img/checked.png';
-import uncheckedImg from '../../img/unchecked.png';
 import dateImg from '../../img/date.png';
-import icon from './img/icon.png'
 
 const radioOption = [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }];
 export default class DemandCustom extends Component {

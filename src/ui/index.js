@@ -6,7 +6,7 @@ export { default as TTag } from './t-tag/index';
 export { default as Visible } from './visible';
 export { default as TTabs } from './t-tabs/index';
 export { default as TTabPane } from './t-tab-pane/index';
-export { default as TInput } from './t-input/index';
+export { default as TInput } from './t-input';
 export { default as TPicker } from './t-picker';
 export { default as TSwitch } from './t-switch';
 export { default as TRadio } from './t-radio';

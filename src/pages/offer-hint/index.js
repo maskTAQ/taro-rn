@@ -1,8 +1,7 @@
-import { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import React from 'react';
+import { Component } from '../../platform';
 
-import { TButton } from '../../components'
+import { View, Text,TButton } from '../../ui'
 import './index.scss'
 
 

@@ -1,15 +1,20 @@
 import Taro, { Component } from '@tarojs/taro';
 
-const request = ({ url, type, data, config: { loading } = { loading: true } }) => {
+const host = 'https://s.chncot.com/app/index.php';
+const splitPath = (p) => {
+    const [c, a, doP] = p.split('/');
+    return { c, a, do: doP };
+}
+const request = (url, data, { type, config: { loading } = { loading: true } }) => {
     loading && Taro.showLoading();
     return new Promise((resolve, reject) => {
         Taro.request({
-            url,
+            url: host,
             method: type,
-            data,
+            data: Object.assign(splitPath(url), data),
             success(d) {
                 Taro.hideLoading();
-                resolve(d);
+                resolve(d.data);
             },
             fail(e) {
                 Taro.hideLoading();
@@ -18,11 +23,11 @@ const request = ({ url, type, data, config: { loading } = { loading: true } }) =
         });
     })
 }
-const post = (params) => {
-    return request({ type: 'POST', ...params });
+const post = (url, data) => {
+    return request(url, data, { type: 'POST', });
 }
-const get = (params) => {
-    return request({ type: 'GET', ...params });
+const get = (url, data) => {
+    return request(url, data, { type: 'GET', });
 }
 export {
     post, get

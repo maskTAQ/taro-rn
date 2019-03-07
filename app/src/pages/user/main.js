@@ -19,7 +19,7 @@ import historyImg from '../../img/history.png';
 import jsqImg from '../../img/jsq.png';
 import logoImg from '../../img/logo.png';
 import mainStyleSheet from "./main_styles";
-
+import {login} from '../../apis';
 import { navigate } from '../../actions';
 var _styleSheet = mainStyleSheet;
 
@@ -133,7 +133,19 @@ let User = class User extends Component {
   }
 
   componentWillReceiveProps(nextProps) {}
-
+  componentWillMount() {
+    login({
+      i:6,
+      t:0,
+      //from:'wxapp',
+      m:'zh_dianc',
+      sign:'0a382e9b7fa70f12a3301fa1ceb39ea0',
+      openid:'oc7pZ5K0I9Ild3lh6Zjj1Zu4TFec'
+  })
+  .then(res=>{
+      console.log(res,'login res');
+  })
+  }
   componentWillUnmount() {}
 
   componentDidShow() {}

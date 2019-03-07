@@ -1,10 +1,11 @@
 
 
-import Taro, { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 import classnames from 'classnames';
 
-import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView, FixedTool, MainItem } from '../../components'
-
+import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView } from '../../ui';
+import { FixedTool, MainItem } from '../../components';;
 import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
@@ -53,7 +54,7 @@ export default class CottonDetail extends Component {
         current: 0,
     };
     componentDidShow() {
-        Taro.setNavigationBarTitle({ title: '218937123' + '|详情' });
+       // Taro.setNavigationBarTitle({ title: '218937123' + '|详情' });
     }
 
     componentDidHide() { }

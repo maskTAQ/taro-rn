@@ -1,7 +1,10 @@
 
 
-import { Component } from '@tarojs/taro';
-import { View, ScrollView, TTabs, TTabPane, MainItem, TButton ,Image} from '../../components'
+import React from 'react';
+import { Component } from '../../platform';
+
+import { View, ScrollView, TTabs, TTabPane , TButton ,Image} from '../../ui';
+import {MainItem} from '../../components';
 
 import './main.scss';
 import refreshImg from './img/refresh.png';

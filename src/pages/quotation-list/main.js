@@ -1,7 +1,8 @@
-import Taro, { Component, Config } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
-import { Canvas, Button } from '@tarojs/components';
-import { TButton, Text, View, ScrollView } from '../../components';
+import { Canvas } from '@tarojs/components';
+import { TButton, Text } from '../../components';
 
 import './main.scss'
 import brandSrc from './img/logo.png';

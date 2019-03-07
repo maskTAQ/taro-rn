@@ -4,8 +4,7 @@ import qs from "qs";
 
 import { Tip, Storage } from "commons";
 
-const server = `http://58.49.10.99:8090`;
-const host = `https://58.49.10.99`;
+const host = 'https://s.chncot.com/app/index.php';
 
 
 /**
@@ -111,16 +110,20 @@ const logError = ({ url, params, res, error }) => {
     `);
 };
 
+const splitPath = (p) => {
+    const [c, a, doP] = p.split('/');
+    return { c, a, do: doP };
+}
 /**
  * 请求
  * */
 const requestWrapper = (method, url, param = {}) => {
     const params =
-        method === "post" ? { data: qs.stringify(param) } : { params: param };
+        method === "post" ? { data: qs.stringify(param) } : { params:  Object.assign(splitPath(url), param) };
 
     return Axios.request({
-        baseURL: url.includes('http') ? '' : server,
-        url,
+        baseURL: url.includes('http') ? '' : host,
+        url:'',
         method,
         timeout: 600000,
         ...params
@@ -181,4 +184,4 @@ const get = (url, params = {}, { loading = true, handleCatch = true } = {}) => {
     return base("get", url, params, { loading, handleCatch });
 };
 
-export { post, get, server, host };
+export { post, get, host };

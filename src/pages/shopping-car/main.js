@@ -1,10 +1,10 @@
 
 
-import { Component } from '@tarojs/taro';
-import update from 'immutability-helper';
+import React from 'react';
+import { Component } from '../../platform';
 
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio } from '../../components'
+import { View, TButton, Text, Image, ScrollView } from '../../ui'
 import ShoppingCarItem from './item';
 import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';

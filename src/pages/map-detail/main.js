@@ -1,19 +1,20 @@
 
 
-import { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 
 
-import { View, Text, TMap, TInput } from '../../components';
-import { Button,AtModal , AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
+import { View, Text } from '../../ui';
+import TInput from '../../ui/t-input';
+import TModal from '../../ui/t-modal';
+import { TMap } from '../../components';
 import './main.scss';
-
 import icon from './img/icon.png'
-
 
 export default class MapDetail extends Component {
     state = {
         isModalVisible: false,
-        feedback:'',
+        feedback: '',
         latitude: 23.099994,
         longitude: 113.324520,
         markers: [{
@@ -62,13 +63,13 @@ export default class MapDetail extends Component {
         console.log('提交反馈');
         this.handleClose();
     }
-    changeFeedback = v=>{
+    changeFeedback = v => {
         this.setState({
-            feedback:v
+            feedback: v
         });
     }
     render() {
-        const { longitude, latitude, markers, isModalVisible ,feedback} = this.state;
+        const { longitude, latitude, markers, isModalVisible, feedback } = this.state;
         return (
             <View className='container'>
                 <View className="title-name">
@@ -94,16 +95,10 @@ export default class MapDetail extends Component {
                     }
 
                 </View>
-                <AtModal
-                    isOpened={isModalVisible}
-                    onClose={this.handleClose}
-                >
-                    <AtModalHeader>投诉建议</AtModalHeader>
-                    <AtModalContent>
-                        <TInput className="input" value={feedback} onInput={this.changeFeedback}/>
-                    </AtModalContent>
-                    <AtModalAction> <Button onClick={this.handleClose}>取消</Button> <Button onClick={this.submitFeedBack}>确定</Button> </AtModalAction>
-                </AtModal>
+                <TModal title="投诉建议" visible={isModalVisible} onClose={this.handleClose} onCancel={this.handleClose} onConfirm={this.this.submitFeedBack}>
+                    <TInput className="input" value={feedback} onInput={this.changeFeedback} />
+                </TModal>
+
             </View>
         )
     }
