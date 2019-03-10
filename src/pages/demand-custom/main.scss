@@ -3,60 +3,42 @@
 @import '../color.scss';
 .container {
     height: 100%;
-    background: #bbb;
+    background: #fff;
 }
 
-.row {
+.area-title {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    height: 100px;
+}
+
+.area-title-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.field-column {
     @extend .flex;
     flex-direction: column;
     padding: 0 20px;
     background: #fff;
 }
 
-.title {
+.field-title {
     height: 80px;
     @extend .flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.title-text {
+.field-title-text {
     font-size: 34px;
     color: #000;
 }
 
-.group {
-    margin-bottom: 10px;
-    @extend .flex;
-    flex-direction: row;
-}
-
-.item {
-    margin-right: 20px;
-    height: 50px;
-    padding: 0 20px;
-    @extend .flex;
-    justify-content: center;
-    align-items: center;
-    background: #dfdede;
-}
-
-.item-text {
-    font-size: 28px;
-}
-
-.picker-row {
-    margin-bottom: 10px;
-    @extend .flex;
-    justify-content: row;
-}
-
-.list {
-    margin-top: 20px;
-    background: #fff;
-}
-
-.list-item {
+.field-row {
     @extend .flex;
     height: 80px;
     flex-direction: row;
@@ -65,19 +47,18 @@
     @include borderD(bottom, 1px, solid, #ccc);
 }
 
-.list-item-label {
-    width: 140px;
+.field-label {
     @extend .flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.list-item-label-text {
+.field-label-text {
     font-size: 28px;
     color: #000;
 }
 
-.list-item-content {
+.field-row-content {
     flex: 1;
     height: 100%;
     @extend .flex;
@@ -85,35 +66,33 @@
     align-items: center;
 }
 
-
-
-.toogle-img,
-.date-icon {
-    width: 40px;
-    height: 40px;
+.layout-row {
+    @extend .flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.right {
-    justify-content: flex-end;
+.layout-column {
+    @extend .flex;
+    flex-direction: column;
 }
 
-.toogle-text,.date-text{
-    font-size: 28px;
-    color: #000;
-}
-.range-text{
-    margin: 0 20px;
-    font-size: 28px;
-    color: #000;
-}
-.date-text-box{
-    flex:1;
+.field-content {
+    flex: 1;
     @extend .flex;
     flex-direction: column;
     justify-content: center;
 }
+
+.text {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
+    color: #000;
+}
+
 .btn {
-    margin:40px 20px;
+    margin: 40px 20px;
     margin-bottom: 100px;
     height: 80px;
     @extend .flex;

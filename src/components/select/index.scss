@@ -1,0 +1,30 @@
+@import '../../platform.scss';
+.select-box {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    @extend .flex;
+    flex-direction: row;
+    widows: 100px;
+    height: 50px;
+    padding: 0 20px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #dfdede;
+}
+
+.label,
+.value {
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-text,
+.value-text {
+    font-size: 28px;
+}
+
+t-butotn {
+    float: left;
+}

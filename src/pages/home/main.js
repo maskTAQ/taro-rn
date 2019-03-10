@@ -1,14 +1,15 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
-import { connect } from '@tarojs/redux';
+import { Component ,connect} from '../../platform';
+
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
-import { get } from '../../api/base';
+import { getHome } from '../../api';
 import './main.scss';
-import { navigate } from '../../actions';
+import { navigate, asyncActionWrapper } from '../../actions';
+import { store } from '../../constants';
 const item = {
     id: '562781322',
 
@@ -52,22 +53,20 @@ export default class Home extends Component {
         offerItemDescList: ['xqbh', 'mj'],
         current: 0,
         pickerVisible: false,
-        searchConditionVisible: false
+        searchConditionVisible: false,
+
+        ad: [],
+        news: [],
     };
-    componentWillReceiveProps(nextProps) {
-
+    componentDidMount() {
+        console.log('abcdefg')
+        asyncActionWrapper({ call: getHome, type: 'layout', key: store.demand_custom });
+        // getHome()
+        //     .then(res => {
+        //         this.setState(res);
+        //         console.log(res, 'res');
+        //     })
     }
-
-    componentWillUnmount() { }
-
-    componentDidShow() {
-        get({ url: 'https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html' })
-            .then(res => {
-                console.log(res, 'res');
-            })
-    }
-
-    componentDidHide() { }
     handleClick = (current) => {
         this.props.dispatch({ type: 'ADD' });
         this.setState({
@@ -93,7 +92,7 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { list, current, pickerVisible, searchConditionVisible, bannerList } = this.state;
+        const { ad, news, list, current, pickerVisible, searchConditionVisible, bannerList } = this.state;
         const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
         return (
             <View className="container">
@@ -106,19 +105,20 @@ export default class Home extends Component {
                     indicatorDots
                     autoplay>
                     {
-                        bannerList.map(url => {
+                        ad.map((item) => {
+                            const { logo } = item;
                             return (
-                                <SwiperItem className="banner-item" key={url}>
+                                <SwiperItem className="banner-item" key={logo}>
                                     <Image
                                         className="banner-item"
-                                        src={url}
+                                        src={logo}
                                     />
                                 </SwiperItem>
                             )
                         })
                     }
                 </Swiper>
-                <NoticeTool />
+                <NoticeTool data={news} />
                 <ScrollView>
                     <TTabs scroll={true} current={current} tabList={tabList} onClick={this.handleClick}>
                         {

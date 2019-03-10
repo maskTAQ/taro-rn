@@ -1,0 +1,56 @@
+import Taro, { Component } from '@tarojs/taro';
+
+import { TButton, View, Text } from '../../ui';
+import './index.scss'
+export default class Check extends Component {
+    static options = {
+        addGlobalClass: true
+    }
+    formateData(d) {
+        const data = [].concat(d);
+        const result = [];
+
+        while (data.length) {
+            if (result.length === 0) {
+                result.push([])
+            }
+            if (result[result.length - 1].length > 3) {
+                result.push([data.shift()]);
+            } else {
+                result[result.length - 1].push(data.shift());
+            }
+        }
+        return result;
+    }
+    render() {
+        const { option = [] } = this.props;
+        const group = this.formateData(option);
+        return (
+            <View className="container">
+                {
+                    group.map(row => {
+                        return (
+                            <View className="row">
+                                {
+                                    row.map(item => {
+                                        return (
+                                            <TButton key={item}>
+                                                <View className="check-item">
+                                                    <Text className="check-item-text">
+                                                        {item}
+                                                    </Text>
+                                                </View>
+                                            </TButton>
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    })
+                }
+            </View>
+        )
+    }
+}
+
+

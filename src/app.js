@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 
 import Index from './pages/index'
-import configStore from './store'
+import store from './store'
 import homeImg from './tab-img/home.png';
 // import homeActiveImg from './tab-img/home-active.png';
 // import demandImg from './tab-img/demand.png';
@@ -16,11 +16,12 @@ import './app.scss'
 //   require('nerv-devtools')
 // }
 
-const store = configStore()
 
 class App extends Component {
   config = {
     pages: [
+      'pages/demand-custom/index',
+      'pages/home/index',
       'pages/shopping-car/index',
       'pages/share/index',
       'pages/quotation-list/index',
@@ -32,13 +33,13 @@ class App extends Component {
       'pages/my-demand/index',
       'pages/map-detail/index',
       'pages/demand-detail/index',
-      'pages/demand-custom/index',
+      
       'pages/demand/index',
       'pages/cotton-information/index',
       'pages/cotton-detail/index',
       'pages/add-batch/index',
       'pages/user/index',
-      'pages/home/index',
+     
      
      
       

@@ -15,6 +15,7 @@ const navigate = ({ routeName, params }) => {
 const call = (phoneNumber) => {
     Taro.makePhoneCall({ phoneNumber })
 }
+export { default as asyncActionWrapper } from './asyncActionWrapper';
 export {
     navigate, call
 }

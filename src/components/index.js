@@ -1,19 +1,11 @@
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-export { ScrollView, View, Text, Image };
-export { default as TButton } from './t-button/index';
-export { default as TTag } from './t-tag/index';
-export { default as Visible } from './visible';
-export { default as TTabs } from './t-tabs/index';
-export { default as TTabPane } from './t-tab-pane/index';
-export { default as TInput } from './t-input/index';
-export { default as TPicker } from './t-picker';
-export { default as TSwitch } from './t-switch';
 export { default as FixedTool } from './fixed-tool';
 export { default as TMap } from './t-map';
-export { default as TRadio } from './t-radio';
-export { default as TModal } from './t-modal';
-export { default as TSTab } from './t-single-tab';
 export { default as SearchTool } from './serch-tool';
 export { default as NoticeTool } from './notice-tool';
 export { default as SearchCondition } from './search-condition';
 export { default as MainItem } from './main-item';
+export { default as Check } from './check';
+export { default as Select } from './select';
+export { default as Unknow } from './unknow';
+export { default as Toggle } from './toggle';
+export { default as DatePicker } from './date-picker';

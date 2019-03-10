@@ -13,16 +13,17 @@ const middlewares = [
   thunkMiddleware
 ]
 
-if (process.env.NODE_ENV === 'development') {
-  middlewares.push(require('redux-logger').createLogger())
-}
+// if (process.env.NODE_ENV === 'development') {
+//   middlewares.push(require('redux-logger').createLogger())
+// }
 
 const enhancer = composeEnhancers(
   applyMiddleware(...middlewares),
   // other store enhancers if any
 )
-
-export default function configStore () {
+function configStore () {
   const store = createStore(rootReducer, enhancer)
   return store
 }
+
+export default configStore();
