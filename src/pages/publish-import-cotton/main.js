@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Component, connect } from '../../platform';
+import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
