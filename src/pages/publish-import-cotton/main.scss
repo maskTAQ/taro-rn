@@ -1,6 +1,20 @@
 @import '../../platform.scss';
 @import './component.scss';
-.container {
-    height: 100%;
+@import '../color.scss';
+
+.btn {
+    margin: 40px 20px;
+    margin-bottom: 100px;
+    height: 80px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background:$main;
+    border-radius: 10px;
+}
+
+.btn-text {
+    font-size: 30px;
+    color: #fff;
 }
 

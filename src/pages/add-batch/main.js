@@ -18,14 +18,6 @@ export default class AddBatch extends Component {
             option: []
         },
         params: {},
-
-        isPickerVisible: false,
-        activeItemOption: [],
-        aa: '',
-        bb: '',
-        offerType: '一口价',
-        aaOption: [{ label: '公重', value: '公重', key: 'aa' }, { label: '毛重', value: '毛重', key: 'aa' }],
-        bbOption: [{ label: '自提', value: '自提', key: 'bb' }, { label: '送货上门', value: '送货上门', key: 'bb' }],
     };
     componentWillMount() {
         const { params } = this.props.navigation.state;
