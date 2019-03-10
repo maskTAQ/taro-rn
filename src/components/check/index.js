@@ -24,8 +24,12 @@ export default class Check extends Component {
         }
         return result;
     }
+    handeChange(v) {
+        const { k, value, onChange } = this.props;
+        onChange({ key: k, value: value === v ? '' : v });
+    }
     render() {
-        const { option = [], k, value, onChange } = this.props;
+        const { option = [], value } = this.props;
         const group = this.formateData(option);
         return (
             <View className="container">
@@ -37,9 +41,7 @@ export default class Check extends Component {
                                     row.map(item => {
                                         const isActive = value === item;
                                         return (
-                                            <TButton key={item} onClick={() => {
-                                                onChange({ key: k, value: isActive ? '' : item });
-                                            }}>
+                                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
                                                 <View className={classnames("check-item", {
                                                     "active-check-item": isActive
                                                 })}>

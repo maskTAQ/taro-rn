@@ -9,3 +9,4 @@ export { default as Select } from './select';
 export { default as Unknow } from './unknow';
 export { default as Toggle } from './toggle';
 export { default as DatePicker } from './date-picker';
+export { default as Layout } from './layout';

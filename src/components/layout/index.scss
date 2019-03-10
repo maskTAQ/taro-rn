@@ -1,0 +1,117 @@
+@import '../../platform.scss';
+@import '../../pages/color.scss';
+.input {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
+    color: #000;
+}
+
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+
+/*postcss-pxtransform rn eject disable*/
+
+.area-title {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    height: 100px;
+}
+
+.area-title-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.field-column {
+    @extend .flex;
+    flex-direction: column;
+    padding: 0 20px;
+    background: #fff;
+}
+
+.field-title {
+    height: 80px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field-title-text {
+    font-size: 34px;
+    color: #000;
+}
+
+.field-row {
+    @extend .flex;
+    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 20px;
+    @include borderD(bottom, 1px, solid, #ccc);
+}
+
+.field-label {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field-label-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.field-row-content {
+    flex: 1;
+    height: 100%;
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.layout-row {
+    @extend .flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.layout-column {
+    @extend .flex;
+    flex-direction: column;
+}
+
+.field-content {
+    flex: 1;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
+    color: #000;
+}
+
+.btn {
+    margin: 40px 20px;
+    margin-bottom: 100px;
+    height: 80px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 10px;
+}
+
+.btn-text {
+    font-size: 30px;
+    color: #fff;
+}
