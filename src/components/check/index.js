@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 import classnames from 'classnames';
 
 import { TButton, View, Text } from '../../ui';

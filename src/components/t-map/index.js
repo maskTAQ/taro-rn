@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro';
+import React from 'react';
+import { Component } from '../../platform';
 import { Map, CoverView, CoverImage, Button } from '@tarojs/components';
 
 import ip from './img/ip.png'
