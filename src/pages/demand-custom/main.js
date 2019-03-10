@@ -3,13 +3,14 @@
 import React from 'react';
 import { Component, connect } from '../../platform';
 import classnames from 'classnames';
+import update from 'immutability-helper';
 
 import Check from '../../components/check';
 import Select from '../../components/select';
 import Toggle from '../../components/toggle';
 import DatePicker from '../../components/date-picker';
 //import {  } from '../../components';
-import { View, Text, Image, TInput, TSTab, TRadio, TButton, TPicker } from '../../ui';
+import { View, Text, TDatePicker, TInput, TSTab, TButton, TPicker } from '../../ui';
 import { store } from '../../constants';
 import { getDemandCustomLayout } from '../../api';
 import { asyncActionWrapper } from '../../actions';
@@ -17,20 +18,16 @@ import checkedImg from '../../img/checked.png';
 import dateImg from '../../img/date.png';
 import './main.scss';
 
-const componentMap = {
-    //check: Check
-};
-console.log(componentMap, 'Check');
-
-// const getComponent = type => {
-//     return componentMap[type] || UnKnow
-// }
 const radioOption = [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }];
 @connect(({ layout }) => ({ demand_custom: layout.demand_custom }))
 export default class DemandCustom extends Component {
     state = {
         activeTab: '国产棉花',
-        pickerVisible: false
+        picker: {
+            visible: false,
+            option: []
+        },
+        params: {}
     };
     componentWillMount() {
         this.getData();
@@ -52,20 +49,73 @@ export default class DemandCustom extends Component {
         });
     }
 
-    showPicker = () => {
-        console.log('showPicker')
-        this.setState({
-            pickerVisible: true
-        });
+    showPicker = (option, key) => {
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: true
+                },
+                option: {
+                    $set: option
+                },
+                key: {
+                    $set: key
+                }
+            }
+        }));
+    }
+    handlePickerChange = item => {
+        const { key } = this.state.picker;
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            },
+            params: {
+                [key]: {
+                    $set: item.value
+                }
+            }
+        }));
     }
     closePicker = () => {
-        this.setState({
-            pickerVisible: false
-        });
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            }
+        }));
     }
+    handleChange = ({ key, value }) => {
+        this.setState(update(this.state, {
+            params: {
+                [key]: {
+                    $set: value
+                }
+            }
+        }));
+    }
+    handleInputChange = (key, value) => {
+        this.handleChange({ key, value });
+    }
+    handleDateChange = (key, value) => {
+        this.handleChange({ key, value });
+    }
+    submit = () => {
+        console.log(this.state.params);
+    }
+
     render() {
         const { status, loading, data } = this.props.demand_custom;
-        const { activeTab, pickerVisible } = this.state;
+        const { activeTab, picker, params } = this.state;
         return (
             <View className='container'>
                 <TSTab list={['国产棉花', '进口棉花']} active={activeTab} onTabChange={this.handleTabChange} />
@@ -96,11 +146,11 @@ export default class DemandCustom extends Component {
                                                         let isShowField = true;
                                                         if (visible.includes('=')) {
                                                             const [key, value] = visible.split('=');
-                                                            isShowField = this.state[key] === value;
+                                                            isShowField = params[key] === value;
                                                         }
                                                         if (visible.includes('!=')) {
                                                             const [key, value] = visible.split('!=');
-                                                            isShowField = this.state[key] !== value;
+                                                            isShowField = params[key] !== value;
                                                         }
 
                                                         return (
@@ -118,21 +168,21 @@ export default class DemandCustom extends Component {
                                                                                 let isShowComponent = true;
                                                                                 if (componentVisible.includes('=')) {
                                                                                     const [key, value] = componentVisible.split('=');
-                                                                                    isShowComponent = this.state[key] === value;
+                                                                                    isShowComponent = params[key] === value;
                                                                                 }
                                                                                 if (componentVisible.includes('!=')) {
                                                                                     const [key, value] = componentVisible.split('!=');
-                                                                                    isShowComponent = this.state[key] !== value;
+                                                                                    isShowComponent = params[key] !== value;
                                                                                 }
+                                                                                const v = params[param];
                                                                                 return (
-                                                                                    <View>
+                                                                                    <View key={type}>
                                                                                         {
-                                                                                            type === 'check' && isShowComponent && <Check option={content} />
+                                                                                            type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                                         }
                                                                                         {
-                                                                                            type === 'select' && isShowComponent && <Select label={label} value={this.state[param]} />
+                                                                                            type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={() => this.showPicker(content, param)} />
                                                                                         }
-
                                                                                     </View>
                                                                                 )
                                                                             })
@@ -149,19 +199,22 @@ export default class DemandCustom extends Component {
                                                                         {
                                                                             components.map(component => {
                                                                                 const { type, label, param, content } = component;
+                                                                                const v = params[param];
                                                                                 return (
-                                                                                    <View className="field-content">
+                                                                                    <View className="field-content" key={param}>
                                                                                         {
-                                                                                            type === 'radio' && <Toggle label="显示" />
+                                                                                            type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
                                                                                         }
                                                                                         {
-                                                                                            type === 'input' && <TInput placeholder={content} className="input" />
+                                                                                            type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
                                                                                         }
                                                                                         {
                                                                                             type === 'text' && <Text className="text">{content}</Text>
                                                                                         }
                                                                                         {
-                                                                                            type === 'datepicker' && <DatePicker date={new Date()} />
+                                                                                            type === 'datepicker' && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
+                                                                                                <DatePicker date={v} />
+                                                                                            </TDatePicker>
                                                                                         }
                                                                                     </View>
                                                                                 )
@@ -186,12 +239,17 @@ export default class DemandCustom extends Component {
                 {
                     loading && <Text />
                 }
-                <TButton>
+                <TButton onClick={this.submit}>
                     <View className="btn">
                         <Text className="btn-text">发布</Text>
                     </View>
                 </TButton>
-                <TPicker show={pickerVisible} onCancel={this.closePicker} onClose={this.closePicker} option={radioOption} />
+                <TPicker onClick={this.handlePickerChange}
+                    show={picker.visible}
+                    onCancel={this.closePicker}
+                    onClose={this.closePicker}
+                    option={picker.option.map(item => ({ label: item, value: item }))}
+                />
             </View>
         )
     }

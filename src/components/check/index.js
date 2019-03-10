@@ -1,4 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
+import classnames from 'classnames';
 
 import { TButton, View, Text } from '../../ui';
 import './index.scss'
@@ -23,7 +24,7 @@ export default class Check extends Component {
         return result;
     }
     render() {
-        const { option = [] } = this.props;
+        const { option = [], k, value, onChange } = this.props;
         const group = this.formateData(option);
         return (
             <View className="container">
@@ -33,10 +34,17 @@ export default class Check extends Component {
                             <View className="row">
                                 {
                                     row.map(item => {
+                                        const isActive = value === item;
                                         return (
-                                            <TButton key={item}>
-                                                <View className="check-item">
-                                                    <Text className="check-item-text">
+                                            <TButton key={item} onClick={() => {
+                                                onChange({ key: k, value: isActive ? '' : item });
+                                            }}>
+                                                <View className={classnames("check-item", {
+                                                    "active-check-item": isActive
+                                                })}>
+                                                    <Text className={classnames("check-item-text", {
+                                                        "active-check-item-text": isActive
+                                                    })}>
                                                         {item}
                                                     </Text>
                                                 </View>

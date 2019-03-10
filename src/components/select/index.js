@@ -7,9 +7,9 @@ export default class Select extends Component {
         addGlobalClass: true
     }
     render() {
-        const { label, value } = this.props;
+        const { label, value, onClick } = this.props;
         return (
-            <TButton>
+            <TButton onClick={onClick}>
                 <View className="select-box">
                     <View className="label">
                         <Text className="label-text">{label}:</Text>

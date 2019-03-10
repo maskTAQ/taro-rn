@@ -9,12 +9,14 @@ export default class Toggle extends Component {
         addGlobalClass: true
     }
     render() {
-        const { label = '显示', checked } = this.props;
+        const { label = '显示', k, value, onChange } = this.props;
         return (
-            <TButton>
+            <TButton onClick={() => {
+                onChange({ key: k, value: !value });
+            }}>
                 <View className="container">
                     <Text className="label">{label}</Text>
-                    <Image className="toogle-img" src={checked ? checkedImg : unCheckedImg} />
+                    <Image className="toogle-img" src={value ? checkedImg : unCheckedImg} />
                 </View>
             </TButton>
         )
