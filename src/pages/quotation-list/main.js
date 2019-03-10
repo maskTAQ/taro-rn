@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from '../../platform';
 
 import { Canvas } from '@tarojs/components';
-import { TButton, Text } from '../../components';
+import { TButton, Text } from '../../ui';
 
 import './main.scss'
 import brandSrc from './img/logo.png';

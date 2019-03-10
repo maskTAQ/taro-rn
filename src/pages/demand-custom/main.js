@@ -6,7 +6,6 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
-import { store } from '../../constants';
 import { getDemandCustomLayout } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
@@ -91,7 +90,6 @@ export default class DemandCustom extends Component {
         const { status, loading, data, msg } = this.props.layout[`demand_custom_${activeTab}`];
         return (
             <View className='container'>
-            <Text className="a">log:{JSON.stringify({status, loading})}</Text>
                 <ScrollView>
                     <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
                     {

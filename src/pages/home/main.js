@@ -1,15 +1,15 @@
 
 
 import React from 'react';
-import { Component ,connect} from '../../platform';
+import { Component, connect } from '../../platform';
 
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
 import { getHome } from '../../api';
-import './main.scss';
 import { navigate, asyncActionWrapper } from '../../actions';
 import { store } from '../../constants';
+import './main.scss';
 const item = {
     id: '562781322',
 

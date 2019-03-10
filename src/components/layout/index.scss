@@ -7,14 +7,6 @@
     color: #000;
 }
 
-/*postcss-pxtransform rn eject enable*/
-
-t-input {
-    flex: 1;
-}
-
-/*postcss-pxtransform rn eject disable*/
-
 .area-title {
     @extend .flex;
     flex-direction: column;
@@ -52,6 +44,7 @@ t-input {
     height: 80px;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     padding: 0 20px;
     @include borderD(bottom, 1px, solid, #ccc);
 }
@@ -115,3 +108,11 @@ t-input {
     font-size: 30px;
     color: #fff;
 }
+
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+
+/*postcss-pxtransform rn eject disable*/

@@ -1,13 +1,17 @@
 @import '../../platform.scss';
-.item-input {
+.input {
     flex: 1;
+    height: 100%;
     font-size: 28px;
-    color: rgb(47, 47, 47);
+    color: #000;
 }
 
-.picker-btn {
-    @extend .flex;
-    justify-content: center;
+.column-select {
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.row-select{
+    margin-left: 20px;
 }
 
 .submit-button {

@@ -34,9 +34,9 @@ export default class Check extends Component {
         return (
             <View className="container">
                 {
-                    group.map(row => {
+                    group.map((row,rowI) => {
                         return (
-                            <View className="row">
+                            <View className="row" key={rowI}>
                                 {
                                     row.map(item => {
                                         const isActive = value === item;

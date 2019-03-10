@@ -20,42 +20,25 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
-      'pages/demand-custom/index',
+      'pages/offer-tool/index',
       'pages/home/index',
       'pages/shopping-car/index',
       'pages/share/index',
       'pages/quotation-list/index',
       'pages/publish-import-cotton/index',
       'pages/package-detail/index',
-      'pages/offer-tool/index',
+     
       'pages/offer-hint/index',
       'pages/notice-details/index',
       'pages/my-demand/index',
       'pages/map-detail/index',
       'pages/demand-detail/index',
-      
+      'pages/demand-custom/index',
       'pages/demand/index',
       'pages/cotton-information/index',
       'pages/cotton-detail/index',
       'pages/add-batch/index',
-      'pages/user/index',
-     
-     
-     
-      
-     
-      
-      
-     
-      
-      
-     
-     
-     
-      
-     
-      
-      
+      'pages/user/index'
     ],
     window: {
       backgroundTextStyle: 'light',

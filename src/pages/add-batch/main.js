@@ -1,81 +1,24 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
+import update from 'immutability-helper';
 
-import { View, Text, TPicker, TInput, TButton, Image } from '../../ui'
+import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
+import { Layout } from '../../components';
+import { getOfferLayout } from '../../api';
+import { asyncActionWrapper } from '../../actions';
 import './main.scss';
-import checkedImg from '../../img/checked.png';
-import uncheckedImg from '../../img/unchecked.png';
 
-const createOption = function (v, key) {
-    return {
-        label: v,
-        value: v,
-        key
-    }
-}
-const listTop = [
-    {
-        label: '批次',
-        type: 'input',
-        placeholder: '请输入批次',
-        key: 'a'
-    },
-    {
-        label: '报价类型',
-        type: 'picker',
-        placeholder: '请选择报价类型',
-        option: [createOption('一口价', 'offerType'), createOption('基差', 'offerType')],
-        key: 'offerType'
-    },
-    {
-        label: '报价(元/吨)',
-        type: 'input',
-        placeholder: '请输入报价',
-        key: 'b'
-    },
-    {
-        label: '选择基差',
-        type: 'picker',
-        placeholder: '请输入基差',
-        option: [createOption(12, 'e'), createOption(13, 'e')],
-        key: 'c'
-    },
-    {
-        label: '远期交货',
-        type: 'switch',
-        key: 'd'
-    }
-];
-const listBotton = [
-    {
-        label: '公司',
-        type: 'input',
-        placeholder: '请输入公司名称',
-        key: 'f'
-    },
-    {
-        label: '公司类型',
-        type: 'input',
-        placeholder: '请输入公司类型',
-        key: 'i'
-    },
-    {
-        label: '联系电话',
-        type: 'input',
-        placeholder: '请输入联系电话',
-        key: 'j'
-    },
-    {
-        label: '联系人',
-        type: 'input',
-        placeholder: '请输入联系人',
-        key: 'k'
-    }
-]
+@connect(({ layout }) => ({ layout }))
 export default class AddBatch extends Component {
     state = {
+        picker: {
+            visible: false,
+            option: []
+        },
+        params: {},
+
         isPickerVisible: false,
         activeItemOption: [],
         aa: '',
@@ -84,132 +27,96 @@ export default class AddBatch extends Component {
         aaOption: [{ label: '公重', value: '公重', key: 'aa' }, { label: '毛重', value: '毛重', key: 'aa' }],
         bbOption: [{ label: '自提', value: '自提', key: 'bb' }, { label: '送货上门', value: '送货上门', key: 'bb' }],
     };
-    showPicker = option => {
-        this.setState({
-            isPickerVisible: true,
-            activeItemOption: option
-        });
+    componentWillMount() {
+        const { params } = this.props.navigation.state;
+        this.getData(params);
     }
-    closePicker = () => {
-        this.setState({
-            isPickerVisible: false,
-            activeItemOption: []
-        });
-    }
-    handlePickerItemClick = data => {
-        if (data) {
-            console.log(data, 'data');
-            const { key, value } = data;
-            this.setState({
-                [key]: value
+    getData(params) {
+        const { status, loading } = this.props.layout[`offer_${params.type}`];
+        if (status !== 'success' && !loading) {
+            asyncActionWrapper({
+                call: getOfferLayout,
+                params,
+                type: 'layout',
+                key: `offer_${params.type}`
             });
         }
-        this.closePicker();
     }
-    hanldInputChange = (key, text) => {
-        this.setState({
-            [key]: text
-        });
+    changePickerData = (picker) => {
+        this.setState({ picker });
     }
-    handleSwitchChange = status => {
-        this.setState({
-            f: status
-        });
+    closePicker = () => {
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            }
+        }));
     }
-    submit() {
-        console.log(this.state);
+    handlePickerChange = item => {
+        const { key } = this.state.picker;
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            },
+            params: {
+                [key]: {
+                    $set: item.value
+                }
+            }
+        }));
     }
-    toggleCheckedStatus = () => {
-        this.setState({
-            f: !this.state.f
-        });
+
+
+    handleFieldChange = params => {
+        this.setState({ params })
     }
-    getFilterListTop = list => {
-        const { offerType } = this.state;
-        const result = [...list];
-        if (offerType === '一口价') {
-            result.splice(3, 1);
-        } else {
-            result.splice(2, 1);
-        }
-        return result;
+
+    submit = () => {
+        console.log(this.state.params);
     }
+
     render() {
-
-        const { isPickerVisible, activeItemOption, aa, bb, aaOption, bbOption } = this.state;
-
+        const { params:navParams } = this.props.navigation.state;
+        const { picker, params } = this.state;
+        const { status, loading, data, msg } = this.props.layout[`offer_${navParams.type}`];
         return (
             <View className='container'>
-                {
-                    this.getFilterListTop(listTop).map(item => {
-                        const { type, placeholder, label, option, key } = item;
-                        return (
-                            <View className="item">
-                                <Text className="item-label">{label}</Text>
-                                {
-                                    type === 'input' && <TInput value={this.state[key]} onInput={text => this.hanldInputChange(key, text)} className="item-input" placeholder={placeholder} />
-                                }
-                                {
-                                    type === 'picker' && (
-
-                                        <TButton
-                                            className="picker-btn"
-                                            onClick={() => { this.showPicker(option) }}>
-                                            <Text className="picker-btn-text">{String(this.state[key] || placeholder)}</Text>
-                                        </TButton>
-
-                                    )
-                                }
-                                {
-                                    type === 'switch' && (
-                                        <View className="item-right">
-                                            <TButton
-                                                className="picker-btn"
-                                                onClick={() => { this.showPicker(aaOption) }}>
-                                                <Text className="picker-btn-text mr">{aa || '请选择'}</Text>
-                                            </TButton>
-                                            <TButton
-                                                className="picker-btn"
-                                                onClick={() => { this.showPicker(bbOption) }}>
-                                                <Text className="picker-btn-text mr">{bb || '请选择'}</Text>
-                                            </TButton>
-                                            <Text className="switch-text">{this.state.f ? '支持' : '不支持'}</Text>
-                                            <TButton onClick={this.toggleCheckedStatus}>
-                                                <Image className="switch-icon" src={this.state.f ? checkedImg : uncheckedImg} />
-                                            </TButton>
-                                        </View>
-                                    )
-                                }
-
-                            </View>
-                        )
-                    })
-                }
-                <View className="title">
-                    <Text className="title-text">企业信息</Text>
-                </View>
-                {
-                    listBotton.map(item => {
-                        const { type, placeholder, label, option, key } = item;
-                        return (
-                            <View className="item">
-                                <Text className="item-label">{label}</Text>
-                                {
-                                    type === 'input' && <TInput value={this.state[key]} onInput={text => this.hanldInputChange(key, text)} className="item-input" placeholder={placeholder} />
-                                }
-                            </View>
-                        )
-                    })
-                }
-                <TButton onClick={this.submit} className="submit-button">
-                    <Text className="submit-button-text">马上发布</Text>
-                </TButton>
+                <ScrollView>
+                    {
+                        status === 'success' && <Layout
+                            picker={picker}
+                            data={data}
+                            params={params}
+                            onFieldChange={this.handleFieldChange}
+                            onChangePickerData={this.changePickerData}
+                        />
+                    }
+                    {
+                        loading && <Text>loading</Text>
+                    }
+                    {
+                        status === 'error' && <Text>{msg}</Text>
+                    }
+                    <TButton onClick={this.submit} className="submit-button">
+                        <Text className="submit-button-text">马上发布</Text>
+                    </TButton>
+                </ScrollView>
                 <TPicker
-                    show={isPickerVisible}
+                    onClick={this.handlePickerChange}
+                    show={picker.visible}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}
-                    option={activeItemOption}
-                    onClick={this.handlePickerItemClick}
+                    option={picker.option.map(item => ({ label: item, value: item }))}
                 />
             </View>
         )

@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { Component, connect } from '../../platform';
+import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
@@ -9,7 +9,7 @@ import { Check, Select, Toggle, DatePicker } from '../index';
 import { View, Text, TDatePicker, TInput } from '../../ui';
 import './index.scss';
 export default class Layout extends Component {
-    showPicker = (option, key) => {
+    showPicker(option, key) {
         const { picker, onChangePickerData } = this.props;
         onChangePickerData(update(picker, {
             visible: {
@@ -74,18 +74,23 @@ export default class Layout extends Component {
                                                 'layout-column': components.length <= 2,
                                             });
                                             let isShowField = true;
-                                            if (visible.includes('=')) {
-                                                const [key, value] = visible.split('=');
-                                                isShowField = params[key] === value;
+                                            if (typeof visible === 'string') {
+                                                if (visible.includes('=')) {
+                                                    const [key, value] = visible.split('=');
+                                                    isShowField = params[key] === value;
+                                                }
+                                                if (visible.includes('!=')) {
+                                                    const [key, value] = visible.split('!=');
+                                                    isShowField = params[key] !== value;
+                                                }
                                             }
-                                            if (visible.includes('!=')) {
-                                                const [key, value] = visible.split('!=');
-                                                isShowField = params[key] !== value;
+                                            if (typeof visible === 'boolean') {
+                                                isShowField = visible
                                             }
 
                                             return (
-                                                layout === 'column' ? (
-                                                    <View className="field-column">
+                                                layout === 'column' && isShowField ? (
+                                                    <View className="field-column" key={title}>
                                                         <View className="field-title">
                                                             <Text className="field-title-text">
                                                                 {fieldTitle}
@@ -96,13 +101,18 @@ export default class Layout extends Component {
                                                                 components.map(component => {
                                                                     const { type, label, param, content, visible: componentVisible = '' } = component;
                                                                     let isShowComponent = true;
-                                                                    if (componentVisible.includes('=')) {
-                                                                        const [key, value] = componentVisible.split('=');
-                                                                        isShowComponent = params[key] === value;
+                                                                    if (typeof componentVisible === 'string') {
+                                                                        if (componentVisible.includes('=')) {
+                                                                            const [key, value] = componentVisible.split('=');
+                                                                            isShowComponent = params[key] === value;
+                                                                        }
+                                                                        if (componentVisible.includes('!=')) {
+                                                                            const [key, value] = componentVisible.split('!=');
+                                                                            isShowComponent = params[key] !== value;
+                                                                        }
                                                                     }
-                                                                    if (componentVisible.includes('!=')) {
-                                                                        const [key, value] = componentVisible.split('!=');
-                                                                        isShowComponent = params[key] !== value;
+                                                                    if (typeof componentVisible === 'boolean') {
+                                                                        isShowField = componentVisible
                                                                     }
                                                                     const v = params[param];
                                                                     return (
@@ -111,27 +121,8 @@ export default class Layout extends Component {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={() => this.showPicker(content, param)} />
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)}  className="column-select"/>
                                                                             }
-                                                                        </View>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </View>
-                                                    </View>
-                                                ) :
-                                                    (
-                                                        <View className="field-row">
-                                                            <View className="field-label">
-                                                                <Text className="field-label-text">{fieldTitle}:</Text>
-                                                            </View>
-
-                                                            {
-                                                                components.map(component => {
-                                                                    const { type, label, param, content } = component;
-                                                                    const v = params[param];
-                                                                    return (
-                                                                        <View className="field-content" key={param}>
                                                                             {
                                                                                 type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
                                                                             }
@@ -150,7 +141,59 @@ export default class Layout extends Component {
                                                                     )
                                                                 })
                                                             }
+                                                        </View>
+                                                    </View>
+                                                ) :
+                                                    (
+                                                        <View className="field-row">
+                                                            <View className="field-label">
+                                                                <Text className="field-label-text">{fieldTitle}:</Text>
+                                                            </View>
 
+                                                            {
+                                                                components.map(component => {
+                                                                    const { type, label, param, content, visible: componentVisible = '' } = component;
+                                                                    let isShowComponent = true;
+                                                                    if (typeof componentVisible === 'string') {
+                                                                        if (componentVisible.includes('=')) {
+                                                                            const [key, value] = componentVisible.split('=');
+                                                                            isShowComponent = params[key] === value;
+                                                                        }
+                                                                        if (componentVisible.includes('!=')) {
+                                                                            const [key, value] = componentVisible.split('!=');
+                                                                            isShowComponent = params[key] !== value;
+                                                                        }
+                                                                    }
+                                                                    if (typeof componentVisible === 'boolean') {
+                                                                        isShowField = componentVisible
+                                                                    }
+                                                                    const v = params[param];
+                                                                    return (
+                                                                        <View className="field-content" key={type}>
+                                                                            {
+                                                                                type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="row-select"/>
+                                                                            }
+                                                                            {
+                                                                                type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
+                                                                            }
+                                                                            {
+                                                                                type === 'text' && <Text className="text">{content}</Text>
+                                                                            }
+                                                                            {
+                                                                                type === 'datepicker' && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
+                                                                                    <DatePicker date={v} />
+                                                                                </TDatePicker>
+                                                                            }
+                                                                        </View>
+                                                                    )
+                                                                })
+                                                            }
 
                                                         </View>
                                                     )
