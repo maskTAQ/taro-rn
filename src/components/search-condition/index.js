@@ -5,7 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Check, Select, Toggle, DatePicker } from '../index';
+import { Check, Select, Toggle, DatePicker ,Slidebothway} from '../index';
 import RadioCheck from '../radio-check/index';
 import { View, Text, TDatePicker, TInput, TButton, Image } from '../../ui';
 import topIcon from '../../img/top.png';
@@ -40,7 +40,7 @@ const isVisible = ({ visible = true, params }) => {
 export default class SearchCondition extends Component {
     state = {
         activeTab: '',
-        activeTabIndex: 0,
+        activeTabIndex: NaN,
     }
     handleTabChange = (activeTab, activeTabIndex) => {
         if (activeTab === this.getActiveTab()) {
@@ -110,6 +110,7 @@ export default class SearchCondition extends Component {
     render() {
         const { activeTabIndex } = this.state;
         const { data, params, status, loading, onResetParams } = this.props;
+        const activeTab = this.getActiveTab();
         return (
             <View className="container">
                 {
@@ -119,9 +120,9 @@ export default class SearchCondition extends Component {
                                 {
                                     data.map((tab, tabIndex) => {
                                         const { title } = tab;
-                                        const isActive = title === this.getActiveTab();
+                                        const isActive = title === activeTab;
                                         return (
-                                            <TButton onClick={this.handleTabChange.bind(this, title, tabIndex)}>
+                                            <TButton className="tab-button" onClick={this.handleTabChange.bind(this, title, tabIndex)}>
                                                 <View
                                                     className={classnames("tab-item", {
                                                         "active-tab-item": isActive
@@ -140,7 +141,7 @@ export default class SearchCondition extends Component {
                             <View className="filter-box">
                                 {
                                     (isNaN(activeTabIndex) ? [] : data[activeTabIndex].data).map(field => {
-                                        const { title: fieldTitle, data: components = [] } = field;
+                                        const { title: fieldTitle, components = [] } = field;
                                         const className = classnames({
                                             'layout-row': components.length > 2,
                                             'layout-column': components.length <= 2,
@@ -162,6 +163,9 @@ export default class SearchCondition extends Component {
                                                                 <View key={type}>
                                                                     {
                                                                         type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'slidebothway' && isShowComponent && <Slidebothway k={param} value={v} option={content} onChange={this.handleChange} />
                                                                     }
                                                                     {
                                                                         type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
@@ -193,18 +197,24 @@ export default class SearchCondition extends Component {
                                     })
                                 }
                             </View>
-                            <View className="btn-group">
-                                <TButton onClick={onResetParams}>
-                                    <View className="btn">
-                                        <Text className="btn-text">清空</Text>
+                            {
+
+                                activeTab && (
+                                    <View className="btn-group">
+                                        <TButton onClick={onResetParams}>
+                                            <View className="btn">
+                                                <Text className="btn-text">清空</Text>
+                                            </View>
+                                        </TButton>
+                                        <TButton>
+                                            <View className="btn">
+                                                <Text className="btn-text">确定</Text>
+                                            </View>
+                                        </TButton>
                                     </View>
-                                </TButton>
-                                <TButton>
-                                    <View className="btn">
-                                        <Text className="btn-text">确定</Text>
-                                    </View>
-                                </TButton>
-                            </View>
+                                )
+                            }
+
                         </View>
                     )
                 }

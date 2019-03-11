@@ -1,6 +1,5 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
-@import '../../pages/color.scss';
 .tab-box {
     @extend .flex;
     flex-direction: row;
@@ -133,16 +132,17 @@
 }
 
 .btn-group {
-    margin-bottom: 20px;
-    padding: 0 20px;
+    padding:20px;
     @extend .flex;
     flex-direction: row;
+    justify-content: space-around;
+    @include borderD(bottom, 1px, solid, #ccc);
 }
-.mr{
-    margin-right: 100px;
-}
+
+
 .btn {
-    height: 80px;
+    padding: 0 40px;
+    height: 60px;
     @extend .flex;
     justify-content: center;
     align-items: center;
@@ -160,7 +160,7 @@ t-input {
     flex: 1;
 }
 
-t-button {
+.tab-box t-button {
     flex: 1;
 }
 

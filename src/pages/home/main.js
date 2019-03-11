@@ -6,9 +6,9 @@ import { Component, connect } from '../../platform';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components';
-import { getFilterLayout, getHome, doSubmit } from '../../api';
+import { getFilterLayout, getHome, getOfferList } from '../../api';
 import { navigate, asyncActionWrapper } from '../../actions';
-import { store, productTypes } from '../../constants';
+import { productTypes } from '../../constants';
 import './main.scss';
 const item = {
     id: '562781322',
@@ -84,7 +84,12 @@ export default class Home extends Component {
                 key: `filter_${activeTab}`
             });
         }
+        getOfferList({ '棉花云报价类型': productTypes.indexOf(activeTab) + 1 })
+            .then(res => {
+                console.log(res, 'getListData');
+            })
     }
+    
     handleTabChange = activeTab => {
         this.setState({
             activeTab
@@ -136,17 +141,9 @@ export default class Home extends Component {
     goCottonDetail() {
         navigate({ routeName: 'cotton-detail' });
     }
-
-    toggleSearchConditionVisible = () => {
-        this.setState({
-            searchConditionVisible: !this.state.searchConditionVisible
-        });
-    }
-
     render() {
-        const { picker, ad, news, activeTab, params } = this.state;
+        const { picker, ad, news, activeTab, params, url } = this.state;
         const { status, loading, data } = this.props.layout[`filter_${activeTab}`];
-        console.log(this.props.layout)
         return (
             <View className="container">
                 <ScrollView>
@@ -165,7 +162,7 @@ export default class Home extends Component {
                                     <SwiperItem className="banner-item" key={logo}>
                                         <Image
                                             className="banner-item"
-                                            src={logo}
+                                            src={url + logo}
                                         />
                                     </SwiperItem>
                                 )
@@ -184,6 +181,15 @@ export default class Home extends Component {
                         onChangePickerData={this.changePickerData}
                         onResetParams={this.resetParams}
                     />
+                    <View className="list">
+                        {list.map(() => {
+                            return (
+                                <TButton onClick={this.goCottonDetail}>
+                                    <MainItem border={true} />
+                                </TButton>
+                            )
+                        })}
+                    </View>
                 </ScrollView>
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}

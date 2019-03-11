@@ -18,6 +18,10 @@ export function getOfferLayout(params) {
 export function getFilterLayout(params) {
     return get('CloudQuoteFiltrateUI', params);
 }
+//报价列表
+export function getOfferList(params) {
+    return get('CloudQuoteList',params);
+}
 //提交
 export function doSubmit(url, params) {
     return get(url, params);
