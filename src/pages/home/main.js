@@ -64,12 +64,13 @@ export default class Home extends Component {
 
         ad: [],
         news: [],
+        key: {},
+        list: [],
     };
     componentWillMount() {
         getHome()
             .then(res => {
                 this.setState(res);
-
             })
         this.getData();
     }
@@ -86,10 +87,10 @@ export default class Home extends Component {
         }
         getOfferList({ '棉花云报价类型': productTypes.indexOf(activeTab) + 1 })
             .then(res => {
-                console.log(res, 'getListData');
+                this.setState(res);
             })
     }
-    
+
     handleTabChange = activeTab => {
         this.setState({
             activeTab
@@ -134,7 +135,9 @@ export default class Home extends Component {
             params: {}
         });
     }
-
+    submit = () => {
+        console.log(this.state.params, 'params')
+    }
     handleFieldChange = params => {
         this.setState({ params })
     }
@@ -142,7 +145,7 @@ export default class Home extends Component {
         navigate({ routeName: 'cotton-detail' });
     }
     render() {
-        const { picker, ad, news, activeTab, params, url } = this.state;
+        const { picker, ad, news, activeTab, params, url, key, list } = this.state;
         const { status, loading, data } = this.props.layout[`filter_${activeTab}`];
         return (
             <View className="container">
@@ -180,12 +183,13 @@ export default class Home extends Component {
                         onFieldChange={this.handleFieldChange}
                         onChangePickerData={this.changePickerData}
                         onResetParams={this.resetParams}
+                        onSubmit={this.submit}
                     />
                     <View className="list">
-                        {list.map(() => {
+                        {list.map((item, i) => {
                             return (
-                                <TButton onClick={this.goCottonDetail}>
-                                    <MainItem border={true} />
+                                <TButton onClick={this.goCottonDetail} key={i}>
+                                    <MainItem border={true} data={item} map={key} />
                                 </TButton>
                             )
                         })}

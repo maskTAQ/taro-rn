@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 
 import { Check, Select, Toggle, DatePicker } from '../index';
 import RadioCheck from '../radio-check/index';
-import { View, Text, TDatePicker, TInput } from '../../ui';
+import { View, Text, TDatePicker, TInput ,TLoading} from '../../ui';
 import './index.scss';
 const isVisible = ({ visible = true, params }) => {
     let isVisible = true;
@@ -80,7 +80,7 @@ export default class Layout extends Component {
         return (
             <View className="content">
                 {
-                    data.param.map(area => {
+                    status === 'success' && data.param.map(area => {
                         const { title, data } = area;
                         return (
                             <View className="area" key={title}>
@@ -152,7 +152,7 @@ export default class Layout extends Component {
                                                     (
                                                         <View className="field-row">
                                                             <View className="field-label">
-                                                                <Text className="field-label-text">{fieldTitle}:</Text>
+                                                                <Text className="field-label-text">{fieldTitle}</Text>
                                                             </View>
 
                                                             {
@@ -200,7 +200,12 @@ export default class Layout extends Component {
                         )
                     })
                 }
-
+                {
+                    status === 'error' && <Text>error</Text>
+                }
+                {
+                    loading && <TLoading />
+                }
             </View>
 
         )

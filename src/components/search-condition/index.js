@@ -5,9 +5,9 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Check, Select, Toggle, DatePicker ,Slidebothway} from '../index';
+import { Check, Select, Toggle, DatePicker, Slidebothway } from '../index';
 import RadioCheck from '../radio-check/index';
-import { View, Text, TDatePicker, TInput, TButton, Image } from '../../ui';
+import { View, Text, TDatePicker, TInput, TButton, Image, TLoading } from '../../ui';
 import topIcon from '../../img/top.png';
 import bottomIcon from '../../img/bottom.png';
 import './index.scss';
@@ -109,8 +109,8 @@ export default class SearchCondition extends Component {
     }
     render() {
         const { activeTabIndex } = this.state;
-        const { data, params, status, loading, onResetParams } = this.props;
-        const activeTab = this.getActiveTab();
+        const { data, params, status, loading, onResetParams, onSubmit } = this.props;
+        const current = this.getActiveTab();
         return (
             <View className="container">
                 {
@@ -120,7 +120,7 @@ export default class SearchCondition extends Component {
                                 {
                                     data.map((tab, tabIndex) => {
                                         const { title } = tab;
-                                        const isActive = title === activeTab;
+                                        const isActive = title === current;
                                         return (
                                             <TButton className="tab-button" onClick={this.handleTabChange.bind(this, title, tabIndex)}>
                                                 <View
@@ -199,14 +199,14 @@ export default class SearchCondition extends Component {
                             </View>
                             {
 
-                                activeTab && (
+                                tab && (
                                     <View className="btn-group">
                                         <TButton onClick={onResetParams}>
                                             <View className="btn">
                                                 <Text className="btn-text">清空</Text>
                                             </View>
                                         </TButton>
-                                        <TButton>
+                                        <TButton onClick={onSubmit}>
                                             <View className="btn">
                                                 <Text className="btn-text">确定</Text>
                                             </View>
@@ -222,7 +222,7 @@ export default class SearchCondition extends Component {
                     status === 'error' && <Text>error</Text>
                 }
                 {
-                    loading && <Text>loading</Text>
+                    loading && <TLoading />
                 }
             </View>
 

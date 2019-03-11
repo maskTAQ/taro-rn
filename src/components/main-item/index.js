@@ -9,37 +9,7 @@ import './index.scss'
 import callImg from './img/call.png';
 import carImg from './img/car.png';
 const map = config.map.main;
-const data = {
-    id: '562781322',
-    dj: '21',
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
 
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    ph: "454212552",
-    ck: '中储棉库存厄尔',
-    mj: '河北星宇纺织原料'
-};
 export default class MainItem extends Component {
     static options = {
         addGlobalClass: true
@@ -60,18 +30,23 @@ export default class MainItem extends Component {
             params
         })
     }
+    g = k => {
+        const { map, data } = this.props;
+        return data[map[k]] || '-';
+    }
     render() {
-        const list = ["dj", "cd", "ql", "mz", "cz", "hz", 'cz'];
+        const { g } = this;
+        const list = ["等级", "长度", "强力", "马值", "长整", "含杂"];
         const { border = true } = this.props;
         return (
             <View className={classnames("container", { border: border })}>
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">批号(23131298) 北疆伊犁 机采棉</Text>
+                            <Text className="title">批号({g('批号')}) {g('产地')} {g('类型')}</Text>
                         </View>
                         <View className="top-right">
-                            <Text className="time">编号(31212) 19/01/12</Text>
+                            <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
                         </View>
                     </View>
                     <View className="center">
@@ -80,8 +55,8 @@ export default class MainItem extends Component {
                                 list.map(item => {
                                     return (
                                         <View className="item">
-                                            <Text className="item-label">{map[item]}</Text>
-                                            <Text className="item-value">{data[item]}</Text>
+                                            <Text className="item-label">{item}</Text>
+                                            <Text className="item-value">{g(item)}</Text>
                                         </View>
                                     )
                                 })
@@ -104,26 +79,26 @@ export default class MainItem extends Component {
                     <View className="bottom">
                         <View className="bottom-left">
                             <View className="bottom-text-box">
-                                <Text className="bottom-text">仓库:{data.ck}</Text>
+                                <Text className="bottom-text">仓库:{g('交货仓库或方式')}</Text>
                             </View>
                             <View className="bottom-text-box">
-                                <Text className="bottom-text">郑棉1905(15400)</Text>
+                                <Text className="bottom-text">{g('基差类型')}</Text>
                             </View>
                             <View className="bottom-text-box">
-                                <Text className="bottom-text">基  差:(+500)</Text>
+                                <Text className="bottom-text">基  差:(+{g('基差值')})</Text>
                             </View>
                         </View>
                         <View className="bottom-right">
                             <View className="bottom-text-box">
-                                <Text className="bottom-text">卖家:{data.mj}</Text>
+                                <Text className="bottom-text">卖家:{g('卖家')}</Text>
                             </View>
                             <View className="bottom-right-bottom">
                                 <View className="bottom-right-bottom-left">
-                                    <Text className="price">￥12334</Text>
-                                    <Text className="weight">43.6吨/公重</Text>
+                                    <Text className="price">￥{g('报价')}</Text>
+                                    <Text className="weight">{g('重量')}</Text>
                                 </View>
                                 <View className="btn-group">
-                                    <TButton onClick={() => this.call('1388888888')}>
+                                    <TButton onClick={() => this.call(g('电话'))}>
                                         <View className="btn">
                                             <View className="item-icon-box">
                                                 <Image className="btn-icon" src={callImg} />

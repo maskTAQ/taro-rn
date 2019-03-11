@@ -83,9 +83,9 @@ export default class publishImportCotton extends Component {
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         if (status === 'success') {
             doSubmit(data.do, params)
-            .then(res=>{
-                Tip.success('操作成功');
-            })
+                .then(res => {
+                    Tip.success('操作成功');
+                })
         }
     }
     handleTabChange = activeTab => {
@@ -103,18 +103,14 @@ export default class publishImportCotton extends Component {
                     <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
                     {
                         status === 'success' && <Layout
+                            status={status}
+                            loading={loading}
                             picker={picker}
                             data={data}
                             params={params}
                             onFieldChange={this.handleFieldChange}
                             onChangePickerData={this.changePickerData}
                         />
-                    }
-                    {
-                        loading && <Text>loading</Text>
-                    }
-                    {
-                        status === 'error' && <Text>{msg}</Text>
                     }
                     <TButton onClick={this.submit}>
                         <View className="btn">

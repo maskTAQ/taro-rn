@@ -13,7 +13,7 @@ export default class Select extends Component {
             <TButton className={className} onClick={onClick}>
                 <View className="select-box">
                     <View className="label">
-                        <Text className="label-text">{label}:</Text>
+                        <Text className="label-text">{label}</Text>
                     </View>
                     <View className="value">
                         <Text className="value-text">{value || '请选择'}</Text>

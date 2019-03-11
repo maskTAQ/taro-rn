@@ -18,6 +18,9 @@ export default class Slidebothway extends Component {
         start: 0,
         end: maxLeft
     }
+    componentWillMount() {
+        this.onChange();
+    }
     formateData(d) {
         const data = [].concat(d);
         const result = [];
@@ -67,6 +70,13 @@ export default class Slidebothway extends Component {
         }
 
     }
+    onChange = () => {
+        const { onChange, k } = this.props;
+        onChange({
+            key: k,
+            value: this.getValue()
+        });
+    }
     getValue() {
         const { start, end } = this.state;
         const { option } = this.props;
@@ -80,20 +90,25 @@ export default class Slidebothway extends Component {
     }
     render() {
         const { start, end } = this.state;
-        const { option = [], value: v, } = this.props;
+        const { option = [], value } = this.props;
         const { min, max } = this.getValue();
-        const value = v || [];
         return (
             <View className="container">
                 <Text className="tag">{min === max ? min : `${min}~${max}`}</Text>
                 <View className="pathway">
-
-                    <View className="start" onTouchMove={this.handleMove.bind(this, 'start')} style={{ left: start + 'px' }}>
+                    <View
+                        className="start"
+                        onTouchMove={this.handleMove.bind(this, 'start')}
+                        onTouchEnd={this.onChange}
+                        style={{ left: start + 'px' }}
+                    >
                         <View className="ball" />
                     </View>
-
-
-                    <View className="end" onTouchMove={this.handleMove.bind(this, 'end')} style={{ left: start + 'px' }} style={{ left: end + 'px' }}>
+                    <View
+                        className="end"
+                        onTouchMove={this.handleMove.bind(this, 'end')}
+                        onTouchEnd={this.onChange}
+                        style={{ left: end + 'px' }}>
                         <View className="ball" />
                     </View>
 
@@ -101,15 +116,10 @@ export default class Slidebothway extends Component {
                 <View className="content">
                     {
                         option.map(item => {
-                            const isActive = value.includes(item);
                             return (
                                 <TButton key={item} onClick={this.handeChange.bind(this, item)}>
-                                    <View className={classnames("item", {
-                                        "active-check-item": isActive
-                                    })}>
-                                        <Text className={classnames("item-text", {
-                                            "active-check-item-text": isActive
-                                        })}>
+                                    <View className="item">
+                                        <Text className="item-text">
                                             {item}
                                         </Text>
                                     </View>

@@ -79,10 +79,10 @@ export default class AddBatch extends Component {
         const { params } = this.state;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         if (status === 'success') {
-            doSubmit(data.do, params)
-            .then(res=>{
-                Tip.success('操作成功');
-            })
+            doSubmit(data.do, Object.assign({}, params, data.carry))
+                .then(res => {
+                    Tip.success('操作成功');
+                })
         }
     }
 
@@ -95,18 +95,14 @@ export default class AddBatch extends Component {
                 <ScrollView>
                     {
                         status === 'success' && <Layout
+                            status={status}
+                            loading={loading}
                             picker={picker}
                             data={data}
                             params={params}
                             onFieldChange={this.handleFieldChange}
                             onChangePickerData={this.changePickerData}
                         />
-                    }
-                    {
-                        loading && <Text>loading</Text>
-                    }
-                    {
-                        status === 'error' && <Text>{msg}</Text>
                     }
                     <TButton onClick={this.submit} className="submit-button">
                         <Text className="submit-button-text">马上发布</Text>
