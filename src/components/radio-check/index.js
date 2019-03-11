@@ -1,11 +1,10 @@
 import React from 'react';
 import { Component } from '../../platform';
 import classnames from 'classnames';
-import update from 'immutability-helper';
 
 import { TButton, View, Text } from '../../ui';
 import './index.scss'
-export default class Check extends Component {
+export default class RadioCheck extends Component {
     static options = {
         addGlobalClass: true
     }
@@ -27,23 +26,10 @@ export default class Check extends Component {
     }
     handeChange(v) {
         const { k, value, onChange } = this.props;
-        const valueWrapper = value || [];
-        const i = valueWrapper.indexOf(v);
-        let nextValue = valueWrapper;
-        if (i > -1) {
-            nextValue = update(nextValue, {
-                $splice: [[i, 1]]
-            });
-        } else {
-            nextValue = update(nextValue, {
-                $push: [v]
-            });
-        }
-        onChange({ key: k, value: nextValue });
+        onChange({ key: k, value: value === v ? '' : v });
     }
     render() {
-        const { option = [], value: v } = this.props;
-        const value = v || [];
+        const { option = [], value } = this.props;
         const group = this.formateData(option);
         return (
             <View className="container">
@@ -53,7 +39,7 @@ export default class Check extends Component {
                             <View className="row" key={rowI}>
                                 {
                                     row.map(item => {
-                                        const isActive = value.includes(item);
+                                        const isActive = value === item;
                                         return (
                                             <TButton key={item} onClick={this.handeChange.bind(this, item)}>
                                                 <View className={classnames("check-item", {

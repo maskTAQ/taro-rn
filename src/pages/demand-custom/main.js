@@ -6,9 +6,10 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
-import { getDemandCustomLayout } from '../../api';
+import { getDemandCustomLayout, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
+import { Tip } from '../../utils';
 
 const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉', '拍储'];
 @connect(({ layout }) => ({ layout }))
@@ -82,7 +83,14 @@ export default class DemandCustom extends Component {
     }
 
     submit = () => {
-        console.log(this.state.params);
+        const { params, activeTab } = this.state;
+        const { status, data } = this.props.layout[`demand_custom_${activeTab}`];
+        if (status === 'success') {
+            doSubmit(data.do, params)
+            .then(res=>{
+                Tip.success('操作成功');
+            })
+        }
     }
 
     render() {

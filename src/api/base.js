@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-
+import { Tip } from '../utils';
 const host = 'https://s.chncot.com/app/index.php';
 const commonParmas = {
     c: 'entry',
@@ -25,15 +25,18 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
                     if (code === 200) {
                         resolve(data);
                     } else {
+                        Tip.fail(msg);
                         reject(msg);
                     }
 
                 } else {
+                    Tip.fail(d.errMsg);
                     reject(d.errMsg);
                 }
             },
             fail(e) {
                 Taro.hideLoading();
+                Tip.fail(d.message);
                 reject(e);
             }
         });

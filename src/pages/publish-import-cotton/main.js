@@ -6,9 +6,10 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout } from '../../api';
+import { getOfferLayout, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
+import { Tip } from '../../utils';
 
 const tabList = ["人民币", "美元"];
 const layoutTypes = ['进口棉￥', '进口棉$'];
@@ -78,7 +79,14 @@ export default class publishImportCotton extends Component {
     }
 
     submit = () => {
-        console.log(this.state.params);
+        const { current, params } = this.state;
+        const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+        if (status === 'success') {
+            doSubmit(data.do, params)
+            .then(res=>{
+                Tip.success('操作成功');
+            })
+        }
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -88,7 +96,7 @@ export default class publishImportCotton extends Component {
     }
     render() {
         const { picker, params, activeTab, current } = this.state;
-        const { status, loading, data, msg } = this.props.layout[`offer_${layoutTypes[current]}`];
+        const { status, loading, data, msg } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         return (
             <View className='container'>
                 <ScrollView>

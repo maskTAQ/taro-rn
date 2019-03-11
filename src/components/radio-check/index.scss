@@ -1,0 +1,27 @@
+@import '../../platform.scss';
+@import '../../pages/color.scss';
+.row {
+    margin-bottom: 20px;
+    @extend .flex;
+    flex-direction: row;
+}
+
+.check-item {
+    margin-right: 20px;
+    height: 50px;
+    padding: 0 20px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #dfdede;
+}
+.active-check-item{
+    background: $main;
+}
+.check-item-text {
+    color: #000;
+    font-size: 28px;
+}
+.active-check-item-text{
+    color: #fff;
+}

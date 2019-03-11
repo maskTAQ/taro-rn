@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import update from 'immutability-helper';
 
 import { Check, Select, Toggle, DatePicker } from '../index';
+import RadioCheck from '../radio-check/index';
 import { View, Text, TDatePicker, TInput } from '../../ui';
 import './index.scss';
 export default class Layout extends Component {
@@ -121,7 +122,10 @@ export default class Layout extends Component {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)}  className="column-select"/>
+                                                                                type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
                                                                             }
                                                                             {
                                                                                 type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
@@ -174,7 +178,10 @@ export default class Layout extends Component {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="row-select"/>
+                                                                                type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="row-select" />
                                                                             }
                                                                             {
                                                                                 type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />

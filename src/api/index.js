@@ -10,8 +10,13 @@ export function getHome() {
 export function getDemandCustomLayout(params) {
     return get('CloudArticleUI', params);
 }
+//报价页面
 export function getOfferLayout(params) {
     return get('CloudQuoteUI', params);
+}
+//提交
+export function doSubmit(url,params){
+    return get(url, params);
 }
 export {
     login

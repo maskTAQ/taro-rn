@@ -6,9 +6,10 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout } from '../../api';
+import { getOfferLayout, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
+import { Tip } from '../../utils';
 
 @connect(({ layout }) => ({ layout }))
 export default class AddBatch extends Component {
@@ -74,11 +75,19 @@ export default class AddBatch extends Component {
     }
 
     submit = () => {
-        console.log(this.state.params);
+        const { params: navParams } = this.props.navigation.state;
+        const { params } = this.state;
+        const { status, data } = this.props.layout[`offer_${navParams.type}`];
+        if (status === 'success') {
+            doSubmit(data.do, params)
+            .then(res=>{
+                Tip.success('操作成功');
+            })
+        }
     }
 
     render() {
-        const { params:navParams } = this.props.navigation.state;
+        const { params: navParams } = this.props.navigation.state;
         const { picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`offer_${navParams.type}`];
         return (
