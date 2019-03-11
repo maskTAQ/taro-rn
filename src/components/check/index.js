@@ -44,32 +44,23 @@ export default class Check extends Component {
     render() {
         const { option = [], value: v } = this.props;
         const value = v || [];
-        const group = this.formateData(option);
         return (
             <View className="container">
                 {
-                    group.map((row, rowI) => {
+                    option.map(item => {
+                        const isActive = value.includes(item);
                         return (
-                            <View className="row" key={rowI}>
-                                {
-                                    row.map(item => {
-                                        const isActive = value.includes(item);
-                                        return (
-                                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
-                                                <View className={classnames("check-item", {
-                                                    "active-check-item": isActive
-                                                })}>
-                                                    <Text className={classnames("check-item-text", {
-                                                        "active-check-item-text": isActive
-                                                    })}>
-                                                        {item}
-                                                    </Text>
-                                                </View>
-                                            </TButton>
-                                        )
-                                    })
-                                }
-                            </View>
+                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
+                                <View className={classnames("check-item", {
+                                    "active-check-item": isActive
+                                })}>
+                                    <Text className={classnames("check-item-text", {
+                                        "active-check-item-text": isActive
+                                    })}>
+                                        {item}
+                                    </Text>
+                                </View>
+                            </TButton>
                         )
                     })
                 }

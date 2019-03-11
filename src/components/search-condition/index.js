@@ -1,229 +1,222 @@
+
+
 import React from 'react';
 import { Component } from '../../platform';
-import { View, Visible, TButton, Text } from '../../ui';
+import classnames from 'classnames';
+import update from 'immutability-helper';
 
-
+import { Check, Select, Toggle, DatePicker } from '../index';
+import RadioCheck from '../radio-check/index';
+import { View, Text, TDatePicker, TInput, TButton, Image } from '../../ui';
+import topIcon from '../../img/top.png';
+import bottomIcon from '../../img/bottom.png';
 import './index.scss';
-const map = [
-    [{
-        title: '产地',
-        type: 'radio',
-        option: ['不限', '地方', '兵团']
-    }, {
-        title: '类型',
-        type: 'radio',
-        option: ['手摘棉', '机采棉', '皮昆棉', '长城棉']
-    }, {
-        title: '交货地',
-        type: 'radio',
-        option: ['新疆仓库', '内地仓库']
-    }, {
-        title: '质量',
-        type: 'picker',
-        option: [{
-            key: '',
-            label: 'xx',
-            pickerOption: [{ label: 'test', value: '12' }]
-        }]
-    }],
-    [{
-        title: '产地',
-        type: 'radio',
-        option: ['不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团']
-    }, {
-        title: '类型',
-        type: 'radio',
-        option: ['手摘棉', '机采棉', '皮昆棉', '长城棉']
-    }, {
-        title: '交货地',
-        type: 'radio',
-        option: ['新疆仓库', '内地仓库']
-    }, {
-        title: '质量',
-        type: 'picker',
-        option: []
-    },
-    ],
-    [{
-        title: '产地',
-        type: 'radio',
-        option: ['不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团']
-    }, {
-        title: '类型',
-        type: 'radio',
-        option: ['手摘棉', '机采棉', '皮昆棉', '长城棉']
-    }, {
-        title: '交货地',
-        type: 'radio',
-        option: ['新疆仓库', '内地仓库']
-    }, {
-        title: '质量',
-        type: 'picker',
-        option: []
-    },
-    ],
-    [{
-        title: '产地',
-        type: 'radio',
-        option: ['不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团']
-    }, {
-        title: '类型',
-        type: 'radio',
-        option: ['手摘棉', '机采棉', '皮昆棉', '长城棉']
-    }, {
-        title: '交货地',
-        type: 'radio',
-        option: ['新疆仓库', '内地仓库']
-    }, {
-        title: '质量',
-        type: 'picker',
-        option: []
-    },
-    ],
-    [{
-        title: '产地',
-        type: 'radio',
-        option: ['不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团', '不限', '地方', '兵团']
-    }, {
-        title: '类型',
-        type: 'radio',
-        option: ['手摘棉', '机采棉', '皮昆棉', '长城棉']
-    }, {
-        title: '交货地',
-        type: 'radio',
-        option: ['新疆仓库', '内地仓库']
-    }, {
-        title: '质量',
-        type: 'picker',
-        option: []
-    },
-    ]
-];
-export default class SearchCondition extends Component {
-    static options = {
-        addGlobalClass: true
-    }
-    state = {
-        pickerVisible: false
-    }
-    formateData(d) {
-        const data = [].concat(d);
-        const result = [];
-
-        while (data.length) {
-            if (result.length === 0) {
-                result.push([])
-            }
-            if (result[result.length - 1].length > 3) {
-                result.push([data.shift()]);
+const isVisible = ({ visible = true, params }) => {
+    let isVisible = true;
+    if (typeof visible === 'string') {
+        if (visible.includes('=')) {
+            const [key, value] = visible.split('=');
+            if (Array.isArray(params[key])) {
+                isVisible = params[key].some(item => item === value);
             } else {
-                result[result.length - 1].push(data.shift());
+                isVisible = params[key] === value;
+            }
+
+        }
+        if (visible.includes('!=')) {
+            const [key, value] = visible.split('!=');
+            if (Array.isArray(params[key])) {
+                isVisible = params[key].every(item => item !== value);
+            } else {
+                isVisible = params[key] !== value;
             }
         }
-        return result;
     }
-    showPicker = (item) => {
-        const { onShowPicker } = this.props;
-        onShowPicker(item);
+    if (typeof visible === 'boolean') {
+        isVisible = visible;
+    }
+    return isVisible;
+}
+export default class SearchCondition extends Component {
+    state = {
+        activeTab: '',
+        activeTabIndex: 0,
+    }
+    handleTabChange = (activeTab, activeTabIndex) => {
+        if (activeTab === this.getActiveTab()) {
+            this.setState({
+                activeTab: '',
+                activeTabIndex: NaN
+            });
+        } else {
+            this.setState({
+                activeTab,
+                activeTabIndex
+            });
+        }
+    }
+    showPicker(option, key) {
+        const { picker, onChangePickerData } = this.props;
+        onChangePickerData(update(picker, {
+            visible: {
+                $set: true
+            },
+            option: {
+                $set: option
+            },
+            key: {
+                $set: key
+            }
+        }));
+    }
+    closePicker = () => {
+        const { picker, onChangePickerData } = this.props;
+        onChangePickerData(update(picker, {
+            visible: {
+                $set: false
+            },
+            option: {
+                $set: []
+            }
+        }));
+    }
+    handleChange = ({ key, value }) => {
+        const { params, onFieldChange } = this.props
+        onFieldChange(update(params, {
+            [key]: {
+                $set: value
+            }
+        }));
+    }
+    handleInputChange = (key, value) => {
+        this.handleChange({ key, value });
+    }
+    handleDateChange = (key, value) => {
+        this.handleChange({ key, value });
+    }
+    getActiveTab() {
+        const { activeTab, activeTabIndex } = this.state;
+        const { data } = this.props;
+        if (activeTab) {
+            return activeTab
+        } else {
+            if (data[activeTabIndex]) {
+                return data[activeTabIndex].title
+            } else {
+                return ''
+            }
+        }
     }
     render() {
-        const { label, current = 0, show, onToggle } = this.props;
+        const { activeTabIndex } = this.state;
+        const { data, params, status, loading, onResetParams } = this.props;
         return (
             <View className="container">
-                <TButton onClick={onToggle}>
-                    <View className="title">
-                        <Text className="title-text">
-                            {label}定制牌价
-                    </Text>
-                    </View>
-                </TButton>
-                <Visible show={show}>
-                    <View className="content">
-                        {
-                            map[current].map(classify => {
-                                const { title, type } = classify;
-                                return (
-                                    <View className="classify-box">
-
-                                        <View className="classify-box-title">
-                                            <Text className="classify-box-title-text">
-                                                {title}
-                                            </Text>
-                                        </View>
-                                        {
-                                            type === 'radio' ? (
-                                                <View className="classify-content">
+                {
+                    status === 'success' && (
+                        <View className="content">
+                            <View className="tab-box">
+                                {
+                                    data.map((tab, tabIndex) => {
+                                        const { title } = tab;
+                                        const isActive = title === this.getActiveTab();
+                                        return (
+                                            <TButton onClick={this.handleTabChange.bind(this, title, tabIndex)}>
+                                                <View
+                                                    className={classnames("tab-item", {
+                                                        "active-tab-item": isActive
+                                                    })}
+                                                    key={title}>
+                                                    <Text className={classnames("tab-item-text", {
+                                                        "active-tab-item-text": isActive
+                                                    })}>{title}</Text>
+                                                    <Image className="tab-icon" src={isActive ? topIcon : bottomIcon} />
+                                                </View>
+                                            </TButton>
+                                        )
+                                    })
+                                }
+                            </View>
+                            <View className="filter-box">
+                                {
+                                    (isNaN(activeTabIndex) ? [] : data[activeTabIndex].data).map(field => {
+                                        const { title: fieldTitle, data: components = [] } = field;
+                                        const className = classnames({
+                                            'layout-row': components.length > 2,
+                                            'layout-column': components.length <= 2,
+                                        });
+                                        return (
+                                            <View className="field-column" key={title}>
+                                                <View className="field-title">
+                                                    <Text className="field-title-text">
+                                                        {fieldTitle}
+                                                    </Text>
+                                                </View>
+                                                <View className={className}>
                                                     {
-                                                        this.formateData(classify.option).map(row => {
+                                                        components.map(component => {
+                                                            const { type, label, param, content, visible: componentVisible = '' } = component;
+                                                            const isShowComponent = isVisible({ visible: componentVisible, params });
+                                                            const v = params[param];
                                                             return (
-                                                                <View className="item-row">
+                                                                <View key={type}>
                                                                     {
-                                                                        row.map(item => {
-                                                                            return (
-                                                                                <TButton>
-                                                                                    <View className="item">
-                                                                                        <Text className="item-text">{item}</Text>
-                                                                                    </View>
-                                                                                </TButton>
-                                                                            )
-                                                                        })
+                                                                        type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
+                                                                    }
+                                                                    {
+                                                                        type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
+                                                                    }
+                                                                    {
+                                                                        type === 'text' && <Text className="text">{content}</Text>
+                                                                    }
+                                                                    {
+                                                                        type === 'datepicker' && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
+                                                                            <DatePicker date={v} />
+                                                                        </TDatePicker>
                                                                     }
                                                                 </View>
                                                             )
                                                         })
                                                     }
                                                 </View>
-                                            ) : (
-                                                    <View className="classify-content">
-                                                        {
-                                                            this.formateData(classify.option).map(row => {
-                                                                return (
-                                                                    <View className="item-row">
-                                                                        {
-                                                                            row.map(item => {
-                                                                                return (
-                                                                                    <TButton onClick={this.showPicker.bind(this, item)}>
-                                                                                        <View className="item">
-                                                                                            <Text className="item-text">{item.label}</Text>
-                                                                                        </View>
-                                                                                    </TButton>
-                                                                                )
-                                                                            })
-                                                                        }
-                                                                    </View>
-                                                                )
-                                                            })
-                                                        }
-                                                    </View>
-                                                )
-                                        }
-
+                                            </View>
+                                        )
+                                    })
+                                }
+                            </View>
+                            <View className="btn-group">
+                                <TButton onClick={onResetParams}>
+                                    <View className="btn">
+                                        <Text className="btn-text">清空</Text>
                                     </View>
-                                )
-                            })
-                        }
-                    </View>
-                    <View className="btn-group">
-                        <TButton>
-                            <View className="btn">
-                                <Text className="btn-text">清空</Text>
+                                </TButton>
+                                <TButton>
+                                    <View className="btn">
+                                        <Text className="btn-text">确定</Text>
+                                    </View>
+                                </TButton>
                             </View>
-                        </TButton>
-                        <TButton>
-                            <View className="btn">
-                                <Text className="btn-text">搜索</Text>
-                            </View>
-                        </TButton>
-                        <TButton>
-                            <View className="btn">
-                                <Text className="btn-text">添加定制</Text>
-                            </View>
-                        </TButton>
-                    </View>
-                </Visible>
+                        </View>
+                    )
+                }
+                {
+                    status === 'error' && <Text>error</Text>
+                }
+                {
+                    loading && <Text>loading</Text>
+                }
             </View>
+
         )
     }
 }
-
 

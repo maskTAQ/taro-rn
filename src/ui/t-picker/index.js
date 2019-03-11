@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { AtActionSheet, AtActionSheetItem } from "taro-ui"
+import { AtActionSheet, AtActionSheetItem } from "taro-ui";
+import { ScrollView, Text } from '../index';
 import classnames from 'classnames';
 
 export default class TPicker extends Component {
@@ -17,25 +18,31 @@ export default class TPicker extends Component {
         }
         return null
     }
-    handleClick(e) {
+    handleClick(label, value) {
         const { onClick } = this.props;
-        onClick && onClick(this.getItemByLabel(e._relatedInfo.anchorTargetText));
+        onClick && onClick({ label, value });
     }
     render() {
         const { show, onCancel, onClose, option } = this.props;
         return (
+
             <AtActionSheet isOpened={show} onCancel={onCancel} onClose={onClose} cancelText='取消' >
-                {
-                    option.map(item => {
-                        const { label, value } = item;
-                        return (
-                            <AtActionSheetItem data-value={value} key={item} onClick={this.handleClick}>
-                                {label}
-                            </AtActionSheetItem>
-                        )
-                    })
-                }
+                <ScrollView>
+                    {
+                        option.map(item => {
+                            const { label, value } = item;
+                            return (
+                                <View className="item" key={value} onClick={this.handleClick.bind(this, label, value)}>
+                                    <Text className="item-text">
+                                        {label}
+                                    </Text>
+                                </View>
+                            )
+                        })
+                    }
+                </ScrollView>
             </AtActionSheet>
+
         )
     }
 }

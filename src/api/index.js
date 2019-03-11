@@ -14,8 +14,12 @@ export function getDemandCustomLayout(params) {
 export function getOfferLayout(params) {
     return get('CloudQuoteUI', params);
 }
+//云筛选页面
+export function getFilterLayout(params) {
+    return get('CloudQuoteFiltrateUI', params);
+}
 //提交
-export function doSubmit(url,params){
+export function doSubmit(url, params) {
     return get(url, params);
 }
 export {

@@ -4,11 +4,11 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 
-import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TTabs, TTabPane, TButton, } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components'
-import { getHome } from '../../api';
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, } from '../../ui';
+import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components';
+import { getFilterLayout, getHome, doSubmit } from '../../api';
 import { navigate, asyncActionWrapper } from '../../actions';
-import { store } from '../../constants';
+import { store, productTypes } from '../../constants';
 import './main.scss';
 const item = {
     id: '562781322',
@@ -42,9 +42,16 @@ const item = {
     gys: '河北星宇纺织原料有限责任公司'
 };
 
-@connect(state => state)
+@connect(({ layout }) => ({ layout }))
 export default class Home extends Component {
     state = {
+        activeTab: '新疆棉',
+        picker: {
+            visible: false,
+            option: []
+        },
+        params: {},
+
         bannerList: ['https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png'],
         list: [item, item, item, item, item],
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
@@ -58,99 +65,132 @@ export default class Home extends Component {
         ad: [],
         news: [],
     };
-    componentDidMount() {
-        console.log('abcdefg')
-        asyncActionWrapper({ call: getHome, type: 'layout', key: store.demand_custom });
-        // getHome()
-        //     .then(res => {
-        //         this.setState(res);
-        //         console.log(res, 'res');
-        //     })
+    componentWillMount() {
+        getHome()
+            .then(res => {
+                this.setState(res);
+
+            })
+        this.getData();
     }
-    handleClick = (current) => {
-        this.props.dispatch({ type: 'ADD' });
+    getData() {
+        const { activeTab } = this.state;
+        const { status, loading } = this.props.layout[`filter_${activeTab}`];
+        if (status !== 'success' && !loading) {
+            asyncActionWrapper({
+                call: getFilterLayout,
+                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1 },
+                type: 'layout',
+                key: `filter_${activeTab}`
+            });
+        }
+    }
+    handleTabChange = activeTab => {
         this.setState({
-            current
+            activeTab
+        }, this.getData);
+    }
+
+    changePickerData = (picker) => {
+        this.setState({ picker });
+    }
+    closePicker = () => {
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            }
+        }));
+    }
+    handlePickerChange = item => {
+        const { key } = this.state.picker;
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            },
+            params: {
+                [key]: {
+                    $set: item.value
+                }
+            }
+        }));
+    }
+    resetParams = () => {
+        this.setState({
+            params: {}
         });
+    }
+
+    handleFieldChange = params => {
+        this.setState({ params })
     }
     goCottonDetail() {
         navigate({ routeName: 'cotton-detail' });
     }
-    showPicker = showPicker => {
-        this.setState({
-            pickerVisible: true
-        });
-    }
+
     toggleSearchConditionVisible = () => {
         this.setState({
             searchConditionVisible: !this.state.searchConditionVisible
         });
     }
-    closePicker = () => {
-        this.setState({
-            pickerVisible: false
-        });
-    }
+
     render() {
-        const { ad, news, list, current, pickerVisible, searchConditionVisible, bannerList } = this.state;
-        const tabList = ["新疆棉", "地产棉", "进口棉￥", "进口棉$", "拍储棉"];
+        const { picker, ad, news, activeTab, params } = this.state;
+        const { status, loading, data } = this.props.layout[`filter_${activeTab}`];
+        console.log(this.props.layout)
         return (
             <View className="container">
-                <SearchTool />
-                <Swiper
-                    className='swiper'
-                    indicatorColor='#999'
-                    indicatorActiveColor='#333'
-                    circular
-                    indicatorDots
-                    autoplay>
-                    {
-                        ad.map((item) => {
-                            const { logo } = item;
-                            return (
-                                <SwiperItem className="banner-item" key={logo}>
-                                    <Image
-                                        className="banner-item"
-                                        src={logo}
-                                    />
-                                </SwiperItem>
-                            )
-                        })
-                    }
-                </Swiper>
-                <NoticeTool data={news} />
                 <ScrollView>
-                    <TTabs scroll={true} current={current} tabList={tabList} onClick={this.handleClick}>
+                    <SearchTool />
+                    <Swiper
+                        className='swiper'
+                        indicatorColor='#999'
+                        indicatorActiveColor='#333'
+                        circular
+                        indicatorDots
+                        autoplay>
                         {
-                            tabList.map((item, index) => {
+                            ad.map((item) => {
+                                const { logo } = item;
                                 return (
-                                    <TTabPane tabLabel={item} current={current} index={index}>
-                                        <SearchCondition
-                                            show={searchConditionVisible}
-                                            onToggle={this.toggleSearchConditionVisible}
-                                            label={tabList[current]} current={current} onShowPicker={this.showPicker} />
-                                        <View className="list">
-                                            {list.map(() => {
-                                                return (
-                                                    <TButton onClick={this.goCottonDetail}>
-                                                        <MainItem border={true} />
-                                                    </TButton>
-                                                )
-                                            })}
-                                        </View>
-
-                                    </TTabPane>
+                                    <SwiperItem className="banner-item" key={logo}>
+                                        <Image
+                                            className="banner-item"
+                                            src={logo}
+                                        />
+                                    </SwiperItem>
                                 )
                             })
                         }
-                    </TTabs>
+                    </Swiper>
+                    <NoticeTool data={news} />
+                    <TSTab list={productTypes} active={activeTab} onTabChange={this.handleTabChange} />
+                    <SearchCondition
+                        status={status}
+                        loading={loading}
+                        picker={picker}
+                        data={data}
+                        params={params}
+                        onFieldChange={this.handleFieldChange}
+                        onChangePickerData={this.changePickerData}
+                        onResetParams={this.resetParams}
+                    />
                 </ScrollView>
-                <TPicker
-                    show={pickerVisible}
-                    option={[{ label: 1, value: 1 }]}
-                    onClick={this.closePicker}
+                <TPicker onClick={this.handlePickerChange}
+                    show={picker.visible}
                     onCancel={this.closePicker}
-                    onClose={this.closePicker} />
+                    onClose={this.closePicker}
+                    option={picker.option.map(item => ({ label: item, value: item }))}
+                />
             </View>
         )
     }

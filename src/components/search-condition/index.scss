@@ -1,80 +1,167 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
-.container {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 0 20px;
-    z-index: 1;
+@import '../../pages/color.scss';
+.tab-box {
+    @extend .flex;
+    flex-direction: row;
+    height: 50px;
     background: #fff;
-    @include borderD(bottom, 1px, solid,  $main);
 }
 
-.title {
-    height: 60px;
+.tab-item {
+    flex: 1;
+    height: 100%;
     @extend .flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    @include borderD(bottom, 1px, solid, #ccc);
 }
 
-.title-text {
-    font-size: 30px;
-    color: $main;
+.active-tab-item {
+    flex: 1;
+    height: 100%;
+    @include border(1px, solid, #ccc);
+    @include borderD(bottom, 0px, solid, #ccc);
 }
 
-.classify-box-title {
-    height: 60px;
-    @extend .flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.classify-box-title-text {
-    font-size: 30px;
+.tab-item-text {
+    font-size: 26px;
     color: #000;
 }
 
-.item-row {
-    margin-bottom: 10px;
+.active-tab-item-text {
+    color: $main;
+}
+
+.tab-icon {
+    margin-left: 8px;
+    width: 30px;
+    height: 30px;
+}
+
+.input {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
+    color: #000;
+}
+
+.area-title {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    height: 100px;
+}
+
+.area-title-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.field-column {
+    @extend .flex;
+    flex-direction: column;
+    padding: 0 20px;
+    background: #fff;
+}
+
+.field-title {
+    height: 80px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field-title-text {
+    font-size: 34px;
+    color: #000;
+}
+
+.field-row {
+    @extend .flex;
+    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    @include borderD(bottom, 1px, solid, #ccc);
+}
+
+.field-label {
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field-label-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.field-row-content {
+    flex: 1;
+    height: 100%;
     @extend .flex;
     flex-direction: row;
-}
-
-.item {
-    margin-right: 10px;
-    height: 46px;
-    padding: 0 40px;
-    @extend .flex;
-    justify-content: center;
     align-items: center;
-    @include border(1px, solid, #ccc);
 }
 
-.item-text {
-    font-size: 26px;
+.layout-row {
+    @extend .flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.layout-column {
+    @extend .flex;
+    flex-direction: column;
+}
+
+.field-content {
+    flex: 1;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
     color: #000;
 }
 
 .btn-group {
     margin-bottom: 20px;
-    height: 60px;
+    padding: 0 20px;
     @extend .flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
 }
-
+.mr{
+    margin-right: 100px;
+}
 .btn {
-    padding: 0 20px;
-    height: 50px;
+    height: 80px;
     @extend .flex;
     justify-content: center;
     align-items: center;
-    @include border(1px, solid, #000);
+    background: $main;
 }
 
 .btn-text {
-    font-size: 32px;
-    color: #000;
+    font-size: 24px;
+    color: #fff;
 }
+
+/*postcss-pxtransform rn eject enable*/
+
+t-input {
+    flex: 1;
+}
+
+t-button {
+    flex: 1;
+}
+
+/*postcss-pxtransform rn eject disable*/

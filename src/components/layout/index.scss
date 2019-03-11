@@ -93,21 +93,7 @@
     color: #000;
 }
 
-.btn {
-    margin: 40px 20px;
-    margin-bottom: 100px;
-    height: 80px;
-    @extend .flex;
-    justify-content: center;
-    align-items: center;
-    background: $main;
-    border-radius: 10px;
-}
 
-.btn-text {
-    font-size: 30px;
-    color: #fff;
-}
 
 /*postcss-pxtransform rn eject enable*/
 

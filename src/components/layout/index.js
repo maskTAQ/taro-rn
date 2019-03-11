@@ -9,6 +9,32 @@ import { Check, Select, Toggle, DatePicker } from '../index';
 import RadioCheck from '../radio-check/index';
 import { View, Text, TDatePicker, TInput } from '../../ui';
 import './index.scss';
+const isVisible = ({ visible = true, params }) => {
+    let isVisible = true;
+    if (typeof visible === 'string') {
+        if (visible.includes('=')) {
+            const [key, value] = visible.split('=');
+            if (Array.isArray(params[key])) {
+                isVisible = params[key].some(item => item === value);
+            } else {
+                isVisible = params[key] === value;
+            }
+
+        }
+        if (visible.includes('!=')) {
+            const [key, value] = visible.split('!=');
+            if (Array.isArray(params[key])) {
+                isVisible = params[key].every(item => item !== value);
+            } else {
+                isVisible = params[key] !== value;
+            }
+        }
+    }
+    if (typeof visible === 'boolean') {
+        isVisible = visible;
+    }
+    return isVisible;
+}
 export default class Layout extends Component {
     showPicker(option, key) {
         const { picker, onChangePickerData } = this.props;
@@ -74,20 +100,8 @@ export default class Layout extends Component {
                                                 'layout-row': components.length > 2,
                                                 'layout-column': components.length <= 2,
                                             });
-                                            let isShowField = true;
-                                            if (typeof visible === 'string') {
-                                                if (visible.includes('=')) {
-                                                    const [key, value] = visible.split('=');
-                                                    isShowField = params[key] === value;
-                                                }
-                                                if (visible.includes('!=')) {
-                                                    const [key, value] = visible.split('!=');
-                                                    isShowField = params[key] !== value;
-                                                }
-                                            }
-                                            if (typeof visible === 'boolean') {
-                                                isShowField = visible
-                                            }
+                                            const isShowField = isVisible({ visible, params });
+
 
                                             return (
                                                 layout === 'column' && isShowField ? (
@@ -101,20 +115,7 @@ export default class Layout extends Component {
                                                             {
                                                                 components.map(component => {
                                                                     const { type, label, param, content, visible: componentVisible = '' } = component;
-                                                                    let isShowComponent = true;
-                                                                    if (typeof componentVisible === 'string') {
-                                                                        if (componentVisible.includes('=')) {
-                                                                            const [key, value] = componentVisible.split('=');
-                                                                            isShowComponent = params[key] === value;
-                                                                        }
-                                                                        if (componentVisible.includes('!=')) {
-                                                                            const [key, value] = componentVisible.split('!=');
-                                                                            isShowComponent = params[key] !== value;
-                                                                        }
-                                                                    }
-                                                                    if (typeof componentVisible === 'boolean') {
-                                                                        isShowField = componentVisible
-                                                                    }
+                                                                    const isShowComponent = isVisible({ visible: componentVisible, params });
                                                                     const v = params[param];
                                                                     return (
                                                                         <View key={type}>
@@ -157,20 +158,7 @@ export default class Layout extends Component {
                                                             {
                                                                 components.map(component => {
                                                                     const { type, label, param, content, visible: componentVisible = '' } = component;
-                                                                    let isShowComponent = true;
-                                                                    if (typeof componentVisible === 'string') {
-                                                                        if (componentVisible.includes('=')) {
-                                                                            const [key, value] = componentVisible.split('=');
-                                                                            isShowComponent = params[key] === value;
-                                                                        }
-                                                                        if (componentVisible.includes('!=')) {
-                                                                            const [key, value] = componentVisible.split('!=');
-                                                                            isShowComponent = params[key] !== value;
-                                                                        }
-                                                                    }
-                                                                    if (typeof componentVisible === 'boolean') {
-                                                                        isShowField = componentVisible
-                                                                    }
+                                                                    const isShowComponent = isVisible({ visible: componentVisible, params });
                                                                     const v = params[param];
                                                                     return (
                                                                         <View className="field-content" key={type}>

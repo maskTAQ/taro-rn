@@ -1,13 +1,14 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
-.row {
-    margin-bottom: 20px;
+.container {
     @extend .flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .check-item {
     margin-right: 20px;
+    margin-bottom: 20px;
     height: 50px;
     padding: 0 20px;
     @extend .flex;
@@ -15,13 +16,20 @@
     align-items: center;
     background: #dfdede;
 }
-.active-check-item{
+
+.active-check-item {
     background: $main;
 }
+
 .check-item-text {
     color: #000;
     font-size: 28px;
+    /*postcss-pxtransform rn eject enable*/
+    word-break: keep-all;
+    word-wrap: break-word;
+    /*postcss-pxtransform rn eject disable*/
 }
-.active-check-item-text{
+
+.active-check-item-text {
     color: #fff;
 }
