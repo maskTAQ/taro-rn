@@ -91,3 +91,17 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.submit{
+    margin: 20px;
+    height: 80px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 10px;
+}
+.submit-text{
+    font-size: 30px;
+    color: #fff;
+}

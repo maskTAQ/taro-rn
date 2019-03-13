@@ -4,6 +4,7 @@ import React from 'react';
 import { Component } from '../../platform';
 
 import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../ui'
+
 import Item from './item';
 import config from '../../config';
 import './main.scss';
@@ -51,6 +52,7 @@ export default class DemandDetail extends Component {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
         itemDescList: ['cd', 'mj', 'shd', 'zwjhsj'],
     };
+    
     goMapDetail(){
         navigate({routeName:'map-detail'});
     }

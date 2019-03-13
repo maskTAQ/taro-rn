@@ -1,7 +1,7 @@
 import { Component } from '@tarojs/taro'
 import { AtActivityIndicator } from 'taro-ui';
+import './index.scss';
 
-import "taro-ui/dist/style/components/activity-indicator.scss";
 export default class TLoading extends Component {
     static options = {
         addGlobalClass: true
@@ -14,7 +14,8 @@ export default class TLoading extends Component {
         const { className, placeholder, value } = this.props;
         return (
             <View className="container">
-                <AtActivityIndicator />
+            <AtActivityIndicator size={32}></AtActivityIndicator>
+            <AtActivityIndicator content='加载中...'></AtActivityIndicator>
             </View>
         )
     }

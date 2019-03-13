@@ -82,7 +82,7 @@ export default class publishImportCotton extends Component {
         const { current, params } = this.state;
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         if (status === 'success') {
-            doSubmit(data.do, params)
+            doSubmit(data.do, Object.assign({}, params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
                 })
@@ -101,17 +101,15 @@ export default class publishImportCotton extends Component {
             <View className='container'>
                 <ScrollView>
                     <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
-                    {
-                        status === 'success' && <Layout
-                            status={status}
-                            loading={loading}
-                            picker={picker}
-                            data={data}
-                            params={params}
-                            onFieldChange={this.handleFieldChange}
-                            onChangePickerData={this.changePickerData}
-                        />
-                    }
+                    <Layout
+                        status={status}
+                        loading={loading}
+                        picker={picker}
+                        data={data}
+                        params={params}
+                        onFieldChange={this.handleFieldChange}
+                        onChangePickerData={this.changePickerData}
+                    />
                     <TButton onClick={this.submit}>
                         <View className="btn">
                             <Text className="btn-text">发布</Text>

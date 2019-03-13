@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 
 import { Check, Select, Toggle, DatePicker } from '../index';
 import RadioCheck from '../radio-check/index';
-import { View, Text, TDatePicker, TInput ,TLoading} from '../../ui';
+import { View, Text, TDatePicker, TInput, TLoading } from '../../ui';
 import './index.scss';
 const isVisible = ({ visible = true, params }) => {
     let isVisible = true;
@@ -76,7 +76,7 @@ export default class Layout extends Component {
         this.handleChange({ key, value });
     }
     render() {
-        const { data, params } = this.props;
+        const { data, params, status, loading } = this.props;
         return (
             <View className="content">
                 {

@@ -4,11 +4,9 @@ import classnames from 'classnames';
 
 import { View, Text, Image, TButton } from '../../ui';
 import { navigate, call } from '../../actions';
-import config from '../../config';
 import './index.scss'
 import callImg from './img/call.png';
 import carImg from './img/car.png';
-const map = config.map.main;
 
 export default class MainItem extends Component {
     static options = {
@@ -36,7 +34,7 @@ export default class MainItem extends Component {
     }
     render() {
         const { g } = this;
-        const list = ["等级", "长度", "强力", "马值", "长整", "含杂"];
+        const list = ["颜色级", "长度", "强力", "马克隆值", "整齐度", "平均含杂"];
         const { border = true } = this.props;
         return (
             <View className={classnames("container", { border: border })}>
@@ -90,7 +88,7 @@ export default class MainItem extends Component {
                         </View>
                         <View className="bottom-right">
                             <View className="bottom-text-box">
-                                <Text className="bottom-text">卖家:{g('卖家')}</Text>
+                                <Text className="bottom-text">卖家:{g('供应商')}</Text>
                             </View>
                             <View className="bottom-right-bottom">
                                 <View className="bottom-right-bottom-left">

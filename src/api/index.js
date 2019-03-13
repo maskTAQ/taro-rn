@@ -20,11 +20,23 @@ export function getFilterLayout(params) {
 }
 //报价列表
 export function getOfferList(params) {
-    return get('CloudQuoteList',params);
+    return get('CloudQuoteList', params);
 }
 //提交
 export function doSubmit(url, params) {
     return get(url, params);
+}
+//获取需求列表
+export function getDemandList(params) {
+    return get('CloudArticleList', params);
+}
+//获取指标
+export function getSpotIndicators(params) {
+    return get('QCList', params);
+}
+//获取仓单证书
+export function getCertificate(params) {
+    return get('QC2List', params);
 }
 export {
     login

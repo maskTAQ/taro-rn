@@ -93,17 +93,15 @@ export default class AddBatch extends Component {
         return (
             <View className='container'>
                 <ScrollView>
-                    {
-                        status === 'success' && <Layout
-                            status={status}
-                            loading={loading}
-                            picker={picker}
-                            data={data}
-                            params={params}
-                            onFieldChange={this.handleFieldChange}
-                            onChangePickerData={this.changePickerData}
-                        />
-                    }
+                    <Layout
+                        status={status}
+                        loading={loading}
+                        picker={picker}
+                        data={data}
+                        params={params}
+                        onFieldChange={this.handleFieldChange}
+                        onChangePickerData={this.changePickerData}
+                    />
                     <TButton onClick={this.submit} className="submit-button">
                         <Text className="submit-button-text">马上发布</Text>
                     </TButton>

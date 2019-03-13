@@ -141,8 +141,13 @@ export default class Home extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-    goCottonDetail() {
-        navigate({ routeName: 'cotton-detail' });
+    goCottonDetail(data) {
+        const { key } = this.state;
+        navigate({
+            routeName: 'cotton-detail', params: {
+                id: data[key['批号']]
+            }
+        });
     }
     render() {
         const { picker, ad, news, activeTab, params, url, key, list } = this.state;
@@ -188,7 +193,7 @@ export default class Home extends Component {
                     <View className="list">
                         {list.map((item, i) => {
                             return (
-                                <TButton onClick={this.goCottonDetail} key={i}>
+                                <TButton onClick={this.goCottonDetail.bind(this, item)} key={i}>
                                     <MainItem border={true} data={item} map={key} />
                                 </TButton>
                             )

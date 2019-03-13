@@ -11,7 +11,7 @@ import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
-const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉', '拍储'];
+const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
 @connect(({ layout }) => ({ layout }))
 export default class DemandCustom extends Component {
     state = {
@@ -27,7 +27,7 @@ export default class DemandCustom extends Component {
     }
     getData() {
         const { activeTab } = this.state;
-        const { status, loading, data } = this.props.layout[`demand_custom_${activeTab}`];
+        const { status, loading } = this.props.layout[`demand_custom_${activeTab}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getDemandCustomLayout,
@@ -39,7 +39,8 @@ export default class DemandCustom extends Component {
     }
     handleTabChange = activeTab => {
         this.setState({
-            activeTab
+            activeTab,
+            params:{}
         }, this.getData);
     }
 
@@ -86,7 +87,7 @@ export default class DemandCustom extends Component {
         const { params, activeTab } = this.state;
         const { status, data } = this.props.layout[`demand_custom_${activeTab}`];
         if (status === 'success') {
-            doSubmit(data.do, params)
+            doSubmit(data.do, Object.assign({}, params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
                 })
@@ -96,21 +97,20 @@ export default class DemandCustom extends Component {
     render() {
         const { activeTab, picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`demand_custom_${activeTab}`];
+        
         return (
             <View className='container'>
                 <ScrollView>
                     <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
-                    {
-                        status === 'success' && <Layout
-                            status={status}
-                            loading={loading}
-                            picker={picker}
-                            data={data}
-                            params={params}
-                            onFieldChange={this.handleFieldChange}
-                            onChangePickerData={this.changePickerData}
-                        />
-                    }
+                    <Layout
+                        status={status}
+                        loading={loading}
+                        picker={picker}
+                        data={data}
+                        params={params}
+                        onFieldChange={this.handleFieldChange}
+                        onChangePickerData={this.changePickerData}
+                    />
                     <TButton onClick={this.submit}>
                         <View className="btn">
                             <Text className="btn-text">发布</Text>

@@ -1,63 +1,55 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component ,setPageTitle} from '../../platform';
 import classnames from 'classnames';
 
-import { View, TButton, Text, TTabs, Image, TTabPane, ScrollView } from '../../ui';
+import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
 import { FixedTool, MainItem } from '../../components';;
+import { getSpotIndicators, getCertificate } from '../../api';
 import Card from './card';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
 import { navigate, call } from '../../actions';
 
-
-
-const data = {
-    id: '562781322',
-
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    zhc: "巴州亿成棉业有限公司",
-    ck: '中储棉库存厄尔有限责任公司',
-    gys: '河北星宇纺织原料有限责任公司'
-};
-
+const tabList = ["现货指标", "仓单证书"];
 export default class CottonDetail extends Component {
     state = {
-        itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
-        offerItemKeyList: ['sl', 'ztj', 'dcj'],
-        itemDescList: ['zhc', 'ck', 'gys'],
-        current: 0,
+        activeTab: '现货指标',
+        list: [],
+        key: {},
     };
-    componentDidShow() {
-       // Taro.setNavigationBarTitle({ title: '218937123' + '|详情' });
+    componentWillMount() {
+        const { id } = this.props.navigation.state.params;
+        setPageTitle(`${id}|详情`);
+        this.getData();
     }
-
-    componentDidHide() { }
+    handleTabChange = activeTab => {
+        this.setState({
+            activeTab
+        }, this.getData);
+    }
+    getData() {
+        const { activeTab } = this.state;
+        const { id } = this.props.navigation.state.params;
+        if (tabList.indexOf(activeTab) === 0) {
+            //'65551171001'
+            getSpotIndicators({
+                '加工批号': id
+            })
+                .then(res => {
+                    this.setState(res);
+                })
+        } else {
+            getCertificate({
+                '加工批号': id
+            })
+                .then(res => {
+                    this.setState(res);
+                })
+        }
+    }
     handleClick = (current) => {
         this.setState({
             current
@@ -76,51 +68,48 @@ export default class CottonDetail extends Component {
         navigate({ routeName: 'shopping-car' });
     }
     render() {
-        const { itemDescList, itemKeyList, current } = this.state;
-        const tabList = ["现货指标", "仓单证书"];
+        const { list = [], key = {} } = this.state;
         return (
             <View className="container">
                 <ScrollView>
-                    <TTabs scroll={false} current={current} tabList={tabList} onClick={this.handleClick}>
-                        {
-                            tabList.map((item, index) => {
-                                return (
-                                    <TTabPane key={item} tabLabel={item} current={current} index={index}>
-                                        <View className="a">
-                                            <MainItem item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
-                                            <Card />
-                                            <View className={classnames('link-btn-group')}>
-                                                <TButton onClick={() => this.goPackageDetail(item)}>
-                                                    <View className='link-button'>
-                                                        <Text className='link-button-text'>点击查看186包棉包详情</Text>
-                                                    </View>
-                                                </TButton>
-                                                <TButton onClick={() => this.goQuotationList(item)}>
-                                                    <View className='link-button'>
-                                                        <Text className='link-button-text'>点击查看完整现货指标</Text>
-                                                    </View>
-                                                </TButton>
-                                            </View>
-                                            <View className={classnames('btn-group', 'margin')}>
-                                                <TButton onClick={() => this.goShoppingCar(item)}>
-                                                    <View className='btn'>
-                                                        <Image className='btn-icon' src={scImg}></Image>
-                                                        <Text className='btn-text'>收藏</Text>
-                                                    </View>
-                                                </TButton>
-                                                <TButton onClick={() => call('1388888888')}>
-                                                    <View className='btn'>
-                                                        <Image className='btn-icon' src={mobileImg}></Image>
-                                                        <Text className='btn-text'>联系供应商</Text>
-                                                    </View>
-                                                </TButton>
-                                            </View>
-                                        </View>
-                                    </TTabPane>
-                                )
-                            })
-                        }
-                    </TTabs>
+                    <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
+                    {list.map((item, i) => {
+                        return (
+                            <MainItem border={false} data={item} map={key} key={i} />
+                        )
+                    })}
+
+
+
+                    <Card />
+                    <View className={classnames('link-btn-group')}>
+                        <TButton onClick={() => this.goPackageDetail(item)}>
+                            <View className='link-button'>
+                                <Text className='link-button-text'>点击查看186包棉包详情</Text>
+                            </View>
+                        </TButton>
+                        <TButton onClick={() => this.goQuotationList(item)}>
+                            <View className='link-button'>
+                                <Text className='link-button-text'>点击查看完整现货指标</Text>
+                            </View>
+                        </TButton>
+                    </View>
+                    <View className={classnames('btn-group', 'margin')}>
+                        <TButton onClick={() => this.goShoppingCar(item)}>
+                            <View className='btn'>
+                                <Image className='btn-icon' src={scImg}></Image>
+                                <Text className='btn-text'>收藏</Text>
+                            </View>
+                        </TButton>
+                        <TButton onClick={() => call('1388888888')}>
+                            <View className='btn'>
+                                <Image className='btn-icon' src={mobileImg}></Image>
+                                <Text className='btn-text'>联系供应商</Text>
+                            </View>
+                        </TButton>
+                    </View>
+
+
                 </ScrollView>
                 <FixedTool />
             </View>
