@@ -194,8 +194,12 @@ const cardList = [
 
 
 export default class Card extends Component {
-
+    g = k => {
+        const { map, data } = this.props;
+        return data[map[k]] || '-';
+    }
     render() {
+        const {g} = this;
         return (
             <View>
                 {
@@ -220,7 +224,7 @@ export default class Card extends Component {
                                                             return (
                                                                 <View className="card-list-item">
                                                                     <Text className="card-list-item-label">{label}{label ? ':' : ''}</Text>
-                                                                    <Text className="card-list-item-value">{data[a]}</Text>
+                                                                    <Text className="card-list-item-value">{g(label)}</Text>
                                                                 </View>
                                                             )
                                                         })

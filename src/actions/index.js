@@ -11,17 +11,26 @@ const paramsToUrl = params => {
     } else {
         return '';
     }
-
+}
+const stringify = d => {
+    const result = {};
+    for (const key in d) {
+        try {
+            result[key] = JSON.stringify(d[key]);
+        } catch (e) {
+            result[key] = d[key];
+        }
+    }
+    return result;
 }
 const navigate = ({ routeName, params }) => {
     if (tabPages.includes(routeName)) {
         Taro.switchTab({
-            url: `/pages/${routeName}/index` + paramsToUrl(params)
+            url: `/pages/${routeName}/index` + paramsToUrl(stringify(params))
         });
     } else {
-        console.log(`/pages/${routeName}/index` + paramsToUrl(params))
         Taro.navigateTo({
-            url: `/pages/${routeName}/index` + paramsToUrl(params)
+            url: `/pages/${routeName}/index` + paramsToUrl(stringify(params))
         });
     }
 };

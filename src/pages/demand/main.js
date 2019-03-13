@@ -185,11 +185,8 @@ export default class Demand extends Component {
         }, this.getData);
     }
     render() {
-        const {  itemKeyList, modal, unit, data, activeTab } = this.state;
-
+        const { itemKeyList, modal, unit, data, activeTab } = this.state;
         const item = list[0];
-        console.log(data, 'data');
-
         return (
             <View className="container">
                 <ScrollView>

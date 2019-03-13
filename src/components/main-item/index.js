@@ -34,7 +34,18 @@ export default class MainItem extends Component {
     }
     render() {
         const { g } = this;
-        const list = ["颜色级", "长度", "强力", "马克隆值", "整齐度", "平均含杂"];
+        const list = [
+            { label: "颜色级", key: "颜色级" },
+            { label: "长度", key: "长度" },
+            { label: "强力", key: "强力" }, {
+                label: "马值", key: "马克隆值"
+            }, {
+                label: "整度",
+                key: "整齐度"
+            }, {
+                label: "含杂",
+                key: "平均含杂"
+            }];
         const { border = true } = this.props;
         return (
             <View className={classnames("container", { border: border })}>
@@ -51,10 +62,11 @@ export default class MainItem extends Component {
                         <View className="center-left">
                             {
                                 list.map(item => {
+                                    const {label,key} = item;
                                     return (
                                         <View className="item">
-                                            <Text className="item-label">{item}</Text>
-                                            <Text className="item-value">{g(item)}</Text>
+                                            <Text className="item-label">{label}</Text>
+                                            <Text className="item-value">{g(key)}</Text>
                                         </View>
                                     )
                                 })

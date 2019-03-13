@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { Component ,setPageTitle} from '../../platform';
+import { Component, setPageTitle } from '../../platform';
 import classnames from 'classnames';
 
 import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
@@ -19,9 +19,14 @@ export default class CottonDetail extends Component {
         activeTab: '现货指标',
         list: [],
         key: {},
+        defaultData: {}
     };
     componentWillMount() {
-        const { id } = this.props.navigation.state.params;
+        const { id, defaultData, showCertificate } = this.props.navigation.state.params;
+        this.setState({
+            defaultData,
+            showCertificate: showCertificate === 'true'
+        });
         setPageTitle(`${id}|详情`);
         this.getData();
     }
@@ -59,7 +64,8 @@ export default class CottonDetail extends Component {
         console.log('报价')
     }
     goQuotationList() {
-        navigate({ routeName: 'quotation-list' });
+        const { defaultData, key } = this.props.navigation.state.params;
+        navigate({ routeName: 'quotation-list', params: { data: defaultData, key } });
     }
     goPackageDetail() {
         navigate({ routeName: 'package-detail' });
@@ -67,28 +73,26 @@ export default class CottonDetail extends Component {
     goShoppingCar() {
         navigate({ routeName: 'shopping-car' });
     }
+    getDataByList() {
+        const { list, defaultData } = this.state;
+        return list[0] || defaultData;
+    }
     render() {
-        const { list = [], key = {} } = this.state;
+        const { key = {}, showCertificate } = this.state;
+        const data = this.getDataByList();
         return (
             <View className="container">
                 <ScrollView>
-                    <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
-                    {list.map((item, i) => {
-                        return (
-                            <MainItem border={false} data={item} map={key} key={i} />
-                        )
-                    })}
-
-
-
-                    <Card />
+                    {showCertificate && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
+                    <MainItem border={false} data={data} map={key} />
+                    <Card data={data} map={key} />
                     <View className={classnames('link-btn-group')}>
-                        <TButton onClick={() => this.goPackageDetail(item)}>
+                        <TButton onClick={() => this.goPackageDetail(data)}>
                             <View className='link-button'>
                                 <Text className='link-button-text'>点击查看186包棉包详情</Text>
                             </View>
                         </TButton>
-                        <TButton onClick={() => this.goQuotationList(item)}>
+                        <TButton onClick={() => this.goQuotationList(data)}>
                             <View className='link-button'>
                                 <Text className='link-button-text'>点击查看完整现货指标</Text>
                             </View>

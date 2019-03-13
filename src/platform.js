@@ -1,11 +1,21 @@
 import Taro, { Component } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 
+const parse = d => {
+    const result = {};
+    for (const key in d) {
+        try {
+            result[key] = JSON.parse(d[key]);
+        } catch (e) {
+            result[key] = d[key];
+        }
+    }
+    return result;
+}
 const injectNavParams = data => {
-    //navigation.state.params
     return {
         state: {
-            params: data.params
+            params: parse(data.params)
         }
     }
 }
