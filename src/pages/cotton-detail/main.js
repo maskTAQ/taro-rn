@@ -16,16 +16,17 @@ import { navigate, call } from '../../actions';
 const tabList = ["现货指标", "仓单证书"];
 export default class CottonDetail extends Component {
     state = {
-        activeTab: '现货指标',
+        activeTab: '',
         list: [],
         key: {},
         defaultData: {}
     };
     componentWillMount() {
-        const { id, defaultData, showCertificate } = this.props.navigation.state.params;
+        const { id, defaultData, type } = this.props.navigation.state.params;
         this.setState({
             defaultData,
-            showCertificate: showCertificate === 'true'
+            type,
+            activeTab: type === '1' ? '仓单证书' : '现货指标'
         });
         setPageTitle(`${id}|详情`);
         this.getData();
@@ -78,12 +79,12 @@ export default class CottonDetail extends Component {
         return list[0] || defaultData;
     }
     render() {
-        const { key = {}, showCertificate } = this.state;
+        const { key = {}, type } = this.state;
         const data = this.getDataByList();
         return (
             <View className="container">
                 <ScrollView>
-                    {showCertificate && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
+                    {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
                     <MainItem border={false} data={data} map={key} />
                     <Card data={data} map={key} />
                     <View className={classnames('link-btn-group')}>

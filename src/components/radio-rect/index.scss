@@ -6,9 +6,8 @@
     flex-wrap: wrap;
 }
 
-.check-item {
+.item {
     margin-right: 20px;
-    margin-bottom: 20px;
     height: 50px;
     padding: 0 20px;
     @extend .flex;
@@ -17,11 +16,11 @@
     background: #dfdede;
 }
 
-.active-check-item {
+.active-item {
     background: $main;
 }
 
-.check-item-text {
+.item-text {
     color: #000;
     font-size: 28px;
     /*postcss-pxtransform rn eject enable*/
@@ -29,6 +28,6 @@
     /*postcss-pxtransform rn eject disable*/
 }
 
-.active-check-item-text {
+.active-item-text {
     color: #fff;
 }

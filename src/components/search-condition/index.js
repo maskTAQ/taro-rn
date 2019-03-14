@@ -5,7 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Radio, RadioRect, Check, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
+import { CRadio, RadioRect, Check, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
 import { View, Text, TDatePicker, TInput, TButton, Image, TLoading } from '../../ui';
 import topIcon from '../../img/top.png';
 import bottomIcon from '../../img/bottom.png';
@@ -162,10 +162,10 @@ export default class SearchCondition extends Component {
                                                             return (
                                                                 <View key={type}>
                                                                     {
-                                                                        type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                        type === 'radio' && isShowComponent && <CRadio label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                     }
                                                                     {
-                                                                        type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                        type === 'radiorect' && isShowComponent && <RadioRect label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                     }
                                                                     {
                                                                         type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />

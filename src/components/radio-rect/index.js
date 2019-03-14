@@ -43,20 +43,21 @@ export default class RadioRect extends Component {
         onChange({ key: k, value: nextValue });
     }
     render() {
-        const { option = [], value: v } = this.props;
-        const value = v || [];
+        const { k, value, onChange, option = [] } = this.props;
         return (
             <View className="container">
                 {
                     option.map(item => {
-                        const isActive = value.includes(item);
+                        const isActive = value === item;
                         return (
-                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
-                                <View className={classnames("check-item", {
-                                    "active-check-item": isActive
+                            <TButton key={item} onClick={() => {
+                                onChange({ key: k, value: item });
+                            }}>
+                                <View className={classnames("item", {
+                                    "active-item": isActive
                                 })}>
-                                    <Text className={classnames("check-item-text", {
-                                        "active-check-item-text": isActive
+                                    <Text className={classnames("item-text", {
+                                        "active-item-text": isActive
                                     })}>
                                         {item}
                                     </Text>

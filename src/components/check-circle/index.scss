@@ -1,13 +1,13 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
-.row {
+.container {
     flex:1;
     @extend .flex;
     flex-direction: row;
-    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
-.check-item {
+.item {
     margin-right: 20px;
     height: 50px;
     @extend .flex;
@@ -21,7 +21,7 @@
     height: 60px;
 }
 
-.check-item-text {
+.item-text {
     color: #000;
     font-size: 28px;
 }

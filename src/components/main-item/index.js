@@ -62,7 +62,7 @@ export default class MainItem extends Component {
                         <View className="center-left">
                             {
                                 list.map(item => {
-                                    const {label,key} = item;
+                                    const { label, key } = item;
                                     return (
                                         <View className="item">
                                             <Text className="item-label">{label}</Text>
@@ -73,16 +73,25 @@ export default class MainItem extends Component {
                             }
                         </View>
                         <View className="center-right">
-                            <TButton>
-                                <View className="tag xh">
-                                    <Text className="tag-text">现货</Text>
-                                </View>
-                            </TButton>
-                            <TButton>
-                                <View className="tag cd">
-                                    <Text className="tag-text">仓单</Text>
-                                </View>
-                            </TButton>
+                            {
+                                ['0', '2'].includes(g('仓单')) && (
+                                    <TButton>
+                                        <View className="tag xh">
+                                            <Text className="tag-text">现货</Text>
+                                        </View>
+                                    </TButton>
+                                )
+                            }
+                            {
+                                ['1', '2'].includes(g('仓单')) && (
+                                    <TButton>
+                                        <View className="tag cd">
+                                            <Text className="tag-text">仓单</Text>
+                                        </View>
+                                    </TButton>
+                                )
+                            }
+
                         </View>
                     </View>
 

@@ -8,7 +8,7 @@ export { default as MainItem } from './main-item';
 export { default as Select } from './select';
 export { default as Unknow } from './unknow';
 
-export { default as Radio } from './radio';
+export { default as CRadio } from './c-radio';
 export { default as RadioRect } from './radio-rect';
 
 export { default as Check } from './check';

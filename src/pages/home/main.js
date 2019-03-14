@@ -143,12 +143,13 @@ export default class Home extends Component {
     }
     goCottonDetail(data) {
         const { key } = this.state;
+        console.log(data[key['仓单']], '')
         navigate({
             routeName: 'cotton-detail', params: {
                 key,
                 id: data[key['批号']],
                 defaultData: data,
-                showCertificate: data[key['仓单']] == '1'
+                type: data[key['仓单']]
             }
         });
     }

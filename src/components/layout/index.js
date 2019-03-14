@@ -5,9 +5,10 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Select, DatePicker, Radio, RadioRect, Check, CheckCircle } from '../index';
+import { Select, DatePicker, CRadio, RadioRect, Check, CheckCircle } from '../index';
 import { View, Text, TDatePicker, TInput, TLoading } from '../../ui';
 import './index.scss';
+
 const isVisible = ({ visible = true, params }) => {
     let isVisible = true;
     if (typeof visible === 'string') {
@@ -76,7 +77,7 @@ export default class Layout extends Component {
     }
     render() {
         const { data, params, status, loading } = this.props;
-        console.log(data, 'data');
+        console.log(data, 'data.param');
         return (
             <View className="content">
                 {
@@ -114,16 +115,16 @@ export default class Layout extends Component {
                                                         <View className={className}>
                                                             {
                                                                 components.map(component => {
-                                                                    const { type, label, param, content, visible: componentVisible = '' } = component;
+                                                                    const { type, label, value: defaultValue, param, content, visible: componentVisible = '' } = component;
                                                                     const isShowComponent = isVisible({ visible: componentVisible, params });
-                                                                    const v = params[param];
+                                                                    const v = params[param] || defaultValue;
                                                                     return (
                                                                         <View key={type}>
                                                                             {
-                                                                                type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                                type === 'radio' && isShowComponent && <CRadio label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                             }
                                                                             {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
@@ -162,16 +163,19 @@ export default class Layout extends Component {
 
                                                             {
                                                                 components.map(component => {
-                                                                    const { type, label, param, content, visible: componentVisible = '' } = component;
+                                                                    const { type, label, value: defaultValue, param, content, visible: componentVisible = '' } = component;
                                                                     const isShowComponent = isVisible({ visible: componentVisible, params });
-                                                                    const v = params[param];
+                                                                    const v = params[param] || defaultValue;
                                                                     return (
-                                                                        <View className="field-content" key={type}>
+                                                                        <View className={classnames({
+                                                                            "field-content": type !== 'label',
+                                                                            "label-content": type === 'label'
+                                                                        })} key={type}>
                                                                             {
-                                                                                type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                                type === 'radio' && isShowComponent && <CRadio label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                             }
                                                                             {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
@@ -181,7 +185,7 @@ export default class Layout extends Component {
                                                                             }
 
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} />
                                                                             }
 
                                                                             {
@@ -189,6 +193,9 @@ export default class Layout extends Component {
                                                                             }
                                                                             {
                                                                                 type === 'text' && isShowComponent && <Text className="text">{content}</Text>
+                                                                            }
+                                                                            {
+                                                                                type === 'label' && isShowComponent && <Text className="text">{content}</Text>
                                                                             }
                                                                             {
                                                                                 type === 'datepicker' && isShowComponent && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
