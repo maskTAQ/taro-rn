@@ -5,8 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Check, Select, Toggle, DatePicker } from '../index';
-import RadioCheck from '../radio-check/index';
+import { Select, DatePicker, Radio, RadioRect, Check, CheckCircle } from '../index';
 import { View, Text, TDatePicker, TInput, TLoading } from '../../ui';
 import './index.scss';
 const isVisible = ({ visible = true, params }) => {
@@ -77,11 +76,13 @@ export default class Layout extends Component {
     }
     render() {
         const { data, params, status, loading } = this.props;
+        console.log(data, 'data');
         return (
             <View className="content">
                 {
                     status === 'success' && data.param.map(area => {
                         const { title, data } = area;
+
                         return (
                             <View className="area" key={title}>
                                 {
@@ -102,9 +103,8 @@ export default class Layout extends Component {
                                             });
                                             const isShowField = isVisible({ visible, params });
 
-
                                             return (
-                                                layout === 'column' && isShowField ? (
+                                                isShowField ? layout === 'column' ? (
                                                     <View className="field-column" key={title}>
                                                         <View className="field-title">
                                                             <Text className="field-title-text">
@@ -120,25 +120,30 @@ export default class Layout extends Component {
                                                                     return (
                                                                         <View key={type}>
                                                                             {
+                                                                                type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                                type === 'checkcircle' && isShowComponent && <CheckCircle k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
+
                                                                             {
                                                                                 type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
                                                                             }
+
                                                                             {
-                                                                                type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
+                                                                                type === 'input' && isShowComponent && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
                                                                             }
                                                                             {
-                                                                                type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
+                                                                                type === 'text' && isShowComponent && <Text className="text">{content}</Text>
                                                                             }
                                                                             {
-                                                                                type === 'text' && <Text className="text">{content}</Text>
-                                                                            }
-                                                                            {
-                                                                                type === 'datepicker' && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
+                                                                                type === 'datepicker' && isShowComponent && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
                                                                                     <DatePicker date={v} />
                                                                                 </TDatePicker>
                                                                             }
@@ -163,25 +168,30 @@ export default class Layout extends Component {
                                                                     return (
                                                                         <View className="field-content" key={type}>
                                                                             {
+                                                                                type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
+                                                                                type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                            }
+                                                                            {
                                                                                 type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
-                                                                                type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                                type === 'checkcircle' && isShowComponent && <CheckCircle k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                            }
+
+                                                                            {
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
+                                                                            }
+
+                                                                            {
+                                                                                type === 'input' && isShowComponent && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
                                                                             }
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="row-select" />
+                                                                                type === 'text' && isShowComponent && <Text className="text">{content}</Text>
                                                                             }
                                                                             {
-                                                                                type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
-                                                                            }
-                                                                            {
-                                                                                type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
-                                                                            }
-                                                                            {
-                                                                                type === 'text' && <Text className="text">{content}</Text>
-                                                                            }
-                                                                            {
-                                                                                type === 'datepicker' && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
+                                                                                type === 'datepicker' && isShowComponent && <TDatePicker onChange={this.handleDateChange.bind(this, param)}>
                                                                                     <DatePicker date={v} />
                                                                                 </TDatePicker>
                                                                             }
@@ -191,7 +201,7 @@ export default class Layout extends Component {
                                                             }
 
                                                         </View>
-                                                    )
+                                                    ) : null
                                             )
                                         })
                                     }

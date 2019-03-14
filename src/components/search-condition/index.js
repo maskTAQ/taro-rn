@@ -5,8 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Check, Select, Toggle, DatePicker, Slidebothway } from '../index';
-import RadioCheck from '../radio-check/index';
+import { Radio, RadioRect, Check, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
 import { View, Text, TDatePicker, TInput, TButton, Image, TLoading } from '../../ui';
 import topIcon from '../../img/top.png';
 import bottomIcon from '../../img/bottom.png';
@@ -141,13 +140,14 @@ export default class SearchCondition extends Component {
                             <View className="filter-box">
                                 {
                                     (isNaN(activeTabIndex) ? [] : data[activeTabIndex].data).map(field => {
-                                        const { title: fieldTitle, components = [] } = field;
+                                        const { title: fieldTitle, components = [], visible } = field;
                                         const className = classnames({
                                             'layout-row': components.length > 2,
                                             'layout-column': components.length <= 2,
                                         });
-                                        return (
-                                            <View className="field-column" key={title}>
+                                        const isShowField = isVisible({ visible, params });
+                                        return isShowField ? (
+                                            <View className="field-column" key={fieldTitle}>
                                                 <View className="field-title">
                                                     <Text className="field-title-text">
                                                         {fieldTitle}
@@ -162,20 +162,25 @@ export default class SearchCondition extends Component {
                                                             return (
                                                                 <View key={type}>
                                                                     {
+                                                                        type === 'radio' && isShowComponent && <Radio label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'radiorect' && isShowComponent && <RadioRect label={content} k={param} value={v} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
                                                                         type === 'check' && isShowComponent && <Check k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'checkcircle' && isShowComponent && <CheckCircle k={param} value={v} option={content} onChange={this.handleChange} />
                                                                     }
                                                                     {
                                                                         type === 'slidebothway' && isShowComponent && <Slidebothway k={param} value={v} option={content} onChange={this.handleChange} />
                                                                     }
-                                                                    {
-                                                                        type === 'radiocheck' && isShowComponent && <RadioCheck k={param} value={v} option={content} onChange={this.handleChange} />
-                                                                    }
+
                                                                     {
                                                                         type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
                                                                     }
-                                                                    {
-                                                                        type === 'radio' && <Toggle label="显示" k={param} value={v} onChange={this.handleChange} />
-                                                                    }
+
                                                                     {
                                                                         type === 'input' && <TInput key={param} value={v} placeholder={content} className="input" onInput={this.handleInputChange.bind(this, param)} />
                                                                     }
@@ -193,13 +198,13 @@ export default class SearchCondition extends Component {
                                                     }
                                                 </View>
                                             </View>
-                                        )
+                                        ) : null
                                     })
                                 }
                             </View>
                             {
 
-                                tab && (
+                                current && (
                                     <View className="btn-group">
                                         <TButton onClick={onResetParams}>
                                             <View className="btn">

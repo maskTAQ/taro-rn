@@ -35,7 +35,7 @@ export default class MainItem extends Component {
     render() {
         const { g } = this;
         const list = [
-            { label: "颜色级", key: "颜色级" },
+            { label: "等级级", key: "颜色级" },
             { label: "长度", key: "长度" },
             { label: "强力", key: "强力" }, {
                 label: "马值", key: "马克隆值"

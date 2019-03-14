@@ -3,8 +3,11 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 
 import { TButton, View, Text } from '../../ui';
+import activeImg from './img/radio-active.png';
+import unactiveImg from './img/radio.png';
 import './index.scss'
-export default class RadioCheck extends Component {
+//圆形多选
+export default class CheckCircle extends Component {
     static options = {
         addGlobalClass: true
     }
@@ -42,12 +45,9 @@ export default class RadioCheck extends Component {
                                         const isActive = value === item;
                                         return (
                                             <TButton key={item} onClick={this.handeChange.bind(this, item)}>
-                                                <View className={classnames("check-item", {
-                                                    "active-check-item": isActive
-                                                })}>
-                                                    <Text className={classnames("check-item-text", {
-                                                        "active-check-item-text": isActive
-                                                    })}>
+                                                <View className={"check-item"}>
+                                                    <Image className="item-icon" src={isActive ? activeImg : unactiveImg} />
+                                                    <Text className={"check-item-text"}>
                                                         {item}
                                                     </Text>
                                                 </View>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Component } from '../../platform';
 import classnames from 'classnames';
-import update from 'immutability-helper';
 
 import { TButton, View, Text } from '../../ui';
 import './index.scss'
+//方形多选
 export default class Check extends Component {
     static options = {
         addGlobalClass: true
@@ -27,40 +27,36 @@ export default class Check extends Component {
     }
     handeChange(v) {
         const { k, value, onChange } = this.props;
-        const valueWrapper = value || [];
-        const i = valueWrapper.indexOf(v);
-        let nextValue = valueWrapper;
-        if (i > -1) {
-            nextValue = update(nextValue, {
-                $splice: [[i, 1]]
-            });
-        } else {
-            nextValue = update(nextValue, {
-                $push: [v]
-            });
-        }
-        onChange({ key: k, value: nextValue });
+        onChange({ key: k, value: value === v ? '' : v });
     }
     render() {
-        const { option = [], value: v } = this.props;
-        const value = v || [];
+        const { option = [], value } = this.props;
+        const group = this.formateData(option);
         return (
             <View className="container">
                 {
-                    option.map(item => {
-                        const isActive = value.includes(item);
+                    group.map((row, rowI) => {
                         return (
-                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
-                                <View className={classnames("check-item", {
-                                    "active-check-item": isActive
-                                })}>
-                                    <Text className={classnames("check-item-text", {
-                                        "active-check-item-text": isActive
-                                    })}>
-                                        {item}
-                                    </Text>
-                                </View>
-                            </TButton>
+                            <View className="row" key={rowI}>
+                                {
+                                    row.map(item => {
+                                        const isActive = value === item;
+                                        return (
+                                            <TButton key={item} onClick={this.handeChange.bind(this, item)}>
+                                                <View className={classnames("check-item", {
+                                                    "active-check-item": isActive
+                                                })}>
+                                                    <Text className={classnames("check-item-text", {
+                                                        "active-check-item-text": isActive
+                                                    })}>
+                                                        {item}
+                                                    </Text>
+                                                </View>
+                                            </TButton>
+                                        )
+                                    })
+                                }
+                            </View>
                         )
                     })
                 }
@@ -68,5 +64,3 @@ export default class Check extends Component {
         )
     }
 }
-
-

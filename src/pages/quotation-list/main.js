@@ -62,7 +62,7 @@ export default class QuotationList extends Component {
         const halfWidth = width / 2;
         const data = [
             [{ v: '组批批次:', x: 150 }, { v: g('组批批次'), x: 150 + halfWidth }],
-            [{ v: '合计报数:', x: 10 }, { v: g('合计报数'), x: 10 + halfWidth / 5 * 2 }, { v: '质量标识:', x: 10 + halfWidth }, { v: g('质量标识'), x: 10 + halfWidth / 5 * 7 }],
+            [{ v: '合计包数:', x: 10 }, { v: g('合计包数'), x: 10 + halfWidth / 5 * 2 }, { v: '质量标识:', x: 10 + halfWidth }, { v: g('质量标识'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计毛重:', x: 10 }, { v: g('合计毛重'), x: 10 + halfWidth / 5 * 2 }, { v: '平均回潮:', x: 10 + halfWidth }, { v: g('平均回潮'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计皮重:', x: 10 }, { v: g('合计皮重'), x: 10 + halfWidth / 5 * 2 }, { v: '平均含杂:', x: 10 + halfWidth }, { v: g('平均含杂'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计净重:', x: 10 }, { v: g('合计净重'), x: 10 + halfWidth / 5 * 2 }, { v: '合计公重:', x: 10 + halfWidth }, { v: g('合计公重'), x: 10 + halfWidth / 5 * 7 }],
@@ -291,6 +291,8 @@ export default class QuotationList extends Component {
 
 
     componentWillMount() {
+        const { data, key } = this.props.navigation.state.params;
+        console.log(key,'key')
         setPageTitle(this.g('组批批次')+'|报价单');
         Taro.getSystemInfo({
             success: (res) => {

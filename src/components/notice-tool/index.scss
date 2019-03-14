@@ -1,11 +1,10 @@
 .container {
-    height: 100px;
+    height: 80px;
     /*postcss-pxtransform rn eject enable*/
     display: flex;
     /*postcss-pxtransform rn eject disable*/
     flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
     padding: 0 20px;
     background: #fff;
 }
