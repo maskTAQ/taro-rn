@@ -50,6 +50,7 @@
 }
 
 .field-label {
+    margin-right: 10px;
     @extend .flex;
     flex-direction: column;
     justify-content: center;
@@ -85,7 +86,7 @@
     flex-direction: column;
     justify-content: center;
 }
-.text-content{
+.label-content{
     @extend .flex;
     flex-direction: column;
     justify-content: center;

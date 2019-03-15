@@ -1,5 +1,6 @@
 @import '../../platform.scss';
 .select-box {
+    margin: 4px;
     @extend .flex;
     flex-direction: row;
     widows: 100px;

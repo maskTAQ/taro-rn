@@ -281,12 +281,13 @@ export default class Demand extends Component {
                         )
                     }
 
-                    <TButton onClick={this.goDemandCustom}>
-                        <View className="submit">
-                            <Text className="submit-text">发布需求</Text>
-                        </View>
-                    </TButton>
+
                 </ScrollView>
+                <TButton onClick={this.goDemandCustom}>
+                    <View className="submit">
+                        <Text className="submit-text">发布需求</Text>
+                    </View>
+                </TButton>
                 <TModal visible={modal.visible} title="我要报价" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
                     {
                         modalList.map((item) => {

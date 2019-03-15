@@ -20,9 +20,10 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
+      'pages/demand/index',
       'pages/home/index',
       'pages/cotton-detail/index',
-      'pages/demand/index',
+      
      
       'pages/offer-tool/index',
       'pages/demand-custom/index',
