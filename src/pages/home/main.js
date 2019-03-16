@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 
-import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, } from '../../ui';
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components';
 import { getFilterLayout, getHome, getOfferList } from '../../api';
 import { navigate, asyncActionWrapper } from '../../actions';
@@ -42,7 +42,7 @@ const item = {
     gys: '河北星宇纺织原料有限责任公司'
 };
 
-@connect(({ layout }) => ({ layout }))
+@connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
     state = {
         activeTab: '新疆棉',
@@ -76,8 +76,10 @@ export default class Home extends Component {
     }
     getData() {
         const { activeTab } = this.state;
-        const { status, loading } = this.props.layout[`filter_${activeTab}`];
-        if (status !== 'success' && !loading) {
+        const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${activeTab}`];
+        const { status: dataStatus, loading: dataLoading } = this.props.data[`offer_list_${activeTab}`];
+        //获取筛选条件布局
+        if (layoutStatus !== 'success' && !layoutLoading) {
             asyncActionWrapper({
                 call: getFilterLayout,
                 params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1 },
@@ -85,10 +87,15 @@ export default class Home extends Component {
                 key: `filter_${activeTab}`
             });
         }
-        getOfferList({ '棉花云报价类型': productTypes.indexOf(activeTab) + 1 })
-            .then(res => {
-                this.setState(res);
-            })
+        //获取列表数据
+        if (dataStatus !== 'success' && !dataLoading) {
+            asyncActionWrapper({
+                call: getOfferList,
+                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1 },
+                type: 'data',
+                key: `offer_list_${activeTab}`
+            });
+        }
     }
 
     handleTabChange = activeTab => {
@@ -143,7 +150,6 @@ export default class Home extends Component {
     }
     goCottonDetail(data) {
         const { key } = this.state;
-        console.log(data[key['仓单']], '')
         navigate({
             routeName: 'cotton-detail', params: {
                 key,
@@ -154,8 +160,9 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { picker, ad, news, activeTab, params, url, key, list } = this.state;
-        const { status, loading, data } = this.props.layout[`filter_${activeTab}`];
+        const { picker, ad, news, activeTab, params, url } = this.state;
+        const { status, loading, data: layoutData } = this.props.layout[`filter_${activeTab}`];
+        const { status: dataStatus, data } = this.props.data[`offer_list_${activeTab}`];
         return (
             <View className="container">
                 <ScrollView>
@@ -187,22 +194,30 @@ export default class Home extends Component {
                         status={status}
                         loading={loading}
                         picker={picker}
-                        data={data}
+                        data={layoutData}
                         params={params}
                         onFieldChange={this.handleFieldChange}
                         onChangePickerData={this.changePickerData}
                         onResetParams={this.resetParams}
                         onSubmit={this.submit}
                     />
-                    <View className="list">
-                        {list.map((item, i) => {
-                            return (
-                                <TButton onClick={this.goCottonDetail.bind(this, item)} key={i}>
-                                    <MainItem border={true} data={item} map={key} />
-                                </TButton>
-                            )
-                        })}
-                    </View>
+                    {
+                        dataStatus === 'loading' && <TLoading />
+                    }
+                    {
+                        dataStatus === 'success' && (
+                            <View className="list">
+                                {data.list.map((item, i) => {
+                                    return (
+                                        <TButton onClick={this.goCottonDetail.bind(this, item)} key={i}>
+                                            <MainItem border={true} data={item} map={data.key} />
+                                        </TButton>
+                                    )
+                                })}
+                            </View>
+                        )
+                    }
+
                 </ScrollView>
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}

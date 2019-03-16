@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
 import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
@@ -11,7 +11,7 @@ import Item from './item';
 import bj from './img/bj.png';
 import editImg from '../../img/edit.png'
 import deleteImg from '../../img/delete.png';
-import { navigate } from '../../actions';
+import { navigate, asyncActionWrapper } from '../../actions';
 import './main.scss';
 
 
@@ -73,6 +73,8 @@ const modalList = [
 ];
 const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
 const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
+
+@connect(({ data }) => ({ data }))
 export default class Demand extends Component {
     state = {
         itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
@@ -85,59 +87,22 @@ export default class Demand extends Component {
         unit: '吨',
 
         activeTab: '新疆棉',
-        data: {
-            status: 'init',
-            loading: false,
-            key: {},
-            list: []
-        }
     };
     componentWillMount() {
         this.getData();
     }
     getData() {
         const { activeTab } = this.state;
-        this.setState(update(this.state, {
-            data: {
-                status: {
-                    $set: 'loading'
-                },
-                loading: {
-                    $set: true
-                }
-            }
-        }));
-        getDemandList({ '棉花云供需类型': tabList.indexOf(activeTab) + 1 })
-            .then(({ key, list }) => {
-                this.setState(update(this.state, {
-                    data: {
-                        status: {
-                            $set: 'success'
-                        },
-                        loading: {
-                            $set: false
-                        },
-                        key: {
-                            $set: key
-                        },
-                        list: {
-                            $set: list
-                        }
-                    }
-                }));
-            })
-            .catch(e => {
-                this.setState(update(this.state, {
-                    data: {
-                        status: {
-                            $set: 'error'
-                        },
-                        loading: {
-                            $set: false
-                        }
-                    }
-                }));
-            })
+        const { status: dataStatus, loading: dataLoading } = this.props.data[`demand_list_${activeTab}`];
+
+        if (dataStatus !== 'success' && !dataLoading) {
+            asyncActionWrapper({
+                call: getDemandList,
+                params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
+                type: 'data',
+                key: `demand_list_${activeTab}`
+            });
+        }
     }
     handleClick = (current) => {
         this.setState({
@@ -185,7 +150,8 @@ export default class Demand extends Component {
         }, this.getData);
     }
     render() {
-        const { itemKeyList, modal, unit, data, activeTab } = this.state;
+        const { itemKeyList, modal, unit, activeTab } = this.state;
+        const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const item = list[0];
         return (
             <View className="container">
@@ -264,10 +230,10 @@ export default class Demand extends Component {
 
                     </View>
                     {
-                        data.status === 'loading' && <TLoading />
+                        dataStatus === 'loading' && <TLoading />
                     }
                     {
-                        data.status === 'success' && (
+                        dataStatus === 'success' && (
                             <View className="demand-list">
                                 <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
                                 {

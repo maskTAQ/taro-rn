@@ -4,6 +4,7 @@
     flex:1;
     @extend .flex;
     flex-direction: row;
+    justify-content: flex-end;
     flex-wrap: wrap;
 }
 

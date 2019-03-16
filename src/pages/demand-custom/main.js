@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
-import { getDemandCustomLayout, doSubmit } from '../../api';
+import { getDemandCustomLayout,getDemandList, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
@@ -40,7 +40,7 @@ export default class DemandCustom extends Component {
     handleTabChange = activeTab => {
         this.setState({
             activeTab,
-            params:{}
+            params: {}
         }, this.getData);
     }
 
@@ -90,14 +90,20 @@ export default class DemandCustom extends Component {
             doSubmit(data.do, Object.assign({}, params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
+                    //更新需求列表
+                    asyncActionWrapper({
+                        call: getDemandList,
+                        params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
+                        type: 'data',
+                        key: `demand_list_${activeTab}`
+                    });
                 })
         }
     }
-
     render() {
         const { activeTab, picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`demand_custom_${activeTab}`];
-        
+
         return (
             <View className='container'>
                 <ScrollView>

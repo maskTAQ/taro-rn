@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit } from '../../api';
+import { getOfferLayout, doSubmit ,getOfferList} from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
@@ -82,6 +82,12 @@ export default class AddBatch extends Component {
             doSubmit(data.do, Object.assign({}, params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
+                    asyncActionWrapper({
+                        call: getOfferList,
+                        params:navParams,
+                        type: 'data',
+                        key: `offer_list_${navParams.type}`
+                    });
                 })
         }
     }

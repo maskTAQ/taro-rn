@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit } from '../../api';
+import { getOfferLayout, getOfferList, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
@@ -85,6 +85,12 @@ export default class publishImportCotton extends Component {
             doSubmit(data.do, Object.assign({}, params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
+                    asyncActionWrapper({
+                        call: getOfferList,
+                        params: { '棉花云报价类型': current === 0 ? 2 : 3 },
+                        type: 'data',
+                        key: `offer_list_${layoutTypes[current]}`
+                    });
                 })
         }
     }
@@ -116,7 +122,8 @@ export default class publishImportCotton extends Component {
                         </View>
                     </TButton>
                 </ScrollView>
-                <TPicker onClick={this.handlePickerChange}
+                <TPicker
+                    onClick={this.handlePickerChange}
                     show={picker.visible}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}
