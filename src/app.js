@@ -23,7 +23,7 @@ class App extends Component {
       'pages/demand/index',
       'pages/home/index',
       'pages/cotton-detail/index',
-      
+     
      
       'pages/offer-tool/index',
       'pages/demand-custom/index',
@@ -58,7 +58,7 @@ class App extends Component {
       "list": [
         {
           "pagePath": "pages/home/index",
-          "text": "首页",
+          "text": "棉花资源",
           "iconPath": './tab-img/home.png',
           "selectedIconPath": './tab-img/home-active.png',
         },

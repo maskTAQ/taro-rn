@@ -35,17 +35,20 @@ export default class MainItem extends Component {
     render() {
         const { g } = this;
         const list = [
-            { label: "等级级", key: "颜色级" },
+            { label: "等级", key: "颜色级" },
             { label: "长度", key: "长度" },
             { label: "强力", key: "强力" }, {
                 label: "马值", key: "马克隆值"
-            }, {
+            } , {
+                label: "回潮",
+                key: "回潮"
+            },{
                 label: "整度",
                 key: "整齐度"
             }, {
                 label: "含杂",
                 key: "平均含杂"
-            }];
+            } ];
         const { border = true } = this.props;
         return (
             <View className={classnames("container", { border: border })}>

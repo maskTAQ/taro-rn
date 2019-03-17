@@ -1,7 +1,8 @@
 import React from 'react';
 import { Component } from '../../platform';
 
-import { View, Text } from '../../ui';
+import { View, Text, TButton } from '../../ui';
+import { navigate } from '../../actions';
 import './index.scss';
 const placeholderNew = { title: '暂无最新资讯' };
 export default class NoticeTool extends Component {
@@ -33,19 +34,27 @@ export default class NoticeTool extends Component {
     componentWillUnmount() {
         clearInterval(this.interval);
     }
+    //navigate
+    go(){
+        navigate({
+            routeName:'cotton-information'
+        });
+    }
     render() {
-        const { currentIndex, list } = this.state;
+        const { currentIndex } = this.state;
         const { data = [] } = this.props;
         const currentNew = data[currentIndex] || placeholderNew;
         return (
-            <View className="container">
-                <Text className="label">棉讯</Text>
-                <View className="border"></View>
-                <View className="content">
-                    <Text className="content-text">{currentNew.title}</Text>
+            <TButton onClick={this.go}>
+                <View className="container">
+                    <Text className="label">棉讯</Text>
+                    <View className="border"></View>
+                    <View className="content">
+                        <Text className="content-text">{currentNew.title}</Text>
+                    </View>
                 </View>
-            </View>
-        )
+            </TButton>
+            )
     }
 }
 

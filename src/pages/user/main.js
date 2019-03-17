@@ -26,7 +26,7 @@ import { login } from '../../api';
 const toolList = [
     {
         icon: scImg,
-        label: '收藏'
+        label: '物流'
     },
     {
         icon: historyImg,
@@ -40,7 +40,7 @@ const toolList = [
 const listTop = [
     {
         icon: publishImg,
-        label: '我的发布',
+        label: '我的云报价',
         value: '',
         routeName: 'publish-import-cotton'
 

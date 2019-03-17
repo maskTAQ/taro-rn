@@ -23,5 +23,10 @@
 t-input {
     flex: 1;
 }
-
+.fixed-button{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 /*postcss-pxtransform rn eject disable*/

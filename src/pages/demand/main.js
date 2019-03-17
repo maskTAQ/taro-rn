@@ -8,9 +8,7 @@ import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, 
 import { getDemandList } from '../../api';
 import config from '../../config';
 import Item from './item';
-import bj from './img/bj.png';
-import editImg from '../../img/edit.png'
-import deleteImg from '../../img/delete.png';
+import DemandItem from './demand-item';
 import { navigate, asyncActionWrapper } from '../../actions';
 import './main.scss';
 
@@ -160,74 +158,7 @@ export default class Demand extends Component {
                         <View className="condition-title">
                             <Text className="condition-title-text">定制牌价</Text>
                         </View>
-                        <View className='condition-content'>
-                            <View className='item-title'>
-                                <View className='item-title-left'>
-                                    <Text className='item-name'>需求编号</Text>
-                                    <Text className='item-value'>({item.id})</Text>
-                                </View>
-                                <View className='item-title-right'>
-                                    <Text className='item-time'>2019-01-01</Text>
-                                </View>
-                            </View>
-                            <View className="tag-list">
-                                {
-                                    tagList.map((tag, index) => {
-                                        return (
-                                            <TTag
-                                                className={index === tagList.length - 1 ? 'tag-end' : 'tag-mr'}>
-                                                {tag}
-                                            </TTag>
-                                        )
-                                    })
-                                }
-
-                            </View>
-                            <View className='item-info-list'>
-                                {
-                                    itemKeyList.map((itemI, index) => (
-                                        <View className="item-info-item">
-                                            <View className='item-info-item-content'>
-                                                <Text className='item-info-item-title'>{map[itemI]}</Text>
-                                                <Text className='item-info-item-value'>{item[itemI]}</Text>
-                                            </View>
-                                            <Visible show={index !== itemKeyList.length - 1}>
-                                                <View className='item-info-item-border'></View>
-                                            </Visible>
-                                        </View>
-                                    ))
-                                }
-                            </View>
-                            <View className="bottom">
-                                <View className="bottom-left">
-                                    <TButton onClick={this.goDemandCustom}>
-                                        <View className="btn">
-                                            <Image src={editImg} className="btn-icon" />
-                                            <Text className="btn-text">修改</Text>
-                                        </View>
-                                    </TButton>
-                                    <TButton>
-                                        <View className="btn">
-                                            <Image src={deleteImg} className="btn-icon" />
-                                            <Text className="btn-text">删除</Text>
-                                        </View>
-                                    </TButton>
-                                </View>
-                                <View className="bottom-right">
-                                    <View className="best-price">
-                                        <Text className="best-price-value">15003</Text>
-                                        <Text className="best-price-label">平台最优价格</Text>
-                                    </View>
-                                    <TButton onClick={this.goDemandDetail}>
-                                        <View className="btn">
-                                            <Image src={bj} className="btn-icon" />
-                                            <Text className="btn-text">查看资源</Text>
-                                        </View>
-                                    </TButton>
-                                </View>
-                            </View>
-                        </View>
-
+                        <DemandItem data={{}} map={{}} type="self" />
                     </View>
                     {
                         dataStatus === 'loading' && <TLoading />
@@ -239,17 +170,15 @@ export default class Demand extends Component {
                                 {
                                     data.list.map(item => {
                                         return (
-                                            <Item map={data.key} item={item} onHandleOffer={this.handleOffer} />
+                                            <DemandItem map={data.key} data={item} onHandleOffer={this.handleOffer} />
                                         )
                                     })
                                 }
                             </View>
                         )
                     }
-
-
                 </ScrollView>
-                <TButton onClick={this.goDemandCustom}>
+                <TButton className="fixed-button" onClick={this.goDemandCustom}>
                     <View className="submit">
                         <Text className="submit-text">发布需求</Text>
                     </View>
