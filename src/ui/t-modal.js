@@ -6,7 +6,7 @@ export default class TModal extends Component {
         addGlobalClass: true
     }
     render() {
-        const { visible, title, onClose, onCancel, onConfirm } = this.props;
+        const { visible, title, onClose, onCancel, hasCancalButton = true, onConfirm, confirmText = '确定' } = this.props;
         return (
             <AtModal
                 isOpened={visible}
@@ -17,8 +17,8 @@ export default class TModal extends Component {
                     {this.props.children}
                 </AtModalContent>
                 <AtModalAction>
-                    <Button onClick={onCancel}>取消</Button>
-                    <Button onClick={onConfirm}>确定</Button>
+                    {hasCancalButton && <Button onClick={onCancel}>取消</Button>}
+                    <Button onClick={onConfirm}>{confirmText}</Button>
                 </AtModalAction>
             </AtModal>
         )

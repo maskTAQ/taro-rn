@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
 import { getDemandList, getMySelfDemandList } from '../../api';
 import DemandItem from './demand-item';
-import { navigate, asyncActionWrapper } from '../../actions';
+import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
 
 const modalList = [
@@ -57,6 +57,9 @@ export default class Demand extends Component {
             key: `my_self_demand_list`
         });
         this.getData();
+    }
+    login() {
+        login();
     }
     getData() {
         const { activeTab } = this.state;
@@ -117,9 +120,10 @@ export default class Demand extends Component {
         }, this.getData);
     }
     render() {
-        const { itemKeyList, modal, unit, activeTab } = this.state;
+        const { modal, unit, activeTab } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_self_demand_list;
+        const { status: loginStatus} = this.props.data.user;
         return (
             <View className="container">
                 <ScrollView>
@@ -184,6 +188,17 @@ export default class Demand extends Component {
                             )
                         })
                     }
+                </TModal>
+                <TModal
+                    visible={loginStatus !== 'success'}
+                    onConfirm={this.login}
+                    confirmText="授权登录"
+                    onClose={this.login}
+                    hasCancalButton={false}
+                >
+                    <View className="authorization">
+                        <Text className="authorization-text">请先授权登录</Text>
+                    </View>
                 </TModal>
             </View>
         )

@@ -4,7 +4,7 @@ const INITIAL_DATA = {};
 const INITIAL = {
     loading: false,
     status: 'init',
-    data: []
+    data: undefined
 };
 store.data.forEach(key => {
     INITIAL_DATA[key] = INITIAL;

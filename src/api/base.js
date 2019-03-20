@@ -21,24 +21,28 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
             success(d) {
                 Taro.hideLoading();
                 if (d.errMsg.includes('ok')) {
-                    const { code, data, msg } = d.data;
-                    if (code === 200) {
-                        resolve(data);
-                    } else {
-                        Tip.fail(msg);
-                        reject(msg);
+                    if(['openid','Login'].includes(url)){
+                        resolve(Object.assign({},d.data,data));
+                    }else{
+                        const { code, data, msg } = d.data;
+                        if (code === 200) {
+                            resolve(data);
+                        } else {
+                            Tip.fail(msg);
+                            reject(d);
+                        }
                     }
+                   
 
                 } else {
                     Tip.fail(d.errMsg);
-                    reject(d.errMsg);
+                    reject(d);
                 }
             },
             fail(e) {
-                console.log(e,'e')
                 Taro.hideLoading();
                 Tip.fail(e.errMsg);
-                reject(e.errMsg);
+                reject(e);
             }
         });
     })

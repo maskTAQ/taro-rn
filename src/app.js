@@ -4,10 +4,6 @@ import { Provider } from '@tarojs/redux'
 
 import Index from './pages/index'
 import store from './store'
-import homeImg from './tab-img/home.png';
-// import homeActiveImg from './tab-img/home-active.png';
-// import demandImg from './tab-img/demand.png';
-// import demandActiveImg from './tab-img/demand-active.png';
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -20,34 +16,35 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
+      'pages/home/index',
       'pages/demand/index',
       'pages/user/index',
-      'pages/home/index',
-      'pages/shopping-car/index',
       
-     
+      'pages/shopping-car/index',
+
+
       'pages/cotton-detail/index',
-     
-     
+
+
       'pages/offer-tool/index',
       'pages/demand-custom/index',
-     
+
       'pages/share/index',
       'pages/quotation-list/index',
       'pages/publish-import-cotton/index',
       'pages/package-detail/index',
-     
+
       'pages/offer-hint/index',
       'pages/notice-details/index',
       'pages/my-demand/index',
       'pages/map-detail/index',
       'pages/demand-detail/index',
-      
-      
+
+
       'pages/cotton-information/index',
-     
+
       'pages/add-batch/index',
-     
+
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -99,7 +96,9 @@ class App extends Component {
       }
     }
   }
-
+  componentWillMount() {
+    //login();
+  }
   componentDidMount() { }
 
   componentDidShow() { }

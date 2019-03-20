@@ -2,11 +2,10 @@
 
 import React from 'react';
 import Taro from '@tarojs/taro';
-import { Component } from '../../platform';
-import { connect } from '@tarojs/redux';
-
+import { Component, connect } from '../../platform';
 import classnames from 'classnames';
-import { View, Image, TButton, Text, ScrollView } from '../../ui';
+
+import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -22,8 +21,8 @@ import jsqImg from '../../img/jsq.png';
 import logoImg from '../../img/logo.png';
 import './main.scss';
 import './component.scss';
-import { navigate } from '../../actions';
-import { login } from '../../api';
+import { navigate, login } from '../../actions';
+
 const toolList = [
     {
         icon: scImg,
@@ -97,36 +96,15 @@ const listBottom = [
         routeName: ''
     }
 ];
-@connect(state => state)
+@connect(({ data }) => ({ data }))
 export default class User extends Component {
-
-
-    state = {
-
-    };
     componentWillMount() {
-        login({
-            i:6,
-            t:0,
-            //from:'wxapp',
-            m:'zh_dianc',
-            sign:'0a382e9b7fa70f12a3301fa1ceb39ea0',
-            openid:'oc7pZ5K0I9Ild3lh6Zjj1Zu4TFec'
-        })
-        .then(res=>{
-            console.log(res,'login res');
-        })
 
-        Taro.login()
-        .then(res=>{
-            console.log(res,'Taro res');
-        })
-        .catch(e=>{
-            console.log(e,'Taro e');
-        })
     }
 
-    
+    login() {
+        login();
+    }
 
     componentDidHide() { }
     handleClick(current) {
@@ -135,12 +113,14 @@ export default class User extends Component {
         });
     }
     render() {
+        const { status: loginStatus, data: userData = {} } = this.props.data.user;
+        console.log(loginStatus, userData, 'loginStatus,userData');
         return (
             <ScrollView>
                 <View className="container">
                     <View className="user-card">
                         <View className="user-info">
-                            <Image className="user-icon" src={logoImg} />
+                            <Image className="user-icon" src={userData.img} />
                             <View className="user-info-detail">
                                 <Text className="company-name">苏州易贸通进出口有限公司</Text>
                                 <Text className="mobile">135****2591</Text>
@@ -213,6 +193,17 @@ export default class User extends Component {
                         </View>
                     </View>
                 </View>
+                <TModal
+                    visible={loginStatus !== 'success'}
+                    onConfirm={this.login}
+                    confirmText="授权登录"
+                    onClose={this.login}
+                    hasCancalButton={false}
+                >
+                    <View className="authorization">
+                        <Text className="authorization-text">请先授权登录</Text>
+                    </View>
+                </TModal>
             </ScrollView>
         )
     }

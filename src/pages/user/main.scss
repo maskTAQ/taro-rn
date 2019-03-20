@@ -108,3 +108,13 @@
     width: 28px;
     height: 28px;
 }
+.authorization{
+    @extend .flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.authorization-text{
+    font-size: 30px;
+    color: #000;
+}

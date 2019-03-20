@@ -42,6 +42,11 @@ export function getSpotIndicators(params) {
 export function getCertificate(params) {
     return get('QC2List', params);
 }
+//获取openid
+export function getOpenId(params) {
+    console.log(params,'params');
+    return get('openid', params);
+}
 export {
     login
 }

@@ -1,21 +1,39 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 
-import { View, Image, TButton, Text } from '../../ui';
+import { View, Image, TButton, Text, TModal } from '../../ui';
 import { productTypes } from '../../constants';
 import './main.scss';
 import cloudImg from '../../img/cloud.png';
-import { navigate } from '../../actions';
+import { navigate, login } from '../../actions';
+
+@connect(({ data }) => ({ data }))
 export default class OfferTool extends Component {
+    state = {
+        hasClick: false
+    }
     goAddBatch(i) {
-        navigate({ routeName: 'add-batch', params: { '棉花云报价类型': i, type: productTypes[i - 1] } });
+        const result = this.canJump();
+        result && navigate({ routeName: 'add-batch', params: { '棉花云报价类型': i, type: productTypes[i - 1] } });
     }
     goImportCotton() {
-        navigate({ routeName: 'publish-import-cotton' });
+        const result = this.canJump();
+        result && navigate({ routeName: 'publish-import-cotton' });
+    }
+    canJump = () => {
+        const { status: loginStatus } = this.props.data.user;
+        this.setState({
+            hasClick: true
+        });
+        return loginStatus === 'success';
+    }
+    login() {
+        login();
     }
     render() {
+        const { status: loginStatus, hasClick } = this.props.data.user;
         return (
             <View className='container'>
                 <View className="content mb">
@@ -54,6 +72,17 @@ export default class OfferTool extends Component {
                         </View>
                     </TButton>
                 </View>
+                <TModal
+                    visible={loginStatus !== 'success' && hasClick}
+                    onConfirm={this.login}
+                    confirmText="授权登录"
+                    onClose={this.login}
+                    hasCancalButton={false}
+                >
+                    <View className="authorization">
+                        <Text className="authorization-text">请先授权登录</Text>
+                    </View>
+                </TModal>
             </View>
         )
     }

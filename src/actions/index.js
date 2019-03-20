@@ -1,5 +1,7 @@
 
 import Taro from '@tarojs/taro';
+import { getOpenId, login } from '../api';
+import asyncActionWrapper from './asyncActionWrapper';
 const tabPages = ['home', 'demand', 'offer-tool', 'shopping-car', 'user'];
 const paramsToUrl = params => {
     let u = [];
@@ -37,7 +39,29 @@ const navigate = ({ routeName, params }) => {
 const call = (phoneNumber) => {
     Taro.makePhoneCall({ phoneNumber })
 }
-export { default as asyncActionWrapper } from './asyncActionWrapper';
+const loginAction = () => {
+    Taro.login()
+        .then(getOpenId)
+        .then(res => {
+            const { openid, code } = res;
+            asyncActionWrapper({
+                call: login,
+                params: {
+                    i: 6,
+                    t: 0,
+                    //from:'wxapp',
+                    m: 'zh_dianc',
+                    sign: code,
+                    openid
+                },
+                type: 'data',
+                key: 'user'
+            });
+        })
+        .catch(e => {
+            console.log(e, 'login e')
+        })
+}
 export {
-    navigate, call
+    navigate, call, loginAction as login, asyncActionWrapper
 }
