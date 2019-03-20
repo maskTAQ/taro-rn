@@ -4,49 +4,12 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
-import { getDemandList } from '../../api';
-import config from '../../config';
-import Item from './item';
+import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
+import { getDemandList, getMySelfDemandList } from '../../api';
 import DemandItem from './demand-item';
 import { navigate, asyncActionWrapper } from '../../actions';
 import './main.scss';
 
-
-const map = config.map.main;
-
-const data = {
-    id: '562781322',
-
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    zhc: "巴州亿成棉业有限公司",
-    ck: '中储棉库存厄尔有限责任公司',
-    gys: '河北星宇纺织原料有限责任公司'
-};
-const list = [data, data, data, data];
 const modalList = [
     {
         label: '数量',
@@ -69,7 +32,6 @@ const modalList = [
         placeholder: '请输入到厂家'
     },
 ];
-const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
 const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
 
 @connect(({ data }) => ({ data }))
@@ -85,8 +47,15 @@ export default class Demand extends Component {
         unit: '吨',
 
         activeTab: '新疆棉',
+
     };
     componentWillMount() {
+        asyncActionWrapper({
+            call: getMySelfDemandList,
+            params: { 'ID': 1 },
+            type: 'data',
+            key: `my_self_demand_list`
+        });
         this.getData();
     }
     getData() {
@@ -150,16 +119,30 @@ export default class Demand extends Component {
     render() {
         const { itemKeyList, modal, unit, activeTab } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
-        const item = list[0];
+        const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_self_demand_list;
         return (
             <View className="container">
                 <ScrollView>
-                    <View className="condition">
-                        <View className="condition-title">
-                            <Text className="condition-title-text">定制牌价</Text>
-                        </View>
-                        <DemandItem data={{}} map={{}} type="self" />
-                    </View>
+                    {
+                        mySelfDataStatus === 'success' && (
+                            <View className="condition">
+                                <View className="condition-title">
+                                    <Text className="condition-title-text">定制牌价</Text>
+                                </View>
+                                {
+                                    mySelfData.list.length === 0 && <Text className="no-data">暂无数据</Text>
+                                }
+                                {
+                                    mySelfData.list.map(item => {
+                                        return (
+                                            <DemandItem data={item} map={mySelfData.key} type="self" />
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    }
+
                     {
                         dataStatus === 'loading' && <TLoading />
                     }

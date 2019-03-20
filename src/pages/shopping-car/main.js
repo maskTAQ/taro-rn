@@ -4,8 +4,11 @@ import React from 'react';
 import { Component } from '../../platform';
 
 
-import { View, TButton, Text, Image, ScrollView } from '../../ui'
+import { View, TButton, Text, Image, TModal, ScrollView } from '../../ui'
 import ShoppingCarItem from './item';
+import userIcon from '../../img/user.png';
+import groupIcon from '../../img/group.png';
+import cottonMarketIcon from '../../img/cotton-market.png';
 import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';
 import './main.scss';
@@ -45,31 +48,24 @@ const data = {
 const list = [data, data, data, data];
 const modalList = [
     {
-        label: '数量',
-        type: 'input',
-        placeholder: '请输入数量'
+        label: '联系供应商',
+        icon: userIcon
     },
     {
-        label: '单位',
-        type: 'radio',
-        option: [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }]
+        label: '对接全国棉花交易市场',
+        icon: cottonMarketIcon
     },
     {
-        label: '自提价',
-        type: 'input',
-        placeholder: '请输入自提价'
-    },
-    {
-        label: '到厂家',
-        type: 'input',
-        placeholder: '请输入到厂家'
-    },
+        label: '指定交易商',
+        icon: groupIcon
+    }
 ];
 export default class ShoppingCart extends Component {
     state = {
         itemKeyList: ['cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
         itemDescList: ['zhc', 'ck', 'gys'],
-        isAllChecked: false
+        isAllChecked: false,
+        modalVisible: false
     };
     componentDidHide() { }
     toggleCheckedStatus = () => {
@@ -77,9 +73,21 @@ export default class ShoppingCart extends Component {
             isAllChecked: !this.state.isAllChecked
         });
     }
+    settlement = () => {
+        this.setState({
+            modalVisible: true
+        });
+    }
+    submit = () => {
 
+    }
+    closeModal = () => {
+        this.setState({
+            modalVisible: false
+        });
+    }
     render() {
-        const { itemDescList, itemKeyList, isAllChecked } = this.state;
+        const { modalVisible, itemDescList, itemKeyList, isAllChecked } = this.state;
         return (
             <View className="container">
                 <View className="list">
@@ -100,12 +108,32 @@ export default class ShoppingCart extends Component {
                         </TButton>
                         <Text className="checked-text">全选</Text>
                     </View>
-                    <TButton>
-                        <View className="button">
-                            <Text className="button-text">删除</Text>
-                        </View>
-                    </TButton>
+                    <View className="bottom-right">
+                        <TButton>
+                            <View className="button delete-button">
+                                <Text className="button-text">删除</Text>
+                            </View>
+                        </TButton>
+                        <TButton onClick={this.settlement}>
+                            <View className="button">
+                                <Text className="button-text">结算</Text>
+                            </View>
+                        </TButton>
+                    </View>
                 </View>
+                <TModal visible={modalVisible} title="" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
+                    {
+                        modalList.map(item => {
+                            const { label, icon } = item;
+                            return (
+                                <View className="modal-item" key={label}>
+                                    <Image className="modal-icon" src={icon} />
+                                    <Text className="modal-label">{label}</Text>
+                                </View>
+                            )
+                        })
+                    }
+                </TModal>
             </View>
         )
     }

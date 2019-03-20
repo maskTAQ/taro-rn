@@ -1,6 +1,7 @@
 
 
 import React from 'react';
+import Taro from '@tarojs/taro';
 import { Component } from '../../platform';
 import { connect } from '@tarojs/redux';
 
@@ -103,13 +104,7 @@ export default class User extends Component {
     state = {
 
     };
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    componentWillUnmount() { }
-
-    componentDidShow() {
+    componentWillMount() {
         login({
             i:6,
             t:0,
@@ -121,7 +116,17 @@ export default class User extends Component {
         .then(res=>{
             console.log(res,'login res');
         })
+
+        Taro.login()
+        .then(res=>{
+            console.log(res,'Taro res');
+        })
+        .catch(e=>{
+            console.log(e,'Taro e');
+        })
     }
+
+    
 
     componentDidHide() { }
     handleClick(current) {

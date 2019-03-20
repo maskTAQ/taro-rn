@@ -30,6 +30,10 @@ export function doSubmit(url, params) {
 export function getDemandList(params) {
     return get('CloudArticleList', params);
 }
+//获取自己发布的需求
+export function getMySelfDemandList(params) {
+    return get('CloudArticleList', { ID: '1' });
+}
 //获取指标
 export function getSpotIndicators(params) {
     return get('QCList', params);

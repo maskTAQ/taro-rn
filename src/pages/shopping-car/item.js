@@ -7,7 +7,6 @@ import config from '../../config';
 import './item.scss';
 import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';
-import deleteImg from '../../img/delete.png';
 const map = config.map.main;
 export default class Item extends Component {
     state = {
@@ -21,7 +20,7 @@ export default class Item extends Component {
     }
     render() {
         const { checked } = this.state;
-        const { onHandleOffer, item, itemKeyList, itemDescList } = this.props;
+        const { item, itemKeyList, itemDescList } = this.props;
         const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
         return (
             <View className="container">
@@ -78,18 +77,8 @@ export default class Item extends Component {
                                 </View>
                             ))
                         }
-
-                    </View>
-                    <View className="btn-group">
-                        <TButton onClick={() => onHandleOffer(item)}>
-                            <View className="btn">
-                                <Image src={deleteImg} className="btn-icon" />
-                                <Text className="btn-text">移出购物车</Text>
-                            </View>
-                        </TButton>
                     </View>
                 </View>
-
             </View>
         )
     }

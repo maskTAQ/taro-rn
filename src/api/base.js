@@ -35,9 +35,10 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
                 }
             },
             fail(e) {
+                console.log(e,'e')
                 Taro.hideLoading();
-                Tip.fail(d.message);
-                reject(e);
+                Tip.fail(e.errMsg);
+                reject(e.errMsg);
             }
         });
     })

@@ -12,7 +12,7 @@ export default class TModal extends Component {
                 isOpened={visible}
                 onClose={onClose}
             >
-                <AtModalHeader>{title}</AtModalHeader>
+                {title && <AtModalHeader>{title}</AtModalHeader>}
                 <AtModalContent>
                     {this.props.children}
                 </AtModalContent>

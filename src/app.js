@@ -21,13 +21,17 @@ class App extends Component {
   config = {
     pages: [
       'pages/demand/index',
+      'pages/user/index',
       'pages/home/index',
+      'pages/shopping-car/index',
+      
+     
       'pages/cotton-detail/index',
      
      
       'pages/offer-tool/index',
       'pages/demand-custom/index',
-      'pages/shopping-car/index',
+     
       'pages/share/index',
       'pages/quotation-list/index',
       'pages/publish-import-cotton/index',
@@ -43,7 +47,7 @@ class App extends Component {
       'pages/cotton-information/index',
      
       'pages/add-batch/index',
-      'pages/user/index'
+     
     ],
     window: {
       backgroundTextStyle: 'light',
