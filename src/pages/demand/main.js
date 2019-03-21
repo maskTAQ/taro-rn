@@ -54,7 +54,7 @@ export default class Demand extends Component {
             call: getMySelfDemandList,
             params: { 'ID': 1 },
             type: 'data',
-            key: `my_self_demand_list`
+            key: `my_demand_list`
         });
         this.getData();
     }
@@ -122,7 +122,7 @@ export default class Demand extends Component {
     render() {
         const { modal, unit, activeTab } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
-        const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_self_demand_list;
+        const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_demand_list;
         const { status: loginStatus} = this.props.data.user;
         return (
             <View className="container">

@@ -4,12 +4,13 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 
-import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading } from '../../ui';
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading, TModal } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components';
-import { getFilterLayout, getHome, getOfferList } from '../../api';
-import { navigate, asyncActionWrapper } from '../../actions';
+import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
+import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes } from '../../constants';
 import './main.scss';
+import { Tip } from '../../utils';
 const item = {
     id: '562781322',
 
@@ -66,6 +67,7 @@ export default class Home extends Component {
         news: [],
         key: {},
         list: [],
+        hasClickAddShoppingCar: false
     };
     componentWillMount() {
         getHome()
@@ -73,6 +75,9 @@ export default class Home extends Component {
                 this.setState(res);
             })
         this.getData();
+    }
+    login() {
+        login()
     }
     getData() {
         const { activeTab } = this.state;
@@ -143,7 +148,29 @@ export default class Home extends Component {
         });
     }
     submit = () => {
-        console.log(this.state.params, 'params')
+
+
+    }
+    handleClickShoppingCar = (v) => {
+        const { status: loginStatus, data } = this.props.data.user;
+        this.setState({
+            hasClickAddShoppingCar: true
+        });
+        if (loginStatus === 'success') {
+            addShoppingCar({
+                '云报价主键': v,
+                '用户ID': data.id
+            })
+                .then(res => {
+                    asyncActionWrapper({
+                        call: getShoppingCarList,
+                        params: { '用户ID': data.id },
+                        type: 'data',
+                        key: 'shoppingCarList'
+                    });
+                    Tip.success('添加成功!');
+                })
+        }
     }
     handleFieldChange = params => {
         this.setState({ params })
@@ -160,7 +187,8 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { picker, ad, news, activeTab, params, url } = this.state;
+        const { picker, ad, news, activeTab, params, url, hasClickAddShoppingCar } = this.state;
+        const { status: loginStatus } = this.props.data.user;
         const { status, loading, data: layoutData } = this.props.layout[`filter_${activeTab}`];
         const { status: dataStatus, data } = this.props.data[`offer_list_${activeTab}`];
         return (
@@ -209,8 +237,13 @@ export default class Home extends Component {
                             <View className="list">
                                 {data.list.map((item, i) => {
                                     return (
-                                        <TButton onClick={this.goCottonDetail.bind(this, item)} key={i}>
-                                            <MainItem border={true} data={item} map={data.key} />
+                                        <TButton onClick={this.goCottonDetail.bind(this, item)} key={i} >
+                                            <MainItem
+                                                border={true}
+                                                data={item}
+                                                map={data.key}
+                                                onClickShoppingCar={this.handleClickShoppingCar}
+                                            />
                                         </TButton>
                                     )
                                 })}
@@ -225,6 +258,17 @@ export default class Home extends Component {
                     onClose={this.closePicker}
                     option={picker.option.map(item => ({ label: item, value: item }))}
                 />
+                <TModal
+                    visible={loginStatus !== 'success' && hasClickAddShoppingCar}
+                    onConfirm={this.login}
+                    confirmText="授权登录"
+                    onClose={this.login}
+                    hasCancalButton={false}
+                >
+                    <View className="authorization">
+                        <Text className="authorization-text">请先授权登录</Text>
+                    </View>
+                </TModal>
             </View>
         )
     }

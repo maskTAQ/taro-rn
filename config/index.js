@@ -7,6 +7,7 @@ const config = {
     '750': 1,
     '828': 1.81 / 2
   },
+  
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: {
@@ -70,6 +71,7 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
+    esnextModules: ['taro-ui'],
     module: {
       postcss: {
         autoprefixer: {

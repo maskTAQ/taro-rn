@@ -2,6 +2,7 @@ import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 
+import { login } from './actions';
 import Index from './pages/index'
 import store from './store'
 import './app.scss'
@@ -16,13 +17,14 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
+      
       'pages/home/index',
       'pages/demand/index',
       'pages/user/index',
-      
+
       'pages/shopping-car/index',
 
-
+      'pages/my-cloud-offer/index',
       'pages/cotton-detail/index',
 
 
@@ -97,7 +99,7 @@ class App extends Component {
     }
   }
   componentWillMount() {
-    //login();
+    login();
   }
   componentDidMount() { }
 

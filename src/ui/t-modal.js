@@ -17,8 +17,8 @@ export default class TModal extends Component {
                     {this.props.children}
                 </AtModalContent>
                 <AtModalAction>
-                    {hasCancalButton && <Button onClick={onCancel}>取消</Button>}
-                    <Button onClick={onConfirm}>{confirmText}</Button>
+                    <Button onClick={onCancel}>取消</Button>
+                    <Button onClick={onConfirm}>{confirmText || '确定'}</Button>
                 </AtModalAction>
             </AtModal>
         )

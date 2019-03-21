@@ -21,13 +21,6 @@ export default class MainItem extends Component {
     call(mobile) {
         call(mobile)
     }
-    goShoppingCart(params) {
-        console.log('点击购物车');
-        navigate({
-            routeName: 'shopping-car',
-            params
-        })
-    }
     g = k => {
         const { map, data } = this.props;
         return data[map[k]] || '-';
@@ -39,17 +32,17 @@ export default class MainItem extends Component {
             { label: "长度", key: "长度" },
             { label: "强力", key: "强力" }, {
                 label: "马值", key: "马克隆值"
-            } , {
-                label: "回潮",
-                key: "回潮"
-            },{
-                label: "整度",
-                key: "整齐度"
             }, {
                 label: "含杂",
                 key: "平均含杂"
-            } ];
-        const { border = true } = this.props;
+            }, {
+                label: "回潮",
+                key: "回潮"
+            }, {
+                label: "整度",
+                key: "整齐度"
+            }];
+        const { border = true, onClickShoppingCar, showShoppinCar } = this.props;
         return (
             <View className={classnames("container", { border: border })}>
                 <View className="content">
@@ -128,15 +121,19 @@ export default class MainItem extends Component {
                                             <Text className="btn-text">电话</Text>
                                         </View>
                                     </TButton>
-                                    <TButton onClick={this.goShoppingCart}>
-                                        <View className="btn">
-                                            <View className="item-icon-box">
-                                                <Image className="btn-icon" src={carImg} />
-                                            </View>
+                                    {
+                                        showShoppinCar !== false && (
+                                            <TButton onClick={() => onClickShoppingCar(g('主键'))}>
+                                                <View className="btn">
+                                                    <View className="item-icon-box">
+                                                        <Image className="btn-icon" src={carImg} />
+                                                    </View>
 
-                                            <Text className="btn-text">购物车</Text>
-                                        </View>
-                                    </TButton>
+                                                    <Text className="btn-text">购物车</Text>
+                                                </View>
+                                            </TButton>
+                                        )
+                                    }
                                 </View>
                             </View>
                         </View>

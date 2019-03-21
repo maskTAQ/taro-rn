@@ -33,7 +33,8 @@ export default class OfferTool extends Component {
         login();
     }
     render() {
-        const { status: loginStatus, hasClick } = this.props.data.user;
+        const {hasClick} = this.state;
+        const { status: loginStatus } = this.props.data.user;
         return (
             <View className='container'>
                 <View className="content mb">

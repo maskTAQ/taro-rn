@@ -32,7 +32,7 @@ export function getDemandList(params) {
 }
 //获取自己发布的需求
 export function getMySelfDemandList(params) {
-    return get('CloudArticleList', { ID: '1' });
+    return get('CloudArticleMyList', params);
 }
 //获取指标
 export function getSpotIndicators(params) {
@@ -44,8 +44,27 @@ export function getCertificate(params) {
 }
 //获取openid
 export function getOpenId(params) {
-    console.log(params,'params');
     return get('openid', params);
+}
+//加入购物车
+export function addShoppingCar(params) {
+    return get('CartAdd', params);
+}
+//获取购物车列表
+export function getShoppingCarList(params) {
+    return get('CartList', params);
+}
+//从购物车移除
+export function removeFromCart(params) {
+    return get('CartDelete', params);
+}
+//我的报价列表
+export function getMyOfferList(params) {
+    return get('CloudArticleMyPriceList', params);
+}
+//获取我的云报价
+export function getMyCloudOfferList(params) {
+    return get('CloudQuoteMyList', params);
 }
 export {
     login

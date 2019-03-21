@@ -7,7 +7,7 @@ const offerList = productTypes.map(item => `offer_list_${item}`);
 const demandList = productTypes.map(item => `demand_list_${item}`);
 const store = {
     layout: demand_custom.concat(offer, fiter),
-    data: offerList.concat(demandList, ['my_self_demand_list', 'user']),
+    data: offerList.concat(demandList, ['my_demand_list', 'user','shoppingCarList','my_offer_list','my_cloud_offer_list']),
 };
 export {
     store,

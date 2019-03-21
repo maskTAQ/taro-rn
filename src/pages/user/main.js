@@ -42,7 +42,7 @@ const listTop = [
         icon: publishImg,
         label: '我的云报价',
         value: '',
-        routeName: 'publish-import-cotton'
+        routeName: 'my-cloud-offer'
 
     },
     {
@@ -62,12 +62,6 @@ const listBottom = [
     {
         icon: demandImg,
         label: '我的需求',
-        value: '',
-        routeName: 'my-demand'
-    },
-    {
-        icon: bjImg,
-        label: '我的报价',
         value: '',
         routeName: 'my-demand'
     },
@@ -111,6 +105,19 @@ export default class User extends Component {
         this.setState({
             current
         });
+    }
+    g(e) {
+        const {encryptedData,iv} = e.detail;
+        const {id} = this.props.data.user.data;
+        console.log({
+
+            encrypdata:encryptedData,
+
+            ivdata: iv,
+
+            sessionkey: 'session_key需要我登录返回openid时一起返回跟我'
+
+        })
     }
     render() {
         const { status: loginStatus, data: userData = {} } = this.props.data.user;
@@ -156,10 +163,22 @@ export default class User extends Component {
                                                     <Image className="item-icon" src={icon} />
                                                     <Text className="item-label">{label}</Text>
                                                 </View>
-                                                <View className="item-right">
-                                                    {value ? <Text className="item-value">{value}</Text> : null}
-                                                    <Image src={rightImg} className="item-right-icon" />
-                                                </View>
+                                                {
+                                                    label === '手机号' && (
+                                                        <View className="item-right">
+                                                            <button class='getPhoneNumber' plain="true" open-type='getPhoneNumber' onClick={this.g} bindgetphonenumber={this.g}>获取用户手机号</button>
+                                                        </View>
+                                                    )
+                                                }
+                                                {
+                                                    label !== '手机号' && (
+                                                        <View className="item-right">
+                                                            {value ? <Text className="item-value">{value}</Text> : null}
+                                                            <Image src={rightImg} className="item-right-icon" />
+                                                        </View>
+                                                    )
+                                                }
+
                                             </View>
                                         </TButton>
                                     )
