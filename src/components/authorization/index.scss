@@ -1,0 +1,58 @@
+.layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba($color: #000000, $alpha: 0.3);
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: 80%;
+    background: #fff;
+    border-radius: 20px;
+}
+
+.title {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.title-text {
+    font-size: 36px;
+    color: #000;
+}
+
+.content {
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.desc {
+    font-size: 36px;
+    color: #000;
+}
+
+.img {
+    display: block;
+     width: 100%;
+    //height: 600px;
+}
+.button {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    color: #fff;
+    font-size: 36px;
+    background: #04be01;
+    border-radius: 80px;
+}

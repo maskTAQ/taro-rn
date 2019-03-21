@@ -18,3 +18,4 @@ export { default as DatePicker } from './date-picker';
 export { default as Layout } from './layout';
 export { default as Slidebothway } from './slidebothway';
 export { default as ListWrapper } from './list-wrapper';
+export { default as Authorization } from './authorization';

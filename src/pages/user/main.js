@@ -166,7 +166,7 @@ export default class User extends Component {
                                                 {
                                                     label === '手机号' && (
                                                         <View className="item-right">
-                                                            <button class='getPhoneNumber' plain="true" open-type='getPhoneNumber' onClick={this.g} bindgetphonenumber={this.g}>获取用户手机号</button>
+                                                            <button class='getPhoneNumber' plain="true" open-type='getPhoneNumber' onClick={this.g} bindgetphonenumber={this.g}>点我获取用户手机号</button>
                                                         </View>
                                                     )
                                                 }

@@ -66,6 +66,10 @@ export function getMyOfferList(params) {
 export function getMyCloudOfferList(params) {
     return get('CloudQuoteMyList', params);
 }
+//报价
+export function offer(params) {
+    return get('CloudArticlePrice', params);
+}
 export {
     login
 }

@@ -5,7 +5,7 @@ import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
 import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
-import { getDemandList, getMySelfDemandList } from '../../api';
+import { getDemandList, getMySelfDemandList, offer } from '../../api';
 import DemandItem from './demand-item';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
@@ -37,17 +37,12 @@ const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
 @connect(({ data }) => ({ data }))
 export default class Demand extends Component {
     state = {
-        itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
-        offerItemKeyList: ['sl', 'ztj', 'dcj'],
-        itemDescList: ['zhc', 'ck', 'gys'],
         modal: {
             visible: false,
             data: null
         },
         unit: '吨',
-
         activeTab: '新疆棉',
-
     };
     componentWillMount() {
         asyncActionWrapper({
@@ -105,7 +100,27 @@ export default class Demand extends Component {
             }
         }));
     }
-    submit = () => {
+    handleChangeValue = (key, value) => {
+        this.setState({
+            [key]: value
+        })
+    }
+    submit = v => {
+        const { state } = this;
+        const { data } = this.state.modal;
+        const { id } = this.props.data.user.data;
+
+        offer({
+            '云供需主键': data,
+            '用户ID': id,
+            '单位': state.unit,
+            '数量': state['数量'],
+            '自提价': state['自提价'],
+            '到厂家': state['到厂家'],
+        })
+            .then(res => {
+                Tip.success('报价成功！');
+            })
         this.closeModal();
     }
     goDemandDetail() {
@@ -123,7 +138,7 @@ export default class Demand extends Component {
         const { modal, unit, activeTab } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_demand_list;
-        const { status: loginStatus} = this.props.data.user;
+        const { status: loginStatus } = this.props.data.user;
         return (
             <View className="container">
                 <ScrollView>
@@ -179,7 +194,7 @@ export default class Demand extends Component {
                                     <Text className="item-label">{label}</Text>
                                     {
                                         type === 'input' ? (
-                                            <TInput className="item-input" placeholder={placeholder} />
+                                            <TInput className="item-input" placeholder={placeholder} onInput={handleChangeValue.bind(this, label)} />
                                         ) : (
                                                 <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
                                             )

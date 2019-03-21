@@ -5,7 +5,7 @@ import { Component, connect } from '../../platform';
 
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading, TModal } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, MainItem } from '../../components';
+import { SearchTool, NoticeTool, SearchCondition, MainItem, Authorization } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes } from '../../constants';
@@ -193,6 +193,7 @@ export default class Home extends Component {
         const { status: dataStatus, data } = this.props.data[`offer_list_${activeTab}`];
         return (
             <View className="container">
+                <Authorization />
                 <ScrollView>
                     <SearchTool />
                     <Swiper

@@ -113,7 +113,7 @@ export default class DemanidItem extends Component {
                                         <Text className="buy-value">1000吨</Text>
                                     </View>
                                     <View className="btn-group-right">
-                                        <TButton onClick={onHandleOffer}>
+                                        <TButton onClick={onHandleOffer.bind(this,g('主键'))}>
                                             <View className="offer-btn">
                                                 <Image src={offerIcon} className="btn-icon" />
                                                 <Text className="offer-btn-text">我要报价</Text>
