@@ -82,7 +82,7 @@ export default class Home extends Component {
     getData() {
         const { activeTab } = this.state;
         const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${activeTab}`];
-        const { status: dataStatus, loading: dataLoading } = this.props.data[`offer_list_${activeTab}`];
+
         //获取筛选条件布局
         if (layoutStatus !== 'success' && !layoutLoading) {
             asyncActionWrapper({
@@ -92,15 +92,20 @@ export default class Home extends Component {
                 key: `filter_${activeTab}`
             });
         }
+        this.getOfferData();
+    }
+    getOfferData() {
+        const { activeTab, params } = this.state;
+        const { status: dataStatus, loading: dataLoading } = this.props.data[`offer_list_${activeTab}`];
         //获取列表数据
-        if (dataStatus !== 'success' && !dataLoading) {
+       
             asyncActionWrapper({
                 call: getOfferList,
-                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1 },
+                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1, ...params },
                 type: 'data',
                 key: `offer_list_${activeTab}`
             });
-        }
+       
     }
 
     handleTabChange = activeTab => {
@@ -145,10 +150,10 @@ export default class Home extends Component {
     resetParams = () => {
         this.setState({
             params: {}
-        });
+        }, this.getOfferData);
     }
     submit = () => {
-
+        this.getOfferData();
 
     }
     handleClickShoppingCar = (v) => {
@@ -176,9 +181,9 @@ export default class Home extends Component {
         this.setState({ params })
     }
     goCottonDetail(data) {
-        const { activeTab} = this.state;
+        const { activeTab } = this.state;
         const { key } = this.props.data[`offer_list_${activeTab}`].data;
-       
+
         navigate({
             routeName: 'cotton-detail', params: {
                 key,

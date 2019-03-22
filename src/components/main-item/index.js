@@ -1,12 +1,29 @@
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
-import { View, Text, Image, TButton } from '../../ui';
-import { navigate, call } from '../../actions';
+import { View, Text, Image, TButton, } from '../../ui';
+import { navigate, call, asyncActionWrapper } from '../../actions';
+import { addShoppingCar, getShoppingCarList } from '../../api';
+import { Tip } from '../../utils';
 import './index.scss'
 import callImg from './img/call.png';
 import carImg from './img/car.png';
+const list = [
+    { label: "等级", key: "颜色级" },
+    { label: "长度", key: "长度" },
+    { label: "强力", key: "强力" }, {
+        label: "马值", key: "马克隆值"
+    }, {
+        label: "含杂",
+        key: "平均含杂"
+    }, {
+        label: "回潮",
+        key: "回潮"
+    }, {
+        label: "长整",
+        key: "整齐度"
+    }];
 
 export default class MainItem extends Component {
     static options = {
@@ -25,24 +42,27 @@ export default class MainItem extends Component {
         const { map, data } = this.props;
         return data[map[k]] || '-';
     }
+    handleClickShoppingCar = (v) => {
+        const { data } = this.props.data.user;
+        addShoppingCar({
+            '云报价主键': v,
+            '用户ID': data.id
+        })
+            .then(res => {
+                asyncActionWrapper({
+                    call: getShoppingCarList,
+                    params: { '用户ID': data.id },
+                    type: 'data',
+                    key: 'shoppingCarList'
+                });
+                Tip.success('添加成功!');
+            })
+    }
     render() {
         const { g } = this;
-        const list = [
-            { label: "等级", key: "颜色级" },
-            { label: "长度", key: "长度" },
-            { label: "强力", key: "强力" }, {
-                label: "马值", key: "马克隆值"
-            }, {
-                label: "含杂",
-                key: "平均含杂"
-            }, {
-                label: "回潮",
-                key: "回潮"
-            }, {
-                label: "整度",
-                key: "整齐度"
-            }];
-        const { border = true, onClickShoppingCar, showShoppinCar } = this.props;
+
+        const { border = true, showShoppinCar } = this.props;
+        console.log(this.props,'main item')
         return (
             <View className={classnames("container", { border: border })}>
                 <View className="content">
@@ -123,7 +143,7 @@ export default class MainItem extends Component {
                                     </TButton>
                                     {
                                         showShoppinCar !== false && (
-                                            <TButton onClick={() => onClickShoppingCar(g('主键'))}>
+                                            <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>
                                                 <View className="btn">
                                                     <View className="item-icon-box">
                                                         <Image className="btn-icon" src={carImg} />

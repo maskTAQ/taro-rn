@@ -8,6 +8,7 @@ import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
 import { FixedTool, MainItem } from '../../components';;
 import { getSpotIndicators, getCertificate } from '../../api';
 import Card from './card';
+import Item from './item';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
@@ -27,9 +28,10 @@ export default class CottonDetail extends Component {
             defaultData,
             type,
             activeTab: type === '1' ? '仓单证书' : '现货指标'
-        });
+        },this.getData);
+        console.log('设置')
         setPageTitle(`${id}|详情`);
-        this.getData();
+       
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -39,6 +41,7 @@ export default class CottonDetail extends Component {
     getData() {
         const { activeTab } = this.state;
         const { id } = this.props.navigation.state.params;
+        console.log(tabList,activeTab,'activeTab')
         if (tabList.indexOf(activeTab) === 0) {
             //'65551171001'
             getSpotIndicators({
@@ -85,7 +88,7 @@ export default class CottonDetail extends Component {
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <MainItem border={false} data={data} map={key} />
+                    <Item data={data} map={key} activeTab={activeTab}/>
                     <Card data={data} map={key} />
                     <View className={classnames('link-btn-group')}>
                         <TButton onClick={() => this.goPackageDetail(data)}>

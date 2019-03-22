@@ -86,33 +86,39 @@ const cardList = [
         list: [
             [{
                 key: 'a1',
-                label: '白棉3级'
+                label: '白棉3级',
+                type: 'visible'
             },
             {
                 key: 'b1',
-                label: '白棉4级'
+                label: '白棉4级',
+                type: 'visible'
             }]
         ]
     },
     {
-        title: '主体颜色级',
+        title: '主体长度级',
         key: 't2',
         list: [
             [{
                 key: 'a',
-                label: '27mm'
+                label: '27mm',
+                type: 'visible'
             },
             {
                 key: 'b',
-                label: '白棉4级'
+                label: '白棉4级',
+                type: 'visible'
             }],
             [{
                 key: 'c',
-                label: '29mm'
+                label: '29mm',
+                type: 'visible'
             },
             {
                 key: '',
-                label: ''
+                label: '',
+                type: 'visible'
             }]
         ]
     },
@@ -122,19 +128,23 @@ const cardList = [
         list: [
             [{
                 key: 'a3',
-                label: 'C1'
+                label: 'C1',
+                type: 'visible'
             },
             {
                 key: 'b3',
-                label: 'B1'
+                label: 'B1',
+                type: 'visible'
             }],
             [{
                 key: 'c3',
-                label: 'A'
+                label: 'A',
+                type: 'visible'
             },
             {
                 key: 'd3',
-                label: 'B2'
+                label: 'B2',
+                type: 'visible'
             }]
         ]
     },
@@ -198,8 +208,17 @@ export default class Card extends Component {
         const { map, data } = this.props;
         return data[map[k]] || '-';
     }
+    hasValue = v => {
+        if (Number(v) === 0) {
+            return false;
+        }
+        if (v === '-') {
+            return false;
+        }
+        return true;
+    }
     render() {
-        const {g} = this;
+        const { g } = this;
         return (
             <View>
                 {
@@ -216,15 +235,22 @@ export default class Card extends Component {
                                     {
                                         list.map((row, index) => {
                                             return (
-                                                <View className={classnames("card-list-row", { 'card-list-row-border': index !== card.list.length - 1 })}>
+                                                <View className={classnames("card-list-row")}>
                                                     {
                                                         row.map(item => {
                                                             //为什么取一个别名 用key taro编译会报错
-                                                            const { key: a, label } = item;
+                                                            const { key: a, label, type } = item;
+
                                                             return (
                                                                 <View className="card-list-item">
-                                                                    <Text className="card-list-item-label">{label}{label ? ':' : ''}</Text>
-                                                                    <Text className="card-list-item-value">{g(label)}</Text>
+                                                                    {
+                                                                        type === 'visible' && !this.hasValue(g(label)) ? null : (
+                                                                            <View className={classnames({ 'card-list-row-border': index !== card.list.length - 1 })}>
+                                                                                <Text className="card-list-item-label">{label}{label ? ':' : ''}</Text>
+                                                                                <Text className="card-list-item-value">{g(label)}</Text>
+                                                                            </View>
+                                                                        )
+                                                                    }
                                                                 </View>
                                                             )
                                                         })

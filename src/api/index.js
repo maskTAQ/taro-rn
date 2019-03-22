@@ -75,6 +75,18 @@ export function offer(params) {
 export function getOfferByDemand(params) {
     return get('CloudArticleUIPriceList', params);
 }
+//删除我发布的需求
+export function deleteMyDemand(params) {
+    return get('CloudArticleDelete', params);
+}
+//删除我发布的报价
+export function deleteMyOffer(params) {
+    return get('CloudArticleMyPriceListDelete', params);
+}
+//删除我发布的云报价
+export function deleteMyCloudOffer(params) {
+    return get('CloudQuoteDelete', params);
+}
 export {
     login
 }

@@ -24,14 +24,14 @@
 
 .card-list-row {
     @extend .flex;
-    flex-direction: row;
-    height: 60px;
-   
+    flex-direction: row;   
 }
 .card-list-row-border{
-    @include borderD(bottom, 1px, solid, #ccc);
+   
 }
 .card-list-item {
+     
+   
     flex: 1;
     @extend .flex;
     flex-direction: row;

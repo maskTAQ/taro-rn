@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 import { View, TButton, Text, Image, Visible, ScrollView, TModal, TInput, TRadio, } from '../../ui'
 import { ListWrapper } from '../../components';
 import { getOfferByDemand, offer } from '../../api';
+import {Tip} from '../../utils';
 import Item from './item';
-import config from '../../config';
 import './main.scss';
 import mobileImg from '../../img/mobile.png';
 import { navigate, call } from '../../actions';
@@ -105,8 +105,10 @@ export default class DemandDetail extends Component {
         call('1388888888');
     }
     g = (k, i) => {
-        const { map, data } = this.state.list;
-        return data[i][map[k]] || '-';
+       
+        const { list,key } = this.state.list.data;
+      console.log(k,'list[i][key[k]]')
+        return list[i][key[k]] || '-';
     }
     handleUnitChange = item => {
         this.setState({
@@ -147,9 +149,10 @@ export default class DemandDetail extends Component {
         this.closeModal();
     }
     render() {
+        const {g} = this;
         const { list, modal } = this.state;
         const { params } = this.props.navigation.state;
-        console.log(list, 'detail params')
+        console.log(list,'list')
         return (
             <View className="container">
                 <ScrollView>
@@ -173,15 +176,15 @@ export default class DemandDetail extends Component {
                                         </View>
                                         <View className='item-info-list'>
                                             {
-                                                cardList.map((item, index) => {
-                                                    const { label, key } = item;
+                                                cardList.map((e, index) => {
+                                                    const { label, key } = e;
                                                     return (
                                                         <View className="item-info-item">
                                                             <View className='item-info-item-content'>
                                                                 <Text className='item-info-item-title'>{label}</Text>
                                                                 <Text className='item-info-item-value'>{g(key, i)}</Text>
                                                             </View>
-                                                            <Visible show={index !== list.length - 1}>
+                                                            <Visible show={index !== cardList.length - 1}>
                                                                 <View className='item-info-item-border'></View>
                                                             </Visible>
                                                         </View>

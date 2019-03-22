@@ -5,7 +5,7 @@ import { Component, connect } from '../../platform';
 
 import { View, ScrollView, TTabs, TTabPane, TButton, Image } from '../../ui';
 import { MainItem, ListWrapper } from '../../components';
-import { getMyCloudOfferList } from '../../api';
+import { getMyCloudOfferList ,deleteMyCloudOffer} from '../../api';
 import { asyncActionWrapper } from '../../actions';
 
 import './main.scss';
@@ -63,7 +63,15 @@ export default class MyCloudOffer extends Component {
         });
 
     }
-
+    delete = (id) => {
+        deleteMyCloudOffer({
+            '主键': id
+        })
+            .then(res => {
+                this.getData();
+                Tip.success('删除成功');
+            })
+    }
     render() {
         const { status: my_offer_list_status, data: my_offer_list_data } = this.props.data.my_cloud_offer_list;
         return (
@@ -75,13 +83,13 @@ export default class MyCloudOffer extends Component {
                                 return (
                                     <MainItem border={false} data={item} map={my_offer_list_data.key} key={item.id}>
                                         <View className="tool-btn-group">
-                                            <TButton>
+                                            <TButton onClick={this.delete.bind(this,item[my_offer_list_data.key['主键']])}>
                                                 <View className="btn">
                                                     <Text className="btn-text">删除</Text>
                                                 </View>
                                             </TButton>
                                             <View className="btn-group-right">
-                                                <TButton>
+                                                <TButton onClick={this.getData}>
                                                     <View className="btn mr">
                                                         <Image className="btn-icon" src={refreshImg} />
                                                         <Text className="btn-text">刷新</Text>

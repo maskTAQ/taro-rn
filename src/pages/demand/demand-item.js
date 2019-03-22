@@ -1,14 +1,33 @@
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 
 import { View, Text, Image, TButton } from '../../ui';
-import { navigate } from '../../actions';
+import { deleteMyDemand, getMySelfDemandList } from '../../api';
+import { asyncActionWrapper } from '../../actions';
+import {Tip} from '../../utils';
 import editIcon from './img/edit.png';
 import deleteIcon from './img/close.png';
 import viewIcon from './img/view.png';
 import offerIcon from './img/offer.png';
 import './demand-item.scss'
 
+const list = [
+    { label: "等级", key: "颜色级" },
+    { label: "长度", key: "长度" },
+    { label: "强力", key: "强力" }, {
+        label: "马值", key: "马克隆值"
+    }, {
+        label: "含杂",
+        key: "平均含杂"
+    }, {
+        label: "回潮",
+        key: "回潮"
+    }, {
+        label: "长整",
+        key: "整齐度"
+    }];
+
+@connect(({ data }) => ({ user: data.user }))
 export default class DemanidItem extends Component {
     static options = {
         addGlobalClass: true
@@ -17,24 +36,33 @@ export default class DemanidItem extends Component {
         const { map, data } = this.props;
         return data[map[k]] || '-';
     }
+    delete = (id) => {
+        const { data } = this.props.user;
+        const userId = data.id;
+        deleteMyDemand({
+            '主键': id,
+            '用户ID': userId
+        })
+            .then(res => {
+                Tip.success('删除成功');
+                setTimeout(this.getMyDemand, 1000);
+            })
+    }
+    getMyDemand = () => {
+        const { data } = this.props.user;
+        const userId = data.id;
+        //获取我的需求
+        asyncActionWrapper({
+            call: getMySelfDemandList,
+            params: { '用户ID': userId },
+            type: 'data',
+            key: `my_demand_list`
+        });
+    }
     render() {
         const { g } = this;
-        const list = [
-            { label: "等级", key: "颜色级" },
-            { label: "长度", key: "长度" },
-            { label: "强力", key: "强力" }, {
-                label: "马值", key: "马克隆值"
-            }, {
-                label: "回潮",
-                key: "回潮"
-            }, {
-                label: "整度",
-                key: "整齐度"
-            }, {
-                label: "含杂",
-                key: "平均含杂"
-            }];
-        const { type = 'other',onHandleOffer,data } = this.props;
+
+        const { type = 'other', onHandleOffer, data } = this.props;
         return (
             <View className="container">
                 <View className="content">
@@ -82,7 +110,7 @@ export default class DemanidItem extends Component {
                                             <Text className="btn-text edit-btn-text">修改</Text>
                                         </View>
                                     </TButton>
-                                    <TButton>
+                                    <TButton onClick={this.delete.bind(this, g('主键'))}>
                                         <View className="btn-column">
                                             <Image src={deleteIcon} className="btn-icon" />
                                             <Text className="btn-text delete-btn-text">删除</Text>
@@ -113,7 +141,7 @@ export default class DemanidItem extends Component {
                                         <Text className="buy-value">1000吨</Text>
                                     </View>
                                     <View className="btn-group-right">
-                                        <TButton onClick={onHandleOffer.bind(this,data)}>
+                                        <TButton onClick={onHandleOffer.bind(this, data)}>
                                             <View className="offer-btn">
                                                 <Image src={offerIcon} className="btn-icon" />
                                                 <Text className="offer-btn-text">我要报价</Text>
