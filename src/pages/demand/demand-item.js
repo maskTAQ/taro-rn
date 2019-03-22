@@ -34,7 +34,7 @@ export default class DemanidItem extends Component {
                 label: "含杂",
                 key: "平均含杂"
             }];
-        const { type = 'other',onHandleOffer } = this.props;
+        const { type = 'other',onHandleOffer,data } = this.props;
         return (
             <View className="container">
                 <View className="content">
@@ -113,7 +113,7 @@ export default class DemanidItem extends Component {
                                         <Text className="buy-value">1000吨</Text>
                                     </View>
                                     <View className="btn-group-right">
-                                        <TButton onClick={onHandleOffer.bind(this,g('主键'))}>
+                                        <TButton onClick={onHandleOffer.bind(this,data)}>
                                             <View className="offer-btn">
                                                 <Image src={offerIcon} className="btn-icon" />
                                                 <Text className="offer-btn-text">我要报价</Text>

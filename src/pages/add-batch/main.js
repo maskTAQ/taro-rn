@@ -11,7 +11,7 @@ import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
-@connect(({ layout }) => ({ layout }))
+@connect(({ layout,data }) => ({ layout,data }))
 export default class AddBatch extends Component {
     state = {
         picker: {
@@ -73,13 +73,28 @@ export default class AddBatch extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-
+    getPreValue = data => {
+        const {id} = this.props.data.user.data;
+        const params = {
+            '用户ID': id,
+        };
+        data.param.forEach(area => {
+            area.data.forEach(layout => {
+                layout.components.forEach(component => {
+                    const { value, param } = component;
+                    params[param] = value;
+                })
+            })
+        });
+        return params;
+    }
     submit = () => {
         const { params: navParams } = this.props.navigation.state;
         const { params } = this.state;
+        const {id} = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         if (status === 'success') {
-            doSubmit(data.do, Object.assign({}, params, data.carry))
+            doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
                     asyncActionWrapper({

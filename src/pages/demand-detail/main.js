@@ -1,130 +1,195 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component,connect } from '../../platform';
+import update from 'immutability-helper';
 
-import { View, TButton, Text, Image, Visible, ScrollView, TTag } from '../../ui'
-
+import { View, TButton, Text, Image, Visible, ScrollView, TModal, TInput, TRadio, } from '../../ui'
+import { ListWrapper } from '../../components';
+import { getOfferByDemand, offer } from '../../api';
 import Item from './item';
 import config from '../../config';
 import './main.scss';
 import mobileImg from '../../img/mobile.png';
-import { navigate ,call} from '../../actions';
-const map = config.map.main;
+import { navigate, call } from '../../actions';
 
-const data = {
-    id: '562781322',
 
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    zhc: "巴州亿成棉业有限公司",
-    ck: '中储棉库存厄尔有限责任公司',
-    gys: '河北星宇纺织原料有限责任公司'
-};
-const item = {
-    ...data
-};
-const list = [item, item, item, item];
+const cardList = [
+    {
+        label: '数量',
+        key: '数量'
+    },
+    {
+        label: '自提价',
+        key: '自提价'
+    },
+    {
+        label: '到厂价',
+        key: '到厂价'
+    },
+];
+const modalList = [
+    {
+        label: '数量',
+        type: 'input',
+        placeholder: '请输入数量'
+    },
+    {
+        label: '单位',
+        type: 'radio',
+        option: [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }]
+    },
+    {
+        label: '自提价',
+        type: 'input',
+        placeholder: '请输入自提价'
+    },
+    {
+        label: '到厂家',
+        type: 'input',
+        placeholder: '请输入到厂家'
+    },
+];
+@connect(({data})=>({data}))
 export default class DemandDetail extends Component {
     state = {
-        itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hc', 'hz'],
-        itemDescList: ['cd', 'mj', 'shd', 'zwjhsj'],
+        modal: {
+            visible: false,
+            data: null
+        },
+        unit: '吨',
+        list: {
+            status: 'loading',
+            data: null
+        }
     };
-    
-    goMapDetail(){
-        navigate({routeName:'map-detail'});
+    componentWillMount() {
+        this.getData();
     }
-    call(){
+    getData() {
+        const { params: { data, map } } = this.props.navigation.state;
+        getOfferByDemand({ '云供需主键': data[map['主键']] })
+            .then(res => {
+                this.setState(update(this.state, {
+                    list: {
+                        $set: {
+                            status: 'success',
+                            data: res,
+                        }
+                    }
+                }))
+            })
+            .catch(e => {
+                this.setState(update(this.state, {
+                    list: {
+                        $set: {
+                            status: 'error',
+                        }
+                    }
+                }))
+            })
+    }
+    handleOffer() {
+        this.setState(update(this.state, {
+            modal: {
+                visible: {
+                    $set: true
+                }
+            }
+        }));
+    }
+    goMapDetail() {
+        navigate({ routeName: 'map-detail' });
+    }
+    call() {
         call('1388888888');
     }
+    g = (k, i) => {
+        const { map, data } = this.state.list;
+        return data[i][map[k]] || '-';
+    }
+    handleUnitChange = item => {
+        this.setState({
+            unit: item.value
+        });
+    }
+    closeModal = () => {
+        this.setState(update(this.state, {
+            modal: {
+                visible: {
+                    $set: false
+                }
+            }
+        }));
+    }
+    handleChangeValue = (key, value) => {
+        this.setState({
+            [key]: value
+        })
+    }
+    submit = v => {
+        const { state } = this;
+        const { params } = this.props.navigation.state;
+        const { id } = this.props.data.user.data;
+
+        offer({
+            '云供需主键': params.data[params.map['主键']],
+            '用户ID': id,
+            '单位': state.unit,
+            '数量': state['数量'],
+            '自提价': state['自提价'],
+            '到厂家': state['到厂家'],
+        })
+            .then(res => {
+                Tip.success('报价成功！');
+                this.getData();
+            })
+        this.closeModal();
+    }
     render() {
-        const { itemDescList, itemKeyList } = this.state;
-        const tagList = ['颜色级21', '黄染棉2级', '长绒棉', '格斯', '现货'];
+        const { list, modal } = this.state;
+        const { params } = this.props.navigation.state;
+        console.log(list, 'detail params')
         return (
             <View className="container">
                 <ScrollView>
-                    <Item onHandleOffer={this.handleOffer} item={data} itemDescList={itemDescList} itemKeyList={itemKeyList} />
+                    <Item onHandleOffer={this.handleOffer} data={params.data} map={params.map} />
                     <View className="list-title">
                         <Text className="list-title-box">供应商报价</Text>
                     </View>
-                    <View className="list">
+                    <ListWrapper status={list.status} data={list.data}>
                         {
-                            list.map(item => {
+                            list.status === 'success' && list.data.list.map((item, i) => {
                                 return (
                                     <View className='list-item'>
                                         <View className='item-title'>
                                             <View className='item-title-left'>
-                                                <Text className='item-name'>需求编号</Text>
-                                                <Text className='item-value'>({item.id})</Text>
+                                                <Text className='item-name'>报价编号</Text>
+                                                <Text className='item-value'>({g('报价号', i)})</Text>
                                             </View>
                                             <View className='item-title-right'>
-                                                <Text className='item-time'>2019-01-01</Text>
+                                                <Text className='item-time'>{g('报价时间', i)}</Text>
                                             </View>
-                                        </View>
-                                        <View className="tag-list">
-                                            {
-                                                tagList.map((tag, index) => {
-                                                    return (
-                                                        <TTag
-                                                            className={index === tagList.length - 1 ? 'tag-end' : 'tag-mr'}>
-                                                            {tag}
-                                                        </TTag>
-                                                    )
-                                                })
-                                            }
-
                                         </View>
                                         <View className='item-info-list'>
                                             {
-                                                itemKeyList.map((itemI, index) => (
-                                                    <View className="item-info-item">
-                                                        <View className='item-info-item-content'>
-                                                            <Text className='item-info-item-title'>{map[itemI]}</Text>
-                                                            <Text className='item-info-item-value'>{item[itemI]}</Text>
+                                                cardList.map((item, index) => {
+                                                    const { label, key } = item;
+                                                    return (
+                                                        <View className="item-info-item">
+                                                            <View className='item-info-item-content'>
+                                                                <Text className='item-info-item-title'>{label}</Text>
+                                                                <Text className='item-info-item-value'>{g(key, i)}</Text>
+                                                            </View>
+                                                            <Visible show={index !== list.length - 1}>
+                                                                <View className='item-info-item-border'></View>
+                                                            </Visible>
                                                         </View>
-                                                        <Visible show={index !== itemKeyList.length - 1}>
-                                                            <View className='item-info-item-border'></View>
-                                                        </Visible>
-                                                    </View>
-                                                ))
+                                                    )
+                                                })
                                             }
                                         </View>
-                                        <View className='item-desc-list'>
-                                            <View className="item-desc-item">
-                                                <Text className='item-desc-item-label'>供应商:</Text>
-                                                <View className="item-desc-item-right">
-                                                    <Text className='item-desc-item-text'>xx有限公司</Text>
-                                                    <TButton onClick={this.goMapDetail}>
-                                                        <View className="button">
-                                                            <Text className="button-text">详情</Text>
-                                                        </View>
-                                                    </TButton>
-                                                </View>
 
-                                            </View>
-                                        </View>
                                         <View className="btn-group">
                                             <TButton onClick={this.call}>
                                                 <View className="btn">
@@ -138,12 +203,31 @@ export default class DemandDetail extends Component {
                                 )
                             })
                         }
-                    </View>
-                    <TButton>
+                    </ListWrapper>
+                    <TButton onClick={this.handleOffer}>
                         <View className="offer-button">
                             <Text className="offer-button-text">我要报价</Text>
                         </View>
                     </TButton>
+                    <TModal visible={modal.visible} title="我要报价" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
+                        {
+                            modalList.map((item) => {
+                                const { label, type, placeholder, option } = item;
+                                return (
+                                    <View className="item">
+                                        <Text className="item-label">{label}</Text>
+                                        {
+                                            type === 'input' ? (
+                                                <TInput className="item-input" placeholder={placeholder} onInput={handleChangeValue.bind(this, label)} />
+                                            ) : (
+                                                    <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
+                                                )
+                                        }
+                                    </View>
+                                )
+                            })
+                        }
+                    </TModal>
                 </ScrollView>
             </View>
         )

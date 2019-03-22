@@ -6,13 +6,13 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
-import { getDemandCustomLayout,getDemandList, doSubmit } from '../../api';
+import { getDemandCustomLayout, getDemandList, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
 const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
-@connect(({ layout }) => ({ layout }))
+@connect(({ layout,data }) => ({ layout,data }))
 export default class DemandCustom extends Component {
     state = {
         activeTab: '新疆棉',
@@ -82,21 +82,37 @@ export default class DemandCustom extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-
+    getPreValue = data => {
+        const {id} = this.props.data.user.data;
+        const params = {
+            '用户ID': id,
+        };
+        data.param.forEach(area => {
+            area.data.forEach(layout => {
+                layout.components.forEach(component => {
+                    const { value, param } = component;
+                    params[param] = value;
+                })
+            })
+        });
+        return params;
+    }
     submit = () => {
         const { params, activeTab } = this.state;
         const { status, data } = this.props.layout[`demand_custom_${activeTab}`];
         if (status === 'success') {
-            doSubmit(data.do, Object.assign({}, params, data.carry))
+            doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
-                    //更新需求列表
-                    asyncActionWrapper({
-                        call: getDemandList,
-                        params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
-                        type: 'data',
-                        key: `demand_list_${activeTab}`
-                    });
+                    setTimeout(() => {
+                        //更新需求列表
+                        asyncActionWrapper({
+                            call: getDemandList,
+                            params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
+                            type: 'data',
+                            key: `demand_list_${activeTab}`
+                        });
+                    }, 1000);
                 })
         }
     }

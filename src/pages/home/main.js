@@ -176,7 +176,9 @@ export default class Home extends Component {
         this.setState({ params })
     }
     goCottonDetail(data) {
-        const { key } = this.state;
+        const { activeTab} = this.state;
+        const { key } = this.props.data[`offer_list_${activeTab}`].data;
+       
         navigate({
             routeName: 'cotton-detail', params: {
                 key,

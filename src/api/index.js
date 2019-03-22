@@ -70,6 +70,11 @@ export function getMyCloudOfferList(params) {
 export function offer(params) {
     return get('CloudArticlePrice', params);
 }
+
+//获取需求的报价
+export function getOfferByDemand(params) {
+    return get('CloudArticleUIPriceList', params);
+}
 export {
     login
 }

@@ -5,43 +5,18 @@ import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
 import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
-import { getDemandList, getMySelfDemandList, offer } from '../../api';
+import { getDemandList, getMySelfDemandList } from '../../api';
 import DemandItem from './demand-item';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
 
-const modalList = [
-    {
-        label: '数量',
-        type: 'input',
-        placeholder: '请输入数量'
-    },
-    {
-        label: '单位',
-        type: 'radio',
-        option: [{ label: '吨', value: '吨' }, { label: '批', value: '批' }, { label: '柜', value: '柜' }]
-    },
-    {
-        label: '自提价',
-        type: 'input',
-        placeholder: '请输入自提价'
-    },
-    {
-        label: '到厂家',
-        type: 'input',
-        placeholder: '请输入到厂家'
-    },
-];
+
 const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
 
 @connect(({ data }) => ({ data }))
 export default class Demand extends Component {
     state = {
-        modal: {
-            visible: false,
-            data: null
-        },
-        unit: '吨',
+       
         activeTab: '新疆棉',
     };
     componentWillMount() {
@@ -74,55 +49,12 @@ export default class Demand extends Component {
             current
         });
     }
-    handleOffer(data) {
-        this.setState(update(this.state, {
-            modal: {
-                visible: {
-                    $set: true
-                },
-                data: {
-                    $set: data
-                }
-            }
-        }));
+    handleOffer(item) {
+        const {  activeTab } = this.state;
+        const {  data } = this.props.data[`demand_list_${activeTab}`];
+        navigate({ routeName: 'demand-detail', params: {data:item,map:data.key} });
     }
-    handleUnitChange = item => {
-        this.setState({
-            unit: item.value
-        });
-    }
-    closeModal = () => {
-        this.setState(update(this.state, {
-            modal: {
-                visible: {
-                    $set: false
-                }
-            }
-        }));
-    }
-    handleChangeValue = (key, value) => {
-        this.setState({
-            [key]: value
-        })
-    }
-    submit = v => {
-        const { state } = this;
-        const { data } = this.state.modal;
-        const { id } = this.props.data.user.data;
-
-        offer({
-            '云供需主键': data,
-            '用户ID': id,
-            '单位': state.unit,
-            '数量': state['数量'],
-            '自提价': state['自提价'],
-            '到厂家': state['到厂家'],
-        })
-            .then(res => {
-                Tip.success('报价成功！');
-            })
-        this.closeModal();
-    }
+   
     goDemandDetail() {
         navigate({ routeName: 'demand-detail' });
     }
@@ -185,25 +117,7 @@ export default class Demand extends Component {
                         <Text className="submit-text">发布需求</Text>
                     </View>
                 </TButton>
-                <TModal visible={modal.visible} title="我要报价" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
-                    {
-                        modalList.map((item) => {
-                            const { label, type, placeholder, option } = item;
-                            return (
-                                <View className="item">
-                                    <Text className="item-label">{label}</Text>
-                                    {
-                                        type === 'input' ? (
-                                            <TInput className="item-input" placeholder={placeholder} onInput={handleChangeValue.bind(this, label)} />
-                                        ) : (
-                                                <TRadio option={option} checkd={unit} onCheckdChange={this.handleUnitChange} />
-                                            )
-                                    }
-                                </View>
-                            )
-                        })
-                    }
-                </TModal>
+                
                 <TModal
                     visible={loginStatus !== 'success'}
                     onConfirm={this.login}

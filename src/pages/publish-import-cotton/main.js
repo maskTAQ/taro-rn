@@ -13,7 +13,7 @@ import { Tip } from '../../utils';
 
 const tabList = ["人民币", "美元"];
 const layoutTypes = ['进口棉￥', '进口棉$'];
-@connect(({ layout }) => ({ layout }))
+@connect(({ layout ,data}) => ({ layout,data }))
 export default class publishImportCotton extends Component {
     state = {
         activeTab: "人民币",
@@ -77,12 +77,26 @@ export default class publishImportCotton extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-
+    getPreValue = data => {
+        const {id} = this.props.data.user.data;
+        const params = {
+            '用户ID': id,
+        };
+        data.param.forEach(area => {
+            area.data.forEach(layout => {
+                layout.components.forEach(component => {
+                    const { value, param } = component;
+                    params[param] = value;
+                })
+            })
+        });
+        return params;
+    }
     submit = () => {
         const { current, params } = this.state;
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         if (status === 'success') {
-            doSubmit(data.do, Object.assign({}, params, data.carry))
+            doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
                 .then(res => {
                     Tip.success('操作成功');
                     asyncActionWrapper({
