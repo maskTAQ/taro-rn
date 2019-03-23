@@ -47,11 +47,11 @@ const cardList = [
         key: 't',
         list: [
             [{
-                key: 'a',
+                key: '包数',
                 label: '合计包数'
             },
             {
-                key: 'b',
+                key: '执行标准',
                 label: '质量标识'
             }],
             [{

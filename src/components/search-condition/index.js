@@ -41,6 +41,12 @@ export default class SearchCondition extends Component {
         activeTab: '',
         activeTabIndex: NaN,
     }
+    folder = () => {
+        this.setState({
+            activeTab: '',
+            activeTabIndex: NaN
+        })
+    }
     handleTabChange = (activeTab, activeTabIndex) => {
         if (activeTab === this.getActiveTab()) {
             this.setState({

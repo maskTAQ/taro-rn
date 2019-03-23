@@ -2,9 +2,9 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, Text, Image, TButton } from '../../ui';
-import { deleteMyDemand, getMySelfDemandList } from '../../api';
-import { asyncActionWrapper } from '../../actions';
-import {Tip} from '../../utils';
+import { deleteMyDemand, getMySelfDemandList, getOfferList } from '../../api';
+import { asyncActionWrapper, navigate } from '../../actions';
+import { Tip } from '../../utils';
 import editIcon from './img/edit.png';
 import deleteIcon from './img/close.png';
 import viewIcon from './img/view.png';
@@ -58,6 +58,15 @@ export default class DemanidItem extends Component {
             type: 'data',
             key: `my_demand_list`
         });
+    }
+    goHome(id) {
+        asyncActionWrapper({
+            call: getOfferList,
+            params: { '云需求主键': id ,'棉花云报价类型':1},
+            type: 'data',
+            key: `offer_list_新疆棉`,
+        });
+        navigate({routeName:'home'});
     }
     render() {
         const { g } = this;
@@ -122,7 +131,7 @@ export default class DemanidItem extends Component {
                                     <Text className="price-label">平台最优价格</Text>
                                 </View>
                                 <View className="btn-group-right">
-                                    <TButton>
+                                    <TButton onClick={this.goHome.bind(this, g('主键'))}>
                                         <View className="view-resource-btn">
                                             <Image src={viewIcon} className="btn-icon" />
                                             <Text className="view-resource-btn-text">查看资源</Text>

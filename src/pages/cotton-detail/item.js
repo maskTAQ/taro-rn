@@ -11,8 +11,8 @@ import './item.scss'
 const list = [
     { label: "等级", key: "颜色级" },
     { label: "长度", key: "长度" },
-    { label: "强力", key: "强力" }, {
-        label: "马值", key: "马克隆值"
+    { label: "强力", key: "断裂比强度平均值" }, {
+        label: "马值", key: "主体马克隆值级"
     }, {
         label: "含杂",
         key: "平均含杂"
@@ -25,7 +25,7 @@ const list = [
     }];
 
 const descList = [
-    { label: "扎花厂", key: "扎花厂" },
+    { label: "扎花厂", key: "加工单位" },
     { label: "库存", key: "仓库" },
     { label: "供应商", key: "供应商" },
     {
@@ -63,7 +63,7 @@ export default class Item extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">批号({g('批号')}) {g('产地')} {g('类型')}</Text>
+                            <Text className="title">批号({g('加工批号')}) {g('产地')} {g('类型')}</Text>
                         </View>
                         <View className="top-right">
                             <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>

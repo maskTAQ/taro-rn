@@ -98,13 +98,13 @@ export default class publishImportCotton extends Component {
         if (status === 'success') {
             doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
                 .then(res => {
-                    Tip.success('操作成功');
                     asyncActionWrapper({
                         call: getOfferList,
                         params: { '棉花云报价类型': current === 0 ? 2 : 3 },
                         type: 'data',
                         key: `offer_list_${layoutTypes[current]}`
                     });
+                    Tip.success('操作成功');
                 })
         }
     }

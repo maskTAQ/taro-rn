@@ -20,7 +20,7 @@ export default class Demand extends Component {
         activeTab: '新疆棉',
     };
     componentWillMount() {
-        this.getMyDemand();
+        //this.getMyDemand();
         this.getData();
     }
     login() {
@@ -29,6 +29,12 @@ export default class Demand extends Component {
     getMyDemand=()=>{
         const { data } = this.props.data.user;
         const userId = data.id;
+        console.log({
+            call: getMySelfDemandList,
+            params: { '用户ID': userId },
+            type: 'data',
+            key: `my_demand_list`
+        });
          //获取我的需求
          asyncActionWrapper({
             call: getMySelfDemandList,

@@ -96,13 +96,13 @@ export default class AddBatch extends Component {
         if (status === 'success') {
             doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
                 .then(res => {
-                    Tip.success('操作成功');
                     asyncActionWrapper({
                         call: getOfferList,
                         params:navParams,
                         type: 'data',
                         key: `offer_list_${navParams.type}`
                     });
+                    Tip.success('操作成功');
                 })
         }
     }

@@ -96,16 +96,13 @@ export default class Home extends Component {
     }
     getOfferData() {
         const { activeTab, params } = this.state;
-        const { status: dataStatus, loading: dataLoading } = this.props.data[`offer_list_${activeTab}`];
-        //获取列表数据
-       
-            asyncActionWrapper({
-                call: getOfferList,
-                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1, ...params },
-                type: 'data',
-                key: `offer_list_${activeTab}`
-            });
-       
+        asyncActionWrapper({
+            call: getOfferList,
+            params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1, ...params },
+            type: 'data',
+            key: `offer_list_${activeTab}`
+        });
+
     }
 
     handleTabChange = activeTab => {
@@ -154,7 +151,7 @@ export default class Home extends Component {
     }
     submit = () => {
         this.getOfferData();
-
+        this.s.folder();
     }
     handleClickShoppingCar = (v) => {
         const { status: loginStatus, data } = this.props.data.user;
@@ -236,6 +233,7 @@ export default class Home extends Component {
                         onChangePickerData={this.changePickerData}
                         onResetParams={this.resetParams}
                         onSubmit={this.submit}
+                        ref={e => this.s = e}
                     />
                     {
                         dataStatus === 'loading' && <TLoading />
