@@ -107,16 +107,21 @@ export default class User extends Component {
         });
     }
     g(e) {
-        const {encryptedData,iv} = e.detail;
-        const {id} = this.props.data.user.data;
+        const { encryptedData, iv } = e.detail;
+        const { id } = this.props.data.user.data;
         console.log({
 
-            encrypdata:encryptedData,
+            encrypdata: encryptedData,
 
             ivdata: iv,
 
             sessionkey: 'session_key需要我登录返回openid时一起返回跟我'
 
+        })
+    }
+    goAuth = () => {
+        navigate({
+            routeName: 'auth'
         })
     }
     render() {
@@ -129,7 +134,15 @@ export default class User extends Component {
                         <View className="user-info">
                             <Image className="user-icon" src={userData.img} />
                             <View className="user-info-detail">
-                                <Text className="company-name">苏州易贸通进出口有限公司</Text>
+                                <View className="auth">
+                                    <Text className="company-name">苏州易贸通进出口有限公司</Text>
+                                    <TButton onClick={this.goAuth}>
+                                        <View className="auth-btn">
+                                            <Text className="auth-text">未认证</Text>
+                                        </View>
+
+                                    </TButton>
+                                </View>
                                 <Text className="mobile">135****2591</Text>
                             </View>
                         </View>

@@ -1,0 +1,55 @@
+@import '../../platform.scss';
+@import './component.scss';
+@import '../color.scss';
+.container {
+    height: 100%;
+    background: #f4f4f4;
+}
+
+.auth-status-box {
+    margin: 40px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+}
+
+.auth-status-header {
+    height: 80px;
+}
+
+.auth-status-header-text {
+    font-size: 26px;
+    color: $main;
+}
+
+.auth-status-value {
+    height: 40px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-status-value-text {
+    font-size: 26px;
+}
+.has-auth{
+    color: red;
+}
+.no-auth{
+    color: #ccc;
+}
+.btn {
+    margin: 20px;
+    height: 70px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 8px;
+}
+
+.btn-text {
+    font-size: 30px;
+    color: #fff;
+}

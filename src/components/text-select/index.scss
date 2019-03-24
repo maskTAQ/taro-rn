@@ -1,0 +1,31 @@
+@import '../../platform.scss';
+@import '../../pages/color.scss';
+
+.container {
+    @extend .flex;
+    flex-direction: column;
+}
+
+.item {
+    margin: 4px 0;
+    height: 50px;
+    padding: 0 20px;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    @include borderD(bottom,1px,solid,#ccc);
+}
+
+.active-item {
+    
+}
+
+.item-text {
+    color: #000;
+    font-size: 28px;
+}
+
+.active-item-text {
+    color: $main;
+}

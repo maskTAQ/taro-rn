@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { AtActionSheet, AtActionSheetItem } from "taro-ui";
-import { ScrollView, Text } from '../index';
+import { ScrollView, Text, View } from '../index';
 import classnames from 'classnames';
+
 
 export default class TPicker extends Component {
     static options = {
@@ -19,15 +20,46 @@ export default class TPicker extends Component {
         return null
     }
     handleClick(label, value) {
+        console.log('item click')
         const { onClick } = this.props;
         onClick && onClick({ label, value });
     }
     render() {
         const { show, onCancel, onClose, option } = this.props;
+        console.log(show,'show')
+        // if (!show) {
+        //     return null;
+        // }
+        // return (
+        //     <View className="layer" onClick={onClose}>
+        //         <View className="content" >
+        //             <picker-view
+        //                 style="width: 100%; height:100%;"
+        //                 className="picker-box"
+        //                 value="{{value}}"
+        //                 bindchange={this.handleClick}
+        //             >
+
+        //                 <picker-view-column>
+        //                     {
+        //                         option.map(item => {
+        //                             const { label, value } = item;
+        //                             return (
+        //                                 <View key={value} className="item">{label}</View>
+        //                             )
+        //                         })
+        //                     }
+
+        //                 </picker-view-column>
+        //             </picker-view>
+        //         </View>
+        //     </View>
+        // )
         return (
 
             <AtActionSheet isOpened={show} onCancel={onCancel} onClose={onClose} cancelText='取消' >
                 <ScrollView>
+                
                     {
                         option.map(item => {
                             const { label, value } = item;

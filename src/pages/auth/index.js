@@ -6,9 +6,9 @@ import Main from './main';
 import './component.scss'
 
 
-export default class User extends Component {
+export default class Auth extends Component {
   config = {
-    navigationBarTitleText: '个人'
+    navigationBarTitleText: '企业认证'
   }
   render() {
     return <Main />

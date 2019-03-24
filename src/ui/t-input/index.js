@@ -1,4 +1,4 @@
-import  { Component } from '@tarojs/taro'
+import { Component } from '@tarojs/taro'
 import { Input } from '@tarojs/components'
 
 export default class TInput extends Component {
@@ -8,7 +8,7 @@ export default class TInput extends Component {
     filter(e) {
         this.props.onInput && this.props.onInput(e.target.value);
     }
-    
+
     render() {
         const { className, placeholder, value } = this.props;
         return (
@@ -17,8 +17,7 @@ export default class TInput extends Component {
                 placeholder={placeholder}
                 value={value}
                 onInput={this.filter}
-            >{this.props.children}
-            </Input>
+            />
         )
     }
 }

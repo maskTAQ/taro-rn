@@ -19,3 +19,4 @@ export { default as Layout } from './layout';
 export { default as Slidebothway } from './slidebothway';
 export { default as ListWrapper } from './list-wrapper';
 export { default as Authorization } from './authorization';
+export {default as TextSelect} from './text-select';

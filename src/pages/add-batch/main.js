@@ -25,11 +25,12 @@ export default class AddBatch extends Component {
         this.getData(params);
     }
     getData(params) {
+        const {id} = this.props.data.user.data;
         const { status, loading } = this.props.layout[`offer_${params.type}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getOfferLayout,
-                params,
+                params:{'用户ID':id,...params},
                 type: 'layout',
                 key: `offer_${params.type}`
             });

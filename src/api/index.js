@@ -1,4 +1,4 @@
-import { get } from './base';
+import { get,file } from './base';
 
 const login = (params) => {
     return get('Login', params);
@@ -86,6 +86,14 @@ export function deleteMyOffer(params) {
 //删除我发布的云报价
 export function deleteMyCloudOffer(params) {
     return get('CloudQuoteDelete', params);
+}
+//上传图片 
+export function uploadImg() {
+    return file('upload');
+}
+//认证企业信息 
+export function authInfo(params) {
+    return get('ruzhu',params);
 }
 export {
     login

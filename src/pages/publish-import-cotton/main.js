@@ -29,11 +29,12 @@ export default class publishImportCotton extends Component {
     }
     getData() {
         const { current } = this.state;
+        const {id} = this.props.data.user.data;
         const { status, loading } = this.props.layout[`offer_${layoutTypes[current]}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getOfferLayout,
-                params: { '棉花云报价类型': current === 0 ? 2 : 3 },
+                params: { '棉花云报价类型': current === 0 ? 2 : 3,'用户ID':id },
                 type: 'layout',
                 key: `offer_${layoutTypes[current]}`
             });

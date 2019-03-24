@@ -29,17 +29,28 @@
     flex-direction: column;
     justify-content: flex-end;
 }
-
+.auth{
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
 .company-name,
 .mobile {
-    height: 50px;
     color: #000;
 }
 
 .company-name {
-    font-size: 44px;
+    font-size: 30px;
 }
-
+.auth-btn{
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+.auth-text{
+    font-size: 24px;
+    color: #000;
+}
 .mobile {
     font-size: 30px;
 }

@@ -24,7 +24,7 @@ const list = [
         label: "长整",
         key: "整齐度"
     }];
-
+@connect(({data})=>({user:data.user}))
 export default class MainItem extends Component {
     static options = {
         addGlobalClass: true
@@ -43,7 +43,7 @@ export default class MainItem extends Component {
         return data[map[k]] || '-';
     }
     handleClickShoppingCar = (v) => {
-        const { data } = this.props.data.user;
+        const { data } = this.props.user;
         addShoppingCar({
             '云报价主键': v,
             '用户ID': data.id

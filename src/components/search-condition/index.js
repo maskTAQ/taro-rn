@@ -5,7 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { CRadio, RadioRect, Check, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
+import { CRadio, RadioRect, Check,TextSelect, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
 import { View, Text, TDatePicker, TInput, TButton, Image, TLoading } from '../../ui';
 import topIcon from '../../img/top.png';
 import bottomIcon from '../../img/bottom.png';
@@ -146,7 +146,7 @@ export default class SearchCondition extends Component {
                             <View className="filter-box">
                                 {
                                     (isNaN(activeTabIndex) ? [] : data[activeTabIndex].data).map(field => {
-                                        const { title: fieldTitle, components = [], visible } = field;
+                                        const { title: fieldTitle='', components = [], visible } = field;
                                         const className = classnames({
                                             'layout-row': components.length > 2,
                                             'layout-column': components.length <= 2,
@@ -154,11 +154,13 @@ export default class SearchCondition extends Component {
                                         const isShowField = isVisible({ visible, params });
                                         return isShowField ? (
                                             <View className="field-column" key={fieldTitle}>
-                                                <View className="field-title">
-                                                    <Text className="field-title-text">
-                                                        {fieldTitle}
-                                                    </Text>
-                                                </View>
+                                                {fieldTitle.length && (
+                                                    <View className="field-title">
+                                                        <Text className="field-title-text">
+                                                            {fieldTitle}
+                                                        </Text>
+                                                    </View>
+                                                )}
                                                 <View className={className}>
                                                     {
                                                         components.map(component => {
@@ -178,6 +180,9 @@ export default class SearchCondition extends Component {
                                                                     }
                                                                     {
                                                                         type === 'checkcircle' && isShowComponent && <CheckCircle k={param} value={v} option={content} onChange={this.handleChange} />
+                                                                    }
+                                                                    {
+                                                                        type === 'textselect' && isShowComponent && <TextSelect params={params} k={param} value={v} option={content} onChange={this.handleChange} />
                                                                     }
                                                                     {
                                                                         type === 'slidebothway' && isShowComponent && <Slidebothway k={param} value={v} option={content} onChange={this.handleChange} />
