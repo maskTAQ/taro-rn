@@ -7,9 +7,11 @@ const offerList = productTypes.map(item => `offer_list_${item}`);
 const demandList = productTypes.map(item => `demand_list_${item}`);
 const store = {
     layout: demand_custom.concat(offer, fiter),
-    data: offerList.concat(demandList, ['my_demand_list', 'user','shoppingCarList','my_offer_list','my_cloud_offer_list',`demand_list_全部`]),
+    data: offerList.concat(demandList, ['my_demand_list', 'user','shoppingCarList','my_offer_list','my_cloud_offer_list',`demand_list_全部`,'auth']),
 };
+const authStatusMap = ['未认证','等待审核','已认证','认证被拒绝'];
 export {
     store,
-    productTypes
+    productTypes,
+    authStatusMap
 }

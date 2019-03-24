@@ -1,4 +1,4 @@
-import { get,file } from './base';
+import { get, file } from './base';
 
 const login = (params) => {
     return get('Login', params);
@@ -93,7 +93,11 @@ export function uploadImg() {
 }
 //认证企业信息 
 export function authInfo(params) {
-    return get('ruzhu',params);
+    return get('ruzhu', params);
+}
+//获取认证信息
+export function getAuthInfo(params) {
+    return get('MyRuZhu', params);
 }
 export {
     login

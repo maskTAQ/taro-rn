@@ -7,10 +7,11 @@ import classnames from 'classnames';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
 import Card from './card';
-import {authInfo} from '../../api';
+import { authInfo } from '../../api';
 import './main.scss';
 import './component.scss';
 import { navigate, login } from '../../actions';
+import { authStatusMap } from '../../constants';
 
 const topList = [
     {
@@ -65,6 +66,9 @@ const imgList = [
 @connect(({ data }) => ({ data }))
 export default class Auth extends Component {
     state = {
+        auth: {
+            state: 3
+        },
         isAuth: false,
         hasClickAuthBtn: false,
         kfInfoList: [...kfInfoGroup]
@@ -87,11 +91,11 @@ export default class Auth extends Component {
             hasClickAuthBtn: true,
         });
     }
-    submit=()=>{
+    submit = () => {
         authInfo()
-        .then(res=>{
-            console.log(res,'res');
-        })
+            .then(res => {
+                console.log(res, 'res');
+            })
     }
     handleAddKf = () => {
         const next = [...this.state.kfInfoList];
@@ -100,10 +104,12 @@ export default class Auth extends Component {
         });
     }
     render() {
-        const { isAuth, hasClickAuthBtn, kfInfoList } = this.state;
+        const { isAuth, hasClickAuthBtn, kfInfoList, auth: { state } } = this.state;
         const { status: loginStatus, data: userData = {} } = this.props.data.user;
         const authStatus = isAuth ? '已认证' : hasClickAuthBtn ? '认证中' : '企业未认证';
         const authStatusClassName = isAuth ? 'has-auth' : hasClickAuthBtn ? 'auth' : 'no-auth';
+        const showCard = hasClickAuthBtn || state === 2;
+        console.log(showCard, 'showCard')
         return (
 
             <View className="container">
@@ -116,25 +122,25 @@ export default class Auth extends Component {
                         </View>
                         <View className="auth-status-value">
                             <Text className={classnames("auth-status-value-text", authStatusClassName)}>
-                                {authStatus}
+                                {authStatusMap[auth.state]}
                             </Text>
                         </View>
                     </View>)}
                     {
-                        !isAuth && !hasClickAuthBtn && (
+                        [0, 3].includes(state) && !hasClickAuthBtn && (
                             <TButton onClick={this.startAuth}>
                                 <View className="btn auth">
-                                    <Text className="btn-text">去认证</Text>
+                                    <Text className="btn-text">{auth.state ? '重新认证' : '认证'}</Text>
                                 </View>
                             </TButton>
                         )
                     }
                     {
-                        !isAuth && hasClickAuthBtn && (
+                        showCard && (
                             <View className="a">
-                                <Card option={topList} title="认证信息" type="input" />
-                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" />
-                                <Card option={imgList} title="图片信息" type="img" />
+                                <Card option={topList} title="认证信息" type="input" state={state} data={auth} />
+                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" state={state} data={auth} />
+                                <Card option={imgList} title="图片信息" type="img" state={state} data={auth} />
                             </View>
                         )
                     }

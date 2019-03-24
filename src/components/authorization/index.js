@@ -34,7 +34,6 @@ export default class Authorization extends Component {
                         visible: true
                     })
                 }
-                console.log(res, 'res')
             })
     }
     render() {

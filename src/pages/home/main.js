@@ -11,6 +11,8 @@ import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes } from '../../constants';
 import './main.scss';
 import { Tip } from '../../utils';
+
+
 const item = {
     id: '562781322',
 

@@ -6,12 +6,13 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit ,getOfferList} from '../../api';
+import { getOfferLayout, doSubmit, getOfferList } from '../../api';
+import { send } from '../../api/ws';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
-@connect(({ layout,data }) => ({ layout,data }))
+@connect(({ layout, data }) => ({ layout, data }))
 export default class AddBatch extends Component {
     state = {
         picker: {
@@ -25,12 +26,12 @@ export default class AddBatch extends Component {
         this.getData(params);
     }
     getData(params) {
-        const {id} = this.props.data.user.data;
+        const { id } = this.props.data.user.data;
         const { status, loading } = this.props.layout[`offer_${params.type}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getOfferLayout,
-                params:{'用户ID':id,...params},
+                params: { '用户ID': id, ...params },
                 type: 'layout',
                 key: `offer_${params.type}`
             });
@@ -75,7 +76,7 @@ export default class AddBatch extends Component {
         this.setState({ params })
     }
     getPreValue = data => {
-        const {id} = this.props.data.user.data;
+        const { id } = this.props.data.user.data;
         const params = {
             '用户ID': id,
         };
@@ -89,23 +90,34 @@ export default class AddBatch extends Component {
         });
         return params;
     }
+    a(){
+        Tip.fail('11');
+    }
     submit = () => {
         const { params: navParams } = this.props.navigation.state;
         const { params } = this.state;
-        const {id} = this.props.data.user;
+        const { id } = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
-        if (status === 'success') {
-            doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
-                .then(res => {
-                    asyncActionWrapper({
-                        call: getOfferList,
-                        params:navParams,
-                        type: 'data',
-                        key: `offer_list_${navParams.type}`
-                    });
-                    Tip.success('操作成功');
-                })
-        }
+        const doParams = Object.assign(this.getPreValue(data), params, data.carry);
+        Tip.fail(String(doParams['批号']));
+        send({number:doParams['批号'],userID:id})
+            .then(res => {
+                if (status === 'success') {
+                    doSubmit(data.do, doParams)
+                        .then(res => {
+                            asyncActionWrapper({
+                                call: getOfferList,
+                                params: { ...navParams, '用户ID': id },
+                                type: 'data',
+                                key: `offer_list_${navParams.type}`
+                            });
+                            Tip.success('操作成功');
+                        })
+                }
+            })
+            .catch(e=>{
+                Tip.fail(e);
+            })
     }
 
     render() {

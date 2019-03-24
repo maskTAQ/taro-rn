@@ -1,13 +1,40 @@
 import React from 'react';
-import { Component } from '../../platform';
+import { Component,connect } from '../../platform';
 
 import { TInput, TButton, Image } from '../../ui';
+import { scan, Tip } from '../../utils';
 import searchImg from './img/search.png';
 import qrImg from './img/qr.png';
 import './index.scss'
+import { send } from '../../api/ws';
+
+@connect(({data})=>({user:data.user}))
 export default class SearchTool extends Component {
     static options = {
         addGlobalClass: true
+    }
+    scan = () => {
+        const {status,data} = this.props.user;
+        if(status === 'success'){
+            scan()
+            .then(res => {
+                const {type,clientId} = res;
+                if(type === 'cotton'){
+                    send({clientId})
+                    .then(res=>{
+                        Tip.success(res);
+                    })
+                }else{
+                    Tip.fail('非法二维码');
+                }
+            })
+            .catch(e => {
+                Tip.fail('扫码失败,请重试!');
+            })
+        }else{
+            Tip.fail('请先登录!');
+        }
+        
     }
     render() {
         const { onClick, className } = this.props;
@@ -22,7 +49,7 @@ export default class SearchTool extends Component {
                         <TButton>
                             <Image className="icon-btn mr" src={searchImg}></Image>
                         </TButton>
-                        <TButton>
+                        <TButton onClick={this.scan}>
                             <Image className="icon-btn" src={qrImg}></Image>
                         </TButton>
                     </View>

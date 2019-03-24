@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import update from 'immutability-helper';
 
 import { TButton, View, Text, TInput, Image } from '../../ui';
-import {uploadImg} from '../../api';
+import { uploadImg } from '../../api';
 import './card.scss'
 import { Tip } from '../../utils';
 
@@ -45,16 +45,22 @@ export default class Card extends Component {
         onChange({ key: k, value: nextValue });
     }
     uploadImg = () => {
-        uploadImg()
-        .then(res=>{
-            Tip.success('上传成功');
-            console.log(res,'res')
-        })
+        const { data: { state } } = this.props;
+        if (state === 0) {
+            uploadImg()
+                .then(res => {
+                    Tip.success('上传成功');
+                })
+        }
+
     }
     render() {
-        const { option = [], title, type, onRequestAddKf } = this.props;
+        const { option = [], title, type, onRequestAddKf, data: { state } } = this.props;
         const hasInput = ['input', 'kf'].includes(type);
         const isImg = type === 'img';
+        const showInput = hasInput && [0, 3].includes(state);
+        const showText = hasInput && state === 2;
+        const showAddKf = type === 'kf' && [0, 3].includes(state);
         return (
             <View className="container">
                 <View className="title">
@@ -68,7 +74,7 @@ export default class Card extends Component {
                 })}>
                     {
                         option.map(item => {
-                            const { label, placeholder = '请输入',key } = item;
+                            const { label, placeholder = '请输入', key } = item;
 
                             return (
                                 <View className={classnames("item", {
@@ -77,7 +83,7 @@ export default class Card extends Component {
                                 })}>
                                     {isImg && (
                                         <TButton onClick={this.uploadImg}>
-                                            <Image className="img" src={this.state[key]}/>
+                                            <Image className="img" src={this.state[key]} />
                                         </TButton>
                                     )}
                                     <View className={classnames({
@@ -89,20 +95,28 @@ export default class Card extends Component {
                                         </Text>
                                     </View>
                                     <View className={classnames("item-content", {
-                                        'input-box': hasInput
+                                        'input-box': showInput
                                     })}>
                                         {
-                                            hasInput && (
+                                            showInput ? (
                                                 <TInput className="input" placeholder={placeholder} />
+                                            ) : null
+                                        }
+                                        {
+                                            showText && (
+                                                <Text className="text">
+                                                    {placeholder}
+                                                </Text>
                                             )
                                         }
+
                                     </View>
                                 </View>
                             )
                         })
                     }
                     {
-                        type === 'kf' && (
+                        showAddKf && (
                             <TButton onClick={onRequestAddKf}>
                                 <View className="add-kf-btn">
                                     <Text className="add-kf-btn-text">

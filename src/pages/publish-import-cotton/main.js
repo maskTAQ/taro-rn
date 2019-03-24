@@ -8,12 +8,13 @@ import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
 import { getOfferLayout, getOfferList, doSubmit } from '../../api';
 import { asyncActionWrapper } from '../../actions';
+import { send } from '../../api/ws';
 import './main.scss';
 import { Tip } from '../../utils';
 
 const tabList = ["人民币", "美元"];
 const layoutTypes = ['进口棉￥', '进口棉$'];
-@connect(({ layout ,data}) => ({ layout,data }))
+@connect(({ layout, data }) => ({ layout, data }))
 export default class publishImportCotton extends Component {
     state = {
         activeTab: "人民币",
@@ -29,16 +30,18 @@ export default class publishImportCotton extends Component {
     }
     getData() {
         const { current } = this.state;
-        const {id} = this.props.data.user.data;
+        const { id } = this.props.data.user.data;
         const { status, loading } = this.props.layout[`offer_${layoutTypes[current]}`];
+
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getOfferLayout,
-                params: { '棉花云报价类型': current === 0 ? 2 : 3,'用户ID':id },
+                params: { '棉花云报价类型': current === 0 ? 2 : 3, '用户ID': id },
                 type: 'layout',
                 key: `offer_${layoutTypes[current]}`
             });
         }
+
     }
     changePickerData = (picker) => {
         this.setState({ picker });
@@ -79,7 +82,7 @@ export default class publishImportCotton extends Component {
         this.setState({ params })
     }
     getPreValue = data => {
-        const {id} = this.props.data.user.data;
+        const { id } = this.props.data.user.data;
         const params = {
             '用户ID': id,
         };
@@ -96,18 +99,24 @@ export default class publishImportCotton extends Component {
     submit = () => {
         const { current, params } = this.state;
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
-        if (status === 'success') {
-            doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
-                .then(res => {
-                    asyncActionWrapper({
-                        call: getOfferList,
-                        params: { '棉花云报价类型': current === 0 ? 2 : 3 },
-                        type: 'data',
-                        key: `offer_list_${layoutTypes[current]}`
-                    });
-                    Tip.success('操作成功');
-                })
-        }
+        const { id } = this.props.data.user;
+        const doParams = Object.assign(this.getPreValue(data), params, data.carry);
+        send({ number: doParams['批号'], userID: id })
+            .then(res => {
+                if (status === 'success') {
+                    doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
+                        .then(res => {
+                            asyncActionWrapper({
+                                call: getOfferList,
+                                params: { '棉花云报价类型': current === 0 ? 2 : 3, '用户ID': id },
+                                type: 'data',
+                                key: `offer_list_${layoutTypes[current]}`
+                            });
+                            Tip.success('操作成功');
+                        })
+                }
+            })
+
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -117,7 +126,8 @@ export default class publishImportCotton extends Component {
     }
     render() {
         const { picker, params, activeTab, current } = this.state;
-        const { status, loading, data, msg } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+        const { status, loading, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+       
         return (
             <View className='container'>
                 <ScrollView>

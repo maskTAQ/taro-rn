@@ -6,6 +6,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
+import { getAuthInfo } from '../../api';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -21,7 +22,8 @@ import jsqImg from '../../img/jsq.png';
 import logoImg from '../../img/logo.png';
 import './main.scss';
 import './component.scss';
-import { navigate, login } from '../../actions';
+import { navigate, login, asyncActionWrapper } from '../../actions';
+import { authStatusMap } from '../../constants';
 
 const toolList = [
     {
@@ -93,14 +95,39 @@ const listBottom = [
 @connect(({ data }) => ({ data }))
 export default class User extends Component {
     componentWillMount() {
+        this.getAuthData();
+    }
+    componentWillUpdate(nextProps) {
+        // const { status: prevUserStatus } = this.props.data.user;
+        // const { status: nextUserStatus } = nextProps.data.user;
+        // console.log(prevUserStatus ,nextUserStatus,'prevUserStatus !== nextUserStatus')
+        // if (prevUserStatus !== nextUserStatus && nextUserStatus === 'success' && prevUserStatus!=='success') {
+        //     this.getAuthData(nextProps);
+        // }
 
     }
-
     login() {
         login();
     }
 
-    componentDidHide() { }
+    getAuthData(props) {
+        const { data } = props || this.props;
+        const { status: userStatus, data: userData } = data.user;
+        const { status: authStatus, loading: authLoading } = this.props.data.auth;
+        // console.log(this.props.data.auth, ' this.props.data.auth')
+        if (userStatus === 'success') {
+            if (authStatus !== 'success' && !authLoading) {
+                console.log('认证')
+                asyncActionWrapper({
+                    call: getAuthInfo,
+                    params: { 'user_id': userData.id },
+                    type: 'data',
+                    key: 'auth'
+                });
+            }
+        }
+
+    }
     handleClick(current) {
         this.setState({
             current
@@ -120,13 +147,32 @@ export default class User extends Component {
         })
     }
     goAuth = () => {
-        navigate({
-            routeName: 'auth'
-        })
+        const { status: authStatus, data: authData } = this.props.data.auth;
+        if (authStatus !== 'success') {
+            this.getAuthData();
+        } else {
+            navigate({
+                routeName: 'auth'
+            })
+        }
+
+    }
+    getAuthLabel() {
+        const { status: authStatus, data: authData } = this.props.data.auth;
+        switch (authStatus) {
+            case 'init':
+                return '点我获取认证信息';
+            case 'loading':
+                return '获取中...';
+            case 'error':
+                return '获取失败';
+            default:
+                return authData ? authStatusMap[authData.state] : '无数据';
+        }
     }
     render() {
         const { status: loginStatus, data: userData = {} } = this.props.data.user;
-        console.log(loginStatus, userData, 'loginStatus,userData');
+        const { status: authStatus, data: authData } = this.props.data.auth;
         return (
             <ScrollView>
                 <View className="container">
@@ -138,9 +184,8 @@ export default class User extends Component {
                                     <Text className="company-name">苏州易贸通进出口有限公司</Text>
                                     <TButton onClick={this.goAuth}>
                                         <View className="auth-btn">
-                                            <Text className="auth-text">未认证</Text>
+                                            <Text className="auth-text">{this.getAuthLabel()}</Text>
                                         </View>
-
                                     </TButton>
                                 </View>
                                 <Text className="mobile">135****2591</Text>

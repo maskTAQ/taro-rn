@@ -20,13 +20,11 @@ export default class TPicker extends Component {
         return null
     }
     handleClick(label, value) {
-        console.log('item click')
         const { onClick } = this.props;
         onClick && onClick({ label, value });
     }
     render() {
         const { show, onCancel, onClose, option } = this.props;
-        console.log(show,'show')
         // if (!show) {
         //     return null;
         // }

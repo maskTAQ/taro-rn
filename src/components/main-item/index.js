@@ -60,9 +60,7 @@ export default class MainItem extends Component {
     }
     render() {
         const { g } = this;
-
         const { border = true, showShoppinCar } = this.props;
-        console.log(this.props,'main item')
         return (
             <View className={classnames("container", { border: border })}>
                 <View className="content">
