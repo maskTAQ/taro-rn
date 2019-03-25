@@ -1022,7 +1022,7 @@ function onMessageArrived(message) {
             // When the socket is open, this client will send the CONNECT WireMessage using the saved parameters.
             if (this.connectOptions.useSSL) {
                 var uriParts = wsurl.split(":");
-                uriParts[0] = "ws";
+                uriParts[0] = "wss";
                 wsurl = uriParts.join(":");
             }
             this._wsuri = wsurl;
@@ -1727,11 +1727,11 @@ function onMessageArrived(message) {
                 throw new Error(format(ERROR.INVALID_TYPE, [typeof host, "host"]));
 
             if (arguments.length == 2) {
-                // host: must be full ws:// uri
+                // host: must be full wss:// uri
                 // port: clientId
                 clientId = port;
                 uri = host;
-                var match = uri.match(/^(ws?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?(\/.*)$/);
+                var match = uri.match(/^(wss?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?(\/.*)$/);
                 if (match) {
                     host = match[4] || match[2];
                     port = parseInt(match[7]);
@@ -1750,7 +1750,7 @@ function onMessageArrived(message) {
                     throw new Error(format(ERROR.INVALID_TYPE, [typeof path, "path"]));
 
                 var ipv6AddSBracket = (host.indexOf(":") !== -1 && host.slice(0, 1) !== "[" && host.slice(-1) !== "]");
-                uri = "ws://" + (ipv6AddSBracket ? "[" + host + "]" : host) + ":" + port + path;
+                uri = "wss://" + (ipv6AddSBracket ? "[" + host + "]" : host) + ":" + port + path;
             }
 
             var clientIdLength = 0;
@@ -1865,7 +1865,7 @@ function onMessageArrived(message) {
              * <li>errorMessage text describing the error.
              * </ol>
              * @param {array} connectOptions.hosts - If present this contains either a set of hostnames or fully qualified
-             * WebSocket URIs (ws://iot.eclipse.org:80/ws), that are tried in order in place
+             * WebSocket URIs (wss://iot.eclipse.org:80/wss), that are tried in order in place
              * of the host and port paramater on the construtor. The hosts are tried one at at time in order until
              * one of then succeeds.
              * @param {array} connectOptions.ports - If present the set of ports matching the hosts. If hosts contains URIs, this property
@@ -1887,7 +1887,7 @@ function onMessageArrived(message) {
              * @param {boolean} connectOptions.mqttVersionExplicit - If set to true, will force the connection to use the
              * selected MQTT Version or will fail to connect.
              * @param {array} connectOptions.uris - If present, should contain a list of fully qualified WebSocket uris
-             * (e.g. ws://iot.eclipse.org:80/ws), that are tried in order in place of the host and port parameter of the construtor.
+             * (e.g. wss://iot.eclipse.org:80/wss), that are tried in order in place of the host and port parameter of the construtor.
              * The uris are tried one at a time in order until one of them succeeds. Do not use this in conjunction with hosts as
              * the hosts array will be converted to uris and will overwrite this property.
              * @throws {InvalidState} If the client is not in disconnected state. The client must have received connectionLost
@@ -1956,7 +1956,7 @@ function onMessageArrived(message) {
                     for (var i = 0; i < connectOptions.hosts.length; i++) {
                         if (typeof connectOptions.hosts[i] !== "string")
                             throw new Error(format(ERROR.INVALID_TYPE, [typeof connectOptions.hosts[i], "connectOptions.hosts[" + i + "]"]));
-                        if (/^(ws?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?(\/.*)$/.test(connectOptions.hosts[i])) {
+                        if (/^(wss?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?(\/.*)$/.test(connectOptions.hosts[i])) {
                             if (i === 0) {
                                 usingURIs = true;
                             } else if (!usingURIs) {
@@ -1984,7 +1984,7 @@ function onMessageArrived(message) {
                             var port = connectOptions.ports[i];
 
                             var ipv6 = (host.indexOf(":") !== -1);
-                            uri = "ws://" + (ipv6 ? "[" + host + "]" : host) + ":" + port + path;
+                            uri = "wss://" + (ipv6 ? "[" + host + "]" : host) + ":" + port + path;
                             connectOptions.uris.push(uri);
                         }
                     } else {

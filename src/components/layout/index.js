@@ -77,7 +77,6 @@ export default class Layout extends Component {
     }
     render() {
         const { data, params, status, loading } = this.props;
-        console.log(data, 'data.param');
         return (
             <View className="content">
                 {

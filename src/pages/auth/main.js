@@ -67,7 +67,7 @@ const imgList = [
 export default class Auth extends Component {
     state = {
         auth: {
-            state: 3
+            state: 2
         },
         isAuth: false,
         hasClickAuthBtn: false,
@@ -105,11 +105,8 @@ export default class Auth extends Component {
     }
     render() {
         const { isAuth, hasClickAuthBtn, kfInfoList, auth: { state } } = this.state;
-        const { status: loginStatus, data: userData = {} } = this.props.data.user;
-        const authStatus = isAuth ? '已认证' : hasClickAuthBtn ? '认证中' : '企业未认证';
         const authStatusClassName = isAuth ? 'has-auth' : hasClickAuthBtn ? 'auth' : 'no-auth';
         const showCard = hasClickAuthBtn || state === 2;
-        console.log(showCard, 'showCard')
         return (
 
             <View className="container">
@@ -137,18 +134,14 @@ export default class Auth extends Component {
                     }
                     {
                         showCard && (
-                            <View className="a">
-                                <Card option={topList} title="认证信息" type="input" state={state} data={auth} />
-                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" state={state} data={auth} />
-                                <Card option={imgList} title="图片信息" type="img" state={state} data={auth} />
+                            <View>
+                                <Card option={topList} title="认证信息" type="input"  data={auth} />
+                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf"data={auth} />
+                                <Card option={imgList} title="图片信息" type="img"  data={auth} />
                             </View>
                         )
                     }
-                    {
-                        isAuth && (
-                            <Text className="btn-text">已认证</Text>
-                        )
-                    }
+                   
                     {
                         hasClickAuthBtn && (
                             <TButton onClick={this.submit}>

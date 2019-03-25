@@ -90,7 +90,7 @@ export default class AddBatch extends Component {
         });
         return params;
     }
-    a(){
+    a() {
         Tip.fail('11');
     }
     submit = () => {
@@ -100,7 +100,7 @@ export default class AddBatch extends Component {
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
         Tip.fail(String(doParams['批号']));
-        send({number:doParams['批号'],userID:id})
+        send({ action: "verifyBatchNumber", data: { number: doParams["批号"], userID: id } })
             .then(res => {
                 if (status === 'success') {
                     doSubmit(data.do, doParams)
@@ -115,7 +115,8 @@ export default class AddBatch extends Component {
                         })
                 }
             })
-            .catch(e=>{
+            .catch(e => {
+                console.log(e,'e');
                 Tip.fail(e);
             })
     }

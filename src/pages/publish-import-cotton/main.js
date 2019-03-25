@@ -101,7 +101,7 @@ export default class publishImportCotton extends Component {
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         const { id } = this.props.data.user;
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
-        send({ number: doParams['批号'], userID: id })
+        send({ action: "verifyBatchNumber", data: { number: doParams["批号"], userID: id } })
             .then(res => {
                 if (status === 'success') {
                     doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
