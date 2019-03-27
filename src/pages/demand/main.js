@@ -6,13 +6,15 @@ import update from 'immutability-helper';
 
 import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
 import { ListWrapper } from '../../components';
+import {productTypesValue} from '../../constants';
 import { getDemandList, getMySelfDemandList } from '../../api';
+
 import DemandItem from './demand-item';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
 
 
-const tabList = ['全部','新疆棉', '进口棉￥', '进口棉$', '地产棉'];
+const tabList = ['全部','新疆棉', '进口棉$', '进口棉￥', '地产棉'];
 
 @connect(({ data }) => ({ data }))
 export default class Demand extends Component {
@@ -50,7 +52,7 @@ export default class Demand extends Component {
         if (dataStatus !== 'success' && !dataLoading) {
             asyncActionWrapper({
                 call: getDemandList,
-                params: { '棉花云供需类型': tabList.indexOf(activeTab) },
+                params: { '棉花云供需类型': productTypesValue[activeTab] },
                 type: 'data',
                 key: `demand_list_${activeTab}`
             });

@@ -9,7 +9,7 @@ const INITIAL = {
 store.data.forEach(key => {
     INITIAL_DATA[key] = INITIAL;
 });
-export default function counter(state = INITIAL_DATA, action) {
+export default function data(state = INITIAL_DATA, action) {
     const { type, key, payload } = action;
     if (type === 'data') {
         return update(state, {

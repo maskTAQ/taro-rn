@@ -4,6 +4,7 @@ import React from 'react';
 import Taro from '@tarojs/taro';
 import { Component, connect } from '../../platform';
 import classnames from 'classnames';
+import update from 'immutability-helper';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
 import Card from './card';
@@ -15,34 +16,34 @@ import { authStatusMap } from '../../constants';
 
 const topList = [
     {
-        label: '负责人',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "负责人",
+        placeholder: "请输入负责人",
+        key: "user_name"
     },
     {
-        label: '手机号码',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "手机号码",
+        placeholder: "请输入负责人",
+        key: "tel"
     },
     {
-        label: '行业',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "行业",
+        placeholder: "请输入负责人",
+        key: "sfz_img2"
     },
     {
-        label: '企业名称',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "企业名称",
+        placeholder: "请输入负责人",
+        key: "store_name"
     },
     {
-        label: '企业代码(执照号)',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "企业代码(执照号)",
+        placeholder: "请输入负责人",
+        key: "sp_img"
     },
     {
-        label: '单位地址',
-        placeholder: '请输入负责人',
-        key: 'a',
+        label: "单位地址",
+        placeholder: "请输入负责人",
+        key: "address"
     }
 ];
 const kfInfoGroup = [
@@ -55,22 +56,23 @@ const kfInfoGroup = [
 ]
 const imgList = [
     {
-        label: '营业执照',
-        key: 'a'
+        label: "营业执照",
+        key: "img"
     },
     {
-        label: '法人身份证',
-        key: 'b'
+        label: "法人身份证",
+        key: "fsz_img"
     }
 ]
 @connect(({ data }) => ({ data }))
 export default class Auth extends Component {
     state = {
         auth: {
-            state: 2
+            state: 0
         },
         isAuth: false,
         hasClickAuthBtn: false,
+        params: {},
         kfInfoList: [...kfInfoGroup]
     };
     g(e) {
@@ -92,7 +94,8 @@ export default class Auth extends Component {
         });
     }
     submit = () => {
-        authInfo()
+        const { params } = this.state;
+        authInfo(params)
             .then(res => {
                 console.log(res, 'res');
             })
@@ -103,10 +106,20 @@ export default class Auth extends Component {
             kfInfoList: next.concat(kfInfoGroup)
         });
     }
+    handleChange = ({ key, value }) => {
+        this.setState(update(this.state, {
+            params: {
+                [key]: {
+                    $set: value
+                }
+            }
+        }));
+    }
     render() {
-        const { isAuth, hasClickAuthBtn, kfInfoList, auth: { state } } = this.state;
+        const { isAuth, hasClickAuthBtn, kfInfoList, auth, auth: { state }, params } = this.state;
         const authStatusClassName = isAuth ? 'has-auth' : hasClickAuthBtn ? 'auth' : 'no-auth';
         const showCard = hasClickAuthBtn || state === 2;
+        console.log(params,'params');
         return (
 
             <View className="container">
@@ -135,13 +148,13 @@ export default class Auth extends Component {
                     {
                         showCard && (
                             <View>
-                                <Card option={topList} title="认证信息" type="input"  data={auth} />
-                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf"data={auth} />
-                                <Card option={imgList} title="图片信息" type="img"  data={auth} />
+                                <Card option={topList} title="认证信息" type="input" data={params} state={auth.state} onChange={this.handleChange} />
+                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" data={params} state={auth.state} onChange={this.handleChange} />
+                                <Card option={imgList} title="图片信息" type="img" data={params} state={auth.state} onChange={this.handleChange} />
                             </View>
                         )
                     }
-                   
+
                     {
                         hasClickAuthBtn && (
                             <TButton onClick={this.submit}>

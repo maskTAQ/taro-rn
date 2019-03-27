@@ -41,6 +41,7 @@ function onMessageArrived(message) {
 
 export function send({ action, pcClientId = '', data }) {
     if (!serverStatus.connected) {
+        Tip.fail(serverStatus.msg)
         return Promise.reject(serverStatus.msg);
     }
     let message;

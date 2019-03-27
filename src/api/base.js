@@ -71,7 +71,7 @@ const file = (url, data) => {
                 var e = o.tempFilePaths;
                 Taro.showLoading();
                 wx.uploadFile({
-                    url: `${host}?c=entry&a=wxapp&do=${url}&m=zh_dianc`,
+                    url: `${host}?i=6&c=entry&a=wxapp&do=${url}&m=zh_dianc`,
                     filePath: o.tempFilePaths[0],
                     name: "upfile",
                     success: function (o) {

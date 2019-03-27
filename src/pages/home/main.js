@@ -8,7 +8,7 @@ import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, T
 import { SearchTool, NoticeTool, SearchCondition, MainItem, Authorization } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
 import { navigate, asyncActionWrapper, login } from '../../actions';
-import { productTypes } from '../../constants';
+import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
 import { Tip } from '../../utils';
 
@@ -74,6 +74,11 @@ export default class Home extends Component {
     componentWillMount() {
         getHome()
             .then(res => {
+                this.props.dispatch({
+                    type:'data',
+                    key:'host',
+                    payload:res.url
+                });
                 this.setState(res);
             })
         this.getData();
@@ -89,7 +94,7 @@ export default class Home extends Component {
         if (layoutStatus !== 'success' && !layoutLoading) {
             asyncActionWrapper({
                 call: getFilterLayout,
-                params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1 },
+                params: { '棉花云报价类型': productTypesValue[activeTab] },
                 type: 'layout',
                 key: `filter_${activeTab}`
             });
@@ -100,7 +105,7 @@ export default class Home extends Component {
         const { activeTab, params } = this.state;
         asyncActionWrapper({
             call: getOfferList,
-            params: { '棉花云报价类型': productTypes.indexOf(activeTab) + 1, ...params },
+            params: { '棉花云报价类型': productTypesValue[activeTab], ...params },
             type: 'data',
             key: `offer_list_${activeTab}`
         });

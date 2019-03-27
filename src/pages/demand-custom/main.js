@@ -6,12 +6,13 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
+import {productTypesValue} from '../../constants';
 import { getDemandCustomLayout, getDemandList, doSubmit ,getMySelfDemandList} from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
-const tabList = ['新疆棉', '进口棉￥', '进口棉$', '地产棉'];
+const tabList = ['新疆棉', '进口棉$', '进口棉￥', '地产棉'];
 @connect(({ layout, data }) => ({ layout, data }))
 export default class DemandCustom extends Component {
     state = {
@@ -31,7 +32,7 @@ export default class DemandCustom extends Component {
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getDemandCustomLayout,
-                params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
+                params: { '棉花云供需类型': productTypesValue[activeTab] },
                 type: 'layout',
                 key: `demand_custom_${activeTab}`
             });
@@ -109,7 +110,7 @@ export default class DemandCustom extends Component {
                         //更新需求列表
                         asyncActionWrapper({
                             call: getDemandList,
-                            params: { '棉花云供需类型': tabList.indexOf(activeTab) + 1 },
+                            params: { '棉花云供需类型':productTypesValue[activeTab] },
                             type: 'data',
                             key: `demand_list_${activeTab}`
                         });

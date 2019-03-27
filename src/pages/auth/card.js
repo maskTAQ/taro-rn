@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
@@ -8,54 +8,28 @@ import { uploadImg } from '../../api';
 import './card.scss'
 import { Tip } from '../../utils';
 
+@connect(({ data }) => ({ host: data.host }))
 export default class Card extends Component {
     static options = {
         addGlobalClass: true
     }
-    formateData(d) {
-        const data = [].concat(d);
-        const result = [];
-
-        while (data.length) {
-            if (result.length === 0) {
-                result.push([])
-            }
-            if (result[result.length - 1].length > 3) {
-                result.push([data.shift()]);
-            } else {
-                result[result.length - 1].push(data.shift());
-            }
-        }
-        return result;
-    }
-    handeChange(v) {
-        const { k, value, onChange } = this.props;
-        const valueWrapper = value || [];
-        const i = valueWrapper.indexOf(v);
-        let nextValue = valueWrapper;
-        if (i > -1) {
-            nextValue = update(nextValue, {
-                $splice: [[i, 1]]
-            });
-        } else {
-            nextValue = update(nextValue, {
-                $push: [v]
-            });
-        }
-        onChange({ key: k, value: nextValue });
-    }
-    uploadImg = () => {
-        const { data: { state } } = this.props;
+    uploadImg = (key) => {
+        const { state, onChange } = this.props;
         if (state === 0) {
             uploadImg()
                 .then(res => {
+                    const value = res.data;
+                    onChange({ key, value });
                     Tip.success('上传成功');
                 })
         }
 
     }
+    handleInputChange = (key, value) => {
+        this.props.onChange({ key, value });
+    }
     render() {
-        const { option = [], title, type, onRequestAddKf, data: { state } } = this.props;
+        const { option = [], title, type, onRequestAddKf, state, data, host } = this.props;
         const hasInput = ['input', 'kf'].includes(type);
         const isImg = type === 'img';
         const showInput = hasInput && [0, 3].includes(state);
@@ -75,15 +49,14 @@ export default class Card extends Component {
                     {
                         option.map(item => {
                             const { label, placeholder = '请输入', key } = item;
-
                             return (
-                                <View className={classnames("item", {
+                                <View key={key} className={classnames("item", {
                                     'input-item': hasInput,
                                     'img-item': type === 'img'
                                 })}>
                                     {isImg && (
-                                        <TButton onClick={this.uploadImg}>
-                                            <Image className="img" src={this.state[key]} />
+                                        <TButton onClick={this.uploadImg.bind(this, key)}>
+                                            <Image className="img" src={host + data[key]} />
                                         </TButton>
                                     )}
                                     <View className={classnames({
@@ -99,7 +72,7 @@ export default class Card extends Component {
                                     })}>
                                         {
                                             showInput ? (
-                                                <TInput className="input" placeholder={placeholder} />
+                                                <TInput value={data[key]} className="input" placeholder={placeholder} onInput={this.handleInputChange.bind(this, item.key)} />
                                             ) : null
                                         }
                                         {

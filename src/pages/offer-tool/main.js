@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, Image, TButton, Text, TModal } from '../../ui';
-import { productTypes } from '../../constants';
+import {  productTypesValue } from '../../constants';
 import './main.scss';
 import cloudImg from '../../img/cloud.png';
 import { navigate, login } from '../../actions';
@@ -14,9 +14,9 @@ export default class OfferTool extends Component {
     state = {
         hasClick: false
     }
-    goAddBatch(i) {
+    goAddBatch(type) {
         const result = this.canJump();
-        result && navigate({ routeName: 'add-batch', params: { '棉花云报价类型': i, type: productTypes[i - 1] } });
+        result && navigate({ routeName: 'add-batch', params: { '棉花云报价类型': productTypesValue[type], type }});
     }
     goImportCotton() {
         const result = this.canJump();
@@ -33,12 +33,12 @@ export default class OfferTool extends Component {
         login();
     }
     render() {
-        const {hasClick} = this.state;
+        const { hasClick } = this.state;
         const { status: loginStatus } = this.props.data.user;
         return (
             <View className='container'>
                 <View className="content mb">
-                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '1')}>
+                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '新疆棉')}>
                         <View className="item">
                             <View className="item-icon-box item-bg-1">
                                 <Image src={cloudImg} className="item-icon"></Image>
@@ -56,7 +56,7 @@ export default class OfferTool extends Component {
                     </TButton>
                 </View>
                 <View className="content">
-                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '4')}>
+                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '地产棉')}>
                         <View className="item">
                             <View className="item-icon-box item-bg-3">
                                 <Image src={cloudImg} className="item-icon"></Image>
@@ -64,7 +64,7 @@ export default class OfferTool extends Component {
                             <Text className="item-label">国产棉-内地棉</Text>
                         </View>
                     </TButton>
-                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '5')}>
+                    <TButton className="btn" onClick={this.goAddBatch.bind(this, '拍储')}>
                         <View className="item">
                             <View className="item-icon-box item-bg-4">
                                 <Image src={cloudImg} className="item-icon"></Image>
