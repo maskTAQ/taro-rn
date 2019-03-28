@@ -54,6 +54,9 @@ export default class publishImportCotton extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             }
         }));
@@ -67,6 +70,9 @@ export default class publishImportCotton extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             },
             params: {
@@ -149,6 +155,7 @@ export default class publishImportCotton extends Component {
                 </ScrollView>
                 <TPicker
                     onClick={this.handlePickerChange}
+                    value={picker.value}
                     show={picker.visible}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}

@@ -17,7 +17,8 @@ export default class AddBatch extends Component {
     state = {
         picker: {
             visible: false,
-            option: []
+            option: [],
+            value:''
         },
         params: {},
     };
@@ -48,6 +49,9 @@ export default class AddBatch extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             }
         }));
@@ -61,6 +65,9 @@ export default class AddBatch extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             },
             params: {
@@ -146,6 +153,7 @@ export default class AddBatch extends Component {
                     show={picker.visible}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}
+                    value={picker.value}
                     option={picker.option.map(item => ({ label: item, value: item }))}
                 />
             </View>

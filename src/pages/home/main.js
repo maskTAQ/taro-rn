@@ -129,6 +129,9 @@ export default class Home extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             }
         }));
@@ -142,6 +145,9 @@ export default class Home extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             },
             params: {
@@ -267,6 +273,7 @@ export default class Home extends Component {
                 </ScrollView>
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}
+                    value={picker.value}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}
                     option={picker.option.map(item => ({ label: item, value: item }))}

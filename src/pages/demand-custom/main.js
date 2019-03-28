@@ -12,7 +12,7 @@ import { asyncActionWrapper } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
-const tabList = ['新疆棉', '进口棉$', '进口棉￥', '地产棉'];
+const tabList = ['新疆棉', '地产棉', '进口棉$', '进口棉￥'];
 @connect(({ layout, data }) => ({ layout, data }))
 export default class DemandCustom extends Component {
     state = {
@@ -56,6 +56,9 @@ export default class DemandCustom extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             }
         }));
@@ -69,6 +72,9 @@ export default class DemandCustom extends Component {
                 },
                 option: {
                     $set: []
+                },
+                value:{
+                    $set:''
                 }
             },
             params: {
@@ -150,6 +156,7 @@ export default class DemandCustom extends Component {
                 </ScrollView>
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}
+                    value={picker.value}
                     onCancel={this.closePicker}
                     onClose={this.closePicker}
                     option={picker.option.map(item => ({ label: item, value: item }))}

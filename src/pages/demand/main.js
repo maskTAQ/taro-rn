@@ -14,7 +14,7 @@ import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
 
 
-const tabList = ['全部','新疆棉', '进口棉$', '进口棉￥', '地产棉'];
+const tabList = ['全部','新疆棉', '地产棉', '进口棉$', '进口棉￥'];
 
 @connect(({ data }) => ({ data }))
 export default class Demand extends Component {

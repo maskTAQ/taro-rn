@@ -1,4 +1,4 @@
-const productTypes = ['新疆棉', '进口棉$', '进口棉￥', '地产棉', '拍储'];
+const productTypes = ['新疆棉', '地产棉', '进口棉$', '进口棉￥', '拍储'];
 const productTypesValue = {
     '全部':0,
     '新疆棉':1,

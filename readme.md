@@ -23,3 +23,7 @@
     4.Image
     5.Tag
     5.Input
+
+## bugs
+
+    1.PickerView 设置value无效

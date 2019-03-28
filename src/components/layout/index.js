@@ -36,7 +36,7 @@ const isVisible = ({ visible = true, params }) => {
     return isVisible;
 }
 export default class Layout extends Component {
-    showPicker(option, key) {
+    showPicker(option, key,v) {
         const { picker, onChangePickerData } = this.props;
         onChangePickerData(update(picker, {
             visible: {
@@ -44,6 +44,9 @@ export default class Layout extends Component {
             },
             option: {
                 $set: option
+            },
+            value: {
+                $set:v
             },
             key: {
                 $set: key
@@ -133,7 +136,7 @@ export default class Layout extends Component {
                                                                             }
 
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param,v)} className="column-select" />
                                                                             }
 
                                                                             {
@@ -184,7 +187,7 @@ export default class Layout extends Component {
                                                                             }
 
                                                                             {
-                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} />
+                                                                                type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param,v)} />
                                                                             }
 
                                                                             {
