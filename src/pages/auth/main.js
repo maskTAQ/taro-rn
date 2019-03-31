@@ -7,12 +7,14 @@ import classnames from 'classnames';
 import update from 'immutability-helper';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
+import { StatusBox } from '../../components';
 import Card from './card';
-import { authInfo } from '../../api';
+import { authInfo, getAuthInfo } from '../../api';
 import './main.scss';
 import './component.scss';
-import { navigate, login } from '../../actions';
+import { navigate, login, asyncActionWrapper } from '../../actions';
 import { authStatusMap } from '../../constants';
+import { Tip } from '../../utils';
 
 const topList = [
     {
@@ -95,9 +97,20 @@ export default class Auth extends Component {
     }
     submit = () => {
         const { params } = this.state;
-        authInfo(params)
+        const { id } = this.props.data.user.data;
+        authInfo({ ...params, 'user_id': id })
             .then(res => {
-                console.log(res, 'res');
+                console.log('认证成功');
+                asyncActionWrapper({
+                    call: getAuthInfo,
+                    params: { 'user_id': id },
+                    type: 'data',
+                    key: 'auth'
+                });
+                this.setState({
+                    hasClickAuthBtn:false
+                });
+                Tip.success('提交成功');
             })
     }
     handleAddKf = () => {
@@ -116,55 +129,64 @@ export default class Auth extends Component {
         }));
     }
     render() {
-        const { isAuth, hasClickAuthBtn, kfInfoList, auth, auth: { state }, params } = this.state;
+        const { isAuth, hasClickAuthBtn, kfInfoList, params } = this.state;
+        const { status, data } = this.props.data.auth;//auth, auth: { state },
         const authStatusClassName = isAuth ? 'has-auth' : hasClickAuthBtn ? 'auth' : 'no-auth';
+        const state = data ? +data.state : NaN;
         const showCard = hasClickAuthBtn || state === 2;
-        console.log(params,'params');
+        const value = state === 2 ? data : params;
         return (
 
             <View className="container">
-                <ScrollView>
-                    {!hasClickAuthBtn && (<View className="auth-status-box">
-                        <View className="auth-status-header">
-                            <Text className="auth-status-header-text">
-                                认证状态
-                            </Text>
-                        </View>
-                        <View className="auth-status-value">
-                            <Text className={classnames("auth-status-value-text", authStatusClassName)}>
-                                {authStatusMap[auth.state]}
-                            </Text>
-                        </View>
-                    </View>)}
+                <StatusBox status={status}>
                     {
-                        [0, 3].includes(state) && !hasClickAuthBtn && (
-                            <TButton onClick={this.startAuth}>
-                                <View className="btn auth">
-                                    <Text className="btn-text">{auth.state ? '重新认证' : '认证'}</Text>
-                                </View>
-                            </TButton>
-                        )
-                    }
-                    {
-                        showCard && (
-                            <View>
-                                <Card option={topList} title="认证信息" type="input" data={params} state={auth.state} onChange={this.handleChange} />
-                                <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" data={params} state={auth.state} onChange={this.handleChange} />
-                                <Card option={imgList} title="图片信息" type="img" data={params} state={auth.state} onChange={this.handleChange} />
-                            </View>
-                        )
-                    }
+                        status === 'success' && (
+                            <ScrollView>
+                                {!hasClickAuthBtn && (<View className="auth-status-box">
+                                    <View className="auth-status-header">
+                                        <Text className="auth-status-header-text">
+                                            认证状态
+                            </Text>
+                                    </View>
+                                    <View className="auth-status-value">
+                                        <Text className={classnames("auth-status-value-text", authStatusClassName)}>
+                                            {authStatusMap[state]}
+                                        </Text>
+                                    </View>
+                                </View>)}
+                                {
+                                    [0, 3].includes(state) && !hasClickAuthBtn && (
+                                        <TButton onClick={this.startAuth}>
+                                            <View className="btn auth">
+                                                <Text className="btn-text">{state ? '重新认证' : '认证'}</Text>
+                                            </View>
+                                        </TButton>
+                                    )
+                                }
+                                {
+                                    showCard && (
+                                        <View>
+                                            <Card option={topList} title="认证信息" type="input" data={value} state={state} onChange={this.handleChange} />
+                                            <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" data={value} state={state} onChange={this.handleChange} />
+                                            <Card option={imgList} title="图片信息" type="img" data={value} state={state} onChange={this.handleChange} />
+                                        </View>
+                                    )
+                                }
 
-                    {
-                        hasClickAuthBtn && (
-                            <TButton onClick={this.submit}>
-                                <View className="btn auth">
-                                    <Text className="btn-text">提交申请</Text>
-                                </View>
-                            </TButton>
+                                {
+                                    hasClickAuthBtn && (
+                                        <TButton onClick={this.submit}>
+                                            <View className="btn auth">
+                                                <Text className="btn-text">提交申请</Text>
+                                            </View>
+                                        </TButton>
+                                    )
+                                }
+                            </ScrollView>
+
                         )
                     }
-                </ScrollView>
+                </StatusBox>
             </View>
 
         )

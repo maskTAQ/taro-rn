@@ -114,10 +114,8 @@ export default class User extends Component {
         const { data } = props || this.props;
         const { status: userStatus, data: userData } = data.user;
         const { status: authStatus, loading: authLoading } = this.props.data.auth;
-        // console.log(this.props.data.auth, ' this.props.data.auth')
         if (userStatus === 'success') {
             if (authStatus !== 'success' && !authLoading) {
-                console.log('认证')
                 asyncActionWrapper({
                     call: getAuthInfo,
                     params: { 'user_id': userData.id },

@@ -10,7 +10,8 @@ const commonParmas = {
     m: 'zh_dianc',
     sign: '0a382e9b7fa70f12a3301fa1ceb39ea0',
     openid: 'oc7pZ5K0I9Ild3lh6Zjj1Zu4TFec',
-    device: '3'
+    device: '3',
+    appname:'zmw'
 };
 const parseErrMsg = (e = '') => {
     if (e.includes('fail')) {
