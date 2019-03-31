@@ -6,7 +6,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
-import { getAuthInfo } from '../../api';
+import { getAuthInfo, getMobile } from '../../api';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -94,6 +94,9 @@ const listBottom = [
 ];
 @connect(({ data }) => ({ data }))
 export default class User extends Component {
+    state = {
+        mobile: ''
+    }
     componentWillMount() {
         this.getAuthData();
     }
@@ -131,18 +134,19 @@ export default class User extends Component {
             current
         });
     }
-    g(e) {
+    getMobile(e) {
         const { encryptedData, iv } = e.detail;
         const { id } = this.props.data.user.data;
-        console.log({
-
+        getMobile({
             encrypdata: encryptedData,
-
             ivdata: iv,
-
             sessionkey: 'session_key需要我登录返回openid时一起返回跟我'
-
         })
+            .then(res => {
+                this.setState({
+                    mobile: res.phone
+                });
+            })
     }
     goAuth = () => {
         const { status: authStatus, data: authData } = this.props.data.auth;
@@ -169,8 +173,9 @@ export default class User extends Component {
         }
     }
     render() {
+        const { mobile } = this.state;
         const { status: loginStatus, data: userData = {} } = this.props.data.user;
-        const { status: authStatus, data: authData } = this.props.data.auth;
+        const myMobile = mobile || userData.uer_tel;
         return (
             <ScrollView>
                 <View className="container">
@@ -186,7 +191,7 @@ export default class User extends Component {
                                         </View>
                                     </TButton>
                                 </View>
-                                <Text className="mobile">135****2591</Text>
+                                <Text className="mobile">{myMobile || '请授权获取手机号'}</Text>
                             </View>
                         </View>
                         <View className="tool">
@@ -222,7 +227,12 @@ export default class User extends Component {
                                                 {
                                                     label === '手机号' && (
                                                         <View className="item-right">
-                                                            <button class='getPhoneNumber' plain="true" open-type='getPhoneNumber' onClick={this.g} bindgetphonenumber={this.g}>点我获取用户手机号</button>
+                                                            {myMobile ?
+                                                                (<Text className="item-value">{mobile || userData.uer_tel}</Text>) :
+                                                                (
+                                                                    <button class='getPhoneNumber' plain="true" open-type='getPhoneNumber' onClick={this.getMobile} bindgetphonenumber={this.getMobile}>点我获取用户手机号</button>
+                                                                )
+                                                            }
                                                         </View>
                                                     )
                                                 }
