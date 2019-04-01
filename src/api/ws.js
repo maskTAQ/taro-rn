@@ -12,16 +12,22 @@ let serverStatus = {
 const mpClientId = clientId;
 //建立客户端实例  
 const client = new MQTT.Client("skybcc.com", 8084, mpClientId);
-client.connect({
-    onSuccess() {
-        serverStatus = {
-            connected: true,
-            msg: '连接成功'
-        };
-        client.subscribe(mpClientId);//订阅主题 
-    }
-});//连接服务器并注册连接成功处理事件  
-
+function connect() {
+    serverStatus = {
+        connected: false,
+        msg: '连接中'
+    };
+    client.connect({
+        onSuccess() {
+            serverStatus = {
+                connected: true,
+                msg: '连接成功'
+            };
+            client.subscribe(mpClientId);//订阅主题 
+        }
+    });//连接服务器并注册连接成功处理事件 
+}
+connect();
 client.onConnectionLost = onConnectionLost;//注册连接断开处理事件  
 client.onMessageArrived = onMessageArrived;//注册消息接收处理事件  
 function onConnectionLost(responseObject) {
@@ -30,12 +36,12 @@ function onConnectionLost(responseObject) {
             connected: false,
             msg: '连接断开'
         };
+        connect();
     }
 }
 function onMessageArrived(message) {
     const data = JSON.parse(message.payloadString);
     const { action, messageId } = data;
-    console.log("收到服务器消息:", data);
     messageId && Publisher.emit(messageId, data)
 }
 

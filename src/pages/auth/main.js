@@ -77,19 +77,6 @@ export default class Auth extends Component {
         params: {},
         kfInfoList: [...kfInfoGroup]
     };
-    g(e) {
-        const { encryptedData, iv } = e.detail;
-        const { id } = this.props.data.user.data;
-        console.log({
-
-            encrypdata: encryptedData,
-
-            ivdata: iv,
-
-            sessionkey: 'session_key需要我登录返回openid时一起返回跟我'
-
-        })
-    }
     startAuth = () => {
         this.setState({
             hasClickAuthBtn: true,

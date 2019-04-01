@@ -106,8 +106,8 @@ export default class AddBatch extends Component {
         const { id } = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
-        Tip.fail(String(doParams['批号']));
-        send({ action: "verifyBatchNumber", data: { number: doParams["批号"], userID: id } })
+        Tip.fail(String(doParams['现货批号']));
+        send({ action: "verifyBatchNumber", data: { number: doParams["现货批号"], userID: id } })
             .then(res => {
                 if (status === 'success') {
                     doSubmit(data.do, doParams)

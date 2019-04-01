@@ -48,17 +48,17 @@ export default class TPicker extends Component {
         const { option } = this.props;
         const { value } = e.detail;
         this.setState({
-            nextValue: option[value[0]-1]
+            nextValue: option[value[0] - 1]
         });
     }
-    getOption = option=>{
+    getOption = option => {
         //return option;
-        return [{label:'请选择',value:'请选择'}].concat(option);
+        return [{ label: '请选择', value: '请选择' }].concat(option);
     }
     render() {
         const { show, option, value } = this.props;
-        const i = option.findIndex(item => item.value === value);
-        const v = [i];
+        //const i = option.findIndex(item => item.value === value);
+        // const v = [i];
         return (
             <View >
                 {
@@ -73,12 +73,12 @@ export default class TPicker extends Component {
                                 <PickerView
                                     style="width: 100%; height:100%;"
                                     className="picker-box"
-                                    value={v}
+                                    //value={v}
                                     onChange={this.handleChange}
                                 >
 
                                     <PickerViewColumn>
-                                        
+
                                         {
                                             this.getOption(option).map(item => {
                                                 const { label, value } = item;
