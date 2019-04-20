@@ -1,5 +1,6 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
+
 .container {
     @extend .flex;
     flex-direction: row;
@@ -7,7 +8,7 @@
 }
 
 .item {
-    margin-right: 20px;
+    margin: 10px;
     height: 50px;
     padding: 0 20px;
     @extend .flex;

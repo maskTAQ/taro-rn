@@ -21,3 +21,4 @@ export { default as ListWrapper } from './list-wrapper';
 export { default as Authorization } from './authorization';
 export { default as TextSelect } from './text-select';
 export { default as StatusBox } from './status-box';
+export { default as Slide } from './slide';

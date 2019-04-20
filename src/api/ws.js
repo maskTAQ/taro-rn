@@ -41,6 +41,7 @@ function onConnectionLost(responseObject) {
 }
 function onMessageArrived(message) {
     const data = JSON.parse(message.payloadString);
+    console.log(data,'收到消息');
     const { action, messageId } = data;
     messageId && Publisher.emit(messageId, data)
 }
@@ -67,20 +68,21 @@ export function send({ action, pcClientId = '', data }) {
         message.destinationName = pcClientId;
     }
     if (action === 'verifyBatchNumber') {
-        const { number, userId } = data;
+        const { number, url, carry } = data;
         const jsonstr = {
             msg: "请求验证批号",
             action,
             messageId,
-            clientId: mpClientId,
+            clientId: pcClientId,
             data: {
-                url: "https://s.chncot.com/app/index.php?i=6&t=0&v=9.4&from=wxapp&m=zh_dianc&sign=8fe61a41cf15856e716943ef239ca1f2&c=entry&a=wxapp&do=",
+                url,
                 do: "QCDataAdd",
                 number: number,
                 device: 6,
-                carry: { userId, time: Date.now() },
+                carry,
             },
-        };
+        }
+        console.log(jsonstr, '验证批号')
         message = new MQTT.Message(JSON.stringify(jsonstr));
         message.destinationName = "/topic/zmw/ccqsc/test/";
     }

@@ -18,7 +18,7 @@ export default class AddBatch extends Component {
         picker: {
             visible: false,
             option: [],
-            value:''
+            value: ''
         },
         params: {},
     };
@@ -50,8 +50,8 @@ export default class AddBatch extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             }
         }));
@@ -66,8 +66,8 @@ export default class AddBatch extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             },
             params: {
@@ -106,10 +106,21 @@ export default class AddBatch extends Component {
         const { id } = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
-        Tip.fail(String(doParams['现货批号']));
-        send({ action: "verifyBatchNumber", data: { number: doParams["现货批号"], userID: id } })
-            .then(res => {
-                if (status === 'success') {
+        if (status === 'success') {
+            const { url, action } = data.verify;
+            //找批号字段
+            let number = "";
+            for (const key in params) {
+                if (key.includes("批号")) {
+                    number = params[key];
+                    break;
+                }
+            }
+            send({
+                action,
+                data: { number: number, userId: id, url, carry: data.carry }
+            })
+                .then(res => {
                     doSubmit(data.do, doParams)
                         .then(res => {
                             asyncActionWrapper({
@@ -120,12 +131,14 @@ export default class AddBatch extends Component {
                             });
                             Tip.success('操作成功');
                         })
-                }
-            })
-            .catch(e => {
-                console.log(e,'e');
-                Tip.fail(e);
-            })
+
+                })
+                .catch(e => {
+                    console.log(e, 'e');
+                    Tip.fail(e);
+                })
+        }
+
     }
 
     render() {

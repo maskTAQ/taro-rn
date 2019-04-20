@@ -102,15 +102,28 @@ export default class publishImportCotton extends Component {
         });
         return params;
     }
+    
     submit = () => {
         const { current, params } = this.state;
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         const { id } = this.props.data.user;
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
-        send({ action: "verifyBatchNumber", data: { number: doParams["批号"], userID: id } })
-            .then(res => {
-                if (status === 'success') {
-                    doSubmit(data.do, Object.assign(this.getPreValue(data), params, data.carry))
+        if (status === 'success') {
+            const { url, action } = data.verify;
+            //找批号字段
+            let number = "";
+            for (const key in params) {
+                if (key.includes("批号")) {
+                    number = params[key];
+                    break;
+                }
+            }
+            send({
+                action,
+                data: { number: number, userId: id, url, carry: data.carry }
+            })
+                .then(res => {
+                    doSubmit(data.do, doParams)
                         .then(res => {
                             asyncActionWrapper({
                                 call: getOfferList,
@@ -120,8 +133,13 @@ export default class publishImportCotton extends Component {
                             });
                             Tip.success('操作成功');
                         })
-                }
-            })
+
+                })
+                .catch(e => {
+                    console.log(e, 'e');
+                    Tip.fail(e);
+                })
+        }
 
     }
     handleTabChange = activeTab => {

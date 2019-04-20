@@ -12,39 +12,6 @@ import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
 import { Tip } from '../../utils';
 
-
-const item = {
-    id: '562781322',
-
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    ph: "454212552",
-    ck: '中储棉库存厄尔有限责任公司',
-    gys: '河北星宇纺织原料有限责任公司'
-};
-
 @connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
     state = {
@@ -54,17 +21,6 @@ export default class Home extends Component {
             option: []
         },
         params: {},
-
-        bannerList: ['https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png', 'https://t1.hddhhn.com/uploads/tu/201612/98/st93.png'],
-        list: [item, item, item, item, item],
-        itemKeyList: ['ysj', 'cd', 'ql', 'mz', 'cz', 'hz', 'jg'],
-        offerItemKeyList: ['sl', 'ztj', 'dcj'],
-        itemDescList: ['ph', 'ck', 'gys'],
-        offerItemDescList: ['xqbh', 'mj'],
-        current: 0,
-        pickerVisible: false,
-        searchConditionVisible: false,
-
         ad: [],
         news: [],
         key: {},
@@ -75,9 +31,9 @@ export default class Home extends Component {
         getHome()
             .then(res => {
                 this.props.dispatch({
-                    type:'data',
-                    key:'host',
-                    payload:res.url
+                    type: 'data',
+                    key: 'host',
+                    payload: res.url
                 });
                 this.setState(res);
             })
@@ -130,8 +86,8 @@ export default class Home extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             }
         }));
@@ -146,8 +102,8 @@ export default class Home extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             },
             params: {
