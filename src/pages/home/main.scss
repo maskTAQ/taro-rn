@@ -1,6 +1,17 @@
 @import '../../platform.scss';
+
 .container {
+    height: 100%;
     position: relative;
+    background: #d8d8d8;
+}
+.scroll-container {
+    position: relative;
+    background: #d8d8d8;
+}
+
+.list {
+    background: #d8d8d8;
 }
 
 .swiper {

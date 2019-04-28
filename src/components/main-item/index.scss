@@ -1,10 +1,10 @@
 @import '../../platform.scss';
 .container {
     background: #fff;
-    
+    margin-top: 10px;
 }
 .border{
-    @include borderD(bottom, 1px, solid, rgba(0, 0, 0, 0.2));
+    //@include borderD(bottom, 1px, solid, rgba(0, 0, 0, 0.2));
 }
 .content{
     padding: 10px 20px;
@@ -34,7 +34,13 @@
     font-size: 26px;
     color: #2E2E2E;
 }
-
+.peie-box{
+    margin-top: -24px;
+}
+.peie{
+    font-size: 28px;
+    color: #2E2E2E;
+}
 .center {
     height: 100px;
     @extend .flex;

@@ -118,11 +118,11 @@ export default class publishImportCotton extends Component {
                     break;
                 }
             }
-            send({
-                action,
-                data: { number: number, userId: id, url, carry: data.carry }
-            })
-                .then(res => {
+            // send({
+            //     action,
+            //     data: { number: number, userId: id, url, carry: data.carry }
+            // })
+            //     .then(res => {
                     doSubmit(data.do, doParams)
                         .then(res => {
                             asyncActionWrapper({
@@ -134,11 +134,11 @@ export default class publishImportCotton extends Component {
                             Tip.success('操作成功');
                         })
 
-                })
-                .catch(e => {
-                    console.log(e, 'e');
-                    Tip.fail(e);
-                })
+            //     })
+            //     .catch(e => {
+            //         console.log(e, 'e');
+            //         Tip.fail(e);
+            //     })
         }
 
     }

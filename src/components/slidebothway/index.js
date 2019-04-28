@@ -8,14 +8,15 @@ import { TButton, View, Text } from '../../ui';
 import './index.scss';
 const ballWidth = 30 / 2;
 const { windowWidth } = Taro.getSystemInfoSync();
-const padding = 20 / 2;
-const maxLeft = windowWidth - ballWidth - padding * 2;
+//20为父容器的padding 滑轨离屏幕左侧的距离为 屏幕的十分之一
+const padding = (windowWidth-20) * 1 / 10;
+const maxLeft = (windowWidth-20) * 8 /10 - ballWidth/2;
 export default class Slidebothway extends Component {
     static options = {
         addGlobalClass: true
     }
     state = {
-        start: 0,
+        start:0,
         end: maxLeft
     }
     componentWillMount() {
@@ -95,23 +96,25 @@ export default class Slidebothway extends Component {
         return (
             <View className="container">
                 <Text className="tag">{min === max ? min : `${min}~${max}`}</Text>
-                <View className="pathway">
-                    <View
-                        className="start"
-                        onTouchMove={this.handleMove.bind(this, 'start')}
-                        onTouchEnd={this.onChange}
-                        style={{ left: start + 'px' }}
-                    >
-                        <View className="ball" />
-                    </View>
-                    <View
-                        className="end"
-                        onTouchMove={this.handleMove.bind(this, 'end')}
-                        onTouchEnd={this.onChange}
-                        style={{ left: end + 'px' }}>
-                        <View className="ball" />
-                    </View>
+                <View className="pathway-box">
+                    <View className="pathway">
+                        <View
+                            className="start"
+                            onTouchMove={this.handleMove.bind(this, 'start')}
+                            onTouchEnd={this.onChange}
+                            style={{ left: start + 'px' }}
+                        >
+                            <View className="ball" />
+                        </View>
+                        <View
+                            className="end"
+                            onTouchMove={this.handleMove.bind(this, 'end')}
+                            onTouchEnd={this.onChange}
+                            style={{ left: end + 'px' }}>
+                            <View className="ball" />
+                        </View>
 
+                    </View>
                 </View>
                 <View className="content">
                     {

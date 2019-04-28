@@ -1,9 +1,18 @@
 @import '../../platform.scss';
 @import '../../pages/color.scss';
-.container {}
-
+.tag{
+    margin-left: 10%;
+    font-size: 24px;
+    color: #000;
+}
+.pathway-box{
+    margin-top: 20px;
+    @extend .flex;
+    flex-direction: column;
+    align-items: center;
+}
 .pathway {
-    width: 100%;
+    width: 80%;
     height: 10px;
     background: $main;
     border-radius: 10px;
@@ -33,6 +42,8 @@
 
 .content {
     margin-top: 20px;
+    margin-left: 10%;
+    width: 80%;
     @extend .flex;
     flex-direction: row;
     justify-content: space-between;
@@ -45,10 +56,7 @@
     justify-content: center;
     align-items: center;
 }
-.tag{
-    font-size: 24px;
-    color: #000;
-}
+
 .item-text {
     font-size: 24px;
     color: #000;

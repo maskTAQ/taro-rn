@@ -5,7 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Select, DatePicker, CRadio, RadioRect, Check, CheckCircle, Slide } from '../index';
+import { Select, DatePicker, CRadio, RadioRect, Check, CheckCircle, Slidebothway,Slide } from '../index';
 import { View, Text, TDatePicker, TInput, TLoading } from '../../ui';
 import './index.scss';
 
@@ -137,6 +137,9 @@ export default class Layout extends Component {
 
                                                                             {
                                                                                 type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param, v)} className="column-select" />
+                                                                            }
+                                                                            {
+                                                                                type === 'slidebothway' && isShowComponent && <Slidebothway k={param} value={v} option={content} onChange={this.handleChange} />
                                                                             }
                                                                             {
                                                                                 type === 'slide' && isShowComponent && <Slide k={param} value={v} option={content} onChange={this.handleChange} className="column-select" />

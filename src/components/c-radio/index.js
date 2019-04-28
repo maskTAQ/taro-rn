@@ -2,8 +2,8 @@ import React from 'react';
 import { Component } from '../../platform';
 
 import { TButton, View, Text } from '../../ui';
-import checkedImg from '../../img/checked.png';
-import unCheckedImg from '../../img/unchecked.png';
+import checkedImg from './img/radio-active.png';
+import unCheckedImg from './img/radio.png';
 import './index.scss'
 //圆形单选
 export default class CRadio extends Component {

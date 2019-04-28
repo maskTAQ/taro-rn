@@ -5,7 +5,7 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { CRadio, RadioRect, Check,TextSelect, CheckCircle, Select, DatePicker, Slidebothway } from '../index';
+import { CRadio, RadioRect, Check,TextSelect, CheckCircle, Select, DatePicker, Slidebothway ,Slide} from '../index';
 import { View, Text, TDatePicker, TInput, TButton, Image, TLoading } from '../../ui';
 import topIcon from '../../img/top.png';
 import bottomIcon from '../../img/bottom.png';
@@ -187,7 +187,9 @@ export default class SearchCondition extends Component {
                                                                     {
                                                                         type === 'slidebothway' && isShowComponent && <Slidebothway k={param} value={v} option={content} onChange={this.handleChange} />
                                                                     }
-
+                                                                    {
+                                                                        type === 'slide' && isShowComponent && <Slide k={param} value={v} option={content} onChange={this.handleChange} className="column-select" />
+                                                                    }
                                                                     {
                                                                         type === 'select' && isShowComponent && <Select label={label} k={param} value={v} onClick={this.showPicker.bind(this, content, param)} className="column-select" />
                                                                     }

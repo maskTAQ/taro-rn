@@ -6,12 +6,19 @@
     justify-content: center;
 }
 .tag{
+    margin-left: 10%;
     margin-bottom: 10px;
     font-size: 24px;
     color: #000;
 }
+.pathway-box{
+    margin-top: 20px;
+    @extend .flex;
+    flex-direction: column;
+    align-items: center;
+}
 .pathway {
-    width: 100%;
+    width: 80%;
     height: 10px;
     background: $main;
     border-radius: 10px;

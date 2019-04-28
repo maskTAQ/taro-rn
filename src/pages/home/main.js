@@ -167,7 +167,7 @@ export default class Home extends Component {
         return (
             <View className="container">
                 <Authorization />
-                <ScrollView>
+                <ScrollView  className="scroll-container">
                     <SearchTool />
                     <Swiper
                         className='swiper'
@@ -214,6 +214,7 @@ export default class Home extends Component {
                                     return (
                                         <TButton onClick={this.goCottonDetail.bind(this, item)} key={i} >
                                             <MainItem
+                                                type={activeTab}
                                                 border={true}
                                                 data={item}
                                                 map={data.key}
