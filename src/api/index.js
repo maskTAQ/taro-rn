@@ -103,6 +103,18 @@ export function getAuthInfo(params) {
 export function getMobile(params) {
     return get('UserPhone', params);
 }
+//获取excel数据
+export function uploadExcelData(params) {
+    return get('PCUpdateGetExcel', params);
+}
+//获取excel列表进度 
+export function getUpdateGetExcelListPer(params) {
+    return get('PCUpdateGetExcelListPer', params,{loading:false});
+}
+//获取excel列表
+export function getExcelList(params) {
+    return get('PCUpdateGetExcelList', params);
+}
 export {
     login
 }

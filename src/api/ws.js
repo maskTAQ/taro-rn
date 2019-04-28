@@ -1,4 +1,3 @@
-import Taro from '@tarojs/taro';
 import { Tip } from '../utils';
 import { MQTT, Public, clientId } from '../utils'
 
@@ -23,6 +22,7 @@ function connect() {
                 connected: true,
                 msg: '连接成功'
             };
+            console.log('连接成功');
             client.subscribe(mpClientId);//订阅主题 
         }
     });//连接服务器并注册连接成功处理事件 
@@ -41,10 +41,11 @@ function onConnectionLost(responseObject) {
 }
 function onMessageArrived(message) {
     const data = JSON.parse(message.payloadString);
-    console.log(data,'收到消息');
+    console.log(data, '收到消息');
     const { action, messageId } = data;
     messageId && Publisher.emit(messageId, data)
 }
+
 
 export function send({ action, pcClientId = '', data }) {
     if (!serverStatus.connected) {
@@ -73,7 +74,7 @@ export function send({ action, pcClientId = '', data }) {
             msg: "请求验证批号",
             action,
             messageId,
-            clientId: pcClientId,
+            clientId: mpClientId,
             data: {
                 url,
                 do: "QCDataAdd",
@@ -89,13 +90,13 @@ export function send({ action, pcClientId = '', data }) {
     client.send(message);
 
     return new Promise((resolve, reject) => {
-        Taro.showLoading({ title: action === 'login' ? '登录中' : '验证中' });
-        let isCall = false
-        Publisher.on(messageId, (data) => {
+        Tip.loading(action === 'login' ? '登录中' : '验证中');
+        let isCall = false;
+        const callback = (data) => {
             isCall = true
-            Taro.hideLoading();
+            Tip.dismiss();
             const { code, msg } = data;
-            Publisher.off(messageId);
+            Publisher.off(messageId, callback);
             if (code == 200) {
                 resolve(data.data)
             }
@@ -104,14 +105,14 @@ export function send({ action, pcClientId = '', data }) {
                 reject(msg);
             }
 
-        });
-
+        };
+        Publisher.on(messageId, callback);
         setTimeout(() => {
             if (!isCall) {
-                Taro.hideLoading();
+                Tip.dismiss();
                 Tip.fail(action === 'login' ? '登录超时' : '批号验证超时,请重试')
                 reject(action === 'login' ? '登录超时' : '批号验证超时,请重试');
             }
-        }, 5000);
+        }, 50000);
     })
 }

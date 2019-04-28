@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit, getOfferList } from '../../api';
+import { getOfferLayout, doSubmit, getOfferList, uploadExcelData, getUpdateGetExcelListPer, getExcelList } from '../../api';
 import { send } from '../../api/ws';
 import { asyncActionWrapper } from '../../actions';
 import './main.scss';
@@ -100,14 +100,115 @@ export default class AddBatch extends Component {
     a() {
         Tip.fail('11');
     }
+    uploadExcelData() {
+        const { params: navParams } = this.props.navigation.state;
+        const { status, data } = this.props.layout[`offer_${navParams.type}`];
+        const { id } = this.props.data.user.data;
+        const { params } = this.state;
+
+        console.log({
+            status: "upload",
+            msg: "上传excel数据中"
+        }, {
+                //加工批号: "62044171101" || params["批号"],
+                '用户ID': id,
+                ...data.carry,
+                ...Object.assign(this.getPreValue(data), params)
+            });
+
+        uploadExcelData({
+            //加工批号: "62044171101" || params["批号"],
+            '用户ID': id,
+            ...data.carry,
+            ...Object.assign(this.getPreValue(data), params)
+        })
+            .then(() => {
+                console.log({
+                    status: "getProgress",
+                    msg: "开始获取进度"
+                });
+                Tip.loading("开始上传excel数据");
+                this.getProgress();
+
+            })
+            .catch(e => {
+                console.log(e, 'e')
+                console.log({
+                    status: "error",
+                    msg: "上传excel数据失败"
+                });
+            });
+    }
+    getProgress = () => {
+
+        clearTimeout(this.timeout);
+        const { params: navParams } = this.props.navigation.state;
+        const { id } = this.props.data.user.data;
+        const { status, data } = this.props.layout[`offer_${navParams.type}`];
+
+        getUpdateGetExcelListPer(data.carry)
+            .then(res => {
+                const { percent } = res;
+                if (+percent === 100) {
+                    console.log({
+                        status: "getProgress",
+                        progress: percent,
+                        msg: "进度100%"
+                    });
+                    Tip.dismiss("上传excel数据完毕");
+                    this.publish();
+                } else {
+                    console.log({
+                        status: "getProgress",
+                        progress: percent,
+                        msg: "进度" + percent + "%"
+                    });
+                    this.timeout = setTimeout(this.getProgress, 2000);
+                }
+            })
+            .catch(e => {
+                this.getProgress();
+            });
+    }
+    publish() {
+        const { params: navParams } = this.props.navigation.state;
+        const { data } = this.props.layout[`offer_${navParams.type}`];
+        console.log({
+            status: "getData",
+            msg: "获取excellist"
+        });
+        getExcelList({ ...data.carry, excel: true })
+            .then(res => {
+                console.log({
+                    status: "complete",
+                    msg: "准备将excel数据发布"
+                });
+
+                publishExcelData({
+                    data: JSON.stringify(res)
+                })
+                    .then(res => {
+                        console.log("发布成功");
+                    })
+                    .catch(e => {
+                        console.log("发布失败");
+                    });
+
+            })
+            .catch(e => {
+                console.log({
+                    status: "error",
+                    msg: "获取excel列表数据失败"
+                });
+            });
+        return;
+    }
     submit = () => {
         const { params: navParams } = this.props.navigation.state;
         const { params } = this.state;
         const { id } = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
-        console.log(navParams, 'navParams');
-
         if (status === 'success') {
             const { url, action } = data.verify;
             if (navParams['棉花云报价类型'] === 1) {
@@ -119,21 +220,23 @@ export default class AddBatch extends Component {
                         break;
                     }
                 }
+                console.log('验证批号');
                 send({
                     action,
                     data: { number: number, userId: id, url, carry: data.carry }
                 })
                     .then(res => {
-                        doSubmit(data.do, doParams)
-                            .then(res => {
-                                asyncActionWrapper({
-                                    call: getOfferList,
-                                    params: { ...navParams, '用户ID': id },
-                                    type: 'data',
-                                    key: `offer_list_${navParams.type}`
-                                });
-                                Tip.success('操作成功');
-                            })
+                        this.uploadExcelData();
+                        // doSubmit(data.do, doParams)
+                        //     .then(res => {
+                        //         asyncActionWrapper({
+                        //             call: getOfferList,
+                        //             params: { ...navParams, '用户ID': id },
+                        //             type: 'data',
+                        //             key: `offer_list_${navParams.type}`
+                        //         });
+                        //         Tip.success('操作成功');
+                        //     })
 
                     })
                     .catch(e => {

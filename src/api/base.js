@@ -11,7 +11,7 @@ const commonParmas = {
     sign: '0a382e9b7fa70f12a3301fa1ceb39ea0',
     openid: 'oc7pZ5K0I9Ild3lh6Zjj1Zu4TFec',
     device: '3',
-    appname:'zmw'
+    appname: 'zmw'
 };
 const parseErrMsg = (e = '') => {
     if (e.includes('fail')) {
@@ -21,14 +21,14 @@ const parseErrMsg = (e = '') => {
     }
 }
 const request = (url, data, { type, config: { loading } = { loading: true } }) => {
-    loading && Taro.showLoading();
+    loading && Tip.loading();
     return new Promise((resolve, reject) => {
         Taro.request({
             url: host,
             method: type,
             data: Object.assign({ do: url }, commonParmas, data),
             success(d) {
-                Taro.hideLoading();
+                loading && Tip.dismiss();
                 if (d.errMsg.includes('ok')) {
                     if (['openid', 'Login'].includes(url)) {
                         resolve(Object.assign({}, d.data, data));
@@ -49,20 +49,20 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
                 }
             },
             fail(e) {
-                Taro.hideLoading();
+                loading && Tip.dismiss();
                 Tip.fail(parseErrMsg(e.errMsg));
                 reject(e);
             }
         });
     })
 }
-const post = (url, data = {}) => {
-    return request(url, data, { type: 'POST', });
+const post = (url, data = {}, config) => {
+    return request(url, data, { type: 'POST', config });
 }
-const get = (url, data = {}) => {
-    return request(url, data, { type: 'GET', });
+const get = (url, data = {}, config) => {
+    return request(url, data, { type: 'GET', config });
 }
-const file = (url, data) => {
+const file = (url, data, config = { loading: true }) => {
     return new Promise((resolve, reject) => {
         Taro.chooseImage({
             count: 1,
@@ -76,11 +76,11 @@ const file = (url, data) => {
                     filePath: o.tempFilePaths[0],
                     name: "upfile",
                     success: function (o) {
-                        Taro.hideLoading();
+                        loading && Tip.dismiss();
                         resolve(o);
                         // if (code === 200) {
-                          
-                            
+
+
                         // } else {
                         //     Tip.fail(parseErrMsg(msg));
                         //     reject(d);
@@ -92,7 +92,7 @@ const file = (url, data) => {
                         reject(e);
                     },
                     complete: function () {
-                       // Taro.hideLoading();
+                        // Taro.hideLoading();
                     }
                 });
             }

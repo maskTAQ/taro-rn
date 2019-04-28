@@ -2,6 +2,9 @@ function Public() {
     this.handlers = {};
 }
 Public.prototype = {
+    getHandlers(){
+        return this.handlers;
+    },
     // 订阅事件
     on: function (eventType, handler) {
         var self = this;
