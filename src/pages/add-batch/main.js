@@ -6,9 +6,9 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit, getOfferList, uploadExcelData, getUpdateGetExcelListPer, getExcelList } from '../../api';
+import { getOfferLayout, doSubmit, getOfferList, uploadExcelData, getUpdateGetExcelListPer, getExcelList,publishExcelData } from '../../api';
 import { send } from '../../api/ws';
-import { asyncActionWrapper } from '../../actions';
+import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
@@ -181,22 +181,29 @@ export default class AddBatch extends Component {
             .then(res => {
                 console.log({
                     status: "complete",
-                    msg: "准备将excel数据发布"
+                    msg: "准备将excel数据发布",
+                    res
                 });
 
                 publishExcelData({
                     data: JSON.stringify(res)
                 })
                     .then(res => {
-                        console.log("发布成功");
+                        console.log(res,"发布成功");
+                        Tip.success('发布成功');
+                        navigate({
+                            routeName:'my-cloud-offer'
+                        });
                     })
                     .catch(e => {
-                        console.log("发布失败");
+                        Tip.fail('发布失败');
+                        console.log(e,"发布失败");
                     });
 
             })
             .catch(e => {
                 console.log({
+                    e,
                     status: "error",
                     msg: "获取excel列表数据失败"
                 });

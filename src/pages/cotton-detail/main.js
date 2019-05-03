@@ -1,20 +1,23 @@
 
 
 import React from 'react';
-import { Component, setPageTitle } from '../../platform';
+import { Component, setPageTitle ,connect} from '../../platform';
 import classnames from 'classnames';
 
 import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
-import { FixedTool, MainItem } from '../../components';;
-import { getSpotIndicators, getCertificate } from '../../api';
+import { FixedTool } from '../../components';
+import { getSpotIndicators, getCertificate,addShoppingCar,getShoppingCarList } from '../../api';
 import Card from './card';
 import Item from './item';
+import { Tip } from '../../utils';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
-import { navigate, call } from '../../actions';
+import { navigate, call,asyncActionWrapper } from '../../actions';
 
 const tabList = ["现货指标", "仓单证书"];
+
+@connect(({ data }) => ({ user: data.user }))
 export default class CottonDetail extends Component {
     state = {
         activeTab: '',
@@ -29,9 +32,7 @@ export default class CottonDetail extends Component {
             type,
             activeTab: type === '1' ? '仓单证书' : '现货指标'
         },this.getData);
-        console.log('设置')
         setPageTitle(`${id}|详情`);
-       
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -41,7 +42,6 @@ export default class CottonDetail extends Component {
     getData() {
         const { activeTab } = this.state;
         const { id } = this.props.navigation.state.params;
-        console.log(tabList,activeTab,'activeTab')
         if (tabList.indexOf(activeTab) === 0) {
             //'65551171001'
             getSpotIndicators({
@@ -67,15 +67,32 @@ export default class CottonDetail extends Component {
     baojia() {
         console.log('报价')
     }
-    goQuotationList() {
-        const { defaultData, key } = this.props.navigation.state.params;
-        navigate({ routeName: 'quotation-list', params: { data: defaultData, key } });
+    goQuotationList(data) {
+        const { key = {} } = this.state;
+        navigate({ routeName: 'quotation-list', params: { data, key } });
     }
     goPackageDetail() {
         navigate({ routeName: 'package-detail' });
     }
     goShoppingCar() {
-        navigate({ routeName: 'shopping-car' });
+        const { key, defaultData } = this.props.navigation.state.params;
+        const { data } = this.props.user;
+        addShoppingCar({
+            '云报价主键': defaultData[key['主键']],
+            '用户ID': data.id
+        })
+            .then(res => {
+                asyncActionWrapper({
+                    call: getShoppingCarList,
+                    params: { '用户ID': data.id },
+                    type: 'data',
+                    key: 'shoppingCarList'
+                });
+                
+                navigate({ routeName: 'shopping-car' });
+                setTimeout(Tip.success,0,'添加成功!');
+            })
+       
     }
     getDataByList() {
         const { list, defaultData } = this.state;
@@ -103,7 +120,7 @@ export default class CottonDetail extends Component {
                         </TButton>
                     </View>
                     <View className={classnames('btn-group', 'margin')}>
-                        <TButton onClick={() => this.goShoppingCar(item)}>
+                        <TButton onClick={this.goShoppingCar}>
                             <View className='btn'>
                                 <Image className='btn-icon' src={scImg}></Image>
                                 <Text className='btn-text'>收藏</Text>

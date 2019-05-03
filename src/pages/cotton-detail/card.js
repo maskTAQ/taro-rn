@@ -15,7 +15,7 @@ const data = {
     i: '41.23',
     j: '32.21',
 
-    t1: '白棉四级',
+    t1: '白棉2级',
     a1: '44.6',
     b1: '55.4',
 
@@ -46,158 +46,187 @@ const cardList = [
         title: '总览',
         key: 't',
         list: [
-            [{
+            {
                 key: '包数',
                 label: '合计包数'
             },
             {
                 key: '执行标准',
                 label: '质量标识'
-            }],
-            [{
-                key: 'c',
+            },
+            {
+                key: '合计毛重',
                 label: '合计毛重'
             },
             {
-                key: 'd',
+                key: '平均回潮',
                 label: '平均回潮'
-            }],
-            [{
-                key: 'e',
+            },
+            {
+                key: '合计皮重',
                 label: '合计皮重'
             },
             {
-                key: 'f',
+                key: '平均含杂',
                 label: '平均含杂'
-            }],
-            [{
-                key: 'i',
+            },
+            {
+                key: '合计净重',
                 label: '合计净重'
             },
             {
-                key: 'j',
+                key: '合计公重',
                 label: '合计公重'
-            }]
+            }
         ]
     },
     {
         title: '主体颜色级',
-        key: 't1',
+        key: '主体颜色级',
         list: [
-            [{
-                key: 'a1',
+
+            {
+                key: '白棉1级',
+                label: '白棉1级',
+                type: 'visible'
+            },
+            {
+                key: '白棉2级',
+                label: '白棉2级',
+                type: 'visible'
+            },
+            {
+                key: '白棉3级',
                 label: '白棉3级',
                 type: 'visible'
             },
             {
-                key: 'b1',
+                key: '白棉4级',
                 label: '白棉4级',
                 type: 'visible'
-            }]
+            },
+            {
+                key: '白棉5级',
+                label: '白棉5级',
+                type: 'visible'
+            },
+            {
+                key: '白棉6级',
+                label: '白棉6级',
+                type: 'visible'
+            }
         ]
     },
     {
         title: '主体长度级',
-        key: 't2',
+        key: '长度级',
         list: [
-            [{
-                key: 'a',
+            {
+                key: '27毫米',
                 label: '27mm',
                 type: 'visible'
             },
             {
-                key: 'b',
-                label: '白棉4级',
+                key: '27毫米',
+                label: '27mm',
                 type: 'visible'
-            }],
-            [{
-                key: 'c',
+            },
+            {
+                key: '29毫米',
                 label: '29mm',
                 type: 'visible'
             },
             {
-                key: '',
-                label: '',
+                key: '30毫米',
+                label: '30mm',
                 type: 'visible'
-            }]
+            },
+            {
+                key: '31毫米',
+                label: '31mm',
+                type: 'visible'
+            },
+            {
+                key: '32毫米',
+                label: '32mm',
+                type: 'visible'
+            }
         ]
     },
     {
         title: '马克隆主体级',
-        key: 't3',
+        key: '主体马克隆值级',
         list: [
-            [{
-                key: 'a3',
+            {
+                key: '马克隆A档平均值比率',
+                label: 'A',
+                type: 'visible'
+            },
+            
+            {
+                key: '马克隆B1档平均值比率',
+                label: 'B1',
+                type: 'visible'
+            },
+            {
+                key: '马克隆B2档平均值比率',
+                label: 'B2',
+                type: 'visible'
+            },
+            {
+                key: '马克隆C1档平均值比率',
                 label: 'C1',
                 type: 'visible'
             },
             {
-                key: 'b3',
-                label: 'B1',
+                key: '马克隆C2档平均值比率',
+                label: 'C2',
                 type: 'visible'
-            }],
-            [{
-                key: 'c3',
-                label: 'A',
-                type: 'visible'
-            },
-            {
-                key: 'd3',
-                label: 'B2',
-                type: 'visible'
-            }]
+            }
         ]
     },
     {
         title: '长度整齐度(%)',
         key: 't4',
         list: [
-            [{
-                key: 'a',
+            {
+                key: '长度整齐度最小值',
                 label: '最小值'
             },
             {
-                key: 'b',
+                key: '长度整齐度平均值',
                 label: '最大值'
-            }],
-            [{
-                key: 'c',
-                label: '平均值'
             },
             {
-                key: '',
-                label: ''
-            }]
+                key: '长度整齐度平均值',
+                label: '平均值'
+            }
         ]
     },
     {
         title: '断裂比例度(CN/tex)',
         key: 't5',
         list: [
-            [{
-                key: 'a5',
+            {
+                key: '最小值',
                 label: '最小值'
             },
             {
-                key: 'b5',
+                key: '最大值',
                 label: '最大值'
-            }],
-            [{
-                key: 'c5',
+            },
+            {
+                key: '平均值',
                 label: '平均值'
             },
             {
-                key: '',
-                label: ''
-            }],
-            [{
-                key: 'd5',
+                key: 'Rd平均值',
                 label: '平均值(Rd)'
             },
             {
-                key: 'e5',
-                label: '平均值'
-            }]
+                key: '加b平均值',
+                label: '+b平均值'
+            }
         ]
     }
 ]
@@ -228,32 +257,22 @@ export default class Card extends Component {
                             <View className="card">
                                 {key && (
                                     <View className="card-title">
-                                        <Text className="card-title-text">{title}:{data[key]}</Text>
+                                        <Text className="card-title-text">{title}{g(key) !== '-' ? ':' + g(key) : ''}</Text>
                                     </View>
                                 )}
                                 <View className="card-list">
                                     {
-                                        list.map((row, index) => {
+                                        list.map((item, index) => {
+                                            const { key: a, label, type } = item;
                                             return (
-                                                <View className={classnames("card-list-row")}>
+                                                <View className="card-list-item">
                                                     {
-                                                        row.map(item => {
-                                                            //为什么取一个别名 用key taro编译会报错
-                                                            const { key: a, label, type } = item;
-
-                                                            return (
-                                                                <View className="card-list-item">
-                                                                    {
-                                                                        type === 'visible' && !this.hasValue(g(label)) ? null : (
-                                                                            <View className={classnames({ 'card-list-row-border': index !== card.list.length - 1 })}>
-                                                                                <Text className="card-list-item-label">{label}{label ? ':' : ''}</Text>
-                                                                                <Text className="card-list-item-value">{g(label)}</Text>
-                                                                            </View>
-                                                                        )
-                                                                    }
-                                                                </View>
-                                                            )
-                                                        })
+                                                        type === 'visible' && !this.hasValue(g(label)) ? null : (
+                                                            <View className={classnames({ 'card-list-row-border': index !== card.list.length - 1 })}>
+                                                                <Text className="card-list-item-label">{label}{label ? ':' : ''}</Text>
+                                                                <Text className="card-list-item-value">{g(a)}</Text>
+                                                            </View>
+                                                        )
                                                     }
                                                 </View>
                                             )

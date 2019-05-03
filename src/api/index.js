@@ -115,6 +115,10 @@ export function getUpdateGetExcelListPer(params) {
 export function getExcelList(params) {
     return get('PCUpdateGetExcelList', params);
 }
+//发布编辑后的excel数据
+export function publishExcelData(params) {
+    return get('CloudQuotePC', params);
+}
 export {
     login
 }

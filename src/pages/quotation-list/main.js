@@ -54,15 +54,15 @@ export default class QuotationList extends Component {
     }
     g = k => {
         const { data, key } = this.props.navigation.state.params;
-        return `[${data[key[k]] || '-'}]`;
+        return `${data[key[k]] || '-'}`;
     }
     drawTable = ctx => {
         const { g } = this;
         const width = 750 - 40;
         const halfWidth = width / 2;
         const data = [
-            [{ v: '组批批次:', x: 150 }, { v: g('组批批次'), x: 150 + halfWidth }],
-            [{ v: '合计包数:', x: 10 }, { v: g('合计包数'), x: 10 + halfWidth / 5 * 2 }, { v: '质量标识:', x: 10 + halfWidth }, { v: g('质量标识'), x: 10 + halfWidth / 5 * 7 }],
+            [{ v: '组批批次:', x: 150 }, { v: g('加工批号'), x: 150 + halfWidth }],
+            [{ v: '合计包数:', x: 10 }, { v: g('包数'), x: 10 + halfWidth / 5 * 2 }, { v: '质量标识:', x: 10 + halfWidth }, { v: g('质量标识'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计毛重:', x: 10 }, { v: g('合计毛重'), x: 10 + halfWidth / 5 * 2 }, { v: '平均回潮:', x: 10 + halfWidth }, { v: g('平均回潮'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计皮重:', x: 10 }, { v: g('合计皮重'), x: 10 + halfWidth / 5 * 2 }, { v: '平均含杂:', x: 10 + halfWidth }, { v: g('平均含杂'), x: 10 + halfWidth / 5 * 7 }],
             [{ v: '合计净重:', x: 10 }, { v: g('合计净重'), x: 10 + halfWidth / 5 * 2 }, { v: '合计公重:', x: 10 + halfWidth }, { v: g('合计公重'), x: 10 + halfWidth / 5 * 7 }],
@@ -70,25 +70,25 @@ export default class QuotationList extends Component {
             [{ v: '批检验指标:', x: 4, bold: true }, { v: '棉包组批各指标分布', x: 10 + halfWidth / 5 * 2 }, { v: '批检验指标:', x: 10 + halfWidth, bold: true }, { v: '棉包组批各指标分布', x: 10 + halfWidth / 5 * 7 }],
             [{ v: '主体颜色级:', x: halfWidth / 2, bold: true }, { v: '主体长度级', x: halfWidth + halfWidth / 2, bold: true }],
 
-            [{ v: '白棉1级:', x: halfWidth / 2 }, { v:g('白棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '32mm:', x: halfWidth + halfWidth / 2 }, { v: g('32mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '白棉2级:', x: halfWidth / 2 }, { v: g('白棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '31mm:', x: halfWidth + halfWidth / 2 }, { v:g('31mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '白棉3级:', x: halfWidth / 2 }, { v: g('白棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: '30mm:', x: halfWidth + halfWidth / 2 }, { v: g('30mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '白棉4级:', x: halfWidth / 2 }, { v: g('白棉4级'), x: halfWidth / 10 * 7 + 10 }, { v: '29mm:', x: halfWidth + halfWidth / 2 }, { v: g('29mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '白棉5级:', x: halfWidth / 2 }, { v: g('白棉5级'), x: halfWidth / 10 * 7 + 10 }, { v: '28mm:', x: halfWidth + halfWidth / 2 }, { v: g('28mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '淡点污棉1级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '27mm:', x: halfWidth + halfWidth / 2 }, { v: g('27mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '淡点污棉2级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '26mm:', x: halfWidth + halfWidth / 2 }, { v: g('26mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '淡点污棉3级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: '25mm:', x: halfWidth + halfWidth / 2 }, { v: g('25mm'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉1级:', x: halfWidth / 2 }, { v:g('白棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '32mm:', x: halfWidth + halfWidth / 2 }, { v: g('32毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉2级:', x: halfWidth / 2 }, { v: g('白棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '31mm:', x: halfWidth + halfWidth / 2 }, { v:g('31毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉3级:', x: halfWidth / 2 }, { v: g('白棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: '30mm:', x: halfWidth + halfWidth / 2 }, { v: g('30毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉4级:', x: halfWidth / 2 }, { v: g('白棉4级'), x: halfWidth / 10 * 7 + 10 }, { v: '29mm:', x: halfWidth + halfWidth / 2 }, { v: g('29毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉5级:', x: halfWidth / 2 }, { v: g('白棉5级'), x: halfWidth / 10 * 7 + 10 }, { v: '28mm:', x: halfWidth + halfWidth / 2 }, { v: g('28毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '淡点污棉1级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '27mm:', x: halfWidth + halfWidth / 2 }, { v: g('27毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '淡点污棉2级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '26mm:', x: halfWidth + halfWidth / 2 }, { v: g('26毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '淡点污棉3级:', x: halfWidth / 2 - 15 }, { v: g('淡点污棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: '25mm:', x: halfWidth + halfWidth / 2 }, { v: g('25毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '淡黄污棉1级:', x: halfWidth / 2 - 15 }, { v: g('淡黄污棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '马克隆主体级', x: width / 14 * 9 + 20, bold: true }],
-            [{ v: '淡黄染棉2级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: 'C1:', x: halfWidth + halfWidth / 2 }, { v: g('C1'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '淡黄染棉3级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B1:', x: halfWidth + halfWidth / 2 }, { v: g('B1'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v:g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'A:', x: halfWidth + halfWidth / 2 }, { v:g('A'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v: g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B2:', x: halfWidth + halfWidth / 2 }, { v: g('B2'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: 'C2:', x: halfWidth + halfWidth / 2 }, { v: g('C2'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '淡黄染棉2级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: 'C1:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆C1档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '淡黄染棉3级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B1:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆B1档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v:g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'A:', x: halfWidth + halfWidth / 2 }, { v:g('马克隆A档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v: g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B2:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆B2档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: 'C2:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆C2档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
 
-            [{ v: '最小值', x: halfWidth / 7 * 3 }, { v: g('最小值'), x: halfWidth / 10 * 7 + 10 }, { v: '最小值', x: width / 14 * 10 }, { v: g('最小值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '最大值', x: halfWidth / 7 * 3 }, { v: g('最大值'), x: halfWidth / 10 * 7 + 10 }, { v: '最大值', x: width / 14 * 10 }, { v: g('最大值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '平均值', x: halfWidth / 7 * 3 }, { v: g('平均值'), x: halfWidth / 10 * 7 + 10 }, { v: '平均值', x: width / 14 * 10 }, { v: g('平均值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: 'Rd(%)', x: 20, bold: true }, { v: '平均值', x: halfWidth / 7 * 3 }, { v: g('平均值'), x: halfWidth / 10 * 7 + 10 }, { v: '+b', x: halfWidth + 20, bold: true }, { v: '平均值', x: width / 14 * 10 }, { v: g('平均值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '最小值', x: halfWidth / 7 * 3 }, { v: g('长度整齐度最小值'), x: halfWidth / 10 * 7 + 10 }, { v: '最小值', x: width / 14 * 10 }, { v: g('最小值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '最大值', x: halfWidth / 7 * 3 }, { v: g('长度整齐度最大值'), x: halfWidth / 10 * 7 + 10 }, { v: '最大值', x: width / 14 * 10 }, { v: g('最大值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '平均值', x: halfWidth / 7 * 3 }, { v: g('长度整齐度平均值'), x: halfWidth / 10 * 7 + 10 }, { v: '平均值', x: width / 14 * 10 }, { v: g('平均值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: 'Rd(%)', x: 20, bold: true }, { v: '平均值', x: halfWidth / 7 * 3 }, { v: g('Rd平均值'), x: halfWidth / 10 * 7 + 10 }, { v: '+b', x: halfWidth + 20, bold: true }, { v: '平均值', x: width / 14 * 10 }, { v: g('加b平均值'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
         ];
         const specifiedHeightData = [
             { v: '颜色级', x: 20, bold: true, h: 720, },
@@ -348,6 +348,7 @@ export default class QuotationList extends Component {
 
     render() {
         const { width, scale = 1 } = this.state;
+        console.log(this.props)
         return (
             <div className="container">
                 <Canvas canvasId="myCanvas" className="canvas" style={`width:${width}px;height:${1240 * scale}px`} />
