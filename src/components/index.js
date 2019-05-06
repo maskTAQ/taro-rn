@@ -22,3 +22,4 @@ export { default as Authorization } from './authorization';
 export { default as TextSelect } from './text-select';
 export { default as StatusBox } from './status-box';
 export { default as Slide } from './slide';
+export { default as CapsuleChoose } from './capsule-choose';

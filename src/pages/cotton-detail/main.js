@@ -1,22 +1,22 @@
 
 
 import React from 'react';
-import { Component, setPageTitle ,connect} from '../../platform';
+import { Component, setPageTitle, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
 import { FixedTool } from '../../components';
-import { getSpotIndicators, getCertificate,addShoppingCar,getShoppingCarList } from '../../api';
+import { getSpotIndicators, getCertificate, addShoppingCar, getShoppingCarList } from '../../api';
 import Card from './card';
 import Item from './item';
 import { Tip } from '../../utils';
 import './main.scss';
 import mobileImg from './img/mobile.png';
 import scImg from './img/sc.png';
-import { navigate, call,asyncActionWrapper } from '../../actions';
+import { navigate, call, asyncActionWrapper } from '../../actions';
 
 const tabList = ["现货指标", "仓单证书"];
-
+const includeList = ['新疆棉', '拍储棉'];
 @connect(({ data }) => ({ user: data.user }))
 export default class CottonDetail extends Component {
     state = {
@@ -31,7 +31,7 @@ export default class CottonDetail extends Component {
             defaultData,
             type,
             activeTab: type === '1' ? '仓单证书' : '现货指标'
-        },this.getData);
+        }, this.getData);
         setPageTitle(`${id}|详情`);
     }
     handleTabChange = activeTab => {
@@ -64,9 +64,6 @@ export default class CottonDetail extends Component {
             current
         });
     }
-    baojia() {
-        console.log('报价')
-    }
     goQuotationList(data) {
         const { key = {} } = this.state;
         navigate({ routeName: 'quotation-list', params: { data, key } });
@@ -88,38 +85,47 @@ export default class CottonDetail extends Component {
                     type: 'data',
                     key: 'shoppingCarList'
                 });
-                
+
                 navigate({ routeName: 'shopping-car' });
-                setTimeout(Tip.success,0,'添加成功!');
+                setTimeout(Tip.success, 0, '添加成功!');
             })
-       
+
     }
-    getDataByList() {
-        const { list, defaultData } = this.state;
-        return list[0] || defaultData;
+    getFullConfig() {
+        const { list, defaultData, key } = this.state;
+        const { key: k } = this.props.navigation.state.params;
+        return {
+            fullData: Object.assign({}, defaultData, list[0]),
+            fullKey: Object.assign({}, k, key)
+        };
     }
     render() {
-        const { key = {}, type } = this.state;
-        const data = this.getDataByList();
+        const { type, activeTab } = this.state;
+        const { cottonType } = this.props.navigation.state.params;
+        const { fullData, fullKey } = this.getFullConfig();
         return (
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <Item data={data} map={key} activeTab={activeTab}/>
-                    <Card data={data} map={key} />
-                    <View className={classnames('link-btn-group')}>
-                        <TButton onClick={() => this.goPackageDetail(data)}>
-                            <View className='link-button'>
-                                <Text className='link-button-text'>点击查看186包棉包详情</Text>
+                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} />
+                    {includeList.includes(cottonType) && <Card data={fullData} map={key} />}
+                    {
+                        includeList.includes(cottonType) && (
+                            <View className={classnames('link-btn-group')}>
+                                <TButton onClick={() => this.goPackageDetail(fullData)}>
+                                    <View className='link-button'>
+                                        <Text className='link-button-text'>点击查看186包棉包详情</Text>
+                                    </View>
+                                </TButton>
+                                <TButton onClick={() => this.goQuotationList(fullData)}>
+                                    <View className='link-button'>
+                                        <Text className='link-button-text'>点击查看完整现货指标</Text>
+                                    </View>
+                                </TButton>
                             </View>
-                        </TButton>
-                        <TButton onClick={() => this.goQuotationList(data)}>
-                            <View className='link-button'>
-                                <Text className='link-button-text'>点击查看完整现货指标</Text>
-                            </View>
-                        </TButton>
-                    </View>
-                    <View className={classnames('btn-group', 'margin')}>
+                        )
+                    }
+                    <View className="btn-group">
                         <TButton onClick={this.goShoppingCar}>
                             <View className='btn'>
                                 <Image className='btn-icon' src={scImg}></Image>
@@ -133,8 +139,6 @@ export default class CottonDetail extends Component {
                             </View>
                         </TButton>
                     </View>
-
-
                 </ScrollView>
                 <FixedTool />
             </View>

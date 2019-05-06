@@ -1,35 +1,39 @@
 import React from 'react';
-import { Component, connect } from '../../platform';
-import classnames from 'classnames';
+import { Component } from '../../platform';
 
-import { View, Text, Image, TButton, } from '../../ui';
-import { Tip } from '../../utils';
+import { View, Text, TButton, } from '../../ui';
 import { navigate } from '../../actions';
 import './item.scss'
 
 
 const list = [
+    { label: "年度", key: "年度", includes: ['进口棉￥', '进口棉$'] },
+    { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
     { label: "等级", key: "颜色级" },
     { label: "长度", key: "长度" },
-    { label: "强力", key: "断裂比强度平均值" }, {
-        label: "马值", key: "主体马克隆值级"
-    }, {
+    { label: "强力", key: "强力" },
+    { label: "马值", key: "马克隆值" },
+    { label: "叶屑", key: "叶屑", includes: ['进口棉￥', '进口棉$'] },
+    {
         label: "含杂",
-        key: "平均含杂"
+        key: "平均含杂",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
     }, {
         label: "回潮",
-        key: "平均回潮"
+        key: "回潮",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
     }, {
-        label: "整度",
-        key: "整齐度"
+        label: "长整",
+        key: "整齐度",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
     }];
 
 const descList = [
-    { label: "扎花厂", key: "加工单位" },
+    { label: "轧花厂", key: "轧花厂" },
     { label: "库存", key: "仓库" },
     { label: "供应商", key: "供应商" },
     {
-        label: "联系供应商", key: "用户ID"
+        label: "联系供应商", key: "联系供应商"
     }
 ];
 
@@ -37,7 +41,6 @@ export default class Item extends Component {
     static options = {
         addGlobalClass: true
     }
-
     g = k => {
         const { map, data } = this.props;
         return data[map[k]] || '-';
@@ -58,21 +61,44 @@ export default class Item extends Component {
     }
     render() {
         const { g } = this;
+        const { cottonType, map } = this.props;
+        const offerType = g('报价类型');
         return (
             <View className="container">
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">批号({g('加工批号')}) {g('产地')} {g('类型')}</Text>
+                            {
+                                ['进口棉￥', '进口棉$'].includes(cottonType) ?
+                                    (
+                                        <Text className="title">报价号({g('报价号')})</Text>
+                                    ) :
+                                    (
+                                        <Text className="title">批号({g('报价号')}) {g('产地')} {g('类型')}</Text>
+                                    )
+                            }
+
                         </View>
-                        <View className="top-right">
-                            <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
-                        </View>
+                        {
+                            !['进口棉￥', '进口棉$'].includes(cottonType) && (
+                                <View className="top-right">
+                                    <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
+                                </View>
+                            )
+                        }
+
                     </View>
                     <View className="center">
                         <View className="center-left">
                             {
-                                list.map(item => {
+                                list.filter(({ noInclude = [], includes = 'all' }) => {
+                                    if (includes === 'all') {
+                                        return !noInclude.includes(cottonType)
+                                    } else {
+                                        return !noInclude.includes(cottonType) && includes.includes(cottonType)
+                                    }
+
+                                }).map(item => {
                                     const { label, key } = item;
                                     return (
                                         <View className="item">
@@ -107,6 +133,17 @@ export default class Item extends Component {
                     </View>
 
                     <View className="bottom">
+                        <View className="origin">
+                            <Text className="origin-text">{g('产地')} {g('类型')}</Text>
+                            <Text className="origin-text">{g('发布日期')}</Text>
+                        </View>
+                        {
+                            cottonType === '进口棉￥' && (
+                                <View className="peie-box">
+                                    <Text className="origin-text">自带配额{g('配额')}%</Text>
+                                </View>
+                            )
+                        }
                         {
                             this.getList(descList).map(item => {
                                 const { label, key } = item;
@@ -131,6 +168,39 @@ export default class Item extends Component {
                                 )
                             })
                         }
+                        <View className="offer">
+                            {
+                                offerType === '一口价' ? (
+                                    <View className="offer-left">
+                                        <Text className="ykj-text">一口价</Text>
+                                    </View>
+                                ) :
+                                    (
+                                        <View className="offer-left">
+
+                                            <View className="offer-left-top">
+                                                <Text className="jc-label">{g('基差类型')}</Text>
+                                                <Text className="jc-value">{g('基差值')}</Text>
+                                            </View>
+                                            <View className="offer-left-bottom">
+                                                <Text className="jc-label">基   差</Text>
+                                                <Text className="jc-value">{g('基差值升贴水')}</Text>
+                                            </View>
+                                        </View>
+
+                                    )
+                            }
+                            <View className="offer-right">
+                                <View className="offer-right-top">
+                                    <Text className="price-value">{g('报价')}</Text>
+                                    <Text className="price-label">元/吨</Text>
+                                </View>
+                                <View className="offer-right-bottom">
+                                    <Text className="weight-label">{g('重量类型')}</Text>
+                                    <Text className="weight-value">{g('重量')}</Text>
+                                </View>
+                            </View>
+                        </View>
                     </View>
 
                 </View>

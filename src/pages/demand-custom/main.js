@@ -8,7 +8,7 @@ import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
 import {productTypesValue} from '../../constants';
 import { getDemandCustomLayout, getDemandList, doSubmit ,getMySelfDemandList} from '../../api';
-import { asyncActionWrapper } from '../../actions';
+import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
@@ -127,6 +127,9 @@ export default class DemandCustom extends Component {
                             type: 'data',
                             key: `my_demand_list`
                         });
+                        navigate({
+                            routeName:"my-demand"
+                        })
                     }, 1000);
                 })
         }

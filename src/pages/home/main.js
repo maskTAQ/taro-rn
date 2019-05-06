@@ -153,6 +153,7 @@ export default class Home extends Component {
         navigate({
             routeName: 'cotton-detail', params: {
                 key,
+                cottonType:activeTab,
                 id: data[key['批号']],
                 defaultData: data,
                 type: data[key['仓单']]

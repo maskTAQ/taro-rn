@@ -3,7 +3,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Text, Image, TButton, } from '../../ui';
-import { navigate, call, asyncActionWrapper } from '../../actions';
+import { call, asyncActionWrapper } from '../../actions';
 import { addShoppingCar, getShoppingCarList } from '../../api';
 import { Tip } from '../../utils';
 import './index.scss'
@@ -73,11 +73,13 @@ export default class MainItem extends Component {
     }
     render() {
         const { g, split } = this;
+        const { map, data } = this.props;
         const { border = true, showShoppinCar, type = '新疆棉' } = this.props;
         let key = '仓库';
-        if(['地产棉','进口棉￥'].includes(type)){
+        if (['地产棉', '进口棉￥'].includes(type)) {
             key = '目的港';
         }
+        const offerType = g('报价类型');
         return (
             <View className={classnames("container", { border: border })}>
                 <View className="content">
@@ -92,7 +94,7 @@ export default class MainItem extends Component {
                     {
                         type === '进口棉￥' && (
                             <View className="peie-box">
-                            <Text className="peie">自带配额{g('配额')}%</Text>
+                                <Text className="peie">自带配额{g('配额')}%</Text>
                             </View>
                         )
                     }
@@ -140,24 +142,41 @@ export default class MainItem extends Component {
                         </View>
                     </View>
 
-                    <View className="bottom">
-                        <View className="bottom-left">
-                            <View className="bottom-text-box">
-                                <Text className="bottom-text">{key}:{split(g(key), 6)}</Text>
-                            </View>
-                            <View className="bottom-text-box">
-                                <Text className="bottom-text">{g('基差类型')}</Text>
-                            </View>
-                            <View className="bottom-text-box">
-                                <Text className="bottom-text">基  差:(+{g('基差值')})</Text>
-                            </View>
+                    <View className="row">
+                        <View className="row-left">
+                            <Text className="row-text">{key}:{split(g('交货仓库或方式'), 6)}</Text>
+
                         </View>
-                        <View className="bottom-right">
-                            <View className="bottom-text-box">
-                                <Text className="bottom-text">卖家:{g('供应商')}</Text>
+                        <View className="row-right">
+                            <Text className="row-text">卖家:{g('公司')}</Text>
+                        </View>
+                    </View>
+                    <View className="offer">
+                    {
+                        offerType === '一口价' ? (
+                            <View className="offer-left">
+                                <Text className="ykj-text">一口价</Text>
                             </View>
-                            <View className="bottom-right-bottom">
-                                <View className="bottom-right-bottom-left">
+                        ) :
+                            (
+                                <View className="offer-left">
+
+                                    <View className="offer-left-top">
+                                        <Text className="jc-label">{g('基差类型')}</Text>
+                                        <Text className="jc-value">{g('基差值')}</Text>
+                                    </View>
+                                    <View className="offer-left-bottom">
+                                        <Text className="jc-label">基   差</Text>
+                                        <Text className="jc-value">{g('基差值升贴水')}</Text>
+                                    </View>
+                                </View>
+
+                            )
+                    }
+                        
+                        <View className="offer-right">
+                            <View className="row-right-bottom">
+                                <View className="row-right-row-left">
                                     <Text className="price">￥{g('报价')}</Text>
                                     <Text className="weight">{g('重量')}</Text>
                                 </View>
@@ -186,8 +205,8 @@ export default class MainItem extends Component {
                                 </View>
                             </View>
                         </View>
-                    </View>
 
+                    </View>
                 </View>
                 {this.props.children}
             </View>

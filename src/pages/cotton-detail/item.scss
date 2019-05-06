@@ -100,6 +100,16 @@
     @extend .flex;
     flex-direction: column;
 }
+.origin{
+    margin-top: 20px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.origin-text{
+    font-size: 24px;
+    color: #000;
+}
 
 .desc-item {
     height: 60px;
@@ -137,4 +147,68 @@
 .detail-btn-text {
     font-size: 24px;
     color: #fff;
+}
+
+.offer{
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.offer-left{
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.offer-left-top{
+    flex: 1;
+}
+.jc-label{
+    margin-right: 10px;
+    font-size: 32px;
+    color: $main;
+}
+.jc-value{
+    font-size: 28px;
+    color: #b4b4b4;
+}
+.offer-left-bottom{
+    flex: 1;
+}
+.ykj-text{
+    font-size: 32px;
+    font-weight: bold;
+    color: $main;
+}
+.offer-right-top{
+    flex: 1;
+}
+.offer-right-bottom{
+    flex: 1;
+}
+.offer-right{
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.offer-right-top{
+    flex: 1;
+}
+.offer-right-bottom{
+    flex: 1;
+}
+.price-value{
+    font-size: 32px;
+    color: $main;
+}
+.price-label{
+    font-size: 28px;
+    color: #b4b4b4;
+}
+.weight-label{
+    font-size: 30px;
+    color: #b4b4b4;
+}
+.weight-value{
+    font-size: 28px;
+    color: #000;
 }

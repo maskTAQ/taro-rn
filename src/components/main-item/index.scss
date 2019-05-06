@@ -1,4 +1,5 @@
 @import '../../platform.scss';
+@import '../../pages/color.scss';
 .container {
     background: #fff;
     margin-top: 10px;
@@ -85,7 +86,6 @@
     justify-content: center;
     align-items: center;
     border-radius: 30px;
-    background: red;
 }
 
 .xh {
@@ -101,17 +101,17 @@
     color: #fff;
 }
 
-.bottom {
+.row {
     @extend .flex;
     flex-direction: row;
 }
 
-.bottom-left,
-.bottom-right {
+.row-left,
+.row-right {
     flex: 1;
 }
 
-.bottom-text-box {
+.row-text-box {
     height: 50px;
     @extend .flex;
     flex-direction: row;
@@ -119,24 +119,24 @@
     align-items: center;
 }
 
-.bottom-text {
+.row-text {
     font-size: 30px;
     color: #000;
 }
 
-.bottom-right-bottom {
+.row-right-bottom {
     height: 86px;
     @extend .flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.bottom-right-bottom-right {
+.row-right-row-right {
     @extend .flex;
     flex-direction: row;
 }
 
-.bottom-right-bottom-left {
+.row-right-row-left {
     @extend .flex;
     flex-direction: column;
     justify-content: space-between;
@@ -182,5 +182,72 @@
 
 .btn-text {
     font-size: 20px;
+    color: #000;
+}
+
+//一口价部分
+.offer{
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.offer-left{
+    flex:1;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.offer-left-top{
+    flex: 1;
+}
+.jc-label{
+    margin-right: 10px;
+    font-size: 32px;
+    color: $main;
+}
+.jc-value{
+    font-size: 28px;
+    color: #b4b4b4;
+}
+.offer-left-bottom{
+    flex: 1;
+}
+.ykj-text{
+    font-size: 32px;
+    font-weight: bold;
+    color: $main;
+}
+.offer-right-top{
+    flex: 1;
+}
+.offer-right-bottom{
+    flex: 1;
+}
+.offer-right{
+    flex:1;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.offer-right-top{
+    flex: 1;
+}
+.offer-right-bottom{
+    flex: 1;
+}
+.price-value{
+    font-size: 32px;
+    color: $main;
+}
+.price-label{
+    font-size: 28px;
+    color: #b4b4b4;
+}
+.weight-label{
+    font-size: 30px;
+    color: #b4b4b4;
+}
+.weight-value{
+    font-size: 28px;
     color: #000;
 }

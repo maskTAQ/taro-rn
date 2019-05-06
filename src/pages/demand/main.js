@@ -4,9 +4,9 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
-import { View, TButton, Text, ScrollView, TModal, TInput, TRadio, TLoading, TSTab } from '../../ui';
-import { ListWrapper } from '../../components';
-import {productTypesValue} from '../../constants';
+import { View, TButton, Text, ScrollView, TModal, TSTab } from '../../ui';
+import { ListWrapper, CapsuleChoose } from '../../components';
+import { productTypesValue } from '../../constants';
 import { getDemandList, getMySelfDemandList } from '../../api';
 
 import DemandItem from './demand-item';
@@ -14,40 +14,45 @@ import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
 
 
-const tabList = ['全部','新疆棉', '地产棉', '进口棉$', '进口棉￥'];
+const tabList = ['全部', '新疆棉', '地产棉', '进口棉$', '进口棉￥'];
 
 @connect(({ data }) => ({ data }))
 export default class Demand extends Component {
     state = {
+        activeList: '供需对接',
         activeTab: '新疆棉',
     };
     componentWillMount() {
-        //this.getMyDemand();
         this.getData();
+    }
+    componentWillReceiveProps(nextProps) {
+        const { status, data } = this.props.data.user;
+        if (status !== nextProps.data.user.status) {
+            this.getData(nextProps);
+        }
     }
     login() {
         login();
     }
-    getMyDemand=()=>{
-        const { data } = this.props.data.user;
-        const userId = data.id;
-        console.log({
-            call: getMySelfDemandList,
-            params: { '用户ID': userId },
-            type: 'data',
-            key: `my_demand_list`
-        });
-         //获取我的需求
-         asyncActionWrapper({
-            call: getMySelfDemandList,
-            params: { '用户ID': userId },
-            type: 'data',
-            key: `my_demand_list`
-        });
+    getMyDemand = (props) => {
+        const useProps = props || this.props;
+        const { status, data } = useProps.data.user;
+        const { status: mySelfDataStatus } = useProps.data.my_demand_list;
+        if (status === 'success' && mySelfDataStatus !== 'success' && mySelfDataStatus !== 'loading') {
+            //获取我的需求
+            asyncActionWrapper({
+                call: getMySelfDemandList,
+                params: { '用户ID': data.id },
+                type: 'data',
+                key: `my_demand_list`
+            });
+        }
+
     }
-    getData() {
+    getData(props) {
+        const useProps = props || this.props;
         const { activeTab } = this.state;
-        const { status: dataStatus, loading: dataLoading } = this.props.data[`demand_list_${activeTab}`];
+        const { status: dataStatus, loading: dataLoading } = useProps.data[`demand_list_${activeTab}`];
 
         if (dataStatus !== 'success' && !dataLoading) {
             asyncActionWrapper({
@@ -57,6 +62,7 @@ export default class Demand extends Component {
                 key: `demand_list_${activeTab}`
             });
         }
+        this.getMyDemand(props);
     }
     handleClick = (current) => {
         this.setState({
@@ -80,61 +86,71 @@ export default class Demand extends Component {
             activeTab
         }, this.getData);
     }
+    handleActiveListChange = activeList => {
+        this.setState({
+            activeList
+        });
+    }
     render() {
-        const { modal, unit, activeTab } = this.state;
+        const { activeTab, activeList } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_demand_list;
         const { status: loginStatus } = this.props.data.user;
         return (
             <View className="container">
                 <ScrollView>
+                    <CapsuleChoose option={['供需对接', '我的需求']} value={activeList} onChange={this.handleActiveListChange} />
                     {
-                        mySelfDataStatus === 'success' && (
-                            <View className="condition">
-                                <View className="condition-title">
-                                    <Text className="condition-title-text">定制牌价</Text>
-                                </View>
+                        activeList === '我的需求' && (
+                            <ListWrapper status={mySelfDataStatus} data={mySelfData}>
                                 {
-                                    mySelfData.list.length === 0 && (
-                                        <View className="no-data">
-                                            <Text className="no-data-text">暂无牌价,请发布</Text>
+                                    dataStatus === 'success' && (
+                                        <View className="demand-list">
+
+                                            {
+                                                mySelfData.list.map(item => {
+                                                    return (
+                                                        <DemandItem data={item} map={mySelfData.key} type="self" cottonType={activeTab} />
+                                                    )
+                                                })
+                                            }
                                         </View>
                                     )
                                 }
-                                {
-                                    mySelfData.list.map(item => {
-                                        return (
-                                            <DemandItem data={item} map={mySelfData.key} type="self" />
+                            </ListWrapper>
+                        )
+                    }
+                    {
+                        activeList === '供需对接' && (
+                            <View>
+                                <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
+                                <ListWrapper status={dataStatus} data={data}>
+                                    {
+                                        dataStatus === 'success' && (
+                                            <View className="demand-list">
+
+                                                {
+                                                    data.list.map(item => {
+                                                        return (
+                                                            <DemandItem map={data.key} data={item} onHandleOffer={this.handleOffer} cottonType={activeTab} />
+                                                        )
+                                                    })
+                                                }
+                                            </View>
                                         )
-                                    })
-                                }
+                                    }
+                                </ListWrapper>
+                                <TButton className="fixed-button" onClick={this.goDemandCustom}>
+                                    <View className="submit">
+                                        <Text className="submit-text">发布需求</Text>
+                                    </View>
+                                </TButton>
                             </View>
                         )
                     }
-                    <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
-                    <ListWrapper status={dataStatus} data={data}>
-                        {
-                            dataStatus === 'success' && (
-                                <View className="demand-list">
 
-                                    {
-                                        data.list.map(item => {
-                                            return (
-                                                <DemandItem map={data.key} data={item} onHandleOffer={this.handleOffer} />
-                                            )
-                                        })
-                                    }
-                                </View>
-                            )
-                        }
-                    </ListWrapper>
 
                 </ScrollView>
-                <TButton className="fixed-button" onClick={this.goDemandCustom}>
-                    <View className="submit">
-                        <Text className="submit-text">发布需求</Text>
-                    </View>
-                </TButton>
 
                 <TModal
                     visible={loginStatus !== 'success'}
