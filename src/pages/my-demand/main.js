@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, ScrollView, TSTab, TButton, Image } from '../../ui';
-import { MainItem, ListWrapper } from '../../components';
+import { OfferItem, ListWrapper } from '../../components';
 import { getMyOfferList, getMySelfDemandList, deleteMyDemand, deleteMyOffer } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import { Tip } from '../../utils';
@@ -102,7 +102,7 @@ export default class MyDemand extends Component {
                                     <View>
                                         {
                                             activeTab === '我的需求' ? (
-                                                <MainItem border={false} data={item} map={data.key} key={item.id}>
+                                                <OfferItem  data={item} map={data.key} key={item.id}>
                                                     <View className="tool-btn-group">
                                                         <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>
                                                             <View className="btn">
@@ -124,7 +124,7 @@ export default class MyDemand extends Component {
                                                             </TButton>
                                                         </View>
                                                     </View>
-                                                </MainItem>
+                                                </OfferItem>
                                             ) : (<MyOfferItem data={item} map={data.key} key={item.id}>
                                                 <View className="tool-btn-group">
                                                     <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>

@@ -5,7 +5,7 @@ import { Component, connect } from '../../platform';
 
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading, TModal } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, MainItem, Authorization } from '../../components';
+import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
@@ -15,7 +15,6 @@ import { Tip } from '../../utils';
 @connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
     state = {
-        activeTab: '新疆棉',
         picker: {
             visible: false,
             option: []
@@ -42,36 +41,39 @@ export default class Home extends Component {
     login() {
         login()
     }
-    getData() {
-        const { activeTab } = this.state;
-        const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${activeTab}`];
+    getData(homeActiveTab) {
+        const tab = homeActiveTab || this.props.data.homeActiveTab;
+        const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${tab}`];
 
         //获取筛选条件布局
         if (layoutStatus !== 'success' && !layoutLoading) {
             asyncActionWrapper({
                 call: getFilterLayout,
-                params: { '棉花云报价类型': productTypesValue[activeTab] },
+                params: { '棉花云报价类型': productTypesValue[tab] },
                 type: 'layout',
-                key: `filter_${activeTab}`
+                key: `filter_${tab}`
             });
         }
         this.getOfferData();
     }
     getOfferData() {
-        const { activeTab, params } = this.state;
+        const { params } = this.state;
+        const { homeActiveTab } = this.props.data;
         asyncActionWrapper({
             call: getOfferList,
-            params: { '棉花云报价类型': productTypesValue[activeTab], ...params },
+            params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
             type: 'data',
-            key: `offer_list_${activeTab}`
+            key: `offer_list_${homeActiveTab}`
         });
 
     }
 
     handleTabChange = activeTab => {
-        this.setState({
-            activeTab
-        }, this.getData);
+        this.props.dispatch({
+            type: 'setHomeActiveTab',
+            payload: activeTab
+        });
+        this.getData(activeTab);
     }
 
     changePickerData = (picker) => {
@@ -147,13 +149,13 @@ export default class Home extends Component {
         this.setState({ params })
     }
     goCottonDetail(data) {
-        const { activeTab } = this.state;
-        const { key } = this.props.data[`offer_list_${activeTab}`].data;
+        const { homeActiveTab } = this.props.data;
+        const { key } = this.props.data[`offer_list_${homeActiveTab}`].data;
 
         navigate({
             routeName: 'cotton-detail', params: {
                 key,
-                cottonType:activeTab,
+                cottonType: homeActiveTab,
                 id: data[key['批号']],
                 defaultData: data,
                 type: data[key['仓单']]
@@ -161,14 +163,17 @@ export default class Home extends Component {
         });
     }
     render() {
-        const { picker, ad, news, activeTab, params, url, hasClickAddShoppingCar } = this.state;
-        const { status: loginStatus } = this.props.data.user;
-        const { status, loading, data: layoutData } = this.props.layout[`filter_${activeTab}`];
-        const { status: dataStatus, data } = this.props.data[`offer_list_${activeTab}`];
+        const { picker, ad, news, params, url, hasClickAddShoppingCar } = this.state;
+        const { data, layout } = this.props;
+        const activeTab = data.homeActiveTab;
+        const { status: loginStatus } = data.user;
+        const { status, loading, data: layoutData } = layout[`filter_${activeTab}`];
+        const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`];
         return (
             <View className="container">
+                {data.homeActiveTab}
                 <Authorization />
-                <ScrollView  className="scroll-container">
+                <ScrollView className="scroll-container">
                     <SearchTool />
                     <Swiper
                         className='swiper'
@@ -205,28 +210,22 @@ export default class Home extends Component {
                         onSubmit={this.submit}
                         ref={e => this.s = e}
                     />
-                    {
-                        dataStatus === 'loading' && <TLoading />
-                    }
-                    {
-                        dataStatus === 'success' && (
-                            <View className="list">
-                                {data.list.map((item, i) => {
-                                    return (
-                                        <TButton onClick={this.goCottonDetail.bind(this, item)} key={i} >
-                                            <MainItem
-                                                type={activeTab}
-                                                border={true}
-                                                data={item}
-                                                map={data.key}
-                                                onClickShoppingCar={this.handleClickShoppingCar}
-                                            />
-                                        </TButton>
-                                    )
-                                })}
-                            </View>
-                        )
-                    }
+                    <ListWrapper status={listStatus} data={listData}>
+                        {
+                            listStatus === 'success' && listData.list.map((item, i) => {
+                                return (
+                                    <TButton onClick={this.goCottonDetail.bind(this, item)} key={i} >
+                                        <OfferItem
+                                            data={item}
+                                            map={listData.key}
+                                            onClickShoppingCar={this.handleClickShoppingCar}
+                                        />
+                                    </TButton>
+                                )
+                            })
+                        }
+                    </ListWrapper>
+
 
                 </ScrollView>
                 <TPicker onClick={this.handlePickerChange}

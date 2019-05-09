@@ -4,6 +4,7 @@ import { Component, connect } from '../../platform';
 import { View, Text, Image, TButton } from '../../ui';
 import { deleteMyDemand, getMySelfDemandList, getOfferList } from '../../api';
 import { asyncActionWrapper, navigate } from '../../actions';
+import { productTypesLabel } from '../../constants'
 import { Tip } from '../../utils';
 import editIcon from './img/edit.png';
 import deleteIcon from './img/close.png';
@@ -65,17 +66,22 @@ export default class DemanidItem extends Component {
         });
     }
     goHome(id) {
+        const { cottonType } = this.props;
+       
         asyncActionWrapper({
             call: getOfferList,
-            params: { '云需求主键': id, '棉花云报价类型': 1 },
+            params: { '云需求主键': id, '棉花云报价类型': this.g('棉花云供需类型') },
             type: 'data',
-            key: `offer_list_新疆棉`,
+            key: `offer_list_${cottonType}`,
+        });
+        this.props.dispatch({
+            type: 'setHomeActiveTab',
+            payload: cottonType
         });
         navigate({ routeName: 'home' });
     }
     render() {
         const { g } = this;
-
         const { type = 'other', onHandleOffer, data, cottonType } = this.props;
         return (
             <View className="container">
@@ -178,7 +184,6 @@ export default class DemanidItem extends Component {
                                         </TButton>
                                     </View>
                                 </View>
-
                             )
                     }
                 </View>

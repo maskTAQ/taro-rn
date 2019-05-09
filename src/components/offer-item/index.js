@@ -3,6 +3,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Text, Image, TButton, } from '../../ui';
+import { productTypesLabel } from '../../constants';
 import { call, asyncActionWrapper } from '../../actions';
 import { addShoppingCar, getShoppingCarList } from '../../api';
 import { Tip } from '../../utils';
@@ -10,7 +11,7 @@ import './index.scss'
 import callImg from './img/call.png';
 import carImg from './img/car.png';
 const list = [
-    { label: "年度", key: "年度", includes: ['进口棉￥', '进口棉$'] },
+    { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
     { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
     { label: "等级", key: "颜色级" },
     { label: "长度", key: "长度" },
@@ -31,7 +32,7 @@ const list = [
         noInclude: ['地产棉', '进口棉￥', '进口棉$']
     }];
 @connect(({ data }) => ({ user: data.user }))
-export default class MainItem extends Component {
+export default class OfferItem extends Component {
     static options = {
         addGlobalClass: true
     }
@@ -73,28 +74,34 @@ export default class MainItem extends Component {
     }
     render() {
         const { g, split } = this;
-        const { map, data } = this.props;
-        const { border = true, showShoppinCar, type = '新疆棉' } = this.props;
+        const { showShoppinCar } = this.props;
         let key = '仓库';
+        let pihao = '批号'
+        let type = productTypesLabel[g('棉花云报价类型')];
         if (['地产棉', '进口棉￥'].includes(type)) {
             key = '目的港';
+            pihao = '提单号';
         }
         const offerType = g('报价类型');
         return (
-            <View className={classnames("container", { border: border })}>
+            <View className="container">
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">批号({g('批号')}) {g('产地')} {g('类型')}</Text>
+                            <Text className="title">{pihao}({g(pihao)}) {g('产地')} {g('类型')}</Text>
                         </View>
                         <View className="top-right">
-                            <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
+                            {
+                                /*
+                                 <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
+                                */
+                            }
                         </View>
                     </View>
                     {
                         type === '进口棉￥' && (
                             <View className="peie-box">
-                                <Text className="peie">自带配额{g('配额')}%</Text>
+                                <Text className="peie">自带配额{g('配额比')}%</Text>
                             </View>
                         )
                     }
@@ -152,33 +159,33 @@ export default class MainItem extends Component {
                         </View>
                     </View>
                     <View className="offer">
-                    {
-                        offerType === '一口价' ? (
-                            <View className="offer-left">
-                                <Text className="ykj-text">一口价</Text>
-                            </View>
-                        ) :
-                            (
+                        {
+                            offerType === '一口价' ? (
                                 <View className="offer-left">
-
-                                    <View className="offer-left-top">
-                                        <Text className="jc-label">{g('基差类型')}</Text>
-                                        <Text className="jc-value">{g('基差值')}</Text>
-                                    </View>
-                                    <View className="offer-left-bottom">
-                                        <Text className="jc-label">基   差</Text>
-                                        <Text className="jc-value">{g('基差值升贴水')}</Text>
-                                    </View>
+                                    <Text className="ykj-text">一口价</Text>
                                 </View>
+                            ) :
+                                (
+                                    <View className="offer-left">
 
-                            )
-                    }
-                        
+                                        <View className="offer-left-top">
+                                            <Text className="jc-label">{g('基差类型')}</Text>
+                                            <Text className="jc-value">{g('基差值')}</Text>
+                                        </View>
+                                        <View className="offer-left-bottom">
+                                            <Text className="jc-label">基   差</Text>
+                                            <Text className="jc-value">{g('基差值升贴水')}</Text>
+                                        </View>
+                                    </View>
+
+                                )
+                        }
+
                         <View className="offer-right">
                             <View className="row-right-bottom">
                                 <View className="row-right-row-left">
                                     <Text className="price">￥{g('报价')}</Text>
-                                    <Text className="weight">{g('重量')}</Text>
+                                    <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                 </View>
                                 <View className="btn-group">
                                     <TButton onClick={() => this.call(g('电话'))}>

@@ -3,7 +3,7 @@ import React from 'react';
 import { Component } from '../../platform';
 import update from 'immutability-helper';
 
-import { MainItem } from '../../components';
+import { OfferItem } from '../../components';
 import { View, Text, TTag, TButton, Visible } from '../../ui'
 import './item.scss';
 import checkedImg from '../../img/checked.png';
@@ -38,7 +38,7 @@ export default class Item extends Component {
                     </TButton>
                 </View>
                 <View className='content'>
-                    <MainItem data={data} map={map} showShoppinCar={false} />
+                    <OfferItem data={data} map={map} showShoppinCar={false} />
                 </View>
             </View>
         )

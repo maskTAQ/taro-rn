@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, ScrollView, TTabs, TTabPane, TButton, Image } from '../../ui';
-import { MainItem, ListWrapper } from '../../components';
+import { OfferItem, ListWrapper } from '../../components';
 import { getMyCloudOfferList ,deleteMyCloudOffer} from '../../api';
 import { asyncActionWrapper } from '../../actions';
 
@@ -81,7 +81,7 @@ export default class MyCloudOffer extends Component {
                         {
                             my_offer_list_status === 'success' && my_offer_list_data.list.map((item) => {
                                 return (
-                                    <MainItem border={false} data={item} map={my_offer_list_data.key} key={item.id}>
+                                    <OfferItem  data={item} map={my_offer_list_data.key} key={item.id}>
                                         <View className="tool-btn-group">
                                             <TButton onClick={this.delete.bind(this,item[my_offer_list_data.key['主键']])}>
                                                 <View className="btn">
@@ -103,7 +103,7 @@ export default class MyCloudOffer extends Component {
                                                 </TButton>
                                             </View>
                                         </View>
-                                    </MainItem>
+                                    </OfferItem>
                                 )
                             })
                         }

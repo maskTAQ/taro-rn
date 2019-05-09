@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Component } from '../../platform';
 
 import { View, Text, TButton, } from '../../ui';
@@ -29,9 +30,9 @@ const list = [
     }];
 
 const descList = [
-    { label: "轧花厂", key: "轧花厂" },
+    { label: "轧花厂", key: "加工单位" },
     { label: "库存", key: "仓库" },
-    { label: "供应商", key: "供应商" },
+    { label: "供应商", key: "公司" },
     {
         label: "联系供应商", key: "联系供应商"
     }
@@ -59,9 +60,16 @@ export default class Item extends Component {
             return l;
         }
     }
+    formatTime(t){
+        if(String(t).length>=10){
+            return moment(t*1000).format('YYYY/MM/DD HH:mm:ss')
+        }
+        return ''
+    }
     render() {
         const { g } = this;
-        const { cottonType, map } = this.props;
+        const { cottonType, map ,data} = this.props;
+        console.log( map ,data)
         const offerType = g('报价类型');
         return (
             <View className="container">
@@ -74,7 +82,7 @@ export default class Item extends Component {
                                         <Text className="title">报价号({g('报价号')})</Text>
                                     ) :
                                     (
-                                        <Text className="title">批号({g('报价号')}) {g('产地')} {g('类型')}</Text>
+                                        <Text className="title">批号({g('加工批号')}) {g('产地')} {g('类型')}</Text>
                                     )
                             }
 
@@ -82,7 +90,7 @@ export default class Item extends Component {
                         {
                             !['进口棉￥', '进口棉$'].includes(cottonType) && (
                                 <View className="top-right">
-                                    <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
+                                    <Text className="time">编号({g('质量结果证书编号')}) {this.formatTime(g('发布日期'))}</Text>
                                 </View>
                             )
                         }
@@ -135,7 +143,7 @@ export default class Item extends Component {
                     <View className="bottom">
                         <View className="origin">
                             <Text className="origin-text">{g('产地')} {g('类型')}</Text>
-                            <Text className="origin-text">{g('发布日期')}</Text>
+                            <Text className="origin-text">{this.formatTime(g('发布日期'))}</Text>
                         </View>
                         {
                             cottonType === '进口棉￥' && (

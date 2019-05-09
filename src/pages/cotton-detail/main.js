@@ -41,7 +41,11 @@ export default class CottonDetail extends Component {
     }
     getData() {
         const { activeTab } = this.state;
-        const { id } = this.props.navigation.state.params;
+        const { id,cottonType } = this.props.navigation.state.params;
+        //(进口棉，地产棉)详细列表信息 不需要去获取一检数据，数据都从列表信息里面获取
+        if(['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)){
+            return
+        }
         if (tabList.indexOf(activeTab) === 0) {
             //'65551171001'
             getSpotIndicators({
