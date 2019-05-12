@@ -28,11 +28,12 @@ export default class DemandCustom extends Component {
     }
     getData() {
         const { activeTab } = this.state;
+        const {id} = this.props.data.user.data;
         const { status, loading } = this.props.layout[`demand_custom_${activeTab}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getDemandCustomLayout,
-                params: { '棉花云供需类型': productTypesValue[activeTab] },
+                params: { '棉花云供需类型': productTypesValue[activeTab],'用户ID':id },
                 type: 'layout',
                 key: `demand_custom_${activeTab}`
             });

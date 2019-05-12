@@ -1,5 +1,6 @@
 @import '../common.scss';
 @import '../color.scss';
+
 .container {
     height: 100%;
     padding-bottom: 50px;
@@ -8,15 +9,37 @@
 }
 
 //btn-group样式
-.btn-group{
+.btn-group {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px;
     background: #fff;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
-@include item;
+
+.button {
+    padding: 0 20px;
+    height: 80px;
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    background: $main;
+}
+
+.button-icon {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.button-text {
+    font-size: 28px;
+    color: #fff;
+}
+
 .link-btn-group {
     padding: 0 20px;
     padding-bottom: 160px;

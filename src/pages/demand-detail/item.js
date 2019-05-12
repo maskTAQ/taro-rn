@@ -3,6 +3,7 @@ import React from 'react';
 import { Component } from '../../platform';
 
 import { View, Text, TTag, TButton, Visible } from '../../ui'
+import { DemandItem } from '../../components'
 import config from '../../config';
 import './item.scss';
 import { navigate } from '../../actions';
@@ -61,42 +62,14 @@ export default class Item extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '-';
+        return data[map[k]] || '';
     }
     render() {
-        const { g } = this;
+        const { g, map, data } = this;
         return (
             <View className='item'>
-                <View className='item-title'>
-                    <View className='item-title-left'>
-                        <Text className='item-name'>需求编号</Text>
-                        <Text className='item-value'>({g('需求号')})</Text>
-                        <Text className='item-value'>({g('类型')})</Text>
-                    </View>
-                    <View className='item-title-right'>
-                        <Text className='item-time'>{g('数量')}</Text>
-                    </View>
-                </View>
-
-                <View className='item-info-list'>
-                    {
-                        list.map((item, index) => {
-                            const { label, key } = item;
-                            return (
-                                <View className="item-info-item">
-                                    <View className='item-info-item-content'>
-                                        <Text className='item-info-item-title'>{label}</Text>
-                                        <Text className='item-info-item-value'>{g(key)}</Text>
-                                    </View>
-                                    <Visible show={index !== list.length - 1}>
-                                        <View className='item-info-item-border'></View>
-                                    </Visible>
-                                </View>
-                            )
-                        })
-                    }
-                </View>
-
+                <DemandItem map={map} data={data} co>
+                </DemandItem>
                 <View className='item-desc-list'>
                     {
                         descList.map(item => {

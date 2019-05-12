@@ -47,7 +47,7 @@ export default class OfferItem extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '-';
+        return data[map[k]] || '';
     }
     handleClickShoppingCar = (v) => {
         const { data } = this.props.user;
@@ -188,7 +188,7 @@ export default class OfferItem extends Component {
                                     <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                 </View>
                                 <View className="btn-group">
-                                    <TButton onClick={() => this.call(g('电话'))}>
+                                    <TButton onClick={() => this.call(g('手机号'))}>
                                         <View className="btn">
                                             <View className="item-icon-box">
                                                 <Image className="btn-icon" src={callImg} />

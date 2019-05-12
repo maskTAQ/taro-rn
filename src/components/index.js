@@ -4,6 +4,7 @@ export { default as SearchTool } from './serch-tool';
 export { default as NoticeTool } from './notice-tool';
 export { default as SearchCondition } from './search-condition';
 export { default as OfferItem } from './offer-item';
+export { default as DemandItem } from './demand-item';
 
 export { default as Select } from './select';
 

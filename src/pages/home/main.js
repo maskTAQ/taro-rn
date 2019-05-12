@@ -148,10 +148,8 @@ export default class Home extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-    goCottonDetail(data) {
+    goCottonDetail(data,key) {
         const { homeActiveTab } = this.props.data;
-        const { key } = this.props.data[`offer_list_${homeActiveTab}`].data;
-
         navigate({
             routeName: 'cotton-detail', params: {
                 key,
@@ -171,7 +169,6 @@ export default class Home extends Component {
         const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`];
         return (
             <View className="container">
-                {data.homeActiveTab}
                 <Authorization />
                 <ScrollView className="scroll-container">
                     <SearchTool />
@@ -214,7 +211,7 @@ export default class Home extends Component {
                         {
                             listStatus === 'success' && listData.list.map((item, i) => {
                                 return (
-                                    <TButton onClick={this.goCottonDetail.bind(this, item)} key={i} >
+                                    <TButton onClick={this.goCottonDetail.bind(this, item,listData.key)} key={i} >
                                         <OfferItem
                                             data={item}
                                             map={listData.key}

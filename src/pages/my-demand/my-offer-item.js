@@ -31,7 +31,7 @@ export default class MyOfferItem extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '-';
+        return data[map[k]] || '';
     }
     render() {
         const { g } = this;

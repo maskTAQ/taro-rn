@@ -11,9 +11,8 @@ import Card from './card';
 import Item from './item';
 import { Tip } from '../../utils';
 import './main.scss';
-import mobileImg from './img/mobile.png';
-import scImg from './img/sc.png';
-import { navigate, call, asyncActionWrapper } from '../../actions';
+import carImg from './img/car.png';
+import { navigate, asyncActionWrapper } from '../../actions';
 
 const tabList = ["现货指标", "仓单证书"];
 const includeList = ['新疆棉', '拍储棉'];
@@ -41,9 +40,9 @@ export default class CottonDetail extends Component {
     }
     getData() {
         const { activeTab } = this.state;
-        const { id,cottonType } = this.props.navigation.state.params;
+        const { id, cottonType } = this.props.navigation.state.params;
         //(进口棉，地产棉)详细列表信息 不需要去获取一检数据，数据都从列表信息里面获取
-        if(['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)){
+        if (['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)) {
             return
         }
         if (tabList.indexOf(activeTab) === 0) {
@@ -98,6 +97,7 @@ export default class CottonDetail extends Component {
     getFullConfig() {
         const { list, defaultData, key } = this.state;
         const { key: k } = this.props.navigation.state.params;
+        //console.log(k,'defaultData');//
         return {
             fullData: Object.assign({}, defaultData, list[0]),
             fullKey: Object.assign({}, k, key)
@@ -131,17 +131,21 @@ export default class CottonDetail extends Component {
                     }
                     <View className="btn-group">
                         <TButton onClick={this.goShoppingCar}>
-                            <View className='btn'>
-                                <Image className='btn-icon' src={scImg}></Image>
-                                <Text className='btn-text'>收藏</Text>
+                            <View className='button'>
+                                <Image className='button-icon' src={carImg}></Image>
+                                <Text className='button-text'>加入购物车</Text>
                             </View>
                         </TButton>
-                        <TButton onClick={() => call('1388888888')}>
-                            <View className='btn'>
-                                <Image className='btn-icon' src={mobileImg}></Image>
-                                <Text className='btn-text'>联系供应商</Text>
-                            </View>
-                        </TButton>
+                        {
+                            /*
+                             <TButton onClick={() => call(fullData[fullKey['手机号']])}>
+                                <View className='btn'>
+                                 <Image className='btn-icon' src={mobileImg}></Image>
+                                     <Text className='btn-text'>联系供应商</Text>
+                                 </View>
+                             </TButton>
+                            */
+                        }
                     </View>
                 </ScrollView>
                 <FixedTool />

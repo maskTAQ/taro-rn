@@ -208,11 +208,11 @@ const cardList = [
         key: 't5',
         list: [
             {
-                key: '最小值',
+                key: '断裂比强度最小值',
                 label: '最小值'
             },
             {
-                key: '最大值',
+                key: '断裂比强度最大值',
                 label: '最大值'
             },
             {
@@ -235,7 +235,7 @@ const cardList = [
 export default class Card extends Component {
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '-';
+        return data[map[k]] || '';
     }
     hasValue = v => {
         if (Number(v) === 0) {

@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { Component, connect } from '../../platform';
-import update from 'immutability-helper';
 
 import { View, TButton, Text, ScrollView, TModal, TSTab } from '../../ui';
-import { ListWrapper, CapsuleChoose } from '../../components';
+import { ListWrapper, CapsuleChoose, DemandItem } from '../../components';
 import { productTypesValue } from '../../constants';
 import { getDemandList, getMySelfDemandList } from '../../api';
 
-import DemandItem from './demand-item';
+import SelfPart from './self-part';
+import AllPart from './all-part';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
-
 
 const tabList = ['全部', '新疆棉', '地产棉', '进口棉$', '进口棉￥'];
 
@@ -96,6 +95,9 @@ export default class Demand extends Component {
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_demand_list;
         const { status: loginStatus } = this.props.data.user;
+        const g = k => {
+            return '-';
+        }
         return (
             <View className="container">
                 <ScrollView>
@@ -109,8 +111,11 @@ export default class Demand extends Component {
 
                                             {
                                                 mySelfData.list.map(item => {
+
                                                     return (
-                                                        <DemandItem data={item} map={mySelfData.key} type="self" cottonType={activeTab} />
+                                                        <DemandItem data={item} map={mySelfData.key} cottonType={activeTab}>
+                                                            <SelfPart data={item} map={mySelfData.key} cottonType={activeTab} dispatch={this.props.dispatch} />
+                                                        </DemandItem>
                                                     )
                                                 })
                                             }
@@ -132,7 +137,9 @@ export default class Demand extends Component {
                                                 {
                                                     data.list.map(item => {
                                                         return (
-                                                            <DemandItem map={data.key} data={item} onHandleOffer={this.handleOffer} cottonType={activeTab} />
+                                                            <DemandItem map={data.key} data={item} cottonType={activeTab}>
+                                                                <AllPart map={data.key} data={item} cottonType={activeTab} onHandleOffer={this.handleOffer} />
+                                                            </DemandItem>
                                                         )
                                                     })
                                                 }

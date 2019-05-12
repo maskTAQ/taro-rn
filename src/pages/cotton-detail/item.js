@@ -44,7 +44,7 @@ export default class Item extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '-';
+        return data[map[k]] || '';
     }
     goMapDetail = () => {
         navigate({ routeName: 'map-detail' });
@@ -68,8 +68,7 @@ export default class Item extends Component {
     }
     render() {
         const { g } = this;
-        const { cottonType, map ,data} = this.props;
-        console.log( map ,data)
+        const { cottonType} = this.props;
         const offerType = g('报价类型');
         return (
             <View className="container">
@@ -88,11 +87,11 @@ export default class Item extends Component {
 
                         </View>
                         {
-                            !['进口棉￥', '进口棉$'].includes(cottonType) && (
-                                <View className="top-right">
-                                    <Text className="time">编号({g('质量结果证书编号')}) {this.formatTime(g('发布日期'))}</Text>
-                                </View>
-                            )
+                            // !['进口棉￥', '进口棉$'].includes(cottonType) && (
+                            //     <View className="top-right">
+                            //         <Text className="time">编号({g('质量结果证书编号')}) {this.formatTime(g('发布日期'))}</Text>
+                            //     </View>
+                            // )
                         }
 
                     </View>
