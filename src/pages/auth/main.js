@@ -6,13 +6,13 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
+import { View, TButton, Text, ScrollView } from '../../ui';
 import { StatusBox } from '../../components';
 import Card from './card';
-import { authInfo, getAuthInfo } from '../../api';
+import { authInfo, getAuthInfo, getKFList, addKF, deleteKF } from '../../api';
 import './main.scss';
 import './component.scss';
-import { navigate, login, asyncActionWrapper } from '../../actions';
+import { asyncActionWrapper } from '../../actions';
 import { authStatusMap } from '../../constants';
 import { Tip } from '../../utils';
 
@@ -50,12 +50,14 @@ const topList = [
 ];
 const kfInfoGroup = [
     {
-        label: '客服名称'
+        key: "客服名称",
+        label: "客服名称"
     },
     {
-        label: '客服电话'
+        key: "客服电话",
+        label: "客服电话"
     }
-]
+];
 const imgList = [
     {
         label: "营业执照",
@@ -75,8 +77,29 @@ export default class Auth extends Component {
         isAuth: false,
         hasClickAuthBtn: false,
         params: {},
-        kfInfoList: [...kfInfoGroup]
+        newAddKfInfo: {},
+        kfInfoList: kfInfoGroup,
     };
+    componentWillMount() {
+        const { user, kfList } = this.props.data;
+        const { status, data } = kfList;
+        if (!['loading', 'success'].includes(status)) {
+            asyncActionWrapper({
+                call: getKFList,
+                params: { '用户ID': user.data.id },
+                type: 'data',
+                key: 'kfList'
+            });
+        }
+    }
+    getKFList = () => {
+        asyncActionWrapper({
+            call: getKFList,
+            params: { '用户ID': this.props.data.user.data.id },
+            type: 'data',
+            key: 'kfList'
+        });
+    }
     startAuth = () => {
         this.setState({
             hasClickAuthBtn: true,
@@ -87,7 +110,6 @@ export default class Auth extends Component {
         const { id } = this.props.data.user.data;
         authInfo({ ...params, 'user_id': id })
             .then(res => {
-                console.log('认证成功');
                 asyncActionWrapper({
                     call: getAuthInfo,
                     params: { 'user_id': id },
@@ -95,16 +117,10 @@ export default class Auth extends Component {
                     key: 'auth'
                 });
                 this.setState({
-                    hasClickAuthBtn:false
+                    hasClickAuthBtn: false
                 });
                 Tip.success('提交成功');
             })
-    }
-    handleAddKf = () => {
-        const next = [...this.state.kfInfoList];
-        this.setState({
-            kfInfoList: next.concat(kfInfoGroup)
-        });
     }
     handleChange = ({ key, value }) => {
         this.setState(update(this.state, {
@@ -115,15 +131,59 @@ export default class Auth extends Component {
             }
         }));
     }
+    computedKFList() {
+        const { status, data } = this.props.data.kfList;
+        if (status === "success") {
+            const { key, list } = data;
+            const result = [];
+            list.forEach(item => {
+                result.push({
+                    '客服名称': item[key["客服名称"]],
+                    '客服电话': item[key["客服电话"]],
+                    id: item[key["主键"]]
+                });
+            });
+            return result;
+        } else {
+            return [];
+        }
+    }
+    handleKfInfoChange({ key, value }) {
+        const next = { ...this.state.newAddKfInfo };
+        next[key] = value;
+        this.setState({
+            newAddKfInfo: next
+        })
+    }
+    handleAddKf() {
+        const { id } = this.props.data.user.data;
+        addKF({
+            '用户ID': id,
+            ...this.state.newAddKfInfo
+        }).then(res => {
+            this.getKFList();
+            Tip.success("添加成功");
+        });
+    }
+    deleteKf(i) {
+        const { id } = this.props.data.user.data;
+        deleteKF({
+            '用户ID': id,
+            "客服列表的主键": i
+        }).then(res => {
+            this.getKFList();
+            Tip.success("删除成功成功");
+        });
+    }
     render() {
-        const { isAuth, hasClickAuthBtn, kfInfoList, params } = this.state;
-        const { status, data } = this.props.data.auth;//auth, auth: { state },
+        const { isAuth, hasClickAuthBtn, kfInfoList, params, newAddKfInfo } = this.state;
+        const { auth, kfList } = this.props.data;
+        const { status, data } = auth;//auth, auth: { state },
         const authStatusClassName = isAuth ? 'has-auth' : hasClickAuthBtn ? 'auth' : 'no-auth';
         const state = data ? +data.state : NaN;
         const showCard = hasClickAuthBtn || state === 2;
         const value = state === 2 ? data : params;
         return (
-
             <View className="container">
                 <StatusBox status={status}>
                     {
@@ -154,7 +214,15 @@ export default class Auth extends Component {
                                     showCard && (
                                         <View>
                                             <Card option={topList} title="认证信息" type="input" data={value} state={state} onChange={this.handleChange} />
-                                            <Card onRequestAddKf={this.handleAddKf} option={kfInfoList} title="客服信息" type="kf" data={value} state={state} onChange={this.handleChange} />
+                                            <Card
+                                                onRequestAddKf={this.handleAddKf}
+                                                onRequestDeleteKf={this.deleteKf}
+                                                option={kfInfoList}
+                                                kfList={this.computedKFList()}
+                                                title="客服信息" type="kf"
+                                                data={newAddKfInfo}
+                                                state={state}
+                                                onChange={this.handleKfInfoChange} />
                                             <Card option={imgList} title="图片信息" type="img" data={value} state={state} onChange={this.handleChange} />
                                         </View>
                                     )

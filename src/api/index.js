@@ -119,6 +119,19 @@ export function getExcelList(params) {
 export function publishExcelData(params) {
     return get('CloudQuotePC', params);
 }
+
+//获取客服列表
+export function getKFList(params) {
+    return get('KFList', params);
+}
+//添加客服
+export function addKF(params) {
+    return get('KFAdd', params);
+}
+//删除客服 KFDelete
+export function deleteKF(params) {
+    return get('KFDelete', params);
+}
 export {
     login
 }

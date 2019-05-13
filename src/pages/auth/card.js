@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 
 import { TButton, View, Text, TInput, Image } from '../../ui';
 import { uploadImg } from '../../api';
+import closeIcon from './img/close.png';
 import './card.scss'
 import { Tip } from '../../utils';
 
@@ -23,18 +24,18 @@ export default class Card extends Component {
                     Tip.success('上传成功');
                 })
         }
-
     }
     handleInputChange = (key, value) => {
         this.props.onChange({ key, value });
     }
     render() {
-        const { option = [], title, type, onRequestAddKf, state, data, host } = this.props;
+        console.log(this.props, 'card');
+        const { option = [], title, type, onRequestAddKf, state, data, host, kfList, onRequestDeleteKf } = this.props;
         const hasInput = ['input', 'kf'].includes(type);
         const isImg = type === 'img';
-        const showInput = hasInput && [0, 3].includes(state);
-        const showText = hasInput && state === 2;
-        const showAddKf = type === 'kf' && [0, 3].includes(state);
+        const showInput = hasInput && ([0, 3].includes(state) || type === 'kf');
+        const showText = hasInput && state === 2 && type !== 'kf';
+        const showAddKf = type === 'kf';
         return (
             <View className="container">
                 <View className="title">
@@ -42,6 +43,32 @@ export default class Card extends Component {
                         {title}
                     </Text>
                 </View>
+                {
+                    type === 'kf' && (
+                        <View className="kf-list" v-if="type === 'kf'">
+
+                            {
+                                kfList.map(item => {
+                                    const { id } = item;
+                                    return (
+                                        <View key={id} className="kf-item">
+                                            <View className="kf-item-content">
+                                                <Text className="kf-item-text">客服名称：{item['客服名称']}</Text>
+                                                <Text className="kf-item-text ml">客服电话：{item['客服电话']}</Text>
+                                            </View>
+                                            <TButton onClick={() => {
+                                                console.log(id, 'd');
+                                                this.props.onRequestDeleteKf(id);
+                                            }}>
+                                                <Image className="kf-item-close" src={closeIcon} />
+                                            </TButton>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </View>
+                    )
+                }
                 <View className={classnames({
                     'input-content': hasInput,
                     'img-content': type === 'img'

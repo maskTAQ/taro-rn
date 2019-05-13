@@ -6,7 +6,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
-import { getAuthInfo, getMobile } from '../../api';
+import { getAuthInfo, getMobile,getKFList } from '../../api';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -124,6 +124,12 @@ export default class User extends Component {
                     params: { 'user_id': userData.id },
                     type: 'data',
                     key: 'auth'
+                });
+                asyncActionWrapper({
+                    call: getKFList,
+                    params: { '用户ID': userData.id },
+                    type: 'data',
+                    key: 'kfList'
                 });
             }
         }
