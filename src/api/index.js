@@ -109,7 +109,7 @@ export function uploadExcelData(params) {
 }
 //获取excel列表进度 
 export function getUpdateGetExcelListPer(params) {
-    return get('PCUpdateGetExcelListPer', params,{loading:false});
+    return get('PCUpdateGetExcelListPer', params, { loading: false });
 }
 //获取excel列表
 export function getExcelList(params) {
@@ -131,6 +131,18 @@ export function addKF(params) {
 //删除客服 KFDelete
 export function deleteKF(params) {
     return get('KFDelete', params);
+}
+//获取棉花分类列表
+export function getCottonArticleTypeList() {
+    return get('ArticleTypeList', null, { loading: false });
+}
+//根据分类获取文章列表
+export function getCottonArticleList(params) {
+    return get('ArticleList', params, { loading: false });
+}
+//根据文章内容
+export function getArticleContent(params) {
+    return get('ArticleInfo', params, { loading: false });
 }
 export {
     login

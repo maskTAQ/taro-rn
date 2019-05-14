@@ -88,7 +88,7 @@ export default class OfferItem extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">{pihao}({g(pihao)}) {g('产地')} {g('类型')}</Text>
+                            <Text className="title">{pihao}({g('加工'+pihao)}) {g('产地')} {g('类型')}</Text>
                         </View>
                         <View className="top-right">
                             {

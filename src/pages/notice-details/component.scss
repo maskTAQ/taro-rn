@@ -11,8 +11,7 @@
 }
 /*postcss-pxtransform rn eject enable*/
 
-t-input {
-    flex: 1;
+.share-button::after {
+    border: none;
 }
-
 /*postcss-pxtransform rn eject disable*/

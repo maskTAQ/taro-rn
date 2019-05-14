@@ -78,3 +78,14 @@
     justify-content: center;
     padding: 15px 0; // height: 100px;
 }
+.share-button {
+   
+    @extend .flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    background: none;
+    border-color:  red;
+}

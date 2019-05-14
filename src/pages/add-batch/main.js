@@ -26,6 +26,9 @@ export default class AddBatch extends Component {
         const { params } = this.props.navigation.state;
         this.getData(params);
     }
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
+    }
     getData(params) {
         const { id } = this.props.data.user.data;
         const { status, loading } = this.props.layout[`offer_${params.type}`];

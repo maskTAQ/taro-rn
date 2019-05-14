@@ -1,9 +1,12 @@
 
 
 import React from 'react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 
-import { View, ScrollView, TTabs, TTabPane } from '../../ui';
+import { View,TSTab } from '../../ui';
+import { ListWrapper } from '../../components';
+import { getCottonArticleTypeList, getCottonArticleList } from '../../api';
+import { asyncActionWrapper } from '../../actions';
 import Item from './item';
 import './main.scss';
 
@@ -16,40 +19,73 @@ const item = {
     readme: '2313',
 };
 
-
+@connect(({ layout }) => ({ layout }))
 export default class CottonInformation extends Component {
-
-
+    componentWillMount() {
+        this.getCottonArticleTypeList();
+        this.getCottonArticleList();
+    }
     state = {
-        list: [item, item, item, item, item],
-        current: 0,
+        activeTab: '全部',
+        status: 'init',
+        data: null
     };
-    
-    handleClick(current) {
+    getCottonArticleTypeList() {
+        const { status, loading } = this.props.layout.cotton_type;
+        if (status !== 'success' && !loading) {
+            asyncActionWrapper({
+                call: getCottonArticleTypeList,
+                type: 'layout',
+                key: `cotton_type`
+            });
+        }
+    }
+    getCottonArticleList() {
         this.setState({
-            current
+            status: 'loading',
+            data: null
         });
+        const { activeTab } = this.state;
+        getCottonArticleList({ '分类': activeTab === '全部' ? '' : activeTab })
+            .then(res => {
+                this.setState({
+                    status: 'success',
+                    data: res
+                });
+            })
+            .catch(e => {
+                this.setState({
+                    status: 'error',
+                    msg: e
+                });
+            })
+    }
+    handleTabChange(activeTab) {
+        this.setState({
+            activeTab
+        }, this.getCottonArticleList);
+    }
+    getTabList() {
+        const { status, data } = this.props.layout.cotton_type;
+        if (status === 'success') {
+            const { key, list } = data;
+            return ['全部'].concat(list.map(item => item[key['分类']]));
+        } else {
+            return ['全部'];
+        }
     }
     render() {
-        const { list, current } = this.state;
-        const tabList = ["全部", "分类一", '分类二', '分类三', '分类四', '分类五'];
+        const { activeTab, status, data } = this.state;
         return (
             <View className='container'>
-                <TTabs scroll={true} current={current} tabList={tabList} onClick={this.handleClick}>
+                <TSTab list={this.getTabList()} active={activeTab} onTabChange={this.handleTabChange} />
+                <ListWrapper status={status} data={data}>
                     {
-                        tabList.map((item, index) => {
-                            return (
-                                <TTabPane tabLabel={item} current={current} index={index}>
-                                    <ScrollView>
-                                        {list.map((item, index) => {
-                                            return <Item item={item} index={index} />
-                                        })}
-                                    </ScrollView>
-                                </TTabPane>
-                            )
+                        status === 'success' && data.list.map((item, index) => {
+                            return <Item data={item} map={data.key} key={index} />
                         })
                     }
-                </TTabs>
+                </ListWrapper>
             </View>
         )
     }
