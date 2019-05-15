@@ -1,13 +1,6 @@
 @import '../color.scss';
 @import '../../platform.scss';
 
-.tool-item{
-    @extend .flex;
-    flex-direction: column;
-    align-items: center;
-    flex:1;
-    height: 100%;
-}
 
 /*postcss-pxtransform rn eject enable*/
 .getPhoneNumber{

@@ -1,16 +1,17 @@
 import Taro, { Component } from '@tarojs/taro';
 export { default as Tip } from './tip';
-export {default as MQTT} from './paho-mqtt.js';
-export {default as Public} from './public';
-export function scan(){
+export { default as MQTT } from './paho-mqtt.js';
+export { default as Public } from './public';
+export { default as Storage } from './Storage';
+export function scan() {
     // return new Promise((resolve,reject)=>{
     //     Taro.scanCode({
     //         onlyFromCamera:true
     //     })
     // })
     return Taro.scanCode({
-        onlyFromCamera:true
-    }).then(res=>JSON.parse(res.result))
+        onlyFromCamera: true
+    }).then(res => JSON.parse(res.result))
 }
 const createdClientId = function () {
     var timestamp = Date.parse(new Date());
@@ -29,4 +30,4 @@ const createdClientId = function () {
 }
 
 const clientId = createdClientId();
-export {clientId}
+export { clientId }

@@ -6,7 +6,7 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 
 import { View, Image, TButton, Text, ScrollView, TModal } from '../../ui';
-import { getAuthInfo, getMobile,getKFList } from '../../api';
+import { getAuthInfo, getMobile, getKFList } from '../../api';
 import rightImg from '../../img/right.png';
 import publishImg from '../../img/publish.png';
 import mobileImg from '../../img/mobile.png';
@@ -32,11 +32,13 @@ const toolList = [
     },
     {
         icon: historyImg,
-        label: '历史'
+        label: '历史',
+        routeName: 'history'
     },
     {
         icon: jsqImg,
-        label: '升贴水'
+        label: '升贴水',
+        routeName: 'sts'
     },
 ];
 const listTop = [
@@ -178,6 +180,24 @@ export default class User extends Component {
                 return authData ? authStatusMap[authData.state] : '无数据';
         }
     }
+    getCompanyName() {
+        const { status: authStatus, data: authData } = this.props.data.auth;
+        switch (authStatus) {
+            case 'init':
+                return '点我获取认证信息';
+            case 'loading':
+                return '获取中...';
+            case 'error':
+                return '获取失败';
+            default:
+                return authData ? authData.store_name : '';
+        }
+    }
+    go(routeName) {
+        if (routeName) {
+            navigate({ routeName });
+        }
+    }
     render() {
         const { mobile } = this.state;
         const { status: loginStatus, data: userData = {} } = this.props.data.user;
@@ -190,7 +210,7 @@ export default class User extends Component {
                             <Image className="user-icon" src={userData.img} />
                             <View className="user-info-detail">
                                 <View className="auth">
-                                    <Text className="company-name">苏州易贸通进出口有限公司</Text>
+                                    <Text className="company-name">{this.getCompanyName()}</Text>
                                     <TButton onClick={this.goAuth}>
                                         <View className="auth-btn">
                                             <Text className="auth-text">{this.getAuthLabel()}</Text>
@@ -203,12 +223,17 @@ export default class User extends Component {
                         <View className="tool">
                             {
                                 toolList.map(item => {
-                                    const { icon, label } = item;
+                                    const { icon, label, routeName } = item;
                                     return (
-                                        <View className="tool-item">
-                                            <Image src={icon} className="tool-item-icon" />
-                                            <Text className="tool-item-label">{label}</Text>
+                                        <View className="tool-item-wrapper">
+                                            <TButton onClick={this.go.bind(this, routeName)}>
+                                                <View className="tool-item">
+                                                    <Image src={icon} className="tool-item-icon" />
+                                                    <Text className="tool-item-label">{label}</Text>
+                                                </View>
+                                            </TButton>
                                         </View>
+
                                     )
                                 })
                             }

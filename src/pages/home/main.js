@@ -10,7 +10,7 @@ import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarL
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
-import { Tip } from '../../utils';
+import { Tip, Storage } from '../../utils';
 
 @connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
@@ -148,17 +148,35 @@ export default class Home extends Component {
     handleFieldChange = params => {
         this.setState({ params })
     }
-    goCottonDetail(data,key) {
+    saveToHistory(id) {
+        return Storage.get('history')
+            .then(res => {
+                const prev = JSON.parse(res || '[]');
+                if (!prev.includes(id)) {
+                    prev.push(id);
+                }
+                Storage.setJson('history', prev);
+                return Promise.resolve();
+            })
+            .catch(e => {
+                return Promise.resolve();
+            })
+    }
+    goCottonDetail(data, key) {
         const { homeActiveTab } = this.props.data;
-        navigate({
-            routeName: 'cotton-detail', params: {
-                key,
-                cottonType: homeActiveTab,
-                id: data[key['批号']],
-                defaultData: data,
-                type: data[key['仓单']]
-            }
-        });
+        this.saveToHistory(data[key['主键']])
+            .then(() => {
+                navigate({
+                    routeName: 'cotton-detail', params: {
+                        key,
+                        cottonType: homeActiveTab,
+                        id: data[key['批号']],
+                        defaultData: data,
+                        type: data[key['仓单']]
+                    }
+                });
+            });
+
     }
     render() {
         const { picker, ad, news, params, url, hasClickAddShoppingCar } = this.state;
@@ -211,7 +229,7 @@ export default class Home extends Component {
                         {
                             listStatus === 'success' && listData.list.map((item, i) => {
                                 return (
-                                    <TButton onClick={this.goCottonDetail.bind(this, item,listData.key)} key={i} >
+                                    <TButton onClick={this.goCottonDetail.bind(this, item, listData.key)} key={i} >
                                         <OfferItem
                                             data={item}
                                             map={listData.key}

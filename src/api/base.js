@@ -15,7 +15,7 @@ const commonParmas = {
 };
 const parseErrMsg = (e = '') => {
     if (e.includes('fail')) {
-        return '网络故障';
+        return String(e);
     } else {
         return e;
     }
@@ -37,20 +37,20 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
                         if (code === 200) {
                             resolve(data);
                         } else {
-                            Tip.fail(parseErrMsg(msg));
+                            Tip.fail(parseErrMsg(msg+'响应错误'));
                             reject(d);
                         }
                     }
 
 
                 } else {
-                    Tip.fail(parseErrMsg(d.errMsg));
+                    Tip.fail(parseErrMsg(d.errMsg+'响应错误2'));
                     reject(d);
                 }
             },
             fail(e) {
                 loading && Tip.dismiss();
-                Tip.fail(parseErrMsg(e.errMsg));
+                Tip.fail(parseErrMsg(e.errMsg+'请求错误'));
                 reject(e);
             }
         });
@@ -78,17 +78,11 @@ const file = (url, data, config = { loading: true }) => {
                     success: function (o) {
                         loading && Tip.dismiss();
                         resolve(o);
-                        // if (code === 200) {
-
-
-                        // } else {
-                        //     Tip.fail(parseErrMsg(msg));
-                        //     reject(d);
-                        // }
+                        
                     },
                     fail: function (o) {
 
-                        Tip.fail(parseErrMsg(e.errMsg));
+                        Tip.fail(e.errMsg+'文件上传错');
                         reject(e);
                     },
                     complete: function () {

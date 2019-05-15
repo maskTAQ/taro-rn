@@ -1,0 +1,85 @@
+@import '../../platform.scss';
+@import './component.scss';
+.container {
+    height: 100%;
+    background: white;
+    padding: 0px 20px;
+}
+
+.title-wrapper {
+    margin-bottom: 35px;
+}
+
+.title-text {
+    font-size: 35px;
+    color: #000000;
+}
+
+.line {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    height: 80px;
+}
+
+.line-label {
+    font-size: 32px;
+}
+
+.center {
+    text-align: center;
+}
+
+
+.share {
+    margin-top: 20px;
+}
+
+.share-title,
+.share-desc {
+    font-size: 30px;
+}
+
+.card {
+    position: relative;
+    margin-top: 10px;
+    height: 300px;
+    padding: 15px;
+    @include border(1px,solid,#ececec);
+}
+
+.cardlogos {
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+}
+
+.logosImg {
+    height: 150px;
+    width: 150px
+}
+
+.cardTit {
+    font-size: 45px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.cardCon {
+    font-size: 30px;
+    color: #d5d5d5;
+}
+
+.btn-share {
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: #32b7f7;
+    height: 85px;
+    
+    margin-top: 45px;
+    border-radius: 15px;
+}
+.btn-shart-text{
+    color: #fff;
+}

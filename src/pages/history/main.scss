@@ -1,0 +1,93 @@
+@import '../common.scss';
+@import '../color.scss';
+@import '../../platform.scss';
+@import './component.scss';
+.container {
+    height: 100%;
+    @extend .flex;
+    flex-direction: column;
+    background: #dfdede;
+}
+
+.list {
+    flex: 1;
+    /*postcss-pxtransform rn eject enable*/
+    overflow: auto;
+    /*postcss-pxtransform rn eject disable*/
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    padding: 0 20px;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    @include borderD(top, 1px, solid, #ccc);
+}
+
+.bottom-right {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.checked-box {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.checked-icon {
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+.checked-text {
+    font-size: 26px;
+    color: #000;
+}
+
+.button {
+    height: 60px;
+    padding: 0 30px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    background: $main;
+    border-radius: 60px;
+}
+
+.delete-button {
+    margin-right: 10px;
+    font-size: 26px;
+    background: #e7484d;
+}
+
+.button-text {
+    font-size: 26px;
+    color: #fff;
+}
+
+.modal-item {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.modal-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.modal-label {
+    margin-left: 10px;
+    font-size: 28px;
+    color: #7f7f7f;
+}

@@ -144,6 +144,10 @@ export function getCottonArticleList(params) {
 export function getArticleContent(params) {
     return get('ArticleInfo', params, { loading: false });
 }
+//获取浏览记录
+export function getHistory(params) {
+    return get('CloudQuoteHistory', params, { loading: false });
+}
 export {
     login
 }

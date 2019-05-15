@@ -14,3 +14,4 @@ export { default as TModal } from './t-modal';
 export { default as TSTab } from './t-single-tab';
 export { default as TDatePicker } from './t-date-picker';
 export { default as TLoading } from './t-loading';
+export { default as TWebView } from './t-webview';
