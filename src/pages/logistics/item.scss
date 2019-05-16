@@ -1,29 +1,65 @@
 @import '../common.scss';
 @import '../color.scss';
 @import './component.scss';
-@include item;
+
 .container {
-    margin: 20px 0;
+    position: relative;
+    margin: 20px;
+    padding: 30px;
     @extend .flex;
-    flex-direction: row;
+    flex-direction: column;
     background: #fff;
     border-radius: 20px;
 }
 
-.container-left {
-    margin: 20px 0;
+.row {
+    padding: 10px 0;
+    @extend .flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
-.checked-icon {
-    width: 60px;
-    height: 60px;
+.bottom {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-.content {
-    // margin-top: 20px;
-    flex: 1;
+.label {
+    margin-right: 30px;
 }
 
-.btn {
-    margin-bottom: 20px;
+.label-text {
+    font-size: 32px;
+    color: #000;
+}
+
+.value-text {
+    font-size: 32px;
+    color: rgb(39, 38, 38);
+    ;
+}
+
+.price {
+    color: red;
+}
+
+.button {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    @extend .flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-icon {
+    margin-bottom: 6px;
+    width: 50px;
+    height: 50px;
+}
+
+.button-text {
+    font-size: 28px;
+    color: #000;
 }

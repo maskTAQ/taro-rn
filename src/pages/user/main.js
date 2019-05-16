@@ -28,7 +28,8 @@ import { authStatusMap } from '../../constants';
 const toolList = [
     {
         icon: scImg,
-        label: '物流'
+        label: '物流',
+        routeName:'logistics'
     },
     {
         icon: historyImg,

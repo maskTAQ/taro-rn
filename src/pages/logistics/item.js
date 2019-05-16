@@ -1,45 +1,71 @@
 
 import React from 'react';
 import { Component } from '../../platform';
-import update from 'immutability-helper';
 
-import { OfferItem } from '../../components';
-import { View, Text, TTag, TButton, Visible } from '../../ui'
+import { View, Text, Image, TButton, Visible } from '../../ui'
+import { call } from '../../actions';
+import callIcon from './img/call.png';
 import './item.scss';
-import checkedImg from '../../img/checked.png';
-import uncheckedImg from '../../img/unchecked.png';
+
 export default class Item extends Component {
-    toggleCheckedStatus = () => {
-        const { onCheckedChange, checkedOfferList } = this.props;
-        const key = this.g('主键');
-        const index = checkedOfferList.indexOf(key);
-        if (index > -1) {
-            onCheckedChange(update(checkedOfferList, {
-                $splice: [[index, 1]]
-            }));
-        } else {
-            onCheckedChange(update(checkedOfferList, {
-                $push: [key]
-            }));
-        }
-    }
     g = k => {
         const { map, data } = this.props;
         return data[map[k]] || '';
     }
     render() {
-        const { data, map, checkedOfferList } = this.props;
-        const checked = checkedOfferList.includes(this.g('主键'));
+        const { g } = this;
         return (
             <View className="container">
-                <View className="container-left">
-                    <TButton onClick={this.toggleCheckedStatus}>
-                        <Image className="checked-icon" src={checked ? checkedImg : uncheckedImg} />
-                    </TButton>
+                <View className="row">
+                    <View className="label">
+                        <Text className="label-text">发货地</Text>
+                    </View>
+                    <View className="value">
+                        <Text className="value-text">{g('发货地')}</Text>
+                    </View>
                 </View>
-                <View className='content'>
-                    <OfferItem data={data} map={map}/>
+                <View className="row">
+                    <View className="label">
+                        <Text className="label-text">收货地</Text>
+                    </View>
+                    <View className="value">
+                        <Text className="value-text">{g('收货地')}</Text>
+                    </View>
                 </View>
+                <View className="row">
+                    <View className="label">
+                        <Text className="label-text">货物信息</Text>
+                    </View>
+                    <View className="value">
+                        <Text className="value-text">{g('重量') + g('件数') + g('货物类型')}</Text>
+                    </View>
+                </View>
+                <View className="row">
+                    <View className="label">
+                        <Text className="label-text">发货时间</Text>
+                    </View>
+                    <View className="value">
+                        <Text className="value-text">{g('发货时间开始') + ' 至 ' + g('发货时间结束')}</Text>
+                    </View>
+                </View>
+                <View className="row">
+                    <View className="label">
+                        <Text className="label-text">运输价格</Text>
+                    </View>
+                    <View className="value">
+                        <Text className="value-text price">{g('发货价格')}</Text>
+                    </View>
+                </View>
+
+                <TButton onClick={() => {
+                    call(g('联系电话'));
+                }}>
+                    <View className="button">
+                        <Image src={callIcon} className="button-icon" />
+                        <Text className="button-text">联系发货人</Text>
+                    </View>
+                </TButton>
+
             </View>
         )
     }

@@ -105,6 +105,7 @@ export function getMobile(params) {
 }
 //获取excel数据
 export function uploadExcelData(params) {
+    delete params['升贴水'];
     return get('PCUpdateGetExcel', params);
 }
 //获取excel列表进度 
