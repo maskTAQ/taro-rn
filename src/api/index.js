@@ -148,6 +148,14 @@ export function getArticleContent(params) {
 export function getHistory(params) {
     return get('CloudQuoteHistory', params, { loading: false });
 }
+//获取物流列表
+export function getLogisticsList(params) {
+    return get('WLList', null, { loading: false });
+}
+//发布物流
+export function publishLogisticsList(params) {
+    return get('WLAdd', params);
+}
 export {
     login
 }

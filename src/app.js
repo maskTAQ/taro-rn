@@ -17,7 +17,9 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
-     
+      
+      'pages/logistics/index',
+      'pages/publish-logistics/index',
       'pages/home/index',
       'pages/demand/index',
       'pages/user/index',
