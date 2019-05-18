@@ -2,45 +2,76 @@
 @import '../color.scss';
 @import '../../platform.scss';
 @import './component.scss';
+
 .container {
     height: 100%;
-    @extend .flex;
-    flex-direction: column;
+    position: relative;
     background: #dfdede;
 }
-.chunk{
+
+.chunk {
     margin: 10px 0;
     padding: 30px;
     background: #fff;
 }
-.chunk-title-text{
+
+.chunk-title-text {
     font-size: 32px;
     color: #000;
 }
 
-.layout{
+.layout {
     @extend .flex;
     flex-direction: row;
 }
-.layout-title{
+
+.layout-title {
     padding-right: 20px;
 }
-.layout-title-text{
+
+.layout-title-text {
     font-size: 28px;
     color: #000;
 }
-.layout-content-row{
+
+.layout-content-row {
+    margin: 10px 0;
+    flex: 1;
     @extend .flex;
     flex-direction: row;
+    align-items: center;
+
 }
-.layout-content-column{
+
+.layout-content-column {
     @extend .flex;
     flex-direction: column;
     align-items: flex-start;
 }
-.submit{
-    margin: 30px;
-    height: 60px;
+
+.full {
+    flex: 1;
+}
+
+.p-text {
+    font-size: 28px;
+    color: #000;
+}
+
+.label {
+    font-size: 28px;
+    color: #000;
+}
+
+.margin-label {
+    margin: 0 20px;
+    font-size: 28px;
+    color: #000;
+}
+
+.submit {
+    margin: 50px 30px;
+    height: 80px;
     @extend .flex;
     justify-content: center;
     align-items: center;

@@ -24,3 +24,4 @@ export { default as TextSelect } from './text-select';
 export { default as StatusBox } from './status-box';
 export { default as Slide } from './slide';
 export { default as CapsuleChoose } from './capsule-choose';
+export { default as LogisticsFixedTool} from './logistics-fixed-tool';

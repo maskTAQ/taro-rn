@@ -1,23 +1,20 @@
 import React from 'react';
 import { Component } from '../../platform';
 
-import { View, Text, Image, } from '../index';
-import './index.scss'
-import shareImg from './img/share.png';
-import bjImg from './img/bj.png';
-import kfImg from './img/kf.png';
+import { View, Text, Image } from '../index';
 import { TButton } from '../../ui';
-import { navigate } from '../../actions';
+import './index.scss'
+import yfbImg from './img/yfb.png';
+import publishImg from './img/publish.png';
+import kfImg from './img/kf.png';
 const toolMenu = [
     {
-        icon: shareImg,
-        label: '分享',
-        type: 'share'
+        icon: publishImg,
+        label: '发布',
     },
     {
-        icon: bjImg,
-        label: '报价',
-        routeName: 'offer-tool',
+        icon: yfbImg,
+        label: '已发布',
     },
     {
         icon: kfImg,
@@ -25,22 +22,18 @@ const toolMenu = [
         type: 'contact'
     }
 ];
-export default class FixedTool extends Component {
+export default class LogisticsFixedTool extends Component {
     static options = {
         addGlobalClass: true
     }
-    goCloudOffer() {
-        navigate({
-            routeName: 'offer-tool'
-        });
-    }
     render() {
-        const { onClick, className } = this.props;
+        const { onClick, showPublish = true } = this.props;
+        console.log(toolMenu.filter(({ label }) => label !== '发布' || (label === '发布' && showPublish)))
         return (
             <View className="tool-bar">
                 {
-                    toolMenu.map(item => {
-                        const { label, icon, type, routeName } = item;
+                    toolMenu.filter(({ label }) => label !== '发布' || (label === '发布' && showPublish)).map(item => {
+                        const { label, icon, type } = item;
                         return type ? (
                             <button open-type={type} class="tool-item" key={label}>
                                 <Image className="tool-item-icon" src={icon}></Image>
@@ -49,15 +42,17 @@ export default class FixedTool extends Component {
                                 </Text>
                             </button>
                         ) : (
-                                <TButton onClick={this.goCloudOffer}>
-                                    <View className="tool-item" onClick={this.baojia} key={label}>
+                                <TButton>
+                                    <View className="tool-item" onClick={onClick.bind(this, label)} key={label}>
                                         <Image className="tool-item-icon" src={icon}></Image>
                                         <Text className="tool-item-text">
                                             {label}
                                         </Text>
                                     </View>
                                 </TButton>
+
                             )
+
                     })
                 }
             </View>

@@ -4,11 +4,12 @@ import React from './node_modules/react';
 import { Component } from '../../platform';
 
 
-import { ListWrapper } from '../../components';
+import { ListWrapper,LogisticsFixedTool } from '../../components';
 import { View } from '../../ui'
 import { getLogisticsList } from '../../api';
 import Item from './item';
 import './main.scss';
+import { navigate } from '../../actions';
 
 export default class Logistics extends Component {
     componentWillMount() {
@@ -30,6 +31,13 @@ export default class Logistics extends Component {
                     status: 'error'
                 });
             })
+    }
+    handleToolClick = label=>{
+        if(label === '发布'){
+            navigate({
+                routeName:"publish-logistics"
+            });
+        }
     }
     render() {
         const { status, data } = this.state;
@@ -56,6 +64,7 @@ export default class Logistics extends Component {
                         )
                     }
                 </ListWrapper>
+                <LogisticsFixedTool onClick={this.handleToolClick} showPublish={true}/>
             </View>
         )
     }

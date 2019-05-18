@@ -24,7 +24,8 @@ export default class CottonDetail extends Component {
         key: {},
         defaultData: {}
     };
-    componentWillMount() {
+    componentDidMount(){
+        console.log(this.props.navigation.state.params,'this.props.navigation.state.params')
         const { id, defaultData, type } = this.props.navigation.state.params;
         this.setState({
             defaultData,
@@ -33,6 +34,16 @@ export default class CottonDetail extends Component {
         }, this.getData);
         setPageTitle(`${id}|详情`);
     }
+    onShareAppMessage () {
+        // const { thread } = this.state
+        // const url='/pages/thread_detail/thread_detail?tid='+ thread.tid;
+        // console.log("url="+url);
+    console.log(this,'onShareAppMessage')
+        return {
+          title: 'a',
+          //url: url
+        }
+      }
     handleTabChange = activeTab => {
         this.setState({
             activeTab

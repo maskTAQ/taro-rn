@@ -1,0 +1,32 @@
+.tool-bar {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 9;
+}
+
+.tool-item {
+    margin-bottom: 20px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    background: #44bdf7;
+}
+
+.tool-item-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.tool-item-text {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+}

@@ -3,6 +3,7 @@
 @import '../../platform.scss';
 @import './component.scss';
 .container {
+    position: relative;
     height: 100%;
     @extend .flex;
     flex-direction: column;
@@ -90,4 +91,10 @@
     margin-left: 10px;
     font-size: 28px;
     color: #7f7f7f;
+}
+
+.fixed{
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }

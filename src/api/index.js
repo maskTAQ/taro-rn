@@ -4,7 +4,7 @@ const login = (params) => {
     return get('Login', params);
 }
 export function getHome() {
-    return get('HomeData');
+    return get('HomeData', null, { loading: false });
 }
 //定制需求页面
 export function getDemandCustomLayout(params) {
@@ -16,11 +16,11 @@ export function getOfferLayout(params) {
 }
 //云筛选页面
 export function getFilterLayout(params) {
-    return get('CloudQuoteFiltrateUI', params);
+    return get('CloudQuoteFiltrateUI', params, { loading: false });
 }
 //报价列表
 export function getOfferList(params) {
-    return get('CloudQuoteList', params);
+    return get('CloudQuoteList', params, { loading: false });
 }
 //提交
 export function doSubmit(url, params) {

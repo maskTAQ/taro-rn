@@ -6,9 +6,10 @@ import classnames from 'classnames';
 import { Picker } from '@tarojs/components'
 import update from 'immutability-helper';
 
-import { DatePicker, Check } from '../../components';
+import { DatePicker, LogisticsFixedTool } from '../../components';
 import { View, ScrollView, Visible, TButton, Text, TInput, TDatePicker } from '../../ui'
 import { getLogisticsList, publishLogisticsList } from '../../api';
+import PlateformSelect from './plateform-select';
 import './main.scss';
 import { Tip } from '../../utils';
 
@@ -61,7 +62,7 @@ const layout = [
                         placeholder: '填写重量'
                     },
                     {
-                        type: 'label',
+                        type: 'margin-label',
                         value: 'kg'
                     },
                     {
@@ -97,7 +98,7 @@ const layout = [
                         key: '发货时间开始',
                     },
                     {
-                        type: 'label',
+                        type: 'margin-label',
                         value: '至'
                     },
                     {
@@ -169,7 +170,7 @@ const layout = [
                     {
                         type: 'select',
                         key: 'as',
-                        option: ['全国棉花市场', '快狗打车']
+                        option: [{label:'全国棉花市场',icon:''},{label: '快狗打车',icon:''},{label: '货拉拉',icon:''}]
                     },
                 ]
             }
@@ -232,7 +233,7 @@ export default class PublishLogistics extends Component {
         const { params } = this.state;
         return (
             <View className="container">
-                <ScrollView>
+                <ScrollView className="scroll" scrollY>
                     {
                         layout.map(chunk => {
                             const { title, list } = chunk;
@@ -267,7 +268,9 @@ export default class PublishLogistics extends Component {
                                                                 const { type, key, placeholder, option } = item;
                                                                 const value = params[key];
                                                                 return (
-                                                                    <View className="component" key={key}>
+                                                                    <View className={classnames('component-box', {
+                                                                        'full': !type.includes('label')
+                                                                    })} key={key}>
                                                                         {
                                                                             type === 'city-picker' && (
                                                                                 <Picker
@@ -284,7 +287,7 @@ export default class PublishLogistics extends Component {
                                                                         }
                                                                         {
                                                                             type === 'input' && (
-                                                                                <TInput value={value} placeholder={placeholder} onInput={this.handleChange.bind(this, key)} />
+                                                                                <TInput value={value} placeholder={placeholder} onInput={this.handleChange.bind(this, key)} className="input" />
                                                                             )
                                                                         }
                                                                         {
@@ -293,12 +296,17 @@ export default class PublishLogistics extends Component {
                                                                             )
                                                                         }
                                                                         {
+                                                                            type === 'margin-label' && (
+                                                                                <Text className="margin-label">{item.value}</Text>
+                                                                            )
+                                                                        }
+                                                                        {
                                                                             type === 'datepicker' && <TDatePicker onChange={this.handleChange.bind(this, key)}>
-                                                                                <DatePicker date={value} />
+                                                                                <DatePicker date={value} className="flex-start" />
                                                                             </TDatePicker>
                                                                         }
                                                                         {
-                                                                            type === 'select' && <Check k={key} value={value} option={option} onChange={({ key, value }) => this.handleChange(key, value)} />
+                                                                            type === 'select' && <PlateformSelect value={value} option={option} onChange={this.handleChange.bind(this, key)} />
                                                                         }
                                                                     </View>
                                                                 )
@@ -319,6 +327,7 @@ export default class PublishLogistics extends Component {
                         </View>
                     </TButton>
                 </ScrollView>
+                <LogisticsFixedTool onClick={this.handleToolClick} showPublish={false} />
             </View>
         )
     }
