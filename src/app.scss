@@ -3,6 +3,7 @@
 @import "~taro-ui/dist/style/components/action-sheet.scss";
 @import "~taro-ui/dist/style/components/modal.scss";
 @import "~taro-ui/dist/style/components/activity-indicator.scss";
+
 page {
     height: 100%;
 }
@@ -18,7 +19,13 @@ t {
     width: 100%;
 }
 
+list-wrapper {
+    height: 100%;
+    flex: 1;
+}
+
 scroll-view {
+    height: 100%;
     flex: 1;
 }
 

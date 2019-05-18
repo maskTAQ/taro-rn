@@ -4,7 +4,7 @@ import React from './node_modules/react';
 import { Component } from '../../platform';
 
 
-import { ListWrapper,LogisticsFixedTool } from '../../components';
+import { ListWrapper, LogisticsFixedTool } from '../../components';
 import { View } from '../../ui'
 import { getLogisticsList } from '../../api';
 import Item from './item';
@@ -12,6 +12,10 @@ import './main.scss';
 import { navigate } from '../../actions';
 
 export default class Logistics extends Component {
+    state={
+        status:'init',
+        data:null
+    }
     componentWillMount() {
         this.getData();
     }
@@ -32,10 +36,10 @@ export default class Logistics extends Component {
                 });
             })
     }
-    handleToolClick = label=>{
-        if(label === '发布'){
+    handleToolClick = label => {
+        if (label === '发布') {
             navigate({
-                routeName:"publish-logistics"
+                routeName: "publish-logistics"
             });
         }
     }
@@ -46,7 +50,6 @@ export default class Logistics extends Component {
                 <ListWrapper status={status} data={data}>
                     {
                         status === 'success' && (
-
                             <View>
                                 {
                                     data.list.map(item => {
@@ -60,11 +63,10 @@ export default class Logistics extends Component {
                                     })
                                 }
                             </View>
-
                         )
                     }
                 </ListWrapper>
-                <LogisticsFixedTool onClick={this.handleToolClick} showPublish={true}/>
+                <LogisticsFixedTool onClick={this.handleToolClick} showPublish={true} />
             </View>
         )
     }

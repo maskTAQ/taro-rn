@@ -7,7 +7,7 @@ export default class ListWrapper extends Component {
     render() {
         const { status, data } = this.props;
         return (
-            <ScrollView>
+            <ScrollView scrollY>
                 <View className="container">
                     {
                         status === 'loading' && <TLoading />

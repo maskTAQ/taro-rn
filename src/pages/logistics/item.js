@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React from './node_modules/react';
 import { Component } from '../../platform';
 
 import { View, Text, Image, TButton, Visible } from '../../ui'
@@ -16,56 +16,59 @@ export default class Item extends Component {
         const { g } = this;
         return (
             <View className="container">
-                <View className="row">
-                    <View className="label">
-                        <Text className="label-text">发货地</Text>
+                <View className="content">
+                    <View className="row">
+                        <View className="label">
+                            <Text className="label-text">发货地</Text>
+                        </View>
+                        <View className="value">
+                            <Text className="value-text">{g('发货地')}</Text>
+                        </View>
                     </View>
-                    <View className="value">
-                        <Text className="value-text">{g('发货地')}</Text>
+                    <View className="row">
+                        <View className="label">
+                            <Text className="label-text">收货地</Text>
+                        </View>
+                        <View className="value">
+                            <Text className="value-text">{g('收货地')}</Text>
+                        </View>
                     </View>
-                </View>
-                <View className="row">
-                    <View className="label">
-                        <Text className="label-text">收货地</Text>
+                    <View className="row">
+                        <View className="label">
+                            <Text className="label-text">货物信息</Text>
+                        </View>
+                        <View className="value">
+                            <Text className="value-text">{g('重量') + g('件数') + g('货物类型')}</Text>
+                        </View>
                     </View>
-                    <View className="value">
-                        <Text className="value-text">{g('收货地')}</Text>
+                    <View className="row">
+                        <View className="label">
+                            <Text className="label-text">发货时间</Text>
+                        </View>
+                        <View className="value">
+                            <Text className="value-text">{g('发货时间开始') + ' 至 ' + g('发货时间结束')}</Text>
+                        </View>
                     </View>
-                </View>
-                <View className="row">
-                    <View className="label">
-                        <Text className="label-text">货物信息</Text>
+                    <View className="row">
+                        <View className="label">
+                            <Text className="label-text">运输价格</Text>
+                        </View>
+                        <View className="value">
+                            <Text className="value-text price">{g('发货价格')}</Text>
+                        </View>
                     </View>
-                    <View className="value">
-                        <Text className="value-text">{g('重量') + g('件数') + g('货物类型')}</Text>
-                    </View>
-                </View>
-                <View className="row">
-                    <View className="label">
-                        <Text className="label-text">发货时间</Text>
-                    </View>
-                    <View className="value">
-                        <Text className="value-text">{g('发货时间开始') + ' 至 ' + g('发货时间结束')}</Text>
-                    </View>
-                </View>
-                <View className="row">
-                    <View className="label">
-                        <Text className="label-text">运输价格</Text>
-                    </View>
-                    <View className="value">
-                        <Text className="value-text price">{g('发货价格')}</Text>
-                    </View>
+
+                    <TButton onClick={() => {
+                        call(g('联系电话'));
+                    }}>
+                        <View className="button">
+                            <Image src={callIcon} className="button-icon" />
+                            <Text className="button-text">联系发货人</Text>
+                        </View>
+                    </TButton>
                 </View>
 
-                <TButton onClick={() => {
-                    call(g('联系电话'));
-                }}>
-                    <View className="button">
-                        <Image src={callIcon} className="button-icon" />
-                        <Text className="button-text">联系发货人</Text>
-                    </View>
-                </TButton>
-
+                {this.props.children}
             </View>
         )
     }

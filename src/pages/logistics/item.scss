@@ -3,13 +3,16 @@
 @import './component.scss';
 
 .container {
-    position: relative;
     margin: 20px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.content {
+    position: relative;
     padding: 30px;
     @extend .flex;
     flex-direction: column;
-    background: #fff;
-    border-radius: 20px;
 }
 
 .row {

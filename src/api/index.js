@@ -151,11 +151,16 @@ export function getHistory(params) {
 }
 //获取物流列表
 export function getLogisticsList(params) {
-    return get('WLList', null, { loading: false });
+    return get('WLList', params, { loading: false });
 }
+
 //发布物流
 export function publishLogisticsList(params) {
     return get('WLAdd', params);
+}
+//删除发布的物流
+export function deleteLogistics(params) {
+    return get('WLDelete', params);
 }
 export {
     login
