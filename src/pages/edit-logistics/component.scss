@@ -1,0 +1,21 @@
+@import '../../platform.scss';
+
+.input {
+    flex: 1;
+    padding-left: 30px;
+    @include border(1px, solid, #ddd);
+    font-size: 28px;
+    color: #000;
+}
+
+.flex-start {
+    justify-content: flex-start !important;
+}
+
+/*postcss-pxtransform rn eject enable*/
+scroll-view {
+    height: 100%;
+    overflow: auto;
+}
+
+/*postcss-pxtransform rn eject disable*/

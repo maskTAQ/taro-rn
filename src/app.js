@@ -17,13 +17,14 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
-     
-     
+
+
       'pages/home/index',
       'pages/my-logistics/index',
-     
+
       'pages/logistics/index',
       'pages/publish-logistics/index',
+      'pages/edit-logistics/index',
       'pages/demand/index',
       'pages/user/index',
       'pages/sts/index',
@@ -97,11 +98,11 @@ class App extends Component {
       }
     }
   }
-  onLaunch(...v){
-    console.log(v,'v')
+  onLaunch(...v) {
+    console.log(v, 'v')
   }
   componentWillMount(...v) {
-    console.log(this.$router.params.scene,'app')
+    console.log(this.$router.params.scene, 'app')
     login();
   }
   componentDidMount() { }

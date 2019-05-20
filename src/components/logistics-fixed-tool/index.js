@@ -12,12 +12,12 @@ const toolMenu = [
     {
         icon: publishImg,
         label: '发布',
-        routeName:'my-logistics',
+        routeName: 'my-logistics',
     },
     {
         icon: yfbImg,
         label: '已发布',
-        routeName:'my-logistics'
+        routeName: 'my-logistics'
     },
     {
         icon: kfImg,
@@ -31,12 +31,11 @@ export default class LogisticsFixedTool extends Component {
     }
     render() {
         const { onClick, showPublish = true } = this.props;
-        console.log(toolMenu.filter(({ label }) => label !== '发布' || (label === '发布' && showPublish)))
         return (
             <View className="tool-bar">
                 {
                     toolMenu.filter(({ label }) => label !== '发布' || (label === '发布' && showPublish)).map(item => {
-                        const { label, icon, type,routeName } = item;
+                        const { label, icon, type, routeName } = item;
                         return type ? (
                             <button open-type={type} class="tool-item" key={label}>
                                 <Image className="tool-item-icon" src={icon}></Image>
@@ -45,7 +44,7 @@ export default class LogisticsFixedTool extends Component {
                                 </Text>
                             </button>
                         ) : (
-                                <TButton onClick={()=>navigate({routeName})}>
+                                <TButton onClick={() => navigate({ routeName })}>
                                     <View className="tool-item" onClick={onClick.bind(this, label)} key={label}>
                                         <Image className="tool-item-icon" src={icon}></Image>
                                         <Text className="tool-item-text">

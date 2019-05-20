@@ -1,0 +1,28 @@
+@import '../color.scss';
+@import '../../platform.scss';
+
+.container {
+    @extend .flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.item {
+    margin: 10px 0;
+    margin-right: 10px;
+    height: 50px;
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toogle-img {
+    width: 60px;
+    height: 60px;
+}
+
+
+.item-text {
+    color: #000;
+    font-size: 28px;
+}

@@ -1,0 +1,13 @@
+@import '../common.scss';
+@import '../color.scss';
+@import './component.scss';
+@include item;
+.item{
+    background: #fff;
+}
+.item-title{
+    padding: 0 20px;
+}
+.btn{
+    margin: 20px;
+}

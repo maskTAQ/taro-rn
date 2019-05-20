@@ -16,7 +16,6 @@ export default class CottonDetail extends Component {
   }
   render() {
     const navigation = injectNavParams(this.$router);
-    console.log(navigation, 'navigation')
     return <Main navigation={navigation} />
   }
 }

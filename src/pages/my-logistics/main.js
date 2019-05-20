@@ -10,35 +10,22 @@ import Item from '../logistics/item';
 import refreshImg from '../my-demand/img/refresh.png';
 import editImg from '../my-demand/img/edit.png';
 import './main.scss';
-import { navigate } from '../../actions';
+import { navigate, asyncActionWrapper } from '../../actions';
 import { Tip } from '../../utils';
 
 @connect(({ data }) => ({ data }))
 export default class MyLogistics extends Component {
-    state = {
-        status: 'init',
-        data: null
-    }
     componentWillMount() {
         this.getData();
     }
     getData = () => {
-        this.setState({
-            status: 'loading'
-        });
         const { id } = this.props.data.user.data;
-        getLogisticsList({ '用户ID': id })
-            .then(res => {
-                this.setState({
-                    status: 'success',
-                    data: res
-                });
-            })
-            .catch(e => {
-                this.setState({
-                    status: 'error'
-                });
-            })
+        asyncActionWrapper({
+            call: getLogisticsList,
+            params: { '用户ID': id },
+            type: 'data',
+            key: `my_logistics_list`
+        });
     }
     delete(id) {
         const { id: userId } = this.props.data.user.data;
@@ -50,13 +37,24 @@ export default class MyLogistics extends Component {
             this.getData();
         })
     }
-    publish() {
+    edit(d) {
+        const { data } = this.props.data.my_logistics_list;
+
+        const reverseKey = {};
+        for (const key in data.key) {
+            reverseKey[data.key[key]] = key;
+        }
+        const parseData = {};
+        for (const key in d) {
+            parseData[reverseKey[key]] = d[key];
+        }
         navigate({
-            routeName: 'publish-logistics'
+            routeName: 'edit-logistics',
+            params: parseData
         });
     }
     render() {
-        const { status, data } = this.state;
+        const { status, data } = this.props.data.my_logistics_list;
 
         return (
             <View className='container'>
@@ -82,7 +80,7 @@ export default class MyLogistics extends Component {
                                                     <Text className="btn-text">刷新</Text>
                                                 </View>
                                             </TButton>
-                                            <TButton onClick={this.publish}>
+                                            <TButton onClick={() => this.edit(item)}>
                                                 <View className="btn">
                                                     <Image className="btn-icon" src={editImg} />
                                                     <Text className="btn-text">编辑</Text>

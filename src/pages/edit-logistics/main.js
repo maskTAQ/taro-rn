@@ -1,17 +1,18 @@
 
 
 import React from './node_modules/react';
-import { Component,connect } from '../../platform';
+import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 import { Picker } from '@tarojs/components'
 import update from 'immutability-helper';
 
 import { DatePicker, LogisticsFixedTool } from '../../components';
 import { View, ScrollView, Visible, TButton, Text, TInput, TDatePicker } from '../../ui'
-import { getLogisticsList, publishLogisticsList } from '../../api';
+import { editLogistics, getLogisticsList } from '../../api';
 import PlateformSelect from './plateform-select';
 import './main.scss';
 import { Tip } from '../../utils';
+import { asyncActionWrapper } from '../../actions';
 
 const layout = [
     {
@@ -189,28 +190,15 @@ export default class PublishLogistics extends Component {
         }
     };
     componentWillMount() {
-        this.getData();
-    }
-    getData = () => {
-        this.setState({
-            status: 'loading'
-        });
-        getLogisticsList()
-            .then(res => {
-                this.setState({
-                    status: 'success',
-                    data: res
-                });
-            })
-            .catch(e => {
-                this.setState({
-                    status: 'error'
-                });
-            })
+        const { params } = this.props.navigation.state;
+        this.setState(update(this.state, {
+            params: {
+                $merge: params
+            }
+        }))
     }
     onCityChange = (key, v) => {
         this.handleChange(key, v.target.value);
-        console.log(v, 'bindRegionChange');
     }
     handleChange(key, value) {
         this.setState(update(this.state, {
@@ -221,13 +209,27 @@ export default class PublishLogistics extends Component {
             }
         }))
     }
+    update() {
+        const { id } = this.props.data.user.data;
+        asyncActionWrapper({
+            call: getLogisticsList,
+            params: { '用户ID': id },
+            type: 'data',
+            key: `my_logistics_list`
+        });
+        asyncActionWrapper({
+            call: getLogisticsList,
+            type: 'data',
+            key: `logistics_list`
+        });
+    }
     submit() {
         const { params } = this.state;
         const { id } = this.props.data.user.data;
-        publishLogisticsList({ ...params, '用户ID': id })
+        editLogistics({ ...params, '用户ID': id })
             .then(res => {
-                Tip.success('发布成功');
-                console.log(res, 'res');
+                Tip.success('修改成功');
+                this.update()
             })
     }
     render() {
@@ -324,7 +326,7 @@ export default class PublishLogistics extends Component {
                     }
                     <TButton onClick={this.submit}>
                         <View className="submit">
-                            <Text className="submit-text">发布</Text>
+                            <Text className="submit-text">修改</Text>
                         </View>
                     </TButton>
                 </ScrollView>

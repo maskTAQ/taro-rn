@@ -162,6 +162,10 @@ export function publishLogisticsList(params) {
 export function deleteLogistics(params) {
     return get('WLDelete', params);
 }
+//编辑物流信息
+export function editLogistics(params) {
+    return get('WLEdit', params);
+}
 export {
     login
 }

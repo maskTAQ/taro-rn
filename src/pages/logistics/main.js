@@ -1,7 +1,7 @@
 
 
 import React from './node_modules/react';
-import { Component } from '../../platform';
+import { Component, connect } from '../../platform';
 
 
 import { ListWrapper, LogisticsFixedTool } from '../../components';
@@ -9,32 +9,19 @@ import { View } from '../../ui'
 import { getLogisticsList } from '../../api';
 import Item from './item';
 import './main.scss';
-import { navigate } from '../../actions';
+import { navigate, asyncActionWrapper } from '../../actions';
 
+@connect(({ data }) => ({ data }))
 export default class Logistics extends Component {
-    state={
-        status:'init',
-        data:null
-    }
     componentWillMount() {
         this.getData();
     }
     getData = () => {
-        this.setState({
-            status: 'loading'
+        asyncActionWrapper({
+            call: getLogisticsList,
+            type: 'data',
+            key: `logistics_list`
         });
-        getLogisticsList()
-            .then(res => {
-                this.setState({
-                    status: 'success',
-                    data: res
-                });
-            })
-            .catch(e => {
-                this.setState({
-                    status: 'error'
-                });
-            })
     }
     handleToolClick = label => {
         if (label === '发布') {
@@ -44,7 +31,7 @@ export default class Logistics extends Component {
         }
     }
     render() {
-        const { status, data } = this.state;
+        const { status, data } = this.props.data.logistics_list;
         return (
             <View className="container">
                 <ListWrapper status={status} data={data}>
