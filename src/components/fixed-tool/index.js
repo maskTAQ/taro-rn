@@ -4,21 +4,22 @@ import { Component } from '../../platform';
 import { View, Text, Image, } from '../index';
 import './index.scss'
 import shareImg from './img/share.png';
-import bjImg from './img/bj.png';
+import homeIcon from './img/home.png';
 import kfImg from './img/kf.png';
 import { TButton } from '../../ui';
-import { navigate } from '../../actions';
+import { back } from '../../actions';
 const toolMenu = [
+    {
+        icon: homeIcon,
+        label: '主页',
+        routeName: 'home',
+    },
     {
         icon: shareImg,
         label: '分享',
         type: 'share'
     },
-    {
-        icon: bjImg,
-        label: '报价',
-        routeName: 'offer-tool',
-    },
+
     {
         icon: kfImg,
         label: '客服',
@@ -29,13 +30,11 @@ export default class FixedTool extends Component {
     static options = {
         addGlobalClass: true
     }
-    goCloudOffer() {
-        navigate({
-            routeName: 'offer-tool'
-        });
+    back() {
+        back();
     }
     render() {
-        const { onClick, className } = this.props;
+        const { home } = this.props;
         return (
             <View className="tool-bar">
                 {
@@ -48,16 +47,16 @@ export default class FixedTool extends Component {
                                     {label}
                                 </Text>
                             </button>
-                        ) : (
-                                <TButton onClick={this.goCloudOffer}>
-                                    <View className="tool-item" onClick={this.baojia} key={label}>
-                                        <Image className="tool-item-icon" src={icon}></Image>
-                                        <Text className="tool-item-text">
-                                            {label}
-                                        </Text>
-                                    </View>
-                                </TButton>
-                            )
+                        ) : !home ? (
+                            <TButton onClick={this.back} key={label}>
+                                <View className="tool-item">
+                                    <Image className="tool-item-icon" src={icon}></Image>
+                                    <Text className="tool-item-text">
+                                        {label}
+                                    </Text>
+                                </View>
+                            </TButton>
+                        ) : null
                     })
                 }
             </View>

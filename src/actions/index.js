@@ -39,6 +39,7 @@ const navigate = ({ routeName, params }) => {
 const call = (phoneNumber) => {
     Taro.makePhoneCall({ phoneNumber })
 }
+const back = Taro.navigateBack;
 const loginAction = () => {
     Taro.login()
         .then(getOpenId)
@@ -63,5 +64,5 @@ const loginAction = () => {
         })
 }
 export {
-    navigate, call, loginAction as login, asyncActionWrapper
+    navigate, call, loginAction as login, asyncActionWrapper,back
 }

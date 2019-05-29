@@ -46,7 +46,7 @@ export default class MyLogistics extends Component {
         }
         const parseData = {};
         for (const key in d) {
-            parseData[reverseKey[key]] = d[key];
+            parseData[reverseKey[key]] = d[key] || '';
         }
         navigate({
             routeName: 'edit-logistics',

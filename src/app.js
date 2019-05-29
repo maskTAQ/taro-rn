@@ -18,14 +18,15 @@ class App extends Component {
   config = {
     pages: [
 
-
+     
       'pages/home/index',
       'pages/my-logistics/index',
-
+      'pages/feedback/index',
       'pages/logistics/index',
       'pages/publish-logistics/index',
       'pages/edit-logistics/index',
       'pages/demand/index',
+      'pages/recommend/index',
       'pages/user/index',
       'pages/sts/index',
       'pages/history/index',

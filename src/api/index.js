@@ -166,6 +166,14 @@ export function deleteLogistics(params) {
 export function editLogistics(params) {
     return get('WLEdit', params);
 }
+//获取俩地距离
+export function getDistance(params) {
+    return get('WLDistance', params);
+}
+//意见反馈
+export function feedback(params) {
+    return get('IdeaAdd', params);
+}
 export {
     login
 }

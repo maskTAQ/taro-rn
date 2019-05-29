@@ -1,0 +1,46 @@
+@import '../../platform.scss';
+@import './component.scss';
+
+.container {
+    height: 100%;
+    @extend .flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 20px;
+    background: #F1F1F1;
+    /*postcss-pxtransform rn eject enable*/
+    box-sizing: border-box;
+    /*postcss-pxtransform rn eject disable*/
+}
+
+.content {
+    height: 300px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px
+}
+
+.contact {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 30px;
+    height: 60px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px
+}
+
+.submit {
+    @extend .flex;
+    justify-content: center;
+    align-items: center;
+    height: 85px;
+    background: #2EA12E;
+    border-radius: 15px;
+}
+
+.submit-text {
+    font-size: 28px;
+    color: #fff;
+}

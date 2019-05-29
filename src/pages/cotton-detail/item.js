@@ -4,6 +4,7 @@ import { Component } from '../../platform';
 
 import { View, Text, TButton, } from '../../ui';
 import { navigate } from '../../actions';
+import { productTypesLabel } from '../../constants';
 import './item.scss'
 
 
@@ -26,6 +27,28 @@ const list = [
     }, {
         label: "长整",
         key: "整齐度",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+    }];
+
+const listT = [
+    { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
+    { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
+    { label: "等级", key: "主体颜色级" },
+    { label: "长度", key: "长度整齐度平均值" },
+    { label: "强力", key: "断裂比强度平均值" },
+    { label: "马值", key: "马克隆平均值" },
+    { label: "叶屑", key: "叶屑", includes: ['进口棉￥', '进口棉$'] },
+    {
+        label: "含杂",
+        key: "平均含杂",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+    }, {
+        label: "回潮",
+        key: "平均回潮",
+        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+    }, {
+        label: "长整",
+        key: "长度整齐度平均值",
         noInclude: ['地产棉', '进口棉￥', '进口棉$']
     }];
 
@@ -60,45 +83,42 @@ export default class Item extends Component {
             return l;
         }
     }
-    formatTime(t){
-        if(String(t).length>=10){
-            return moment(t*1000).format('YYYY/MM/DD HH:mm:ss')
+    formatTime(t) {
+        if (String(t).length >= 10) {
+            return moment(t * 1000).format('YYYY/MM/DD HH:mm:ss')
         }
         return ''
     }
     render() {
         const { g } = this;
-        const { cottonType} = this.props;
+        const { cottonType, activeTab } = this.props;
+        let type = productTypesLabel[g('棉花云报价类型')];
+        let pihao = '批号'
+        let tidanhao;
+        if (['进口棉$', '进口棉￥'].includes(type)) {
+            pihao = '报价号'
+            tidanhao = g('提单号');
+        }
         const offerType = g('报价类型');
         return (
             <View className="container">
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            {
-                                ['进口棉￥', '进口棉$'].includes(cottonType) ?
-                                    (
-                                        <Text className="title">报价号({g('报价号')})</Text>
-                                    ) :
-                                    (
-                                        <Text className="title">批号({g('加工批号')}) {g('产地')} {g('类型')}</Text>
-                                    )
-                            }
-
+                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')}</Text>
                         </View>
-                        {
-                            // !['进口棉￥', '进口棉$'].includes(cottonType) && (
-                            //     <View className="top-right">
-                            //         <Text className="time">编号({g('质量结果证书编号')}) {this.formatTime(g('发布日期'))}</Text>
-                            //     </View>
-                            // )
-                        }
-
+                        <View className="top-right">
+                            {
+                                /*
+                                 <Text className="time">编号({g('编号')}) {g('发布日期')}</Text>
+                                */
+                            }
+                        </View>
                     </View>
                     <View className="center">
                         <View className="center-left">
                             {
-                                list.filter(({ noInclude = [], includes = 'all' }) => {
+                                (activeTab === '仓单证书' ? listT : list).filter(({ noInclude = [], includes = 'all' }) => {
                                     if (includes === 'all') {
                                         return !noInclude.includes(cottonType)
                                     } else {

@@ -80,7 +80,11 @@ export default class OfferItem extends Component {
         let type = productTypesLabel[g('棉花云报价类型')];
         if (['地产棉', '进口棉￥'].includes(type)) {
             key = '目的港';
-            pihao = '提单号';
+        }
+        let tidanhao;
+        if (['进口棉$', '进口棉￥'].includes(type)) {
+            pihao = '报价号'
+            tidanhao = g('提单号');
         }
         const offerType = g('报价类型');
         return (
@@ -88,7 +92,7 @@ export default class OfferItem extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">{pihao}({g('加工'+pihao)}) {g('产地')} {g('类型')}</Text>
+                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')}</Text>
                         </View>
                         <View className="top-right">
                             {

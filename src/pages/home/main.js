@@ -4,8 +4,8 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 
-import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TLoading, TModal } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper } from '../../components';
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TModal } from '../../ui';
+import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper,FixedTool } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
@@ -243,6 +243,7 @@ export default class Home extends Component {
 
 
                 </ScrollView>
+                <FixedTool home={true}/>
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}
                     value={picker.value}

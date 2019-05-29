@@ -24,8 +24,7 @@ export default class CottonDetail extends Component {
         key: {},
         defaultData: {}
     };
-    componentDidMount(){
-        console.log(this.props.navigation.state.params,'this.props.navigation.state.params')
+    componentDidMount() {
         const { id, defaultData, type } = this.props.navigation.state.params;
         this.setState({
             defaultData,
@@ -34,16 +33,15 @@ export default class CottonDetail extends Component {
         }, this.getData);
         setPageTitle(`${id}|详情`);
     }
-    onShareAppMessage () {
+    onShareAppMessage() {
         // const { thread } = this.state
         // const url='/pages/thread_detail/thread_detail?tid='+ thread.tid;
         // console.log("url="+url);
-    console.log(this,'onShareAppMessage')
         return {
-          title: 'a',
-          //url: url
+            title: 'a',
+            //url: url
         }
-      }
+    }
     handleTabChange = activeTab => {
         this.setState({
             activeTab
@@ -53,18 +51,19 @@ export default class CottonDetail extends Component {
         const { activeTab } = this.state;
         const { id, cottonType } = this.props.navigation.state.params;
         //(进口棉，地产棉)详细列表信息 不需要去获取一检数据，数据都从列表信息里面获取
-        if (['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)) {
-            return
-        }
-        if (tabList.indexOf(activeTab) === 0) {
-            //'65551171001'
+        // if (['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)) {
+        //     return
+        // }
+        if ((this.g('仓单') === '0' || activeTab === '现货指标') && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
             getSpotIndicators({
                 '加工批号': id
             })
                 .then(res => {
                     this.setState(res);
                 })
-        } else {
+        }
+
+        if ((this.g('仓单') === '1' || activeTab === '仓单证书') && !['进口棉$', '进口棉￥'].includes(cottonType)) {
             getCertificate({
                 '加工批号': id
             })
@@ -84,6 +83,10 @@ export default class CottonDetail extends Component {
     }
     goPackageDetail() {
         navigate({ routeName: 'package-detail' });
+    }
+    g(k) {
+        const { key, defaultData } = this.props.navigation.state.params;
+        return defaultData[key[k]];
     }
     goShoppingCar() {
         const { key, defaultData } = this.props.navigation.state.params;
@@ -118,14 +121,18 @@ export default class CottonDetail extends Component {
         const { type, activeTab } = this.state;
         const { cottonType } = this.props.navigation.state.params;
         const { fullData, fullKey } = this.getFullConfig();
+        let isShowDetail = false;
+        if (includeList.includes(cottonType) || (cottonType === '地产棉') && activeTab === '仓单证书') {
+            isShowDetail = true;
+        }
         return (
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
                     <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} />
-                    {includeList.includes(cottonType) && <Card data={fullData} map={key} />}
+                    {isShowDetail && <Card data={fullData} map={key} />}
                     {
-                        includeList.includes(cottonType) && (
+                        isShowDetail && (
                             <View className={classnames('link-btn-group')}>
                                 <TButton onClick={() => this.goPackageDetail(fullData)}>
                                     <View className='link-button'>

@@ -1,14 +1,14 @@
 
 
 import React from './node_modules/react';
-import { Component,connect } from '../../platform';
+import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 import { Picker } from '@tarojs/components'
 import update from 'immutability-helper';
 
 import { DatePicker, LogisticsFixedTool } from '../../components';
 import { View, ScrollView, Visible, TButton, Text, TInput, TDatePicker } from '../../ui'
-import { getLogisticsList, publishLogisticsList } from '../../api';
+import { getLogisticsList, publishLogisticsList, getDistance } from '../../api';
 import PlateformSelect from './plateform-select';
 import './main.scss';
 import { Tip } from '../../utils';
@@ -47,6 +47,11 @@ const layout = [
                         placeholder: '请填写详细地址'
                     }
                 ]
+            },
+            {
+                layout: 'row',
+                type: 'distance',
+                components: []
             }
         ],
     },
@@ -183,9 +188,10 @@ export default class PublishLogistics extends Component {
         isAllChecked: false,
         modalVisible: false,
         checkedOfferList: [],
+        distance: '',
         params: {
-            '发货地': [],
-            '收货地': []
+            // '发货地': '',
+            // '收货地': ''
         }
     };
     componentWillMount() {
@@ -209,8 +215,7 @@ export default class PublishLogistics extends Component {
             })
     }
     onCityChange = (key, v) => {
-        this.handleChange(key, v.target.value);
-        console.log(v, 'bindRegionChange');
+        this.handleChange(key, v.target.value.join('-'));
     }
     handleChange(key, value) {
         this.setState(update(this.state, {
@@ -219,7 +224,23 @@ export default class PublishLogistics extends Component {
                     $set: value
                 }
             }
-        }))
+        }), () => {
+            const { params } = this.state;
+            const fields = ['发货地', '发货地详细', '收货地', '收货地详细'];
+            const isAllHasValue = fields.every(item => {
+                const v = params[item];
+                return v;
+            });
+            if (isAllHasValue && fields.includes(key)) {
+                getDistance(params)
+                    .then(res => {
+                        this.setState({
+                            distance: String(res)
+                        })
+                    })
+            }
+        });
+
     }
     submit() {
         const { params } = this.state;
@@ -227,11 +248,10 @@ export default class PublishLogistics extends Component {
         publishLogisticsList({ ...params, '用户ID': id })
             .then(res => {
                 Tip.success('发布成功');
-                console.log(res, 'res');
             })
     }
     render() {
-        const { params } = this.state;
+        const { params, distance } = this.state;
         return (
             <View className="container">
                 <ScrollView className="scroll" scrollY>
@@ -265,22 +285,38 @@ export default class PublishLogistics extends Component {
                                                             'layout-content-row': layout === 'row',
                                                             'layout-content-column': layout === 'column',
                                                         })}>
+                                                            {
+                                                                l.type === 'distance' && distance && (
+                                                                    <View className="distance">
+                                                                        <Text className="distance-label">
+                                                                            运输距离
+                                                                   </Text>
+                                                                        <Text className="distance-value">
+                                                                            {distance}
+                                                                        </Text>
+                                                                        <Text className="distance-label">
+                                                                            km
+                                                                   </Text>
+                                                                    </View>
+                                                                )
+                                                            }
                                                             {components.map(item => {
                                                                 const { type, key, placeholder, option } = item;
-                                                                const value = params[key];
+                                                                const value = params[key] || '';
                                                                 return (
                                                                     <View className={classnames('component-box', {
                                                                         'full': !type.includes('label')
                                                                     })} key={key}>
+
                                                                         {
                                                                             type === 'city-picker' && (
                                                                                 <Picker
                                                                                     mode="region"
-                                                                                    value={value}
+                                                                                    value={value.split('-')}
                                                                                     onChange={this.onCityChange.bind(this, key)}>
                                                                                     <View className='picker'>
                                                                                         <Text className="p-text">
-                                                                                            {value.length ? value.join('-') : '请选择'}
+                                                                                            {value || '请选择'}
                                                                                         </Text>
                                                                                     </View>
                                                                                 </Picker>

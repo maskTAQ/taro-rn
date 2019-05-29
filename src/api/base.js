@@ -14,11 +14,12 @@ const commonParmas = {
     appname: 'zmw'
 };
 const parseErrMsg = (e = '') => {
-    if (e.includes('fail')) {
-        return String(e);
-    } else {
-        return e;
-    }
+    // if (e.includes('fail')) {
+    //     return String(e);
+    // } else {
+    //     return e;
+    // }
+    return e;
 }
 const request = (url, data, { type, config: { loading } = { loading: true } }) => {
     loading && Tip.loading();
@@ -37,20 +38,21 @@ const request = (url, data, { type, config: { loading } = { loading: true } }) =
                         if (code === 200) {
                             resolve(data);
                         } else {
-                            Tip.fail(parseErrMsg(msg+'响应错误'));
+                            Tip.fail(parseErrMsg(msg));
                             reject(d);
                         }
                     }
 
 
                 } else {
-                    Tip.fail(parseErrMsg(d.errMsg+'响应错误2'));
+                    Tip.fail(parseErrMsg(d.errMsg));
                     reject(d);
                 }
             },
             fail(e) {
+                console.log(e, 'e');
                 loading && Tip.dismiss();
-                Tip.fail(parseErrMsg(e.errMsg+'请求错误'));
+                Tip.fail(parseErrMsg(e.errMsg));
                 reject(e);
             }
         });
@@ -78,11 +80,11 @@ const file = (url, data, config = { loading: true }) => {
                     success: function (o) {
                         loading && Tip.dismiss();
                         resolve(o);
-                        
+
                     },
                     fail: function (o) {
 
-                        Tip.fail(e.errMsg+'文件上传错');
+                        Tip.fail(e.errMsg + '文件上传错');
                         reject(e);
                     },
                     complete: function () {

@@ -74,13 +74,13 @@ const listBottom = [
         icon: tjImg,
         label: '推荐二维码',
         value: '',
-        routeName: ''
+        routeName: 'recommend'
     },
     {
         icon: feedbackImg,
         label: '用户反馈',
         value: '',
-        routeName: ''
+        routeName: 'feedback'
     },
     {
         icon: aboutImg,

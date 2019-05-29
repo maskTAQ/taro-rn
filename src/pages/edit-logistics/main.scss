@@ -68,6 +68,22 @@
     font-size: 28px;
     color: #000;
 }
+.distance {
+    flex: 1;
+    @extend .flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.distance-label {
+    font-size: 28px;
+    color: #000;
+}
+
+.distance-value {
+    font-size: 28px;
+    color: $main;
+}
 
 .submit {
     margin: 50px 30px;

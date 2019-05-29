@@ -104,25 +104,32 @@ export default class Demand extends Component {
                     <CapsuleChoose option={['供需对接', '我的需求']} value={activeList} onChange={this.handleActiveListChange} />
                     {
                         activeList === '我的需求' && (
-                            <ListWrapper status={mySelfDataStatus} data={mySelfData}>
-                                {
-                                    dataStatus === 'success' && (
-                                        <View className="demand-list">
+                            <View>
+                                <ListWrapper status={mySelfDataStatus} data={mySelfData}>
+                                    {
+                                        dataStatus === 'success' && (
+                                            <View className="demand-list">
 
-                                            {
-                                                mySelfData.list.map(item => {
+                                                {
+                                                    mySelfData.list.map(item => {
 
-                                                    return (
-                                                        <DemandItem data={item} map={mySelfData.key} cottonType={activeTab}>
-                                                            <SelfPart data={item} map={mySelfData.key} cottonType={activeTab} dispatch={this.props.dispatch} />
-                                                        </DemandItem>
-                                                    )
-                                                })
-                                            }
-                                        </View>
-                                    )
-                                }
-                            </ListWrapper>
+                                                        return (
+                                                            <DemandItem data={item} map={mySelfData.key} cottonType={activeTab}>
+                                                                <SelfPart data={item} map={mySelfData.key} cottonType={activeTab} dispatch={this.props.dispatch} />
+                                                            </DemandItem>
+                                                        )
+                                                    })
+                                                }
+                                            </View>
+                                        )
+                                    }
+                                </ListWrapper>
+                                <TButton className="fixed-button" onClick={this.goDemandCustom}>
+                                    <View className="submit">
+                                        <Text className="submit-text">发布需求</Text>
+                                    </View>
+                                </TButton>
+                            </View>
                         )
                     }
                     {
@@ -147,11 +154,8 @@ export default class Demand extends Component {
                                         )
                                     }
                                 </ListWrapper>
-                                <TButton className="fixed-button" onClick={this.goDemandCustom}>
-                                    <View className="submit">
-                                        <Text className="submit-text">发布需求</Text>
-                                    </View>
-                                </TButton>
+
+
                             </View>
                         )
                     }

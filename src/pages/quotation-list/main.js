@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 import React from 'react';
 import { Component ,setPageTitle} from '../../platform';
 
@@ -326,20 +327,12 @@ export default class QuotationList extends Component {
                     wx.saveImageToPhotosAlbum({
                         filePath: res.tempFilePath,
                     });
-                    Taro.showToast({
-                        title: '保存成功',
-                        icon: 'success',
-                        duration: 2000
-                    });
+                    Tip.success('保存成功')
                 }
 
             },
             fail: function (res) {
-                Taro.showToast({
-                    title: '保存失败',
-                    icon: 'success',
-                    duration: 2000
-                });
+                Tip.fail('保存失败')
             },
 
         }, this.$scope)
