@@ -40,7 +40,6 @@ export default class Recommend extends Component {
         wx.downloadFile({
             url: imgSrc,
             success: function (res) {
-                console.log(res);
                 //图片保存到本地
                 wx.saveImageToPhotosAlbum({
                     filePath: res.tempFilePath,

@@ -21,7 +21,6 @@ export default class Feedback extends Component {
     }
     submit = () => {
         const { content, contact } = this.state;
-        console.log(this.props,'props')
         feedback({
             '反馈内容': content,
             '联系方式': contact,

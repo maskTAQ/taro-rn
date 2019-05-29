@@ -1,13 +1,13 @@
 
 
 import React from 'react';
-import { Component,connect } from '../../platform';
+import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
 import { View, TButton, Text, Image, Visible, ScrollView, TModal, TInput, TRadio, } from '../../ui'
 import { ListWrapper } from '../../components';
 import { getOfferByDemand, offer } from '../../api';
-import {Tip} from '../../utils';
+import { Tip } from '../../utils';
 import Item from './item';
 import './main.scss';
 import mobileImg from '../../img/mobile.png';
@@ -50,7 +50,7 @@ const modalList = [
         placeholder: '请输入到厂家'
     },
 ];
-@connect(({data})=>({data}))
+@connect(({ data }) => ({ data }))
 export default class DemandDetail extends Component {
     state = {
         modal: {
@@ -105,10 +105,8 @@ export default class DemandDetail extends Component {
         call('1388888888');
     }
     g = (k, i) => {
-       
-        const { list,key } = this.state.list.data;
-      console.log(k,'list[i][key[k]]')
-        return list[i][key[k]] || '-';
+        const { list, key } = this.state.list.data;
+        return list[i][key[k]] || '';
     }
     handleUnitChange = item => {
         this.setState({
@@ -149,10 +147,9 @@ export default class DemandDetail extends Component {
         this.closeModal();
     }
     render() {
-        const {g} = this;
+        const { g } = this;
         const { list, modal } = this.state;
         const { params } = this.props.navigation.state;
-        console.log(list,'list')
         return (
             <View className="container">
                 <ScrollView>

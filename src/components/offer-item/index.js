@@ -39,9 +39,6 @@ export default class OfferItem extends Component {
     state = {
         itemValueList: ['jc', 'y/d', 'gz'],
     }
-    handleDelete() {
-        console.log('点击删除');
-    }
     call(mobile) {
         call(mobile)
     }

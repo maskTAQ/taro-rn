@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Component, connect } from '../../platform';
-
+import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TModal } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper,FixedTool } from '../../components';
+import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
@@ -27,6 +27,7 @@ export default class Home extends Component {
         hasClickAddShoppingCar: false
     };
     componentWillMount() {
+       
         getHome()
             .then(res => {
                 this.props.dispatch({
@@ -38,8 +39,22 @@ export default class Home extends Component {
             })
         this.getData();
     }
+    componentDidMount() {
+        this.initParams();
+    }
     login() {
         login()
+    }
+    initParams() {
+        const { params } = this.props.navigation.state.params;
+        if (params) {
+            this.setState({
+                params
+            })
+        }
+    }
+    getParams() {
+        return this.state.params;
     }
     getData(homeActiveTab) {
         const tab = homeActiveTab || this.props.data.homeActiveTab;
@@ -65,7 +80,6 @@ export default class Home extends Component {
             type: 'data',
             key: `offer_list_${homeActiveTab}`
         });
-
     }
 
     handleTabChange = activeTab => {
@@ -120,6 +134,9 @@ export default class Home extends Component {
             params: {}
         }, this.getOfferData);
     }
+    search = () => {
+        this.getOfferData();
+    }
     submit = () => {
         this.getOfferData();
         this.s.folder();
@@ -147,6 +164,15 @@ export default class Home extends Component {
     }
     handleFieldChange = params => {
         this.setState({ params })
+    }
+    handleSearchChange = v => {
+        this.setState(update(this.state, {
+            params: {
+                search: {
+                    $set: v
+                }
+            }
+        }))
     }
     saveToHistory(id) {
         return Storage.get('history')
@@ -187,9 +213,10 @@ export default class Home extends Component {
         const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`];
         return (
             <View className="container">
+                {JSON.stringify(params)}
                 <Authorization />
                 <ScrollView className="scroll-container">
-                    <SearchTool />
+                    <SearchTool value={params.search} onInput={this.handleSearchChange} onSearch={this.search} />
                     <Swiper
                         className='swiper'
                         indicatorColor='#999'
@@ -243,7 +270,7 @@ export default class Home extends Component {
 
 
                 </ScrollView>
-                <FixedTool home={true}/>
+                <FixedTool home={true} />
                 <TPicker onClick={this.handlePickerChange}
                     show={picker.visible}
                     value={picker.value}

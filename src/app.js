@@ -99,11 +99,7 @@ class App extends Component {
       }
     }
   }
-  onLaunch(...v) {
-    console.log(v, 'v')
-  }
   componentWillMount(...v) {
-    console.log(this.$router.params.scene, 'app')
     login();
   }
   componentDidMount() { }

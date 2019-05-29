@@ -292,8 +292,6 @@ export default class QuotationList extends Component {
 
 
     componentWillMount() {
-        const { data, key } = this.props.navigation.state.params;
-        console.log(key,'key')
         setPageTitle(this.g('组批批次')+'|报价单');
         Taro.getSystemInfo({
             success: (res) => {
@@ -341,7 +339,6 @@ export default class QuotationList extends Component {
 
     render() {
         const { width, scale = 1 } = this.state;
-        console.log(this.props)
         return (
             <div className="container">
                 <Canvas canvasId="myCanvas" className="canvas" style={`width:${width}px;height:${1240 * scale}px`} />

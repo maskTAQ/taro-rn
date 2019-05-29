@@ -42,7 +42,6 @@ export default class SelfPart extends Component {
     }
     goHome(id) {
         const { cottonType } = this.props;
-        console.log(id, 'id')
         asyncActionWrapper({
             call: getOfferList,
             params: { '云需求主键': id, '棉花云报价类型': this.g('棉花云供需类型') },

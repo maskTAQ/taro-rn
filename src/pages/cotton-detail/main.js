@@ -117,6 +117,13 @@ export default class CottonDetail extends Component {
             fullKey: Object.assign({}, k, key)
         };
     }
+    getContactMobile = ()=>{
+        const { key, defaultData } = this.props.navigation.state.params;
+        if(key['客服']){
+            return this.g('客服');
+        }
+        return false;
+    }
     render() {
         const { type, activeTab } = this.state;
         const { cottonType } = this.props.navigation.state.params;
@@ -125,6 +132,7 @@ export default class CottonDetail extends Component {
         if (includeList.includes(cottonType) || (cottonType === '地产棉') && activeTab === '仓单证书') {
             isShowDetail = true;
         }
+        console.log(this.getContactMobile(),'kf');
         return (
             <View className="container">
                 <ScrollView>

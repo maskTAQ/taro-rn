@@ -29,7 +29,6 @@ export default class Card extends Component {
         this.props.onChange({ key, value });
     }
     render() {
-        console.log(this.props, 'card');
         const { option = [], title, type, onRequestAddKf, state, data, host, kfList, onRequestDeleteKf } = this.props;
         const hasInput = ['input', 'kf'].includes(type);
         const isImg = type === 'img';
@@ -57,7 +56,6 @@ export default class Card extends Component {
                                                 <Text className="kf-item-text ml">客服电话：{item['客服电话']}</Text>
                                             </View>
                                             <TButton onClick={() => {
-                                                console.log(id, 'd');
                                                 this.props.onRequestDeleteKf(id);
                                             }}>
                                                 <Image className="kf-item-close" src={closeIcon} />

@@ -27,17 +27,11 @@ export default class MapDetail extends Component {
         }],
     };
     handleClickLocation = () => {
-        console.log('handleClickLocation');
         wx.getLocation({
             type: 'gcj02',
             success: (res) => {
                 var latitude = res.latitude + (Math.random() * 0.01).toFixed();
                 var longitude = res.longitude + (Math.random() * 0.01).toFixed();
-                console.log({
-                    latitude,
-                    longitude,
-                    key: Date.now()
-                })
                 this.setState({
                     latitude,
                     longitude,
@@ -49,7 +43,6 @@ export default class MapDetail extends Component {
         })
     }
     handleClickFeedback = () => {
-        console.log('handleClickFeedback');
         this.setState({
             isModalVisible: true
         });
@@ -60,7 +53,6 @@ export default class MapDetail extends Component {
         });
     }
     submitFeedBack = () => {
-        console.log('提交反馈');
         this.handleClose();
     }
     changeFeedback = v => {

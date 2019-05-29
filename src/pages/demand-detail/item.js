@@ -51,12 +51,6 @@ export default class Item extends Component {
     state = {
         itemValueList: ['jc', 'y/d', 'gz'],
     }
-    handleDelete() {
-        console.log('点击删除');
-    }
-    handleEdit() {
-        console.log('点击编辑');
-    }
     goMapDetail() {
         navigate({ routeName: 'map-detail' });
     }

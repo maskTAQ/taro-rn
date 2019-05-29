@@ -1,7 +1,8 @@
 import update from 'immutability-helper';
 import { store } from '../constants';
 const INITIAL_DATA = {
-    homeActiveTab: '新疆棉'
+    homeActiveTab: '新疆棉',
+    homeSearchParams: {}
 };
 const INITIAL = {
     loading: false,
@@ -23,6 +24,12 @@ export default function data(state = INITIAL_DATA, action) {
         case 'setHomeActiveTab':
             return update(state, {
                 homeActiveTab: {
+                    $set: payload
+                }
+            });
+        case 'sethomeSearchParams':
+            return update(state, {
+                homeSearchParams: {
                     $set: payload
                 }
             });

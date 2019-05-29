@@ -15,15 +15,13 @@ export default class SearchTool extends Component {
     }
     scan = () => {
         const { status, data } = this.props.user;
-
         if (status === 'success') {
             scan()
                 .then(res => {
                     const { type, clientId: pcClientId } = res;
                     if (type === 'cotton') {
-                        send({ action: 'login',mpClientId: clientId, pcClientId, data })
+                        send({ action: 'login', mpClientId: clientId, pcClientId, data })
                             .then(res => {
-                                console.log(res,'res')
                                 Tip.success('登录成功');
                             })
                     } else {
@@ -40,16 +38,15 @@ export default class SearchTool extends Component {
 
     }
     render() {
-        const { onClick, className } = this.props;
+        const { onInput, value, onSearch } = this.props;
         return (
             <View className="container">
                 <View className="content">
                     <View className="input-box">
-                        <TInput className="search-input" placeholder="通过批号/工厂/仓库搜索" />
+                        <TInput value={value} onInput={onInput} className="search-input" placeholder="通过批号/仓库/卖家/提单号 搜索" />
                     </View>
-
                     <View className="icon-btn-group">
-                        <TButton>
+                        <TButton onClick={onSearch}>
                             <Image className="icon-btn mr" src={searchImg}></Image>
                         </TButton>
                         <TButton onClick={this.scan}>

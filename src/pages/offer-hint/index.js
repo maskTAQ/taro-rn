@@ -21,10 +21,6 @@ export default class OfferHint extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
-    copy(){
-        //
-        console.log('copy')
-    }
     render() {
         return (
             <View className='container'>
