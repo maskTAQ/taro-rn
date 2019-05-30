@@ -7,10 +7,11 @@ import update from 'immutability-helper';
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TModal } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
 import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
-import { navigate, asyncActionWrapper, login } from '../../actions';
+import { asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
-import { Tip, Storage } from '../../utils';
+import { Tip, clientId } from '../../utils';
+import { send } from '../../api/ws';
 
 @connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
@@ -27,7 +28,7 @@ export default class Home extends Component {
         hasClickAddShoppingCar: false
     };
     componentWillMount() {
-       
+
         getHome()
             .then(res => {
                 this.props.dispatch({
@@ -38,6 +39,30 @@ export default class Home extends Component {
                 this.setState(res);
             })
         this.getData();
+        const { client_id: pcClientId } = this.props.navigation.state.params;
+        if (this.props.data.user.status === 'success' && pcClientId) {
+            send({ action: 'login', mpClientId: clientId, pcClientId, data: this.props.data.user.data })
+                .then(res => {
+                    Tip.success('登录成功');
+                })
+        }
+    }
+    isShouldLogin = false
+    componentWillReceiveProps(nextProps) {
+        const { client_id: pcClientId } = this.props.navigation.state.params;
+        if (!this.props.navigation.state.params.client_id && nextProps.navigation.state.params.client_id) {
+            this.isShouldLogin = true;
+        }
+        if (nextProps.data.user.status === 'success' && this.isShouldLogin) {
+            this.isShouldLogin = false;
+            send({ action: 'login', mpClientId: clientId, pcClientId, data: nextProps.data.user.data })
+                .then(res => {
+                    Tip.success('登录成功');
+                })
+        }
+        if (this.props.data.user.status === 'loading' && nextProps.data.user.status === 'error') {
+            Tip.fail('扫码登录失败!');
+        }
     }
     componentDidMount() {
         this.initParams();
@@ -50,7 +75,7 @@ export default class Home extends Component {
         if (params) {
             this.setState({
                 params
-            })
+            }, this.search)
         }
     }
     getParams() {
@@ -174,37 +199,9 @@ export default class Home extends Component {
             }
         }))
     }
-    saveToHistory(id) {
-        return Storage.get('history')
-            .then(res => {
-                const prev = JSON.parse(res || '[]');
-                if (!prev.includes(id)) {
-                    prev.push(id);
-                }
-                Storage.setJson('history', prev);
-                return Promise.resolve();
-            })
-            .catch(e => {
-                return Promise.resolve();
-            })
-    }
-    goCottonDetail(data, key) {
-        const { homeActiveTab } = this.props.data;
-        this.saveToHistory(data[key['主键']])
-            .then(() => {
-                navigate({
-                    routeName: 'cotton-detail', params: {
-                        key,
-                        cottonType: homeActiveTab,
-                        id: data[key['批号']],
-                        defaultData: data,
-                        type: data[key['仓单']]
-                    }
-                });
-            });
 
-    }
     render() {
+
         const { picker, ad, news, params, url, hasClickAddShoppingCar } = this.state;
         const { data, layout } = this.props;
         const activeTab = data.homeActiveTab;
@@ -213,7 +210,6 @@ export default class Home extends Component {
         const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`];
         return (
             <View className="container">
-                {JSON.stringify(params)}
                 <Authorization />
                 <ScrollView className="scroll-container">
                     <SearchTool value={params.search} onInput={this.handleSearchChange} onSearch={this.search} />
@@ -256,13 +252,12 @@ export default class Home extends Component {
                         {
                             listStatus === 'success' && listData.list.map((item, i) => {
                                 return (
-                                    <TButton onClick={this.goCottonDetail.bind(this, item, listData.key)} key={i} >
-                                        <OfferItem
-                                            data={item}
-                                            map={listData.key}
-                                            onClickShoppingCar={this.handleClickShoppingCar}
-                                        />
-                                    </TButton>
+                                    <OfferItem
+                                        isHome={true}
+                                        data={item}
+                                        map={listData.key}
+                                        onClickShoppingCar={this.handleClickShoppingCar}
+                                    />
                                 )
                             })
                         }

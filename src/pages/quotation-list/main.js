@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import React from 'react';
-import { Component ,setPageTitle} from '../../platform';
+import { Component ,setPageTitle,connect} from '../../platform';
 
 import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
@@ -42,7 +42,7 @@ const createImg = (src, callback) => {
     callback(src);
     return src;
 }
-
+@connect(({ data }) => ({ data }))
 export default class QuotationList extends Component {
 
     config = {
@@ -215,7 +215,8 @@ export default class QuotationList extends Component {
         return Taro.createCanvasContext(id, this.$scope);
     }
     createdQuoteList = ({ ctx, width, padding, scale, isScale }) => {
-
+        const userData = this.props.data.user.data || {};
+        console.log(userData,'userData');
         const {
             brandImg, websiteName, website, websiteDesc,
             companyName, contactMobile, gzjgLabel, gzjgValue,
@@ -232,11 +233,11 @@ export default class QuotationList extends Component {
         ctx.translate(padding, padding);
         ctx.setTextBaseline('top');
         //绘制商标
-        createImg(brandSrc, function (img) {
+        createImg(userData.img, function (img) {
             ctx.drawImage(img, 0, 0, brandImg.w, brandImg.h);
         });
         //绘制二维码
-        createImg(brandSrc, function (img) {
+        createImg('http://s.chncot.com/addons/zh_dianc/wxclientid.php', function (img) {
             ctx.drawImage(img, width - 130 - 20, 0, 130, 130);
             //ctx.fillRect(width - 130 - 40, 0, 130, 130);
         });
@@ -252,8 +253,8 @@ export default class QuotationList extends Component {
 
         ctx.setFontSize(companyName.fs);
         ctx.fillText(data.companyName, 0, 70);
-        ctx.fillText(data.contact, 0, 100);
-        ctx.fillText(data.contactMobile, 0, 130);
+        ctx.fillText('联系人:'+userData.user_name, 0, 100);
+        ctx.fillText('联系电话:'+userData.user_tel, 0, 130);
 
         ctx.setFontSize(gzjgLabel.fs);
         l = contactMobile.fs * data.contactMobile.length
@@ -262,7 +263,7 @@ export default class QuotationList extends Component {
         ctx.setFontSize(gzjgValue.fs);
         ctx.setFillStyle(gzjgValue.color);
         l = l + gzjgLabel.fs * data.gzjgLabel.length;
-        ctx.fillText(data.gzjgValue, l, 124);
+        ctx.fillText("请识别二维码查看", l, 124);
 
         ctx.setFillStyle('#000');
         ctx.fillRect(0, 176, width - 40, 2);

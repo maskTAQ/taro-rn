@@ -220,7 +220,7 @@ export default class Item extends Component {
                             <View className="offer-right">
                                 <View className="offer-right-top">
                                     <Text className="price-value">{g('报价')}</Text>
-                                    <Text className="price-label">元/吨</Text>
+                                    <Text className="price-label">{cottonType === '进口棉$' ? '美元/吨' : '元/吨'}</Text>
                                 </View>
                                 <View className="offer-right-bottom">
                                     <Text className="weight-label">{g('重量类型')}</Text>

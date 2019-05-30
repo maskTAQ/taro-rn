@@ -6,7 +6,7 @@ import { Component, connect } from '../../platform';
 
 
 import { View, TButton, Text, Image, TModal, ScrollView } from '../../ui'
-import { login, asyncActionWrapper } from '../../actions';
+import { login, asyncActionWrapper, call } from '../../actions';
 import { getShoppingCarList, removeFromCart } from '../../api';
 import ShoppingCarItem from './item';
 import userIcon from '../../img/user.png';
@@ -16,39 +16,6 @@ import checkedImg from '../../img/checked.png';
 import uncheckedImg from '../../img/unchecked.png';
 import './main.scss';
 import { Tip } from '../../utils';
-
-
-const ddata = {
-    id: '562781322',
-
-    ysj: '21+',
-    cd: '12',
-    ql: 21.2,
-    mz: 1,
-    cz: '0.0',
-    hc: '0.0',
-    hz: '0.0',
-    jg: '<15003',
-
-    shd: '盐城',
-    mj: '盐城捷多纺织品有限公司',
-    zwjhsj: '2019-01-01',
-    cgjs: '200d吨',
-
-    sl: '12',
-    ztj: '1231',
-    dcj: '1331',
-
-    xqbh: '12132987130',
-
-    jc: '+120',
-    'y/d': '15720',
-    gz: '45.455',
-
-    zhc: "巴州亿成棉业有限公司",
-    ck: '中储棉库存厄尔有限责任公司',
-    gys: '河北星宇纺织原料有限责任公司'
-};
 
 const modalList = [
     {
@@ -162,6 +129,14 @@ export default class ShoppingCart extends Component {
             modalVisible: false
         });
     }
+    handleClick = label => {
+        if (label === '指定交易商') {
+            call('13822222233');
+        }
+        if(label === '对接全国棉花交易市场'){
+            Tip.success('正在建设中');
+        }
+    }
     render() {
         const { modalVisible, isAllChecked } = this.state;
         const { shoppingCarList, user } = this.props.data;
@@ -178,7 +153,6 @@ export default class ShoppingCart extends Component {
                                         return (
                                             <ShoppingCarItem
                                                 key={data.id}
-                                                item={ddata}
                                                 data={data}
                                                 checkedOfferList={checkedOfferList}
                                                 onCheckedChange={this.handleCheckedChange}
@@ -217,10 +191,12 @@ export default class ShoppingCart extends Component {
                         modalList.map(item => {
                             const { label, icon } = item;
                             return (
-                                <View className="modal-item" key={label}>
-                                    <Image className="modal-icon" src={icon} />
-                                    <Text className="modal-label">{label}</Text>
-                                </View>
+                                <TButton onClick={this.handleClick.bind(this,label)}>
+                                    <View className="modal-item" key={label}>
+                                        <Image className="modal-icon" src={icon} />
+                                        <Text className="modal-label">{label}</Text>
+                                    </View>
+                                </TButton>
                             )
                         })
                     }

@@ -11,7 +11,7 @@ export function scan() {
     // })
     return Taro.scanCode({
         onlyFromCamera: true
-    }).then(res => JSON.parse(res.result))
+    }).then(res => String(res.result)||'')
 }
 const createdClientId = function () {
     var timestamp = Date.parse(new Date());

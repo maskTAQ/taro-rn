@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, doSubmit, getOfferList, uploadExcelData, getUpdateGetExcelListPer, getExcelList,publishExcelData } from '../../api';
+import { getOfferLayout, doSubmit, getOfferList, uploadExcelData, getUpdateGetExcelListPer, getExcelList, publishExcelData } from '../../api';
 import { send } from '../../api/ws';
 import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
@@ -192,15 +192,15 @@ export default class AddBatch extends Component {
                     data: JSON.stringify(res)
                 })
                     .then(res => {
-                        console.log(res,"发布成功");
+                        console.log(res, "发布成功");
                         Tip.success('发布成功');
                         navigate({
-                            routeName:'my-cloud-offer'
+                            routeName: 'my-cloud-offer'
                         });
                     })
                     .catch(e => {
                         Tip.fail('发布失败');
-                        console.log(e,"发布失败");
+                        console.log(e, "发布失败");
                     });
 
             })
@@ -221,50 +221,50 @@ export default class AddBatch extends Component {
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
         if (status === 'success') {
             const { url, action } = data.verify;
-            if (navParams['棉花云报价类型'] === 1) {
-                //找批号字段
-                let number = "";
-                for (const key in params) {
-                    if (key.includes("批号")) {
-                        number = params[key];
-                        break;
-                    }
+            // if (navParams['棉花云报价类型'] === 1 ["新疆棉", "拍储",'地产棉'].includes()) {
+            //找批号字段
+            let number = "";
+            for (const key in params) {
+                if (key.includes("批号")) {
+                    number = params[key];
+                    break;
                 }
-                console.log('验证批号');
-                send({
-                    action,
-                    data: { number: number, userId: id, url, carry: data.carry }
-                })
-                    .then(res => {
-                        this.uploadExcelData();
-                        // doSubmit(data.do, doParams)
-                        //     .then(res => {
-                        //         asyncActionWrapper({
-                        //             call: getOfferList,
-                        //             params: { ...navParams, '用户ID': id },
-                        //             type: 'data',
-                        //             key: `offer_list_${navParams.type}`
-                        //         });
-                        //         Tip.success('操作成功');
-                        //     })
-
-                    })
-                    .catch(e => {
-                        console.log(e, 'e');
-                        Tip.fail(e);
-                    })
-            } else {
-                doSubmit(data.do, doParams)
-                    .then(res => {
-                        asyncActionWrapper({
-                            call: getOfferList,
-                            params: { ...navParams, '用户ID': id },
-                            type: 'data',
-                            key: `offer_list_${navParams.type}`
-                        });
-                        Tip.success('操作成功');
-                    })
             }
+            console.log('验证批号');
+            send({
+                action,
+                data: { number: number, userId: id, url, carry: data.carry }
+            })
+                .then(res => {
+                    this.uploadExcelData();
+                    // doSubmit(data.do, doParams)
+                    //     .then(res => {
+                    //         asyncActionWrapper({
+                    //             call: getOfferList,
+                    //             params: { ...navParams, '用户ID': id },
+                    //             type: 'data',
+                    //             key: `offer_list_${navParams.type}`
+                    //         });
+                    //         Tip.success('操作成功');
+                    //     })
+
+                })
+                .catch(e => {
+                    console.log(e, 'e');
+                    Tip.fail(e);
+                })
+            // } else {
+            //     doSubmit(data.do, doParams)
+            //         .then(res => {
+            //             asyncActionWrapper({
+            //                 call: getOfferList,
+            //                 params: { ...navParams, '用户ID': id },
+            //                 type: 'data',
+            //                 key: `offer_list_${navParams.type}`
+            //             });
+            //             Tip.success('操作成功');
+            //         })
+            // }
 
         }
 

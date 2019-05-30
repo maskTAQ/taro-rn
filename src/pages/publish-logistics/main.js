@@ -81,15 +81,15 @@ const layout = [
                     },
                 ]
             },
-            {
-                label: '货物类型',
-                layout: 'row',
-                components: [
-                    {
-                        type: 'picker'
-                    }
-                ]
-            }
+            // {
+            //     label: '货物类型',
+            //     layout: 'row',
+            //     components: [
+            //         {
+            //             type: 'picker'
+            //         }
+            //     ]
+            // }
         ]
     },
     {

@@ -38,7 +38,7 @@ export default class Item extends Component {
                             <Text className="label-text">货物信息</Text>
                         </View>
                         <View className="value">
-                            <Text className="value-text">{g('重量') + g('件数') + g('货物类型')}</Text>
+                            <Text className="value-text">{`${g('重量')} 吨 | ${g('件数')} 件 | 棉花(皮棉)`}</Text>
                         </View>
                     </View>
                     <View className="row">
@@ -54,7 +54,7 @@ export default class Item extends Component {
                             <Text className="label-text">运输价格</Text>
                         </View>
                         <View className="value">
-                            <Text className="value-text price">{g('发货价格')}</Text>
+                            <Text className="value-text price">{g('发货价格')}元/吨</Text>
                         </View>
                     </View>
 

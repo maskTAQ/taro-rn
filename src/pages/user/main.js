@@ -29,7 +29,7 @@ const toolList = [
     {
         icon: scImg,
         label: '物流',
-        routeName:'logistics'
+        routeName: 'logistics'
     },
     {
         icon: historyImg,
@@ -170,6 +170,7 @@ export default class User extends Component {
     }
     getAuthLabel() {
         const { status: authStatus, data: authData } = this.props.data.auth;
+
         switch (authStatus) {
             case 'init':
                 return '点我获取认证信息';
@@ -183,6 +184,7 @@ export default class User extends Component {
     }
     getCompanyName() {
         const { status: authStatus, data: authData } = this.props.data.auth;
+        const { data } = this.props.data.user || {};
         switch (authStatus) {
             case 'init':
                 return '点我获取认证信息';
@@ -191,7 +193,24 @@ export default class User extends Component {
             case 'error':
                 return '获取失败';
             default:
-                return authData ? authData.store_name : '';
+                return authData ? authData.store_name || data.name : '';
+        }
+    }
+    getMobileLabel() {
+        //{}
+        const { mobile } = this.state;
+        const { status: authStatus, data: authData } = this.props.data.auth;
+        const { data } = this.props.data.user || {};
+        const myMobile = mobile || data.uer_tel;
+        switch (authStatus) {
+            case 'init':
+                return '请先认证';
+            case 'loading':
+                return '...';
+            case 'error':
+                return '请先认证';
+            default:
+                return authData.state ? myMobile || '请授权获取手机号' : '请先认证';
         }
     }
     go(routeName) {
@@ -218,7 +237,7 @@ export default class User extends Component {
                                         </View>
                                     </TButton>
                                 </View>
-                                <Text className="mobile">{myMobile || '请授权获取手机号'}</Text>
+                                <Text className="mobile">{this.getMobileLabel()}</Text>
                             </View>
                         </View>
                         <View className="tool">

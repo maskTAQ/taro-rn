@@ -16,6 +16,7 @@ export default class Home extends Component {
   }
   render() {
     const navigation = injectNavParams(this.$router);
+    //navigation.state.params.client_id = '4JWMYN1559140214000'
     return <Main navigation={navigation} ref={e => this.main = e} />
   }
 }

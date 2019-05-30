@@ -43,7 +43,7 @@ export default class OfferTool extends Component {
                             <View className="item-icon-box item-bg-1">
                                 <Image src={cloudImg} className="item-icon"></Image>
                             </View>
-                            <Text className="item-label">国产棉-新疆棉</Text>
+                            <Text className="item-label">新疆棉</Text>
                         </View>
                     </TButton>
                     <TButton className="btn" onClick={this.goImportCotton}>
@@ -51,7 +51,7 @@ export default class OfferTool extends Component {
                             <View className="item-icon-box item-bg-2">
                                 <Image src={cloudImg} className="item-icon"></Image>
                             </View>
-                            <Text className="item-label">进口棉</Text>
+                            <Text className="item-label">进口棉(￥/$)</Text>
                         </View>
                     </TButton>
                 </View>
@@ -61,7 +61,7 @@ export default class OfferTool extends Component {
                             <View className="item-icon-box item-bg-3">
                                 <Image src={cloudImg} className="item-icon"></Image>
                             </View>
-                            <Text className="item-label">国产棉-内地棉</Text>
+                            <Text className="item-label">地产棉</Text>
                         </View>
                     </TButton>
                     <TButton className="btn" onClick={this.goAddBatch.bind(this, '拍储')}>
