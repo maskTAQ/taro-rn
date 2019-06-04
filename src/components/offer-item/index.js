@@ -92,6 +92,7 @@ export default class OfferItem extends Component {
                             key: map,
                             cottonType: productTypesLabel[this.g('棉花云报价类型')],
                             id: data[map['批号']],
+                            userId:data[map['用户ID']],
                             defaultData: data,
                             type: data[map['仓单']]
                         }
@@ -103,6 +104,7 @@ export default class OfferItem extends Component {
                     key: map,
                     cottonType: productTypesLabel[this.g('棉花云报价类型')],
                     id: data[map['批号']],
+                    userId:data[map['用户ID']],
                     defaultData: data,
                     type: data[map['仓单']]
                 }

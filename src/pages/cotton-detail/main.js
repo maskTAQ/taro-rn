@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { View, TButton, Text, TSTab, Image, ScrollView } from '../../ui';
 import { FixedTool } from '../../components';
-import { getSpotIndicators, getCertificate, addShoppingCar, getShoppingCarList } from '../../api';
+import { getSpotIndicators, getCertificate, addShoppingCar, getShoppingCarList, getKFList } from '../../api';
 import Card from './card';
 import Item from './item';
 import { Tip } from '../../utils';
@@ -22,7 +22,9 @@ export default class CottonDetail extends Component {
         activeTab: '',
         list: [],
         key: {},
-        defaultData: {}
+        defaultData: {},
+        mobile: '',
+        mobileLabel: ''
     };
     componentDidMount() {
         const { id, defaultData, type } = this.props.navigation.state.params;
@@ -32,6 +34,21 @@ export default class CottonDetail extends Component {
             activeTab: type === '1' ? '仓单证书' : '现货指标'
         }, this.getData);
         setPageTitle(`${id}|详情`);
+        this.getKf();
+    }
+    getKf() {
+        const userId = this.g('用户ID');
+        getKFList({ '用户ID': userId })
+            .then(res => {
+                const { key, list } = res;
+                if (list && list[0]) {
+                    this.setState({
+                        mobile: list[0][key['客服电话']],
+                        mobileLabel: list[0][key['客服名称']],
+                    })
+                }
+            })
+        //console.log(userId,'id')
     }
     onShareAppMessage() {
         // const { thread } = this.state
@@ -117,27 +134,27 @@ export default class CottonDetail extends Component {
             fullKey: Object.assign({}, k, key)
         };
     }
-    getContactMobile = ()=>{
+    getContactMobile = () => {
         const { key, defaultData } = this.props.navigation.state.params;
-        if(key['客服']){
+        if (key['客服']) {
             return this.g('客服');
         }
         return false;
     }
     render() {
-        const { type, activeTab } = this.state;
+        const { type, activeTab, mobile, mobileLabel } = this.state;
         const { cottonType } = this.props.navigation.state.params;
         const { fullData, fullKey } = this.getFullConfig();
         let isShowDetail = false;
         if (includeList.includes(cottonType) || (cottonType === '地产棉') && activeTab === '仓单证书') {
             isShowDetail = true;
         }
-        console.log(this.getContactMobile(),'kf');
+
         return (
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} />
+                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} mobileLabel={mobileLabel} mobile={mobile} />
                     {isShowDetail && <Card data={fullData} map={key} />}
                     {
                         isShowDetail && (

@@ -6,7 +6,6 @@ import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
 
 import './main.scss'
-import brandSrc from './img/logo.png';
 const data = {
     websiteName: '中棉网',
     website: 'www.chncot.com',

@@ -4,14 +4,9 @@ export { default as MQTT } from './paho-mqtt.js';
 export { default as Public } from './public';
 export { default as Storage } from './Storage';
 export function scan() {
-    // return new Promise((resolve,reject)=>{
-    //     Taro.scanCode({
-    //         onlyFromCamera:true
-    //     })
-    // })
     return Taro.scanCode({
         onlyFromCamera: true
-    }).then(res => String(res.result)||'')
+    }).then(res => JSON.parse(res.result))
 }
 const createdClientId = function () {
     var timestamp = Date.parse(new Date());

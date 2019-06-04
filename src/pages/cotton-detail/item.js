@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Component } from '../../platform';
 
 import { View, Text, TButton, } from '../../ui';
-import { navigate } from '../../actions';
+import { navigate, call } from '../../actions';
 import { productTypesLabel } from '../../constants';
 import './item.scss'
 
@@ -55,10 +55,7 @@ const listT = [
 const descList = [
     { label: "轧花厂", key: "加工单位" },
     { label: "库存", key: "仓库" },
-    { label: "供应商", key: "公司" },
-    {
-        label: "联系供应商", key: "联系供应商"
-    }
+    { label: "供应商", key: "公司" }
 ];
 
 export default class Item extends Component {
@@ -89,9 +86,15 @@ export default class Item extends Component {
         }
         return ''
     }
+    call() {
+        const { mobile } = this.props;
+        if (mobile) {
+            call(mobile);
+        }
+    }
     render() {
         const { g } = this;
-        const { cottonType, activeTab } = this.props;
+        const { cottonType, activeTab,mobileLabel } = this.props;
         let type = productTypesLabel[g('棉花云报价类型')];
         let pihao = '批号'
         let tidanhao;
@@ -195,6 +198,17 @@ export default class Item extends Component {
                                 )
                             })
                         }
+                        <TButton onClick={this.call}>
+                            <View className="desc-item">
+                                <View className="desc-left">
+                                    <Text className="desc-item-label">联系供应商:</Text>
+                                    <Text className="desc-item-value">{mobileLabel}</Text>
+                                </View>
+                                <View className="desc-right">
+
+                                </View>
+                            </View>
+                        </TButton>
                         <View className="offer">
                             {
                                 offerType === '一口价' ? (

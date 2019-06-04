@@ -6,6 +6,9 @@ import './component.scss';
 
 
 export default class Home extends Component {
+  state = {
+    timeStamp: '',
+  }
   config = {
     navigationBarTitleText: '首页'
   }
@@ -14,10 +17,15 @@ export default class Home extends Component {
       path: `pages/home/index?params=${JSON.stringify(this.main.getParams())}`
     }
   }
+  changeTimeStamp = () => {
+    this.setState({
+      timeStamp: Date.now()
+    });
+  }
   render() {
+    const { timeStamp } = this.state;
     const navigation = injectNavParams(this.$router);
-    //navigation.state.params.client_id = '4JWMYN1559140214000'
-    return <Main navigation={navigation} ref={e => this.main = e} />
+    return <Main onChange={this.changeTimeStamp} timeStamp={timeStamp} navigation={navigation} />
   }
 }
 

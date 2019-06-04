@@ -6,9 +6,8 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
-import { getOfferLayout, getOfferList, doSubmit } from '../../api';
-import { asyncActionWrapper } from '../../actions';
-import { send } from '../../api/ws';
+import { getOfferLayout, uploadExcelData, getExcelList, publishExcelData, getUpdateGetExcelListPer } from '../../api';
+import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
 
@@ -55,8 +54,8 @@ export default class publishImportCotton extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             }
         }));
@@ -71,8 +70,8 @@ export default class publishImportCotton extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             },
             params: {
@@ -102,45 +101,126 @@ export default class publishImportCotton extends Component {
         });
         return params;
     }
-    
+
     submit = () => {
         const { current, params } = this.state;
         const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         const { id } = this.props.data.user;
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
         if (status === 'success') {
-            const { url, action } = data.verify;
-            //找批号字段
-            let number = "";
-            for (const key in params) {
-                if (key.includes("批号")) {
-                    number = params[key];
-                    break;
-                }
-            }
-            // send({
-            //     action,
-            //     data: { number: number, userId: id, url, carry: data.carry }
-            // })
-            //     .then(res => {
-                    doSubmit(data.do, doParams)
-                        .then(res => {
-                            asyncActionWrapper({
-                                call: getOfferList,
-                                params: { '棉花云报价类型': current === 0 ? 2 : 3, '用户ID': id },
-                                type: 'data',
-                                key: `offer_list_${layoutTypes[current]}`
-                            });
-                            Tip.success('操作成功');
-                        })
+            this.uploadExcelData();
 
-            //     })
-            //     .catch(e => {
-            //         console.log(e, 'e');
-            //         Tip.fail(e);
-            //     })
         }
 
+    }
+    uploadExcelData() {
+        const { current, params } = this.state;
+        const { data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+        const { id } = this.props.data.user.data;
+
+        console.log({
+            status: "upload",
+            msg: "上传excel数据中"
+        }, {
+                //加工批号: "62044171101" || params["批号"],
+                '用户ID': id,
+                ...data.carry,
+                ...Object.assign(this.getPreValue(data), params)
+            });
+
+        uploadExcelData({
+            //加工批号: "62044171101" || params["批号"],
+            '用户ID': id,
+            ...data.carry,
+            ...Object.assign(this.getPreValue(data), params)
+        })
+            .then(() => {
+                console.log({
+                    status: "getProgress",
+                    msg: "开始获取进度"
+                });
+                Tip.loading("开始上传excel数据");
+                this.getProgress();
+
+            })
+            .catch(e => {
+                console.log(e, 'e')
+                console.log({
+                    status: "error",
+                    msg: "上传excel数据失败"
+                });
+            });
+    }
+    getProgress = () => {
+
+        clearTimeout(this.timeout);
+        const { current, params } = this.state;
+        const { data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+
+        getUpdateGetExcelListPer(data.carry)
+            .then(res => {
+                const { percent } = res;
+                if (+percent === 100) {
+                    console.log({
+                        status: "getProgress",
+                        progress: percent,
+                        msg: "进度100%"
+                    });
+                    Tip.dismiss("上传excel数据完毕");
+                    this.publish();
+                } else {
+                    console.log({
+                        status: "getProgress",
+                        progress: percent,
+                        msg: "进度" + percent + "%"
+                    });
+                    this.timeout = setTimeout(this.getProgress, 2000);
+                }
+            })
+            .catch(e => {
+                this.getProgress();
+            });
+    }
+    publish() {
+        const { current } = this.state;
+        const { data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
+
+        console.log({
+            status: "getData",
+            msg: "获取excellist"
+        });
+        getExcelList({ ...data.carry, excel: true })
+            .then(res => {
+                console.log({
+                    status: "complete",
+                    msg: "准备将excel数据发布",
+                    res
+                });
+
+                publishExcelData({
+                    data: JSON.stringify(res)
+                })
+                    .then(res => {
+                        console.log(res, "发布成功");
+                        Tip.success('发布成功');
+                        navigate({
+                            routeName: 'my-cloud-offer'
+                        });
+                    })
+                    .catch(e => {
+                        Tip.fail('发布失败');
+                        console.log(e, "发布失败");
+                    });
+
+            })
+            .catch(e => {
+                console.log({
+                    e,
+                    status: "error",
+                    msg: "获取excel列表数据失败"
+                });
+            });
+        return;
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -151,7 +231,7 @@ export default class publishImportCotton extends Component {
     render() {
         const { picker, params, activeTab, current } = this.state;
         const { status, loading, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
-       
+
         return (
             <View className='container'>
                 <ScrollView>

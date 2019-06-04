@@ -25,10 +25,12 @@ export default class Home extends Component {
         news: [],
         key: {},
         list: [],
-        hasClickAddShoppingCar: false
+        hasClickAddShoppingCar: false,
+        log: []
     };
     componentWillMount() {
-
+        const { onChange, data, navigation } = this.props;
+        const { client_id } = navigation.state.params;
         getHome()
             .then(res => {
                 this.props.dispatch({
@@ -39,30 +41,85 @@ export default class Home extends Component {
                 this.setState(res);
             })
         this.getData();
-        const { client_id: pcClientId } = this.props.navigation.state.params;
-        if (this.props.data.user.status === 'success' && pcClientId) {
-            send({ action: 'login', mpClientId: clientId, pcClientId, data: this.props.data.user.data })
-                .then(res => {
-                    Tip.success('登录成功');
-                })
+        const { status } = data.user;
+
+
+        if (status !== 'init') {
+            this.isFirstLoad = false;
+
+            if (status === 'success' && client_id) {
+                this.emitPcLogin({
+                    pcClientId: client_id,
+                    userData: data.user.data
+                });
+            }
+            // this.updateLog(navigation.state.params);
+            // setTimeout(() => {
+
+            //     //Tip.success(client_id || '没有')
+            //     /*
+            //     1.扫码携带的参数在组件挂载时获取不到 只能在componentWillReceiveProps中获取
+            //     2.android不能触发componentWillReceiveProps
+            //     3.强制更改props
+            //     */
+            //     onChange()
+            // }, 1000)
+        } else {
+            this.isFirstLoad = true;
         }
+
+        this.loginTriggered = false
+        this.updateLog({
+            a: this.isFirstLoad,
+            b: this.loginTriggered,
+            t: !!this.props.timeStamp
+        });
+
+
     }
-    isShouldLogin = false
+
     componentWillReceiveProps(nextProps) {
-        const { client_id: pcClientId } = this.props.navigation.state.params;
-        if (!this.props.navigation.state.params.client_id && nextProps.navigation.state.params.client_id) {
-            this.isShouldLogin = true;
+        if (this.isFirstLoad) {
+            //如果是首次加载的 并且等用户信息获取成功后 触发pc登录
+            if (this.props.data.user.status !== 'success' && nextProps.data.user.status === 'success' && nextProps.navigation.state.params.client_id) {
+                this.emitPcLogin({
+                    pcClientId: nextProps.navigation.state.params.client_id,
+                    userData: nextProps.data.user.data
+                });
+            }
+        } else {
+            //如果接收到pcid 并且之前没有触发过pc登录 则登录
+            if (nextProps.data.user.status === 'success' && nextProps.navigation.state.params.client_id && !this.loginTriggered) {
+                this.emitPcLogin({
+                    pcClientId: nextProps.navigation.state.params.client_id,
+                    userData: nextProps.data.user.data
+                });
+            }
         }
-        if (nextProps.data.user.status === 'success' && this.isShouldLogin) {
-            this.isShouldLogin = false;
-            send({ action: 'login', mpClientId: clientId, pcClientId, data: nextProps.data.user.data })
-                .then(res => {
-                    Tip.success('登录成功');
-                })
-        }
-        if (this.props.data.user.status === 'loading' && nextProps.data.user.status === 'error') {
-            Tip.fail('扫码登录失败!');
-        }
+        this.updateLog({
+            a: this.isFirstLoad,
+            b: this.loginTriggered,
+            t: !!this.props.timeStamp,
+            n: !!nextProps.timeStamp
+        });
+    }
+    emitPcLogin({ pcClientId, userData }) {
+        console.log('触发登录')
+        this.updateLog('触发登录');
+        this.loginTriggered = true;
+        send({ action: 'login', mpClientId: clientId, pcClientId, data: userData })
+            .then(res => {
+                Tip.success('登录成功');
+            })
+    }
+    updateLog(v) {
+        const { log } = this.state;
+        const next = [...log];
+        next.push(v);
+        console.log(next, 'next')
+        this.setState({
+            log: [...next]
+        });
     }
     componentDidMount() {
         this.initParams();
@@ -201,8 +258,7 @@ export default class Home extends Component {
     }
 
     render() {
-
-        const { picker, ad, news, params, url, hasClickAddShoppingCar } = this.state;
+        const { picker, ad, news, params, url, hasClickAddShoppingCar, log } = this.state;
         const { data, layout } = this.props;
         const activeTab = data.homeActiveTab;
         const { status: loginStatus } = data.user;

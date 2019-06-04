@@ -18,17 +18,16 @@ export default class SearchTool extends Component {
         if (status === 'success') {
             scan()
                 .then(res => {
-                    console.log(res,'res');
-                    if (res.includes('pages/home/index')) {
-                        const pcClientId = res.substr(res.indexOf('client_id=') + 11);;
+                    const { type, clientId: pcClientId } = res;
+                    if (type === 'cotton') {
                         send({ action: 'login', mpClientId: clientId, pcClientId, data })
                             .then(res => {
+                                console.log(res, 'res')
                                 Tip.success('登录成功');
                             })
                     } else {
                         Tip.fail('非法二维码');
                     }
-
                 })
                 .catch(e => {
                     Tip.fail('扫码失败,请重试!');
@@ -50,6 +49,9 @@ export default class SearchTool extends Component {
                     <View className="icon-btn-group">
                         <TButton onClick={onSearch}>
                             <Image className="icon-btn mr" src={searchImg}></Image>
+                        </TButton>
+                        <TButton onClick={this.scan}>
+                            <Image className="icon-btn" src={qrImg}></Image>
                         </TButton>
                     </View>
                 </View>
