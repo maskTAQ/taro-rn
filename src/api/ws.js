@@ -12,6 +12,7 @@ const mpClientId = clientId;
 //建立客户端实例  
 const client = new MQTT.Client("s.chncot.com", 8084, mpClientId);
 function connect() {
+    console.log('连接mqtt')
     serverStatus = {
         connected: false,
         msg: '连接中'
@@ -24,6 +25,13 @@ function connect() {
             };
             console.log('连接成功');
             client.subscribe(mpClientId);//订阅主题 
+        },
+        onFailure(e){
+            console.log(e,'连接失败');
+            serverStatus = {
+                connected: false,
+                msg: '连接失败'
+            };
         }
     });//连接服务器并注册连接成功处理事件 
 }

@@ -64,7 +64,7 @@ export function getMyOfferList(params) {
 }
 //获取我的云报价
 export function getMyCloudOfferList(params) {
-    return get('CloudQuoteMyList', params);
+    return get('CloudQuoteMyList', params, { loading: false });
 }
 //报价
 export function offer(params) {
@@ -97,6 +97,7 @@ export function authInfo(params) {
 }
 //获取认证信息
 export function getAuthInfo(params) {
+    console.log('getAuthInfo')
     return get('MyRuZhu', params);
 }
 //获取手机号

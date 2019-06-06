@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component, connect } from '../../platform';
+import classnames from 'classnames';
 
 import { TInput, TButton, Image } from '../../ui';
 import { scan, Tip, clientId } from '../../utils';
@@ -38,21 +39,39 @@ export default class SearchTool extends Component {
         }
 
     }
+    clear(){
+        this.props.onInput('');
+    }
     render() {
-        const { onInput, value, onSearch } = this.props;
+        const { onInput, value, onSearch, isHome, placeholder } = this.props;
         return (
-            <View className="container">
+            <View className={classnames('container', { fixed: isHome })}>
                 <View className="content">
                     <View className="input-box">
-                        <TInput value={value} onInput={onInput} className="search-input" placeholder="通过批号/仓库/卖家/提单号 搜索" />
+                        <TInput value={value} onInput={onInput} className="search-input" placeholder={placeholder || "通过批号/仓库/卖家/提单号搜索"} />
                     </View>
                     <View className="icon-btn-group">
                         <TButton onClick={onSearch}>
-                            <Image className="icon-btn mr" src={searchImg}></Image>
+                            <View className="icon-btn-box">
+                                <Image className="icon-btn mr" src={searchImg}></Image>
+                            </View>
                         </TButton>
-                        <TButton onClick={this.scan}>
-                            <Image className="icon-btn" src={qrImg}></Image>
-                        </TButton>
+                        {
+                            isHome && (
+                                <TButton onClick={this.scan}>
+                                    <View className="icon-btn-box">
+                                        <Image className="icon-btn" src={qrImg}></Image>
+                                    </View>
+                                </TButton>
+                            )
+                        }
+                        {
+                            !isHome && (
+                                <TButton onClick={this.scan} onClick={this.clear}>
+                                    <Text className="clear">清空</Text>
+                                </TButton>
+                            )
+                        }
                     </View>
                 </View>
             </View>

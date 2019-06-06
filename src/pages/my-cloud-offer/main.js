@@ -3,8 +3,8 @@
 import React from 'react';
 import { Component, connect } from '../../platform';
 
-import { View, ScrollView, TTabs, TTabPane, TButton, Image } from '../../ui';
-import { OfferItem, ListWrapper } from '../../components';
+import { View, ScrollView,  TButton, Image } from '../../ui';
+import { OfferItem, ListWrapper ,SearchTool} from '../../components';
 import { getMyCloudOfferList ,deleteMyCloudOffer} from '../../api';
 import { asyncActionWrapper } from '../../actions';
 
@@ -48,6 +48,7 @@ export default class MyCloudOffer extends Component {
         itemDescList: ['mj', 'cgjs', 'shd', 'zwjhsj'],
         offerItemDescList: ['xqbh', 'mj'],
         current: 0,
+        search:''
     };
     componentWillMount() {
         this.getData();
@@ -57,11 +58,19 @@ export default class MyCloudOffer extends Component {
         const userId = data.id;
         asyncActionWrapper({
             call: getMyCloudOfferList,
-            params: { '用户ID': userId },
+            params: { '用户ID': userId,search:this.state.search },
             type: 'data',
             key: `my_cloud_offer_list`
         });
 
+    }
+    handleSearchChange=search=>{
+        this.setState({
+            search
+        });
+    }
+    search=()=>{
+        this.getData();
     }
     delete = (id) => {
         deleteMyCloudOffer({
@@ -77,6 +86,13 @@ export default class MyCloudOffer extends Component {
         return (
             <View className='container'>
                 <ScrollView>
+                    <SearchTool 
+                    isHome={false} 
+                    value={this.state.search } 
+                    onInput={this.handleSearchChange} 
+                    onSearch={this.search}
+                    placeholder="通过批号/提单号/报价编号搜索"
+                    />
                     <ListWrapper status={my_offer_list_status} data={my_offer_list_data}>
                         {
                             my_offer_list_status === 'success' && my_offer_list_data.list.map((item) => {

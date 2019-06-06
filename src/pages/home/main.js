@@ -4,9 +4,9 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 import update from 'immutability-helper';
 
-import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TButton, TModal } from '../../ui';
+import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
-import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList } from '../../api';
+import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList, getAuthInfo } from '../../api';
 import { asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
@@ -26,11 +26,19 @@ export default class Home extends Component {
         key: {},
         list: [],
         hasClickAddShoppingCar: false,
-        log: []
+        log: [],
+
+        queueRenderList: [],
     };
     componentWillMount() {
-        const { onChange, data, navigation } = this.props;
+        const { onChange, data, navigation, activeTab } = this.props;
         const { client_id } = navigation.state.params;
+        const { status } = data.user;
+        const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`] || {};
+        if (listStatus === 'success') {
+            this.startQueueRender(listData, 'mounted');
+        }
+
         getHome()
             .then(res => {
                 this.props.dispatch({
@@ -41,88 +49,128 @@ export default class Home extends Component {
                 this.setState(res);
             })
         this.getData();
-        const { status } = data.user;
 
-
+        //判断是否触发扫码
         if (status !== 'init') {
             this.isFirstLoad = false;
-
-            if (status === 'success' && client_id) {
-                this.emitPcLogin({
-                    pcClientId: client_id,
-                    userData: data.user.data
-                });
+            if (status === 'success') {
+                this.getAuthInfo(data.user.data);
+                if (client_id) {
+                    this.emitPcLogin({
+                        pcClientId: client_id,
+                        userData: data.user.data
+                    });
+                } else {
+                    setTimeout(() => {
+                        this.emitPcLogin({
+                            pcClientId: this.props.navigation.state.params.client_id,
+                            userData: data.user.data
+                        });
+                        //Tip.success(this.props.navigation.state.params.client_id || '没有')
+                        /*
+                        1.扫码携带的参数在组件挂载时获取不到 只能在componentWillReceiveProps中获取
+                        2.android不能触发componentWillReceiveProps
+                        3.强制更改props
+                        */
+                        //onChange()
+                    }, 1000)
+                }
+            } else {
+                Tip.fail('请重试!');
             }
             // this.updateLog(navigation.state.params);
-            // setTimeout(() => {
 
-            //     //Tip.success(client_id || '没有')
-            //     /*
-            //     1.扫码携带的参数在组件挂载时获取不到 只能在componentWillReceiveProps中获取
-            //     2.android不能触发componentWillReceiveProps
-            //     3.强制更改props
-            //     */
-            //     onChange()
-            // }, 1000)
         } else {
             this.isFirstLoad = true;
         }
-
         this.loginTriggered = false
-        this.updateLog({
-            a: this.isFirstLoad,
-            b: this.loginTriggered,
-            t: !!this.props.timeStamp
-        });
-
-
     }
 
     componentWillReceiveProps(nextProps) {
+        const { data: prevData, data: { homeActiveTab: prevTab, auth = {} } } = this.props;
+        const { data: nextData, data: { homeActiveTab: nextTab } } = nextProps;
+        const { status: prevListStatus } = prevData[`offer_list_${prevTab}`] || {};
+        const { status: nextListStatus, data: listData } = nextData[`offer_list_${nextTab}`] || {};
+        if (prevTab !== nextTab && nextListStatus === 'success') {
+            this.startQueueRender(listData, 'updated');
+        }
+        if (prevTab === nextTab && prevListStatus !== 'success' && nextListStatus === 'success') {
+            this.startQueueRender(listData, 'updated');
+        }
+        if (prevData.user.status !== 'success' && nextData.user.status === 'success' && !['loading', 'success'].includes(auth.status)) {
+            setTimeout(() => {
+                this.getAuthInfo(nextData.user.data)
+            }, 100)
+        }
+
+        //判断是否触发登录
         if (this.isFirstLoad) {
             //如果是首次加载的 并且等用户信息获取成功后 触发pc登录
-            if (this.props.data.user.status !== 'success' && nextProps.data.user.status === 'success' && nextProps.navigation.state.params.client_id) {
+            if (prevData.user.status !== 'success' && nextData.user.status === 'success' && nextProps.navigation.state.params.client_id) {
                 this.emitPcLogin({
                     pcClientId: nextProps.navigation.state.params.client_id,
-                    userData: nextProps.data.user.data
+                    userData: nextData.user.data
                 });
             }
         } else {
             //如果接收到pcid 并且之前没有触发过pc登录 则登录
-            if (nextProps.data.user.status === 'success' && nextProps.navigation.state.params.client_id && !this.loginTriggered) {
+            if (nextData.user.status === 'success' && nextProps.navigation.state.params.client_id && !this.loginTriggered) {
                 this.emitPcLogin({
                     pcClientId: nextProps.navigation.state.params.client_id,
-                    userData: nextProps.data.user.data
+                    userData: nextData.user.data
                 });
             }
         }
-        this.updateLog({
-            a: this.isFirstLoad,
-            b: this.loginTriggered,
-            t: !!this.props.timeStamp,
-            n: !!nextProps.timeStamp
+
+    }
+    getAuthInfo(data) {
+        // console.log(data, 'data')
+        asyncActionWrapper({
+            call: getAuthInfo,
+            params: { 'user_id': data.id },
+            type: 'data',
+            key: 'auth'
         });
     }
     emitPcLogin({ pcClientId, userData }) {
-        console.log('触发登录')
-        this.updateLog('触发登录');
+        this.updateLog({
+            type: '触发登录'
+        });
         this.loginTriggered = true;
         send({ action: 'login', mpClientId: clientId, pcClientId, data: userData })
             .then(res => {
                 Tip.success('登录成功');
             })
     }
+    startQueueRender(full, type) {
+        const clone = [...full.list];
+        this.pushQueue(clone);
+    }
+    pushQueue = (list) => {
+        clearTimeout(this.timeout);
+        const { queueRenderList } = this.state;
+        if (list.length) {
+            const chunk = list.splice(0, 5);
+            this.setState({
+                queueRenderList: queueRenderList.concat(chunk)
+            });
+
+            this.timeout = setTimeout(this.pushQueue, 500, list);
+        }
+    }
     updateLog(v) {
         const { log } = this.state;
         const next = [...log];
         next.push(v);
-        console.log(next, 'next')
         this.setState({
             log: [...next]
         });
     }
     componentDidMount() {
         this.initParams();
+    }
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
     }
     login() {
         login()
@@ -141,6 +189,7 @@ export default class Home extends Component {
     getData(homeActiveTab) {
         const tab = homeActiveTab || this.props.data.homeActiveTab;
         const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${tab}`];
+        const { status: offerListStatus } = this.props.data[`offer_list_${tab}`];
 
         //获取筛选条件布局
         if (layoutStatus !== 'success' && !layoutLoading) {
@@ -151,7 +200,10 @@ export default class Home extends Component {
                 key: `filter_${tab}`
             });
         }
-        this.getOfferData();
+        if (!['loading', 'success'].includes(offerListStatus)) {
+            this.getOfferData();
+        }
+
     }
     getOfferData() {
         const { params } = this.state;
@@ -165,10 +217,15 @@ export default class Home extends Component {
     }
 
     handleTabChange = activeTab => {
+        clearTimeout(this.timeout);
+        this.setState({
+            queueRenderList: []
+        })
         this.props.dispatch({
             type: 'setHomeActiveTab',
             payload: activeTab
         });
+        console.log('change tab')
         this.getData(activeTab);
     }
 
@@ -258,17 +315,17 @@ export default class Home extends Component {
     }
 
     render() {
-        const { picker, ad, news, params, url, hasClickAddShoppingCar, log } = this.state;
+        const { picker, ad, news, params, url, hasClickAddShoppingCar, queueRenderList } = this.state;
         const { data, layout } = this.props;
         const activeTab = data.homeActiveTab;
         const { status: loginStatus } = data.user;
         const { status, loading, data: layoutData } = layout[`filter_${activeTab}`];
-        const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`];
+        const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`] || {};
         return (
             <View className="container">
                 <Authorization />
                 <ScrollView className="scroll-container">
-                    <SearchTool value={params.search} onInput={this.handleSearchChange} onSearch={this.search} />
+                    <SearchTool isHome={true} value={params.search} onInput={this.handleSearchChange} onSearch={this.search} />
                     <Swiper
                         className='swiper'
                         indicatorColor='#999'
@@ -306,9 +363,11 @@ export default class Home extends Component {
                     />
                     <ListWrapper status={listStatus} data={listData}>
                         {
-                            listStatus === 'success' && listData.list.map((item, i) => {
+                            listStatus === 'success' && queueRenderList.map((item, i) => {
+                                const key = item[listData.key['主键']];
                                 return (
                                     <OfferItem
+                                        key={key}
                                         isHome={true}
                                         data={item}
                                         map={listData.key}
