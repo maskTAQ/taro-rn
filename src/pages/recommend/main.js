@@ -36,7 +36,7 @@ export default class Recommend extends Component {
 
     }
     saveImg() {
-        var imgSrc = "https://alipic.lanhuapp.com/SketchCovere6a051096db4928407a995b60991af64"
+        var imgSrc = "http://s.chncot.com/web/img/iPhone8Plus.png"
         wx.downloadFile({
             url: imgSrc,
             success: function (res) {
@@ -80,7 +80,7 @@ export default class Recommend extends Component {
         const { isShowAuthBtn } = this.state;
         return (
             <View className='container' onlongtap={this.requestSaveImg}>
-                <Image src="https://alipic.lanhuapp.com/SketchCovere6a051096db4928407a995b60991af64" className="img" />
+                <Image src="http://s.chncot.com/web/img/iPhone8Plus.png" className="img" />
                 {isShowAuthBtn && <button open-type="openSetting" className="auth-button">授权</button>}
             </View>
         )

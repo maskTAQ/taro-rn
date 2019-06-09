@@ -189,7 +189,6 @@ export default class Home extends Component {
     getData(homeActiveTab) {
         const tab = homeActiveTab || this.props.data.homeActiveTab;
         const { status: layoutStatus, loading: layoutLoading } = this.props.layout[`filter_${tab}`];
-        const { status: offerListStatus } = this.props.data[`offer_list_${tab}`];
 
         //获取筛选条件布局
         if (layoutStatus !== 'success' && !layoutLoading) {
@@ -200,14 +199,12 @@ export default class Home extends Component {
                 key: `filter_${tab}`
             });
         }
-        if (!['loading', 'success'].includes(offerListStatus)) {
-            this.getOfferData();
-        }
-
+        this.getOfferData();
     }
     getOfferData() {
         const { params } = this.state;
         const { homeActiveTab } = this.props.data;
+        console.log(homeActiveTab, 'homeActiveTab')
         asyncActionWrapper({
             call: getOfferList,
             params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
@@ -217,15 +214,17 @@ export default class Home extends Component {
     }
 
     handleTabChange = activeTab => {
-        clearTimeout(this.timeout);
-        this.setState({
-            queueRenderList: []
-        })
+        if (activeTab === this.props.data.homeActiveTab) {
+            return;
+        }
         this.props.dispatch({
             type: 'setHomeActiveTab',
             payload: activeTab
         });
-        console.log('change tab')
+        clearTimeout(this.timeout);
+        this.setState({
+            queueRenderList: []
+        });
         this.getData(activeTab);
     }
 

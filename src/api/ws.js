@@ -10,7 +10,7 @@ let serverStatus = {
 };
 const mpClientId = clientId;
 //建立客户端实例  
-const client = new MQTT.Client("s.chncot.com", 8084, mpClientId);
+const client = new MQTT.Client("s.chncot.com", 443, mpClientId);
 function connect() {
     console.log('连接mqtt')
     serverStatus = {

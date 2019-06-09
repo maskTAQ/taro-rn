@@ -34,7 +34,7 @@ const listT = [
     { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
     { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
     { label: "等级", key: "主体颜色级" },
-    { label: "长度", key: "长度整齐度平均值" },
+    { label: "长度", key: "长度级" },
     { label: "强力", key: "断裂比强度平均值" },
     { label: "马值", key: "马克隆平均值" },
     { label: "叶屑", key: "叶屑", includes: ['进口棉￥', '进口棉$'] },

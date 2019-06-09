@@ -92,7 +92,7 @@ export default class OfferItem extends Component {
                             key: map,
                             cottonType: productTypesLabel[this.g('棉花云报价类型')],
                             id: data[map['批号']],
-                            userId:data[map['用户ID']],
+                            userId: data[map['用户ID']],
                             defaultData: data,
                             type: data[map['仓单']]
                         }
@@ -104,7 +104,7 @@ export default class OfferItem extends Component {
                     key: map,
                     cottonType: productTypesLabel[this.g('棉花云报价类型')],
                     id: data[map['批号']],
-                    userId:data[map['用户ID']],
+                    userId: data[map['用户ID']],
                     defaultData: data,
                     type: data[map['仓单']]
                 }
@@ -199,7 +199,7 @@ export default class OfferItem extends Component {
 
                             </View>
                             <View className="row-right">
-                                <Text className="row-text">卖家:{g('公司')}</Text>
+                                <Text className="row-text">卖家:{split(g('公司'),6)}</Text>
                             </View>
                         </View>
                         <View className="offer">
@@ -232,14 +232,18 @@ export default class OfferItem extends Component {
                                         <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                     </View>
                                     <View className="btn-group">
-                                        <TButton onClick={() => this.call(g('手机号'))}>
-                                            <View className="btn">
-                                                <View className="item-icon-box">
-                                                    <Image className="btn-icon" src={callImg} />
-                                                </View>
-                                                <Text className="btn-text">电话</Text>
-                                            </View>
-                                        </TButton>
+                                        {
+                                            !isHome && (
+                                                <TButton onClick={() => this.call(g('手机号'))}>
+                                                    <View className="btn">
+                                                        <View className="item-icon-box">
+                                                            <Image className="btn-icon" src={callImg} />
+                                                        </View>
+                                                        <Text className="btn-text">电话</Text>
+                                                    </View>
+                                                </TButton>
+                                            )
+                                        }
                                         {
                                             showShoppinCar !== false && (
                                                 <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>
