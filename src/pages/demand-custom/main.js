@@ -6,8 +6,8 @@ import update from 'immutability-helper';
 
 import Layout from '../../components/layout';
 import { View, Text, TSTab, TButton, TPicker, ScrollView } from '../../ui';
-import {productTypesValue} from '../../constants';
-import { getDemandCustomLayout, getDemandList, doSubmit ,getMySelfDemandList} from '../../api';
+import { productTypesValue, productTypesLabel } from '../../constants';
+import { getDemandCustomLayout, getDemandList, doSubmit, getMySelfDemandList } from '../../api';
 import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
 import { Tip } from '../../utils';
@@ -24,16 +24,23 @@ export default class DemandCustom extends Component {
         params: {}
     };
     componentWillMount() {
+        const { params } = this.props.navigation.state;
+        if (params.isEdit) {
+            this.setState({
+                activeTab: productTypesLabel[params['棉花云供需类型']],
+                params
+            });
+        }
         this.getData();
     }
     getData() {
         const { activeTab } = this.state;
-        const {id} = this.props.data.user.data;
+        const { id } = this.props.data.user.data;
         const { status, loading } = this.props.layout[`demand_custom_${activeTab}`];
         if (status !== 'success' && !loading) {
             asyncActionWrapper({
                 call: getDemandCustomLayout,
-                params: { '棉花云供需类型': productTypesValue[activeTab],'用户ID':id },
+                params: { '棉花云供需类型': productTypesValue[activeTab], '用户ID': id },
                 type: 'layout',
                 key: `demand_custom_${activeTab}`
             });
@@ -58,8 +65,8 @@ export default class DemandCustom extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             }
         }));
@@ -74,8 +81,8 @@ export default class DemandCustom extends Component {
                 option: {
                     $set: []
                 },
-                value:{
-                    $set:''
+                value: {
+                    $set: ''
                 }
             },
             params: {
@@ -117,7 +124,7 @@ export default class DemandCustom extends Component {
                         //更新需求列表
                         asyncActionWrapper({
                             call: getDemandList,
-                            params: { '棉花云供需类型':productTypesValue[activeTab] },
+                            params: { '棉花云供需类型': productTypesValue[activeTab] },
                             type: 'data',
                             key: `demand_list_${activeTab}`
                         });
@@ -129,7 +136,7 @@ export default class DemandCustom extends Component {
                             key: `my_demand_list`
                         });
                         navigate({
-                            routeName:"my-demand"
+                            routeName: "my-demand"
                         })
                     }, 1000);
                 })
@@ -138,7 +145,7 @@ export default class DemandCustom extends Component {
     render() {
         const { activeTab, picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`demand_custom_${activeTab}`];
-
+        const { isEdit } = this.props.navigation.state.params;
         return (
             <View className='container'>
                 <ScrollView>
@@ -154,7 +161,7 @@ export default class DemandCustom extends Component {
                     />
                     <TButton onClick={this.submit}>
                         <View className="btn">
-                            <Text className="btn-text">发布</Text>
+                            <Text className="btn-text">{isEdit ? '编辑' : '发布'}</Text>
                         </View>
                     </TButton>
                 </ScrollView>

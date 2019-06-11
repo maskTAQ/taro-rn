@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 
 import { View, Text, TPicker, ScrollView, TButton, TSTab } from '../../ui';
 import { Layout } from '../../components';
+import { authStatusMap } from '../../constants';
 import { getOfferLayout, uploadExcelData, getExcelList, publishExcelData, getUpdateGetExcelListPer } from '../../api';
 import { asyncActionWrapper, navigate } from '../../actions';
 import './main.scss';
@@ -101,17 +102,44 @@ export default class publishImportCotton extends Component {
         });
         return params;
     }
+    checkAuth() {
+        const { status, data } = this.props.data.auth;
+        switch (status) {
+            case "success": {
+                if (data.state === '2') {
+                    return {
+                        ok: true,
+                    }
+                } else {
+                    return {
+                        ok: false,
+                        msg: authStatusMap[data.state]
+                    }
+                }
+            }
+            case 'loading':
+                return {
+                    ok: false,
+                    msg: '获取信息中...'
+                }
 
+            case 'error':
+                return {
+                    ok: false,
+                    msg: '获取信息失败'
+                }
+        }
+    }
     submit = () => {
-        const { current, params } = this.state;
-        const { status, data } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
-        const { id } = this.props.data.user;
-        const doParams = Object.assign(this.getPreValue(data), params, data.carry);
+        const { ok, msg } = this.checkAuth();
+        if (!ok) {
+            return Tip.fail(msg);
+        }
+        const { current } = this.state;
+        const { status } = this.props.layout[`offer_${layoutTypes[current]}`] || {};
         if (status === 'success') {
             this.uploadExcelData();
-
         }
-
     }
     uploadExcelData() {
         const { current, params } = this.state;

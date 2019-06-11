@@ -32,6 +32,7 @@ class App extends Component {
       'pages/history/index',
       'pages/auth/index',
       'pages/shopping-car/index',
+      'pages/shopping-car-tab/index',
       'pages/my-cloud-offer/index',
       'pages/cotton-detail/index',
       'pages/offer-tool/index',
@@ -80,7 +81,7 @@ class App extends Component {
           "selectedIconPath": './tab-img/ybj-active.png',
         },
         {
-          "pagePath": "pages/shopping-car/index",
+          "pagePath": "pages/shopping-car-tab/index",
           "text": "购物车",
           "iconPath": './tab-img/gwc.png',
           "selectedIconPath": './tab-img/gwc-active.png',

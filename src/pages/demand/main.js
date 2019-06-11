@@ -5,13 +5,14 @@ import { Component, connect } from '../../platform';
 
 import { View, TButton, Text, ScrollView, TModal, TSTab } from '../../ui';
 import { ListWrapper, CapsuleChoose, DemandItem } from '../../components';
-import { productTypesValue } from '../../constants';
+import { productTypesValue, authStatusMap } from '../../constants';
 import { getDemandList, getMySelfDemandList } from '../../api';
 
 import SelfPart from './self-part';
 import AllPart from './all-part';
 import { navigate, asyncActionWrapper, login } from '../../actions';
 import './main.scss';
+import { Tip } from '../../utils';
 
 const tabList = ['全部', '新疆棉', '地产棉', '进口棉$', '进口棉￥'];
 
@@ -78,7 +79,23 @@ export default class Demand extends Component {
         navigate({ routeName: 'demand-detail' });
     }
     goDemandCustom() {
-        navigate({ routeName: 'demand-custom' });
+        const { status, data } = this.props.data.auth;
+        switch (status) {
+            case "success": {
+                if (data.state === '2') {
+                    navigate({ routeName: 'demand-custom' });
+                } else {
+                    Tip.fail(authStatusMap[data.state]);
+                }
+                break;
+            }
+            case 'loading':
+                Tip.fail('获取信息中...');
+                break;
+            case 'error':
+                Tip.fail('获取信息失败');
+                break;
+        }
     }
     handleTabChange = activeTab => {
         this.setState({
@@ -90,14 +107,28 @@ export default class Demand extends Component {
             activeList
         });
     }
+    handleEdit = data => {
+        const { key } = this.props.data.my_demand_list.data;
+        const result = {
+            isEdit: true
+        };
+        for (const field in key) {
+            const v = data[key[field]];
+            if (v && v !== 'undefined') {
+                result[field] = v;
+            }
+        }
+        navigate({
+            routeName: 'demand-custom',
+            params: result
+        });
+        console.log(result, 'data');
+    }
     render() {
         const { activeTab, activeList } = this.state;
         const { status: dataStatus, data } = this.props.data[`demand_list_${activeTab}`];
         const { status: mySelfDataStatus, data: mySelfData } = this.props.data.my_demand_list;
-        const { status: loginStatus } = this.props.data.user;
-        const g = k => {
-            return '-';
-        }
+        const { status: loginStatus, data: userData } = this.props.data.user;
         return (
             <View className="container">
                 <ScrollView>
@@ -115,7 +146,7 @@ export default class Demand extends Component {
 
                                                         return (
                                                             <DemandItem data={item} map={mySelfData.key} cottonType={activeTab}>
-                                                                <SelfPart data={item} map={mySelfData.key} cottonType={activeTab} dispatch={this.props.dispatch} />
+                                                                <SelfPart user={userData} onEdit={this.handleEdit} data={item} map={mySelfData.key} cottonType={activeTab} dispatch={this.props.dispatch} />
                                                             </DemandItem>
                                                         )
                                                     })

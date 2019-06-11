@@ -23,7 +23,7 @@ const offerList = productTypes.map(item => `offer_list_${item}`);
 const demandList = productTypes.map(item => `demand_list_${item}`);
 const store = {
     layout: demand_custom.concat(offer, fiter, ['cotton_type']),
-    data: offerList.concat(demandList, ['my_demand_list', 'user', 'shoppingCarList', 'my_offer_list', 'my_cloud_offer_list', `demand_list_全部`, 'auth','logistics_list','my_logistics_list']),
+    data: offerList.concat(demandList, ['my_demand_list', 'user', 'shoppingCarList', 'my_offer_list', 'my_cloud_offer_list', `demand_list_全部`, 'auth', 'logistics_list', 'my_logistics_list','kfList']),
 };
 const authStatusMap = ['未认证', '等待审核', '已认证', '认证被拒绝'];
 export {

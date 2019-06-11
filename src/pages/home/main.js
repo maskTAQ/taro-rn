@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
-import { getFilterLayout, getHome, getOfferList, addShoppingCar, getShoppingCarList, getAuthInfo } from '../../api';
+import { getFilterLayout, getHome, getOfferList, getAuthInfo } from '../../api';
 import { asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
@@ -204,7 +204,6 @@ export default class Home extends Component {
     getOfferData() {
         const { params } = this.state;
         const { homeActiveTab } = this.props.data;
-        console.log(homeActiveTab, 'homeActiveTab')
         asyncActionWrapper({
             call: getOfferList,
             params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
@@ -279,27 +278,7 @@ export default class Home extends Component {
         this.getOfferData();
         this.s.folder();
     }
-    handleClickShoppingCar = (v) => {
-        const { status: loginStatus, data } = this.props.data.user;
-        this.setState({
-            hasClickAddShoppingCar: true
-        });
-        if (loginStatus === 'success') {
-            addShoppingCar({
-                '云报价主键': v,
-                '用户ID': data.id
-            })
-                .then(res => {
-                    asyncActionWrapper({
-                        call: getShoppingCarList,
-                        params: { '用户ID': data.id },
-                        type: 'data',
-                        key: 'shoppingCarList'
-                    });
-                    Tip.success('添加成功!');
-                })
-        }
-    }
+    
     handleFieldChange = params => {
         this.setState({ params })
     }
@@ -370,7 +349,6 @@ export default class Home extends Component {
                                         isHome={true}
                                         data={item}
                                         map={listData.key}
-                                        onClickShoppingCar={this.handleClickShoppingCar}
                                     />
                                 )
                             })

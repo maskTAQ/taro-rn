@@ -10,7 +10,6 @@ import editIcon from './img/edit.png';
 import deleteIcon from './img/close.png';
 import viewIcon from './img/view.png';
 import './part.scss';
-import offerIcon from './img/offer.png';
 
 export default class SelfPart extends Component {
     g = k => {
@@ -18,8 +17,8 @@ export default class SelfPart extends Component {
         return data[map[k]] || '';
     }
     delete = (id) => {
-        const { data } = this.props.user;
-        const userId = data.id;
+        const { user } = this.props;
+        const userId = user.id;
         deleteMyDemand({
             '主键': id,
             '用户ID': userId
@@ -30,8 +29,8 @@ export default class SelfPart extends Component {
             })
     }
     getMyDemand = () => {
-        const { data } = this.props.user;
-        const userId = data.id;
+        const { user } = this.props;
+        const userId = user.id;
         //获取我的需求
         asyncActionWrapper({
             call: getMySelfDemandList,
@@ -56,11 +55,12 @@ export default class SelfPart extends Component {
     }
     render() {
         const { g } = this;
+        const { data, onEdit } = this.props;
         return (
             <View className="bottom">
                 <View className="btn-group-left">
                     <TButton>
-                        <View className="btn-column">
+                        <View className="btn-column" onClick={onEdit.bind(this, data)}>
                             <Image src={editIcon} className="btn-icon" />
                             <Text className="btn-text edit-btn-text">修改</Text>
                         </View>

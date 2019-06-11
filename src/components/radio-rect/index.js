@@ -28,7 +28,7 @@ export default class RadioRect extends Component {
     }
     handeChange(v) {
         const { k, value, onChange } = this.props;
-        const valueWrapper = value || [];
+        const valueWrapper = value ? Array.isArray(value) ? value : [value] : [];
         const i = valueWrapper.indexOf(v);
         let nextValue = valueWrapper;
         if (i > -1) {
@@ -44,10 +44,16 @@ export default class RadioRect extends Component {
     }
     render() {
         const { k, value, onChange, option = [] } = this.props;
+        let list;
+        if (Array.isArray(option)) {
+            list = option;
+        } else {
+            list = [option]
+        }
         return (
             <View className="container">
                 {
-                    option.map(item => {
+                    list.map(item => {
                         const isActive = value === item;
                         return (
                             <TButton key={item} onClick={() => {

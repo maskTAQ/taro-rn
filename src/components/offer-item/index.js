@@ -59,6 +59,11 @@ export default class OfferItem extends Component {
                     key: 'shoppingCarList'
                 });
                 Tip.success('添加成功!');
+                setTimeout(() => {
+                    navigate({
+                        routeName: 'shopping-car'
+                    });
+                }, 1000);
             })
     }
     split(s = '', n) {
@@ -199,7 +204,7 @@ export default class OfferItem extends Component {
 
                             </View>
                             <View className="row-right">
-                                <Text className="row-text">卖家:{split(g('公司'),6)}</Text>
+                                <Text className="row-text">卖家:{split(g('公司'), 6)}</Text>
                             </View>
                         </View>
                         <View className="offer">
@@ -228,22 +233,10 @@ export default class OfferItem extends Component {
                             <View className="offer-right">
                                 <View className="row-right-bottom">
                                     <View className="row-right-row-left">
-                                        <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')}</Text>
+                                        <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : ''}</Text>
                                         <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                     </View>
                                     <View className="btn-group">
-                                        {
-                                            !isHome && (
-                                                <TButton onClick={() => this.call(g('手机号'))}>
-                                                    <View className="btn">
-                                                        <View className="item-icon-box">
-                                                            <Image className="btn-icon" src={callImg} />
-                                                        </View>
-                                                        <Text className="btn-text">电话</Text>
-                                                    </View>
-                                                </TButton>
-                                            )
-                                        }
                                         {
                                             showShoppinCar !== false && (
                                                 <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>

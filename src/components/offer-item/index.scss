@@ -149,7 +149,7 @@
 }
 
 .btn-group {
-    width: 130px;
+   
     @extend .flex;
     flex-direction: row;
     justify-content: space-between;
@@ -163,7 +163,7 @@
 
 .item-icon-box {
     margin-bottom: 10px;
-    width: 56px;
+    width: 86px;
     height: 56px;
     @extend .flex;
     justify-content: center;

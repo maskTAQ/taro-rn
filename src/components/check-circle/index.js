@@ -13,7 +13,7 @@ export default class CheckCircle extends Component {
     }
     handeChange(v) {
         const { k, value, onChange } = this.props;
-        const valueWrapper = value || [];
+        const valueWrapper =  value ? Array.isArray(value) ? value : [value] : [];
         const i = valueWrapper.indexOf(v);
         let nextValue = valueWrapper;
         if (i > -1) {
@@ -28,12 +28,18 @@ export default class CheckCircle extends Component {
         onChange({ key: k, value: nextValue });
     }
     render() {
-        const { value:v, option = [] } = this.props;
-        const value = v||[];
+        const { value: v, option = [] } = this.props;
+        const value = v || [];
+        let list;
+        if (Array.isArray(option)) {
+            list = option;
+        } else {
+            list = [option]
+        }
         return (
             <View className="container">
                 {
-                    option.map(item => {
+                    list.map(item => {
                         const isActive = value.includes(item);
                         return (
                             <TButton key={item} onClick={this.handeChange.bind(this, item)}>
