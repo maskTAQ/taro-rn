@@ -1,7 +1,5 @@
 import { Tip } from '../utils';
 import { MQTT, Public, clientId } from '../utils'
-
-
 var Publisher = new Public();
 
 let serverStatus = {
@@ -18,16 +16,18 @@ function connect() {
         msg: '连接中'
     };
     client.connect({
+        useSSL: true,
         onSuccess() {
+            const topic = mpClientId;//mpClientId
             serverStatus = {
                 connected: true,
                 msg: '连接成功'
             };
-            console.log('连接成功');
-            client.subscribe(mpClientId);//订阅主题 
+            console.log(`订阅:${topic}`);
+            client.subscribe(topic);//订阅主题 
         },
-        onFailure(e){
-            console.log(e,'连接失败');
+        onFailure(e) {
+            console.log(e, '连接失败');
             serverStatus = {
                 connected: false,
                 msg: '连接失败'
@@ -74,7 +74,9 @@ export function send({ action, pcClientId = '', data }) {
             data: data
         }
         message = new MQTT.Message(JSON.stringify(jsonstr));
-        message.destinationName = pcClientId;
+        const to = pcClientId;//pc
+        console.log(`发送到：${to}`)
+        message.destinationName = to;
     }
     if (action === 'verifyBatchNumber') {
         const { number, url, carry } = data;

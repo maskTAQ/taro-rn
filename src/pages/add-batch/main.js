@@ -252,6 +252,8 @@ export default class AddBatch extends Component {
         const { id } = this.props.data.user;
         const { status, data } = this.props.layout[`offer_${navParams.type}`];
         const doParams = Object.assign(this.getPreValue(data), params, data.carry);
+        // console.log(doParams,'doParams');
+        // return
         if (status === 'success') {
             const { url, action } = data.verify;
             // if (navParams['棉花云报价类型'] === 1 ["新疆棉", "拍储",'地产棉'].includes()) {
@@ -307,6 +309,9 @@ export default class AddBatch extends Component {
         const { params: navParams } = this.props.navigation.state;
         const { picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`offer_${navParams.type}`];
+        console.log({
+            data,params
+        })
         return (
             <View className='container'>
                 <ScrollView>

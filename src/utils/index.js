@@ -25,4 +25,11 @@ const createdClientId = function () {
 }
 
 const clientId = createdClientId();
+export function split(s = '', n) {
+    if (s.length < n) {
+        return s;
+    } else {
+        return s.substring(0, n) + '...';
+    }
+}
 export { clientId }

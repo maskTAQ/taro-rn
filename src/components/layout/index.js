@@ -5,28 +5,44 @@ import { Component } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { Select, DatePicker, CRadio, RadioRect, Check, CheckCircle, Slidebothway,Slide } from '../index';
+import { Select, DatePicker, CRadio, RadioRect, Check, CheckCircle, Slidebothway, Slide } from '../index';
 import { View, Text, TDatePicker, TInput, TLoading } from '../../ui';
 import './index.scss';
 
-const isVisible = ({ visible = true, params }) => {
+const findValue = (data, key) => {
+    for (let i = 0; i < data.length; i++) {
+        const area = data[i];
+        for (let k = 0; k < area.data.length; k++) {
+            const components = area.data[k].components;
+            for (let j = 0; j < components.length; j++) {
+                if (components[j].param === key) {
+                    return components[j].value
+                }
+            }
+        }
+    }
+    return ''
+}
+const isVisible = ({ visible = true, params, data }) => {
     let isVisible = true;
     if (typeof visible === 'string') {
         if (visible.includes('=')) {
             const [key, value] = visible.split('=');
-            if (Array.isArray(params[key])) {
-                isVisible = params[key].some(item => item === value);
+            const fullValue = params[key] || findValue(data.param, key);
+            if (Array.isArray(fullValue)) {
+                isVisible = fullValue.some(item => item === value);
             } else {
-                isVisible = params[key] === value;
+                isVisible = fullValue === value;
             }
 
         }
         if (visible.includes('!=')) {
             const [key, value] = visible.split('!=');
-            if (Array.isArray(params[key])) {
-                isVisible = params[key].every(item => item !== value);
+            const fullValue = params[key] || findValue(data.param, key);
+            if (Array.isArray(fullValue)) {
+                isVisible = fullValue.every(item => item !== value);
             } else {
-                isVisible = params[key] !== value;
+                isVisible = fullValue !== value;
             }
         }
     }
@@ -84,7 +100,7 @@ export default class Layout extends Component {
             <View className="content">
                 {
                     status === 'success' && data.param.map(area => {
-                        const { title, data } = area;
+                        const { title, data: group } = area;
 
                         return (
                             <View className="area" key={title}>
@@ -97,14 +113,14 @@ export default class Layout extends Component {
                                 }
                                 <View className="area-content">
                                     {
-                                        data.map(field => {
+                                        group.map(field => {
                                             const { layout, title: fieldTitle, components: c = [], visible = '' } = field;
                                             const components = Array.isArray(c) ? c : [c];
                                             const className = classnames({
                                                 'layout-row': components.length > 2,
                                                 'layout-column': components.length <= 2,
                                             });
-                                            const isShowField = isVisible({ visible, params });
+                                            const isShowField = isVisible({ visible, params, data });
 
                                             return (
                                                 isShowField ? layout === 'column' ? (
@@ -118,7 +134,7 @@ export default class Layout extends Component {
                                                             {
                                                                 components.map(component => {
                                                                     const { type, label, value: defaultValue, param, content, visible: componentVisible = '' } = component;
-                                                                    const isShowComponent = isVisible({ visible: componentVisible, params });
+                                                                    const isShowComponent = isVisible({ visible: componentVisible, params, data });
                                                                     const v = params[param] || defaultValue;
                                                                     return (
                                                                         <View key={type}>
@@ -172,7 +188,7 @@ export default class Layout extends Component {
                                                             {
                                                                 components.map(component => {
                                                                     const { type, label, value: defaultValue, param, content, visible: componentVisible = '' } = component;
-                                                                    const isShowComponent = isVisible({ visible: componentVisible, params });
+                                                                    const isShowComponent = isVisible({ visible: componentVisible, params, data });
                                                                     const v = params[param] || defaultValue;
                                                                     return (
                                                                         <View className={classnames({

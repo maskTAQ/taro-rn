@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import React from 'react';
-import { Component ,setPageTitle,connect} from '../../platform';
+import { Component, setPageTitle, connect } from '../../platform';
 
 import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
@@ -33,12 +33,16 @@ const layout = {
 }
 
 const createImg = (src, callback) => {
-    // const img = new Image();
-    // img.src = src;
-    // img.onload = function () {
+    Taro.downloadFile({
+        url: src,
+        success: function (res) {
+            callback(res.tempFilePath);
+        },
+        fail(e){
+            console.log(e,'e')
+        }
+    })
 
-    // };
-    callback(src);
     return src;
 }
 @connect(({ data }) => ({ data }))
@@ -70,8 +74,8 @@ export default class QuotationList extends Component {
             [{ v: '批检验指标:', x: 4, bold: true }, { v: '棉包组批各指标分布', x: 10 + halfWidth / 5 * 2 }, { v: '批检验指标:', x: 10 + halfWidth, bold: true }, { v: '棉包组批各指标分布', x: 10 + halfWidth / 5 * 7 }],
             [{ v: '主体颜色级:', x: halfWidth / 2, bold: true }, { v: '主体长度级', x: halfWidth + halfWidth / 2, bold: true }],
 
-            [{ v: '白棉1级:', x: halfWidth / 2 }, { v:g('白棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '32mm:', x: halfWidth + halfWidth / 2 }, { v: g('32毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '白棉2级:', x: halfWidth / 2 }, { v: g('白棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '31mm:', x: halfWidth + halfWidth / 2 }, { v:g('31毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉1级:', x: halfWidth / 2 }, { v: g('白棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '32mm:', x: halfWidth + halfWidth / 2 }, { v: g('32毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '白棉2级:', x: halfWidth / 2 }, { v: g('白棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: '31mm:', x: halfWidth + halfWidth / 2 }, { v: g('31毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '白棉3级:', x: halfWidth / 2 }, { v: g('白棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: '30mm:', x: halfWidth + halfWidth / 2 }, { v: g('30毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '白棉4级:', x: halfWidth / 2 }, { v: g('白棉4级'), x: halfWidth / 10 * 7 + 10 }, { v: '29mm:', x: halfWidth + halfWidth / 2 }, { v: g('29毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '白棉5级:', x: halfWidth / 2 }, { v: g('白棉5级'), x: halfWidth / 10 * 7 + 10 }, { v: '28mm:', x: halfWidth + halfWidth / 2 }, { v: g('28毫米'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
@@ -81,7 +85,7 @@ export default class QuotationList extends Component {
             [{ v: '淡黄污棉1级:', x: halfWidth / 2 - 15 }, { v: g('淡黄污棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: '马克隆主体级', x: width / 14 * 9 + 20, bold: true }],
             [{ v: '淡黄染棉2级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉2级'), x: halfWidth / 10 * 7 + 10 }, { v: 'C1:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆C1档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '淡黄染棉3级:', x: halfWidth / 2 - 15 }, { v: g('淡黄染棉3级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B1:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆B1档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
-            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v:g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'A:', x: halfWidth + halfWidth / 2 }, { v:g('马克隆A档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
+            [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v: g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'A:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆A档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: '黄染棉1级:', x: halfWidth / 2 }, { v: g('黄染棉1级'), x: halfWidth / 10 * 7 + 10 }, { v: 'B2:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆B2档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
             [{ v: 'C2:', x: halfWidth + halfWidth / 2 }, { v: g('马克隆C2档平均值比率'), x: halfWidth + halfWidth / 10 * 7 + 10 }],
 
@@ -215,7 +219,6 @@ export default class QuotationList extends Component {
     }
     createdQuoteList = ({ ctx, width, padding, scale, isScale }) => {
         const userData = this.props.data.user.data || {};
-        console.log(userData,'userData');
         const {
             brandImg, websiteName, website, websiteDesc,
             companyName, contactMobile, gzjgLabel, gzjgValue,
@@ -226,6 +229,7 @@ export default class QuotationList extends Component {
 
         }
         ctx.beginPath();
+        ctx.setFillStyle('#000');
         //添加方法 小程序端的设计 通过set函数来实现 原生的是通过赋值来实现
         //addMethods(ctx);
         //设置padding
@@ -234,10 +238,12 @@ export default class QuotationList extends Component {
         //绘制商标
         createImg(userData.img, function (img) {
             ctx.drawImage(img, 0, 0, brandImg.w, brandImg.h);
+            ctx.draw(true)
         });
         //绘制二维码
-        createImg('http://s.chncot.com/addons/zh_dianc/wxclientid.php', function (img) {
+        createImg('https://s.chncot.com/addons/zh_dianc/wxclientid.php', function (img) {
             ctx.drawImage(img, width - 130 - 20, 0, 130, 130);
+            ctx.draw(true)
             //ctx.fillRect(width - 130 - 40, 0, 130, 130);
         });
         //绘制头部信息 start
@@ -252,8 +258,8 @@ export default class QuotationList extends Component {
 
         ctx.setFontSize(companyName.fs);
         ctx.fillText(data.companyName, 0, 70);
-        ctx.fillText('联系人:'+userData.user_name, 0, 100);
-        ctx.fillText('联系电话:'+userData.user_tel, 0, 130);
+        ctx.fillText('联系人:' + userData.user_name, 0, 100);
+        ctx.fillText('联系电话:' + userData.user_tel, 0, 130);
 
         ctx.setFontSize(gzjgLabel.fs);
         l = contactMobile.fs * data.contactMobile.length
@@ -292,7 +298,7 @@ export default class QuotationList extends Component {
 
 
     componentWillMount() {
-        setPageTitle(this.g('组批批次')+'|报价单');
+        setPageTitle(this.g('加工批号') + '|报价单');
         Taro.getSystemInfo({
             success: (res) => {
                 const { windowWidth: width, windowHeight: height } = res;

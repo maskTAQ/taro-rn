@@ -11,6 +11,7 @@ import Card from './card';
 import Item from './item';
 import { Tip } from '../../utils';
 import './main.scss';
+import { terms } from '../../constants';
 import carImg from './img/car.png';
 import { navigate, asyncActionWrapper } from '../../actions';
 
@@ -23,8 +24,7 @@ export default class CottonDetail extends Component {
         list: [],
         key: {},
         defaultData: {},
-        mobile: '',
-        mobileLabel: ''
+        kfContact: []
     };
     componentDidMount() {
         const { id, defaultData, type } = this.props.navigation.state.params;
@@ -41,10 +41,15 @@ export default class CottonDetail extends Component {
         getKFList({ '用户ID': userId })
             .then(res => {
                 const { key, list } = res;
+                const arr = list || []
                 if (list && list[0]) {
                     this.setState({
-                        mobile: list[0][key['客服电话']],
-                        mobileLabel: list[0][key['客服名称']],
+                        kfContact: arr.map(item => (
+                            {
+                                label: item[key['客服名称']],
+                                mobile: item[key['客服电话']],
+                            }
+                        ))
                     })
                 }
             })
@@ -142,7 +147,7 @@ export default class CottonDetail extends Component {
         return false;
     }
     render() {
-        const { type, activeTab, mobile, mobileLabel } = this.state;
+        const { type, activeTab, kfContact } = this.state;
         const { cottonType } = this.props.navigation.state.params;
         const { fullData, fullKey } = this.getFullConfig();
         let isShowDetail = false;
@@ -154,7 +159,25 @@ export default class CottonDetail extends Component {
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} mobileLabel={mobileLabel} mobile={mobile} />
+                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} kfContact={kfContact} />
+                    <View className="terms">
+                        <View className="terms-label">
+                            <Text className="terms-label-text">条款</Text>
+                        </View>
+                        <View className="terms-list">
+                            {
+                                terms[cottonType].map(item => {
+                                    return (
+                                        <View className="terms-item">
+                                            <Text className="terms-item-text">
+                                                {item}
+                                            </Text>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </View>
+                    </View>
                     {isShowDetail && <Card data={fullData} map={key} />}
                     {
                         isShowDetail && (

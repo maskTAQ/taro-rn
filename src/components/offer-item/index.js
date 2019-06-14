@@ -20,15 +20,15 @@ const list = [
     {
         label: "含杂",
         key: "平均含杂",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "回潮",
         key: "回潮",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        noInclude: [ '进口棉￥', '进口棉$']
     }, {
         label: "长整",
         key: "整齐度",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        noInclude: [ '进口棉￥', '进口棉$']
     }];
 @connect(({ data }) => ({ user: data.user }))
 export default class OfferItem extends Component {
@@ -123,7 +123,7 @@ export default class OfferItem extends Component {
         let pihao = '批号'
         let type = productTypesLabel[g('棉花云报价类型')];
         if (['地产棉', '进口棉￥'].includes(type)) {
-            key = '目的港';
+            key = '仓库';
         }
         let tidanhao;
         if (['进口棉$', '进口棉￥'].includes(type)) {

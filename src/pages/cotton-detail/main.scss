@@ -1,4 +1,4 @@
-@import '../common.scss';
+@import '../../platform.scss';
 @import '../color.scss';
 
 .container {
@@ -6,6 +6,37 @@
     padding-bottom: 50px;
     position: relative;
     background: #fff;
+}
+
+.terms {
+    margin: 20px 0;
+    @extend .flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    background: #fff;
+    @include borderD(top,4px,solid,#d8d8d8);
+    @include borderD(bottom,4px,solid,#d8d8d8);
+}
+
+.terms-label {
+    width: 100px;
+}
+
+.terms-label-text {
+    font-size: 28px;
+    color: $main;
+}
+
+.terms-item {
+    height: 40px;
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.terms-item-text {
+    font-size: 28px;
+    color: #000;
 }
 
 //btn-group样式

@@ -120,6 +120,7 @@
 .desc-left {
     @extend .flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .desc-item-label {
@@ -127,11 +128,16 @@
     color: $main;
 }
 
-.desc-item-value {
+.desc-item-value,.call-button-value{
     font-size: 24px;
     color: #000;
 }
-
+.call-button{
+    margin: 0 4px;
+    @extend .flex;
+    align-items: center;
+    justify-content: center;
+}
 .detail-btn {
     height: 50px;
     padding: 0 20px;

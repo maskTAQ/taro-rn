@@ -5,6 +5,7 @@ import { Component } from '../../platform';
 import { View, Text, TButton, } from '../../ui';
 import { navigate, call } from '../../actions';
 import { productTypesLabel } from '../../constants';
+import { split } from '../../utils';
 import './item.scss'
 
 
@@ -41,20 +42,20 @@ const listT = [
     {
         label: "含杂",
         key: "平均含杂",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "回潮",
-        key: "平均回潮",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        key: "回潮",
+        noInclude: [ '进口棉￥', '进口棉$']
     }, {
         label: "长整",
-        key: "长度整齐度平均值",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
+        key: "整齐度",
+        noInclude: [ '进口棉￥', '进口棉$']
     }];
 
 const descList = [
     { label: "轧花厂", key: "加工单位" },
-    { label: "库存", key: "仓库" },
+    { label: "仓库", key: "仓库" },
     { label: "供应商", key: "公司" }
 ];
 
@@ -86,15 +87,14 @@ export default class Item extends Component {
         }
         return ''
     }
-    call() {
-        const { mobile } = this.props;
+    call(mobile) {
         if (mobile) {
             call(mobile);
         }
     }
     render() {
         const { g } = this;
-        const { cottonType, activeTab,mobileLabel } = this.props;
+        const { cottonType, activeTab, kfContact } = this.props;
         let type = productTypesLabel[g('棉花云报价类型')];
         let pihao = '批号'
         let tidanhao;
@@ -108,7 +108,7 @@ export default class Item extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')}</Text>
+                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {'  ' + g('包数')}</Text>
                         </View>
                         <View className="top-right">
                             {
@@ -181,7 +181,7 @@ export default class Item extends Component {
                                     <View className="desc-item">
                                         <View className="desc-left">
                                             <Text className="desc-item-label">{label}:</Text>
-                                            <Text className="desc-item-value">{g(key)}</Text>
+                                            <Text className="desc-item-value">{split(g(key), 20)}</Text>
                                         </View>
                                         <View className="desc-right">
                                             {
@@ -198,17 +198,28 @@ export default class Item extends Component {
                                 )
                             })
                         }
-                        <TButton onClick={this.call}>
-                            <View className="desc-item">
-                                <View className="desc-left">
-                                    <Text className="desc-item-label">联系供应商:</Text>
-                                    <Text className="desc-item-value">{mobileLabel}</Text>
-                                </View>
-                                <View className="desc-right">
+                        <View className="desc-item">
+                            <View className="desc-left">
+                                <Text className="desc-item-label">联系供应商:</Text>
+                                {
+                                    kfContact.map(item => {
+                                        const { mobile, label } = item;
+                                        return (
+                                            <TButton onClick={this.call.bind(this, mobile)}>
+                                                <View className="call-button">
+                                                    <Text className="call-button-value">{label}</Text>
+                                                </View>
+                                            </TButton>
+                                        )
+                                    })
+                                }
 
-                                </View>
                             </View>
-                        </TButton>
+                            <View className="desc-right">
+
+                            </View>
+                        </View>
+
                         <View className="offer">
                             {
                                 offerType === '一口价' ? (
