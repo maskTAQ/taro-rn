@@ -3,7 +3,8 @@ import { Component, connect } from '../../platform';
 import classnames from 'classnames';
 import update from 'immutability-helper';
 
-import { TButton, View, Text, TInput, Image } from '../../ui';
+import { TPicker, TButton, View, Text, TInput, Image } from '../../ui';
+import { Select } from '../../components';
 import { uploadImg } from '../../api';
 import closeIcon from './img/close.png';
 import './card.scss'
@@ -13,6 +14,13 @@ import { Tip } from '../../utils';
 export default class Card extends Component {
     static options = {
         addGlobalClass: true
+    }
+    state = {
+        picker: {
+            visible: false,
+            option: [],
+            value: ''
+        },
     }
     uploadImg = (key) => {
         const { state, onChange } = this.props;
@@ -28,8 +36,73 @@ export default class Card extends Component {
     handleInputChange = (key, value) => {
         this.props.onChange({ key, value });
     }
+
+    showPicker(option, key, v) {
+        const { picker } = this.state;
+        console.log(update(picker, {
+            visible: {
+                $set: true
+            },
+            option: {
+                $set: option
+            },
+            value: {
+                $set: v
+            },
+            key: {
+                $set: key
+            }
+        }))
+        this.setState({
+            picker: update(picker, {
+                visible: {
+                    $set: true
+                },
+                option: {
+                    $set: option
+                },
+                value: {
+                    $set: v
+                },
+                key: {
+                    $set: key
+                }
+            })
+        });
+    }
+    handlePickerChange = item => {
+        const { key } = this.state.picker;
+        this.setState(update(this.state, {
+            picker: {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                },
+                value: {
+                    $set: ''
+                }
+            }
+        }));
+        this.props.onChange({ key, value: item.value });
+    }
+    closePicker = () => {
+        const { picker } = this.state;
+        this.setState({
+            picker: update(picker, {
+                visible: {
+                    $set: false
+                },
+                option: {
+                    $set: []
+                }
+            })
+        });
+    }
     render() {
-        const { option = [], title, type, onRequestAddKf, state, data, host, kfList, onRequestDeleteKf } = this.props;
+        const { picker } = this.state;
+        const { option = [], title, type, onRequestAddKf, state, data, host, kfList } = this.props;
         const hasInput = ['input', 'kf'].includes(type);
         const isImg = type === 'img';
         const showInput = hasInput && ([0, 3].includes(state) || type === 'kf');
@@ -73,7 +146,8 @@ export default class Card extends Component {
                 })}>
                     {
                         option.map(item => {
-                            const { label, placeholder = '请输入', key } = item;
+                            const { label, placeholder = '请输入', key, options } = item;
+                            const value = data[key];
                             return (
                                 <View key={key} className={classnames("item", {
                                     'input-item': hasInput,
@@ -93,12 +167,17 @@ export default class Card extends Component {
                                         </Text>
                                     </View>
                                     <View className={classnames("item-content", {
-                                        'input-box': showInput
+                                        'input-box': showInput && item.type !== 'select'
                                     })}>
                                         {
-                                            showInput ? (
-                                                <TInput value={data[key]} className="input" placeholder={placeholder} onInput={this.handleInputChange.bind(this, item.key)} />
-                                            ) : null
+                                            showInput && item.type !== 'select' && (
+                                                <TInput value={value} className="input" placeholder={placeholder} onInput={this.handleInputChange.bind(this, item.key)} />
+                                            )
+                                        }
+                                        {
+                                            showInput && item.type === 'select' && (
+                                                <Select value={value} label={''} onClick={this.showPicker.bind(this, options, key, value)} />
+                                            )
                                         }
                                         {
                                             showText && (
@@ -124,6 +203,14 @@ export default class Card extends Component {
                             </TButton>
                         )
                     }
+                    <TPicker
+                        onClick={this.handlePickerChange}
+                        show={picker.visible}
+                        onCancel={this.closePicker}
+                        onClose={this.closePicker}
+                        value={picker.value}
+                        option={picker.option}
+                    />
                 </View>
 
             </View>

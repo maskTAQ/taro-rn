@@ -14,7 +14,7 @@ import './main.scss';
 const imgSrc = 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=834866073,4089509342&fm=111&gp=0.jpg';
 const item = {
     imgSrc,
-    title: '中国棉花价格指数（CC Index）及分省到厂价(1.8)',
+    title: '全国棉花价格指数（CC Index）及分省到厂价(1.8)',
     time: '2019-0201',
     readme: '2313',
 };

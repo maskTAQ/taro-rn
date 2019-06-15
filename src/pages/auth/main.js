@@ -29,6 +29,21 @@ const topList = [
     },
     {
         label: "行业",
+        type: "select",
+        options: [
+            {
+                value: "扎花厂",
+                label: "扎花厂"
+            },
+            {
+                value: "贸易商",
+                label: "贸易商"
+            },
+            {
+                value: "纺织厂",
+                label: "纺织厂"
+            }
+        ],
         placeholder: "请输入负责人",
         key: "sfz_img2"
     },

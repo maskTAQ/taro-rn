@@ -22,6 +22,10 @@ export function getFilterLayout(params) {
 export function getOfferList(params) {
     return get('CloudQuoteList', params, { loading: false });
 }
+//搜索报价列表
+export function getSearchOfferList(params) {
+    return get('Search', params, { loading: false });
+}
 //提交
 export function doSubmit(url, params) {
     return get(url, params);

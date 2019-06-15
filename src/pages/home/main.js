@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal } from '../../ui';
 import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
-import { getFilterLayout, getHome, getOfferList, getAuthInfo } from '../../api';
+import { getFilterLayout, getHome, getOfferList, getAuthInfo, getSearchOfferList } from '../../api';
 import { asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
 import './main.scss';
@@ -95,6 +95,7 @@ export default class Home extends Component {
             this.startQueueRender(listData, 'updated');
         }
         if (prevTab === nextTab && prevListStatus !== 'success' && nextListStatus === 'success') {
+            console.log(listData, 'listData')
             this.startQueueRender(listData, 'updated');
         }
         if (prevData.user.status !== 'success' && nextData.user.status === 'success' && !['loading', 'success'].includes(auth.status)) {
@@ -143,8 +144,13 @@ export default class Home extends Component {
             })
     }
     startQueueRender(full, type) {
-        const clone = [...full.list];
-        this.pushQueue(clone);
+        this.setState({
+            queueRenderList: []
+        }, () => {
+            const clone = [...full.list];
+            this.pushQueue(clone);
+        });
+
     }
     pushQueue = (list) => {
         clearTimeout(this.timeout);
@@ -204,12 +210,22 @@ export default class Home extends Component {
     getOfferData() {
         const { params } = this.state;
         const { homeActiveTab } = this.props.data;
-        asyncActionWrapper({
-            call: getOfferList,
-            params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
-            type: 'data',
-            key: `offer_list_${homeActiveTab}`
-        });
+        if (params.search) {
+            asyncActionWrapper({
+                call: getSearchOfferList,
+                params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
+                type: 'data',
+                key: `offer_list_${homeActiveTab}`
+            });
+        } else {
+            asyncActionWrapper({
+                call: getOfferList,
+                params: { '棉花云报价类型': productTypesValue[homeActiveTab], ...params },
+                type: 'data',
+                key: `offer_list_${homeActiveTab}`
+            });
+        }
+
     }
 
     handleTabChange = activeTab => {
@@ -221,9 +237,6 @@ export default class Home extends Component {
             payload: activeTab
         });
         clearTimeout(this.timeout);
-        this.setState({
-            queueRenderList: []
-        });
         this.getData(activeTab);
     }
 
@@ -278,7 +291,7 @@ export default class Home extends Component {
         this.getOfferData();
         this.s.folder();
     }
-    
+
     handleFieldChange = params => {
         this.setState({ params })
     }

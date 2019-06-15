@@ -7,7 +7,6 @@ import { call, asyncActionWrapper, navigate } from '../../actions';
 import { addShoppingCar, getShoppingCarList } from '../../api';
 import { Tip, Storage } from '../../utils';
 import './index.scss'
-import callImg from './img/call.png';
 import carImg from './img/car.png';
 const list = [
     { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
@@ -24,11 +23,11 @@ const list = [
     }, {
         label: "回潮",
         key: "回潮",
-        noInclude: [ '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "长整",
         key: "整齐度",
-        noInclude: [ '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }];
 @connect(({ data }) => ({ user: data.user }))
 export default class OfferItem extends Component {
@@ -46,25 +45,31 @@ export default class OfferItem extends Component {
         return data[map[k]] || '';
     }
     handleClickShoppingCar = (v) => {
-        const { data } = this.props.user;
-        addShoppingCar({
-            '云报价主键': v,
-            '用户ID': data.id
-        })
-            .then(res => {
-                asyncActionWrapper({
-                    call: getShoppingCarList,
-                    params: { '用户ID': data.id },
-                    type: 'data',
-                    key: 'shoppingCarList'
-                });
-                Tip.success('添加成功!');
-                setTimeout(() => {
-                    navigate({
-                        routeName: 'shopping-car'
-                    });
-                }, 1000);
+        const { status, data } = this.props.user;
+        if (status !== 'success') {
+            Tip.fail('请等待用户数据');
+        } else {
+            console.log(data, 'data')
+            addShoppingCar({
+                '云报价主键': v,
+                '用户ID': data.id
             })
+                .then(res => {
+                    asyncActionWrapper({
+                        call: getShoppingCarList,
+                        params: { '用户ID': data.id },
+                        type: 'data',
+                        key: 'shoppingCarList'
+                    });
+                    Tip.success('添加成功!');
+                    setTimeout(() => {
+                        navigate({
+                            routeName: 'shopping-car'
+                        });
+                    }, 1000);
+                })
+        }
+
     }
     split(s = '', n) {
         if (s.length < n) {
@@ -137,7 +142,7 @@ export default class OfferItem extends Component {
                     <View className="content">
                         <View className="top">
                             <View className="top-left">
-                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')}</Text>
+                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {'   ' + g('包数')}</Text>
                             </View>
                             <View className="top-right">
                                 {
@@ -233,7 +238,7 @@ export default class OfferItem extends Component {
                             <View className="offer-right">
                                 <View className="row-right-bottom">
                                     <View className="row-right-row-left">
-                                        <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : ''}</Text>
+                                        <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
                                         <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                     </View>
                                     <View className="btn-group">

@@ -4,22 +4,62 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, Image, TButton, Text, TModal } from '../../ui';
-import {  productTypesValue } from '../../constants';
+import { productTypesValue, authStatusMap } from '../../constants';
 import './main.scss';
 import cloudImg from '../../img/cloud.png';
 import { navigate, login } from '../../actions';
+import { Tip } from '../../utils';
 
 @connect(({ data }) => ({ data }))
 export default class OfferTool extends Component {
     state = {
         hasClick: false
     }
+    checkAuth() {
+        const { status, data } = this.props.data.auth;
+        switch (status) {
+            case "success": {
+                if (data.state === '2') {
+                    return {
+                        ok: true,
+                    }
+                } else {
+                    navigate({
+                        routeName: 'auth'
+                    })
+                    return {
+                        ok: false,
+                        msg: authStatusMap[data.state]
+                    }
+                }
+            }
+            case 'loading':
+                return {
+                    ok: false,
+                    msg: '获取信息中...'
+                }
+
+            case 'error':
+                return {
+                    ok: false,
+                    msg: '获取信息失败'
+                }
+        }
+    }
     goAddBatch(type) {
         const result = this.canJump();
-        result && navigate({ routeName: 'add-batch', params: { '棉花云报价类型': productTypesValue[type], type }});
+        const { ok, msg } = this.checkAuth();
+        if (!ok) {
+            return Tip.fail(msg);
+        }
+        result && navigate({ routeName: 'add-batch', params: { '棉花云报价类型': productTypesValue[type], type } });
     }
     goImportCotton() {
         const result = this.canJump();
+        const { ok, msg } = this.checkAuth();
+        if (!ok) {
+            return Tip.fail(msg);
+        }
         result && navigate({ routeName: 'publish-import-cotton' });
     }
     canJump = () => {
