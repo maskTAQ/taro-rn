@@ -17,27 +17,36 @@ import { navigate, asyncActionWrapper } from '../../actions';
 
 const tabList = ["现货指标", "仓单证书"];
 const includeList = ['新疆棉', '拍储棉'];
+const defaultTabData = {
+    list: [],
+    key: {}
+};
 @connect(({ data }) => ({ user: data.user }))
 export default class CottonDetail extends Component {
     state = {
         activeTab: '',
-        list: [],
-        key: {},
+
         defaultData: {},
-        kfContact: []
+        kfContact: [],
+
+        //现货指标
+        xhzb: defaultTabData,
+        //仓单证书
+        cdzs: defaultTabData
     };
     componentDidMount() {
         const { id, defaultData, type } = this.props.navigation.state.params;
+        const activeTab = type === '1' ? '仓单证书' : '现货指标';
         this.setState({
             defaultData,
             type,
-            activeTab: type === '1' ? '仓单证书' : '现货指标'
-        }, this.getData);
+            activeTab
+        }, this.getData());
         setPageTitle(`${id}|详情`);
         this.getKf();
     }
     getKf() {
-        const userId = this.g('用户ID');
+        const userId = this.gTab('用户ID');
         getKFList({ '用户ID': userId })
             .then(res => {
                 const { key, list } = res;
@@ -76,23 +85,33 @@ export default class CottonDetail extends Component {
         // if (['地产棉', '进口棉￥', '进口棉$'].includes(cottonType)) {
         //     return
         // }
-        if ((this.g('仓单') === '0' || activeTab === '现货指标') && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
+        if ((this.gTab('仓单') === '0' || activeTab === '现货指标') && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
             getSpotIndicators({
                 '加工批号': id
             })
                 .then(res => {
-                    this.setState(res);
+                    console.log(res, 'res');
+                    this.setState({
+                        xhzb: res
+                    });
                 })
         }
 
-        if ((this.g('仓单') === '1' || activeTab === '仓单证书') && !['进口棉$', '进口棉￥'].includes(cottonType)) {
+        if ((this.gTab('仓单') === '1' || activeTab === '仓单证书') && !['进口棉$', '进口棉￥'].includes(cottonType)) {
             getCertificate({
                 '加工批号': id
             })
                 .then(res => {
-                    this.setState(res);
+                    console.log(res, 'res');
+                    this.setState({
+                        cdzs: res
+                    });
                 })
         }
+    }
+    getCurrentTabData(tab) {
+        const { activeTab, xhzb, cdzs } = this.state;
+        return (tab || activeTab) === '仓单证书' ? cdzs : xhzb
     }
     handleClick = (current) => {
         this.setState({
@@ -100,16 +119,13 @@ export default class CottonDetail extends Component {
         });
     }
     goQuotationList(data) {
-        const { key = {} } = this.state;
+        const { key = {} } = this.getCurrentTabData();
         navigate({ routeName: 'quotation-list', params: { data, key } });
     }
     goPackageDetail() {
         navigate({ routeName: 'package-detail' });
     }
-    g(k) {
-        const { key, defaultData } = this.props.navigation.state.params;
-        return defaultData[key[k]];
-    }
+
     goShoppingCar() {
         const { key, defaultData } = this.props.navigation.state.params;
         const { data } = this.props.user;
@@ -130,36 +146,74 @@ export default class CottonDetail extends Component {
             })
 
     }
-    getFullConfig() {
-        const { list, defaultData, key } = this.state;
+    assign(o = {}, t = {}) {
+        const result = {};
+        for (const key in o) {
+            result[key] = t[key] || o[key];
+        }
+        return Object.assign({}, t, result);
+    }
+    getFullConfig(tab) {
+        const { defaultData, } = this.state;
+        const { list, key } = this.getCurrentTabData(tab);
         const { key: k } = this.props.navigation.state.params;
-        //console.log(k,'defaultData');//
+
         return {
-            fullData: Object.assign({}, defaultData, list[0]),
+            fullData: this.assign(defaultData, list[0]),
             fullKey: Object.assign({}, k, key)
         };
     }
     getContactMobile = () => {
-        const { key, defaultData } = this.props.navigation.state.params;
+        const { key } = this.props.navigation.state.params;
         if (key['客服']) {
-            return this.g('客服');
+            return this.gTab('客服');
         }
         return false;
+    }
+    g = k => {
+        const { map, data } = this.props;
+        return data[map[k]] || '';
+    }
+    gTab = (k, tab) => {
+        const { fullData, fullKey } = this.getFullConfig(tab || this.state.activeTab);
+        return fullData[fullKey[k]];
+    }
+    getDiff = () => {
+        const { gTab } = this;
+        const { cottonType } = this.props.navigation.state.params;
+        const { activeTab } = this.state;
+        if (cottonType === '新疆棉') {
+            if (activeTab === '现货指标') {
+                return {
+                    price: gTab('报价'),
+                }
+            } else {
+                return {
+                    price: 'sb',
+                }
+            }
+        } else {
+
+            return {
+                price: gTab('报价')
+            }
+        }
     }
     render() {
         const { type, activeTab, kfContact } = this.state;
         const { cottonType } = this.props.navigation.state.params;
         const { fullData, fullKey } = this.getFullConfig();
+        const { price } = this.getDiff();
         let isShowDetail = false;
+
         if (includeList.includes(cottonType) || (cottonType === '地产棉') && activeTab === '仓单证书') {
             isShowDetail = true;
         }
-
         return (
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} kfContact={kfContact} />
+                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} kfContact={kfContact} price={price} />
                     <View className="terms">
                         <View className="terms-label">
                             <Text className="terms-label-text">条款</Text>
@@ -178,7 +232,7 @@ export default class CottonDetail extends Component {
                             }
                         </View>
                     </View>
-                    {isShowDetail && <Card data={fullData} map={key} />}
+                    {isShowDetail && <Card data={fullData} map={fullKey} />}
                     {
                         isShowDetail && (
                             <View className={classnames('link-btn-group')}>

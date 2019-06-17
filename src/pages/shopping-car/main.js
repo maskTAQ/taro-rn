@@ -19,15 +19,51 @@ import { Tip } from '../../utils';
 
 const modalList = [
     {
-        label: '联系供应商',
+        components: [
+            {
+                type: 'text',
+                label: '联系供应商'
+            }
+        ],
         icon: userIcon
     },
     {
-        label: '对接全国棉花交易市场',
+        components: [
+            {
+                type: 'button',
+                label: '棉花交易市场南京办事处',
+                call: '025-86800560'
+            },
+            {
+                type: 'button',
+                label: '-王兆荣',
+                call: '13952096610'
+            }
+        ],
         icon: cottonMarketIcon
     },
     {
-        label: '指定交易商',
+        components: [
+            {
+                type: 'button',
+                label: '棉花交易市场北京总部',
+                call: '010-59338631'
+            },
+            {
+                type: 'button',
+                label: '-孙冰',
+                call: '010-15001022998'
+            }
+        ],
+        icon: cottonMarketIcon
+    },
+    {
+        components: [
+            {
+                type: 'text',
+                label: '指定交易商'
+            }
+        ],
         icon: groupIcon
     }
 ];
@@ -129,12 +165,10 @@ export default class ShoppingCart extends Component {
             modalVisible: false
         });
     }
-    handleClick = label => {
-        if (label === '指定交易商') {
-            call('13822222233');
-        }
-        if(label === '对接全国棉花交易市场'){
-            Tip.success('正在建设中');
+    handleClick = data => {
+        const { type, call: m } = data;
+        if (type === 'button') {
+            call(m);
         }
     }
     render() {
@@ -189,14 +223,21 @@ export default class ShoppingCart extends Component {
                 <TModal visible={modalVisible} title="" onClose={this.closeModal} onCancel={this.closeModal} onConfirm={this.submit}>
                     {
                         modalList.map(item => {
-                            const { label, icon } = item;
+                            const { components, icon } = item;
                             return (
-                                <TButton onClick={this.handleClick.bind(this,label)}>
-                                    <View className="modal-item" key={label}>
-                                        <Image className="modal-icon" src={icon} />
-                                        <Text className="modal-label">{label}</Text>
-                                    </View>
-                                </TButton>
+                                <View className="modal-item" key={icon}>
+                                    <Image className="modal-icon" src={icon} />
+                                    {
+                                        components.map(component => {
+                                            return (
+                                                <TButton onClick={this.handleClick.bind(this, component)}>
+                                                    <Text className="modal-label">{component.label}</Text>
+                                                </TButton>
+                                            )
+                                        })
+                                    }
+                                </View>
+
                             )
                         })
                     }

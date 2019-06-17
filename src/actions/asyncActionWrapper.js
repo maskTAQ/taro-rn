@@ -21,7 +21,6 @@ export default function asyncActionWrapper({ call, type, key, params = {} }) {
             });
         })
         .catch(msg => {
-            console.log(msg,'msg')
             store.dispatch({
                 type,
                 key,

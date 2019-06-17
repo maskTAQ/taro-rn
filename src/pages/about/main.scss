@@ -1,0 +1,44 @@
+@import '../../platform.scss';
+@import './component.scss';
+@import '../color.scss';
+
+.container {
+
+    padding: 30px;
+    background: #f4f4f4;
+}
+
+.text {
+    text-indent: 100px;
+    font-size: 30px;
+    color: #000;
+}
+
+.t {
+    margin: 20px 0;
+}
+
+.qr {
+    margin: 20px;
+}
+
+.item {
+    @extend .flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item-label-text {
+    font-size: 30px;
+    color: #000;
+}
+
+.item-value-text {
+    font-size: 30px;
+    color: #000;
+}
+
+.mobile-text {
+    color: $main;
+}

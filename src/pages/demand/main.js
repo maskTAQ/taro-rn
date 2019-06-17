@@ -122,7 +122,6 @@ export default class Demand extends Component {
             routeName: 'demand-custom',
             params: result
         });
-        console.log(result, 'data');
     }
     render() {
         const { activeTab, activeList } = this.state;

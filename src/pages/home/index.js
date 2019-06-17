@@ -21,7 +21,6 @@ export default class Home extends Component {
   onPullDownRefresh(){
     this.main.getOfferData();
     Taro.stopPullDownRefresh();
-    console.log('onPullDownRefresh')
   }
   changeTimeStamp = () => {
     this.setState({

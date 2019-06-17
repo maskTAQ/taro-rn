@@ -23,7 +23,6 @@ export default class SearchTool extends Component {
                     if (type === 'cotton') {
                         send({ action: 'login', mpClientId: clientId, pcClientId, data })
                             .then(res => {
-                                console.log(res, 'res')
                                 Tip.success('登录成功');
                             })
                     } else {

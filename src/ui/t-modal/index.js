@@ -11,6 +11,7 @@ export default class TModal extends Component {
             <AtModal
                 isOpened={visible}
                 onClose={onClose}
+                className="modal-container"
             >
                 {title && <AtModalHeader>{title}</AtModalHeader>}
                 <AtModalContent>

@@ -17,9 +17,9 @@ import './app.scss'
 class App extends Component {
   config = {
     pages: [
-
-     
+      
       'pages/home/index',
+      'pages/about/index',
       'pages/my-logistics/index',
       'pages/feedback/index',
       'pages/logistics/index',
@@ -81,7 +81,7 @@ class App extends Component {
           "selectedIconPath": './tab-img/ybj-active.png',
         },
         {
-          "pagePath": "pages/shopping-car-tab/index",
+          "pagePath": "pages/shopping-car/index",
           "text": "购物车",
           "iconPath": './tab-img/gwc.png',
           "selectedIconPath": './tab-img/gwc-active.png',

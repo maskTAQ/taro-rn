@@ -95,7 +95,6 @@ export default class Home extends Component {
             this.startQueueRender(listData, 'updated');
         }
         if (prevTab === nextTab && prevListStatus !== 'success' && nextListStatus === 'success') {
-            console.log(listData, 'listData')
             this.startQueueRender(listData, 'updated');
         }
         if (prevData.user.status !== 'success' && nextData.user.status === 'success' && !['loading', 'success'].includes(auth.status)) {

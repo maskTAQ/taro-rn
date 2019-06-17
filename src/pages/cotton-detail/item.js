@@ -10,7 +10,7 @@ import './item.scss'
 
 
 const list = [
-    { label: "年度", key: "年度", includes: ['进口棉￥', '进口棉$'] },
+    { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
     { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
     { label: "等级", key: "颜色级" },
     { label: "长度", key: "长度" },
@@ -20,44 +20,44 @@ const list = [
     {
         label: "含杂",
         key: "平均含杂",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
-    }, {
-        label: "回潮",
-        key: "回潮",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
-    }, {
-        label: "长整",
-        key: "整齐度",
-        noInclude: ['地产棉', '进口棉￥', '进口棉$']
-    }];
-
-const listT = [
-    { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
-    { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
-    { label: "等级", key: "主体颜色级" },
-    { label: "长度", key: "长度级" },
-    { label: "强力", key: "断裂比强度平均值" },
-    { label: "马值", key: "马克隆平均值" },
-    { label: "叶屑", key: "叶屑", includes: ['进口棉￥', '进口棉$'] },
-    {
-        label: "含杂",
-        key: "平均含杂",
         noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "回潮",
         key: "回潮",
-        noInclude: [ '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "长整",
         key: "整齐度",
-        noInclude: [ '进口棉￥', '进口棉$']
+        noInclude: ['进口棉￥', '进口棉$']
     }];
 
-const descList = [
-    { label: "轧花厂", key: "加工单位" },
-    { label: "仓库", key: "仓库" },
-    { label: "供应商", key: "公司" }
-];
+const descList = {
+    '新疆棉': [
+        { label: "轧花厂", key: "加工单位", hasDetail: true },
+        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "供应商", key: "公司", hasDetail: true }
+    ],
+    '进口棉$': [
+        { label: "仓库", key: "加工单位", hasDetail: true },
+        { label: "船期", key: "船期", hasDetail: false },
+        { label: "供应商", key: "公司", hasDetail: false }
+    ],
+    '进口棉￥': [
+        { label: "仓库", key: "加工单位", hasDetail: true },
+        { label: "供应商", key: "公司", hasDetail: false }
+    ],
+    '地产棉': [
+        { label: "轧花厂", key: "加工单位", hasDetail: true },
+        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "供应商", key: "公司", hasDetail: true }
+    ],
+    '拍储': [
+        { label: "轧花厂", key: "加工单位", hasDetail: true },
+        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "供应商", key: "公司", hasDetail: true }
+    ]
+
+};
 
 export default class Item extends Component {
     static options = {
@@ -70,16 +70,10 @@ export default class Item extends Component {
     goMapDetail = () => {
         navigate({ routeName: 'map-detail' });
     }
-    getList = l => {
-        const { activeTab } = this.props;
+    getList = (key) => {
+        //const { activeTab } = this.props;
         //activeTab 为仓单证书去掉最后一项
-        if (activeTab === '仓单证书') {
-            const a = [...l];
-            a.length = 3;
-            return a;
-        } else {
-            return l;
-        }
+        return descList[key]
     }
     formatTime(t) {
         if (String(t).length >= 10) {
@@ -92,9 +86,10 @@ export default class Item extends Component {
             call(mobile);
         }
     }
+
     render() {
         const { g } = this;
-        const { cottonType, activeTab, kfContact } = this.props;
+        const { cottonType, price, kfContact } = this.props;
         let type = productTypesLabel[g('棉花云报价类型')];
         let pihao = '批号'
         let tidanhao;
@@ -103,6 +98,8 @@ export default class Item extends Component {
             tidanhao = g('提单号');
         }
         const offerType = g('报价类型');
+        const peie = Number(g('配额比'));
+        console.log(g('年份'), '年份')
         return (
             <View className="container">
                 <View className="content">
@@ -121,7 +118,7 @@ export default class Item extends Component {
                     <View className="center">
                         <View className="center-left">
                             {
-                                (activeTab === '仓单证书' ? listT : list).filter(({ noInclude = [], includes = 'all' }) => {
+                                list.filter(({ noInclude = [], includes = 'all' }) => {
                                     if (includes === 'all') {
                                         return !noInclude.includes(cottonType)
                                     } else {
@@ -168,15 +165,15 @@ export default class Item extends Component {
                             <Text className="origin-text">{this.formatTime(g('发布日期'))}</Text>
                         </View>
                         {
-                            cottonType === '进口棉￥' && (
+                            cottonType === '进口棉$' && peie && (
                                 <View className="peie-box">
-                                    <Text className="origin-text">自带配额{g('配额')}%</Text>
+                                    <Text className="origin-text">自带配额{g('peie')}%</Text>
                                 </View>
                             )
                         }
                         {
-                            this.getList(descList).map(item => {
-                                const { label, key } = item;
+                            this.getList(cottonType).map(item => {
+                                const { label, key, hasDetail } = item;
                                 return (
                                     <View className="desc-item">
                                         <View className="desc-left">
@@ -185,7 +182,7 @@ export default class Item extends Component {
                                         </View>
                                         <View className="desc-right">
                                             {
-                                                label !== '联系供应商' && (
+                                                hasDetail && (
                                                     <TButton onClick={this.goMapDetail}>
                                                         <View className="detail-btn">
                                                             <Text className="detail-btn-text">详情</Text>
@@ -244,7 +241,7 @@ export default class Item extends Component {
                             }
                             <View className="offer-right">
                                 <View className="offer-right-top">
-                                    <Text className="price-value">{g('报价')}</Text>
+                                    <Text className="price-value">{price}</Text>
                                     <Text className="price-label">{cottonType === '进口棉$' ? '美元/吨' : '元/吨'}</Text>
                                 </View>
                                 <View className="offer-right-bottom">

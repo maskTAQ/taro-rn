@@ -24,6 +24,7 @@ const createdClientId = function () {
     return client_id;
 }
 
+const { windowWidth, windowHeight } = Taro.getSystemInfoSync();
 const clientId = createdClientId();
 export function split(s = '', n) {
     if (s.length < n) {
@@ -32,4 +33,4 @@ export function split(s = '', n) {
         return s.substring(0, n) + '...';
     }
 }
-export { clientId }
+export { clientId, windowWidth, windowHeight }

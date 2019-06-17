@@ -86,7 +86,7 @@ const listBottom = [
         icon: aboutImg,
         label: '关于我们',
         value: '',
-        routeName: ''
+        routeName: 'about'
     },
     {
         icon: hmdImg,

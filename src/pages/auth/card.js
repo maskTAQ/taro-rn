@@ -39,20 +39,6 @@ export default class Card extends Component {
 
     showPicker(option, key, v) {
         const { picker } = this.state;
-        console.log(update(picker, {
-            visible: {
-                $set: true
-            },
-            option: {
-                $set: option
-            },
-            value: {
-                $set: v
-            },
-            key: {
-                $set: key
-            }
-        }))
         this.setState({
             picker: update(picker, {
                 visible: {

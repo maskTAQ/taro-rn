@@ -49,7 +49,6 @@ export default class OfferItem extends Component {
         if (status !== 'success') {
             Tip.fail('请等待用户数据');
         } else {
-            console.log(data, 'data')
             addShoppingCar({
                 '云报价主键': v,
                 '用户ID': data.id
@@ -101,7 +100,7 @@ export default class OfferItem extends Component {
                         routeName: 'cotton-detail', params: {
                             key: map,
                             cottonType: productTypesLabel[this.g('棉花云报价类型')],
-                            id: data[map['批号']],
+                            id: data[map['批号']] || data[map['报价号']],
                             userId: data[map['用户ID']],
                             defaultData: data,
                             type: data[map['仓单']]
@@ -136,6 +135,7 @@ export default class OfferItem extends Component {
             tidanhao = g('提单号');
         }
         const offerType = g('报价类型');
+        const peie = Number(g('配额比'));
         return (
             <TButton onClick={this.goDetail}>
                 <View className="container">
@@ -153,9 +153,9 @@ export default class OfferItem extends Component {
                             </View>
                         </View>
                         {
-                            type === '进口棉￥' && (
+                            type === '进口棉$' &&  peie && (
                                 <View className="peie-box">
-                                    <Text className="peie">自带配额{g('配额比')}%</Text>
+                                    <Text className="peie">自带配额{peie}%</Text>
                                 </View>
                             )
                         }
@@ -236,27 +236,21 @@ export default class OfferItem extends Component {
                             }
 
                             <View className="offer-right">
-                                <View className="row-right-bottom">
-                                    <View className="row-right-row-left">
-                                        <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
-                                        <Text className="weight">{g('重量')} {g('重量类型')}</Text>
-                                    </View>
-                                    <View className="btn-group">
-                                        {
-                                            showShoppinCar !== false && (
-                                                <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>
-                                                    <View className="btn">
-                                                        <View className="item-icon-box">
-                                                            <Image className="btn-icon" src={carImg} />
-                                                        </View>
-
-                                                        <Text className="btn-text">购物车</Text>
-                                                    </View>
-                                                </TButton>
-                                            )
-                                        }
-                                    </View>
+                                <View className="row-right-row-left">
+                                    <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
+                                    <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                 </View>
+                                {
+                                    showShoppinCar !== false && (
+                                        <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>
+                                            <View className="btn">
+                                                <Image className="btn-icon" src={carImg} />
+
+                                                <Text className="btn-text">加入购物车</Text>
+                                            </View>
+                                        </TButton>
+                                    )
+                                }
                             </View>
 
                         </View>

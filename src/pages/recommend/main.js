@@ -36,7 +36,8 @@ export default class Recommend extends Component {
 
     }
     saveImg() {
-        var imgSrc = "http://s.chncot.com/web/img/iPhone8Plus.png"
+        var imgSrc = "https://s.chncot.com/web/img/iPhone8Plus.png";
+        Tip.loading('下载图片中')
         wx.downloadFile({
             url: imgSrc,
             success: function (res) {
@@ -44,11 +45,7 @@ export default class Recommend extends Component {
                 wx.saveImageToPhotosAlbum({
                     filePath: res.tempFilePath,
                     success: function (data) {
-                        wx.showToast({
-                            title: '保存成功',
-                            icon: 'success',
-                            duration: 2000
-                        })
+                        Tip.success('保存成功')
                     },
                     fail: function (err) {
                         console.log(err);
@@ -80,7 +77,7 @@ export default class Recommend extends Component {
         const { isShowAuthBtn } = this.state;
         return (
             <View className='container' onlongtap={this.requestSaveImg}>
-                <Image src="http://s.chncot.com/web/img/iPhone8Plus.png" className="img" />
+                <Image src="https://s.chncot.com/web/img/iPhone8Plus.png" className="img" />
                 {isShowAuthBtn && <button open-type="openSetting" className="auth-button">授权</button>}
             </View>
         )

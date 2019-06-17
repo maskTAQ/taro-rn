@@ -101,7 +101,6 @@ export function authInfo(params) {
 }
 //获取认证信息
 export function getAuthInfo(params) {
-    console.log('getAuthInfo')
     return get('MyRuZhu', params);
 }
 //获取手机号
