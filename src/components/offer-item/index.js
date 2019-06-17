@@ -63,7 +63,7 @@ export default class OfferItem extends Component {
                     Tip.success('添加成功!');
                     setTimeout(() => {
                         navigate({
-                            routeName: 'shopping-car'
+                            routeName: 'shopping-car-tab'
                         });
                     }, 1000);
                 })
@@ -153,7 +153,7 @@ export default class OfferItem extends Component {
                             </View>
                         </View>
                         {
-                            type === '进口棉$' &&  peie && (
+                            type === '进口棉$' && peie && (
                                 <View className="peie-box">
                                     <Text className="peie">自带配额{peie}%</Text>
                                 </View>
@@ -252,7 +252,6 @@ export default class OfferItem extends Component {
                                     )
                                 }
                             </View>
-
                         </View>
                     </View>
                     {this.props.children}

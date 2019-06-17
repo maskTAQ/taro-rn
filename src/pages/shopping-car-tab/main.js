@@ -60,8 +60,9 @@ const modalList = [
     {
         components: [
             {
-                type: 'text',
-                label: '指定交易商'
+                type: 'button',
+                label: '指定交易商',
+                call:'0512-58707332'
             }
         ],
         icon: groupIcon

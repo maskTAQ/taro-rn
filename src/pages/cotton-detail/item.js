@@ -38,12 +38,12 @@ const descList = {
         { label: "供应商", key: "公司", hasDetail: true }
     ],
     '进口棉$': [
-        { label: "仓库", key: "加工单位", hasDetail: true },
+        { label: "仓库", key: "目的港", hasDetail: true },
         { label: "船期", key: "船期", hasDetail: false },
         { label: "供应商", key: "公司", hasDetail: false }
     ],
     '进口棉￥': [
-        { label: "仓库", key: "加工单位", hasDetail: true },
+        { label: "仓库", key: "目的港", hasDetail: true },
         { label: "供应商", key: "公司", hasDetail: false }
     ],
     '地产棉': [
@@ -89,7 +89,7 @@ export default class Item extends Component {
 
     render() {
         const { g } = this;
-        const { cottonType, price, kfContact } = this.props;
+        const { cottonType, price, kfContact, weight } = this.props;
         let type = productTypesLabel[g('棉花云报价类型')];
         let pihao = '批号'
         let tidanhao;
@@ -99,7 +99,6 @@ export default class Item extends Component {
         }
         const offerType = g('报价类型');
         const peie = Number(g('配额比'));
-        console.log(g('年份'), '年份')
         return (
             <View className="container">
                 <View className="content">
@@ -246,7 +245,7 @@ export default class Item extends Component {
                                 </View>
                                 <View className="offer-right-bottom">
                                     <Text className="weight-label">{g('重量类型')}</Text>
-                                    <Text className="weight-value">{g('重量')}</Text>
+                                    <Text className="weight-value">{weight}</Text>
                                 </View>
                             </View>
                         </View>
