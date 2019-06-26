@@ -41,8 +41,8 @@ export default class Slide extends Component {
     getValue() {
         const { left } = this.state;
         const { option } = this.props;
-        const starting = Number(option[0]);
-        const ending = Number(option[option.length - 1]);
+        const starting = Number(option ? option[0] : 0);
+        const ending = Number(option ? option[option.length - 1] : 0);
         const range = ending - starting;
         return (left / maxLeft * range + starting).toFixed(1) || 0;
     }

@@ -4,6 +4,7 @@ import { Component, setPageTitle, connect } from '../../platform';
 
 import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
+import { Tip } from '../../utils';
 
 import './main.scss'
 const data = {
@@ -18,7 +19,7 @@ const data = {
     s_tLabel: '生/贴(元/吨):',
     s_tValue: '30132.1',
     bz: '标准:郑商所(17/18年度)',
-    remark: '注:安师大纪念卡迪士尼，马到接口拿，代码，',
+    remark: '指标来源一检现货指标，其中期货升贴水依据郑交所相关公告计算，交割库存升贴水未计算在内。',
 };
 const layout = {
     brandImg: { w: 50, h: 50 },
@@ -38,8 +39,8 @@ const createImg = (src, callback) => {
         success: function (res) {
             callback(res.tempFilePath);
         },
-        fail(e){
-            console.log(e,'e')
+        fail(e) {
+            console.log(e, 'e')
         }
     })
 
@@ -58,7 +59,7 @@ export default class QuotationList extends Component {
     }
     g = k => {
         const { data, key } = this.props.navigation.state.params;
-        return `${data[key[k]] || '-'}`;
+        return `${data[key[k]] || ''}`;
     }
     drawTable = ctx => {
         const { g } = this;
@@ -218,6 +219,7 @@ export default class QuotationList extends Component {
         return Taro.createCanvasContext(id, this.$scope);
     }
     createdQuoteList = ({ ctx, width, padding, scale, isScale }) => {
+        const { g } = this;
         const userData = this.props.data.user.data || {};
         const {
             brandImg, websiteName, website, websiteDesc,
@@ -235,8 +237,9 @@ export default class QuotationList extends Component {
         //设置padding
         ctx.translate(padding, padding);
         ctx.setTextBaseline('top');
+        console.log(userData, 'userData')
         //绘制商标
-        createImg(userData.img, function (img) {
+        createImg('https://s.chncot.com/web/img/logo.png', function (img) {
             ctx.drawImage(img, 0, 0, brandImg.w, brandImg.h);
             ctx.draw(true)
         });
@@ -257,9 +260,9 @@ export default class QuotationList extends Component {
         ctx.fillText(data.websiteDesc, l, 32);
 
         ctx.setFontSize(companyName.fs);
-        ctx.fillText(data.companyName, 0, 70);
-        ctx.fillText('联系人:' + userData.user_name, 0, 100);
-        ctx.fillText('联系电话:' + userData.user_tel, 0, 130);
+        ctx.fillText(g('公司'), 0, 70);
+        ctx.fillText('联系人:' + g('联系人'), 0, 100);
+        ctx.fillText('联系电话:' + g('手机号'), 0, 130);
 
         ctx.setFontSize(gzjgLabel.fs);
         l = contactMobile.fs * data.contactMobile.length
@@ -317,7 +320,7 @@ export default class QuotationList extends Component {
     }
 
     save = () => {
-        const { width, height, scale } = this.state;;
+        Tip.loading('生成图片中');
         Taro.canvasToTempFilePath({
             width: 750, height: 1240,
             destWidth: 750 * 8,  //生成图片的大小设置成canvas大小的四倍
@@ -332,6 +335,8 @@ export default class QuotationList extends Component {
                         filePath: res.tempFilePath,
                     });
                     Tip.success('保存成功')
+                } else {
+                    Tip.fail('保存失败')
                 }
 
             },
@@ -340,9 +345,7 @@ export default class QuotationList extends Component {
             },
 
         }, this.$scope)
-
     }
-
     render() {
         const { width, scale = 1 } = this.state;
         return (

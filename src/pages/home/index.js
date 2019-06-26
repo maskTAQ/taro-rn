@@ -11,14 +11,14 @@ export default class Home extends Component {
   }
   config = {
     navigationBarTitleText: '首页',
-    "enablePullDownRefresh":true
+    "enablePullDownRefresh": true
   }
   onShareAppMessage() {
     return {
       path: `pages/home/index?params=${JSON.stringify(this.main.getParams())}`
     }
   }
-  onPullDownRefresh(){
+  onPullDownRefresh() {
     this.main.getOfferData();
     Taro.stopPullDownRefresh();
   }
@@ -30,7 +30,7 @@ export default class Home extends Component {
   render() {
     const { timeStamp } = this.state;
     const navigation = injectNavParams(this.$router);
-    return <Main onChange={this.changeTimeStamp} timeStamp={timeStamp} navigation={navigation} ref={e=>this.main=e}/>
+    return <Main onChange={this.changeTimeStamp} timeStamp={timeStamp} navigation={navigation} ref={e => this.main = e} />
   }
 }
 

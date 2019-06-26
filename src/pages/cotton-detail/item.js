@@ -34,7 +34,7 @@ const list = [
 const descList = {
     '新疆棉': [
         { label: "轧花厂", key: "加工单位", hasDetail: true },
-        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "仓库", key: "仓库", hasDetail: true },
         { label: "供应商", key: "公司", hasDetail: true }
     ],
     '进口棉$': [
@@ -48,12 +48,12 @@ const descList = {
     ],
     '地产棉': [
         { label: "轧花厂", key: "加工单位", hasDetail: true },
-        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "仓库", key: "仓库", hasDetail: true },
         { label: "供应商", key: "公司", hasDetail: true }
     ],
     '拍储': [
         { label: "轧花厂", key: "加工单位", hasDetail: true },
-        { label: "库存", key: "仓库", hasDetail: true },
+        { label: "仓库", key: "仓库", hasDetail: true },
         { label: "供应商", key: "公司", hasDetail: true }
     ]
 
@@ -93,9 +93,12 @@ export default class Item extends Component {
         let type = productTypesLabel[g('棉花云报价类型')];
         let pihao = '批号'
         let tidanhao;
+        //是否显示包数
+        let isShowBS = true;
         if (['进口棉$', '进口棉￥'].includes(type)) {
             pihao = '报价号'
             tidanhao = g('提单号');
+            isShowBS = false;
         }
         const offerType = g('报价类型');
         const peie = Number(g('配额比'));
@@ -104,7 +107,7 @@ export default class Item extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {'  ' + g('包数')}</Text>
+                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS?'  ' + g('包数'):''}</Text>
                         </View>
                         <View className="top-right">
                             {

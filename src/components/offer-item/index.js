@@ -42,7 +42,11 @@ export default class OfferItem extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '';
+        if (map && data) {
+            return data[map[k]] || '';
+        } else {
+            return ''
+        }
     }
     handleClickShoppingCar = (v) => {
         const { status, data } = this.props.user;
@@ -93,6 +97,7 @@ export default class OfferItem extends Component {
     }
     goDetail() {
         const { data, map, isHome } = this.props;
+        console.log(data[map['主键']])
         if (isHome) {
             this.saveToHistory(data[map['主键']])
                 .then(res => {
@@ -130,9 +135,12 @@ export default class OfferItem extends Component {
             key = '仓库';
         }
         let tidanhao;
+        //是否显示包数
+        let isShowBS = true;
         if (['进口棉$', '进口棉￥'].includes(type)) {
             pihao = '报价号'
             tidanhao = g('提单号');
+            isShowBS = false
         }
         const offerType = g('报价类型');
         const peie = Number(g('配额比'));
@@ -142,7 +150,7 @@ export default class OfferItem extends Component {
                     <View className="content">
                         <View className="top">
                             <View className="top-left">
-                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {'   ' + g('包数')}</Text>
+                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS ? '   ' + g('包数') : ''}</Text>
                             </View>
                             <View className="top-right">
                                 {
@@ -172,7 +180,7 @@ export default class OfferItem extends Component {
                                     }).map(item => {
                                         const { label, key } = item;
                                         return (
-                                            <View className="item">
+                                            <View key={key} className="item">
                                                 <Text className="item-label">{label}</Text>
                                                 <Text className="item-value">{g(key)}</Text>
                                             </View>

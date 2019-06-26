@@ -105,7 +105,7 @@ export default class SearchCondition extends Component {
         if (activeTab) {
             return activeTab
         } else {
-            if (data[activeTabIndex]) {
+            if (data && data[activeTabIndex]) {
                 return data[activeTabIndex].title
             } else {
                 return ''
@@ -127,7 +127,7 @@ export default class SearchCondition extends Component {
                                         const { title } = tab;
                                         const isActive = title === current;
                                         return (
-                                            <TButton className="tab-button" onClick={this.handleTabChange.bind(this, title, tabIndex)}>
+                                            <TButton key={title} className="tab-button" onClick={this.handleTabChange.bind(this, title, tabIndex)}>
                                                 <View
                                                     className={classnames("tab-item", {
                                                         "active-tab-item": isActive
@@ -168,7 +168,7 @@ export default class SearchCondition extends Component {
                                                             const isShowComponent = isVisible({ visible: componentVisible, params });
                                                             const v = params[param];
                                                             return (
-                                                                <View key={type}>
+                                                                <View key={param}>
                                                                     {
                                                                         type === 'radio' && isShowComponent && <CRadio label={label} option={content} k={param} value={v} onChange={this.handleChange} />
                                                                     }

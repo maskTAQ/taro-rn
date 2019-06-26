@@ -14,7 +14,7 @@ export default class TSingleTab extends Component {
                 {
                     list.map(item => {
                         return (
-                            <View onClick={() => onTabChange(item)} className="item" style={{ borderBottom: active === item ? '2px solid #44bdf7' : '2px solid transparent' }}>
+                            <View key={item} onClick={() => onTabChange(item)} className="item" style={{ borderBottom: active === item ? '2px solid #44bdf7' : '2px solid transparent' }}>
                                 <Text className="item-text" style={{ color: active === item ? '#44bdf7' : '#000' }}>{item}</Text>
                             </View>
                         )

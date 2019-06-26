@@ -27,3 +27,5 @@
 ## bugs
 
     1.PickerView 设置value无效
+    2.componentWillReceiveProps 在android在组件挂载后不会立即触发
+    

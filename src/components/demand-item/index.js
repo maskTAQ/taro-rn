@@ -33,7 +33,11 @@ export default class DemanidItem extends Component {
     }
     g = k => {
         const { map, data } = this.props;
-        return data[map[k]] || '';
+        if (map && data) {
+            return data[map[k]] || '';
+        } else {
+            return ''
+        }
     }
 
     render() {
@@ -64,7 +68,7 @@ export default class DemanidItem extends Component {
                         }).map(item => {
                             const { label, key } = item;
                             return (
-                                <View className="item">
+                                <View key={key} className="item">
                                     <Text className="item-label">{label}</Text>
                                     <Text className="item-value">{g(key)}</Text>
                                 </View>

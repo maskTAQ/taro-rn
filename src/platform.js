@@ -19,8 +19,11 @@ const injectNavParams = data => {
         }
     }
 }
-const setPageTitle = title=>{
-    Taro.setNavigationBarTitle({title});
+const setPageTitle = title => {
+    Taro.setNavigationBarTitle({ title });
+}
+const getSystemInfo = () => {
+    return Taro.getSystemInfo();
 }
 export default Taro;
-export { Component, connect, injectNavParams,setPageTitle };
+export { Component, connect, injectNavParams, setPageTitle, getSystemInfo };

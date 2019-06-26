@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { Component, connect } from '../../platform';
+import { Component, connect, getSystemInfo } from '../../platform';
 import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal } from '../../ui';
@@ -48,7 +48,7 @@ export default class Home extends Component {
                 });
                 this.setState(res);
             })
-        this.getData();
+        //this.getData();
 
         //判断是否触发扫码
         if (status !== 'init') {
@@ -84,13 +84,28 @@ export default class Home extends Component {
             this.isFirstLoad = true;
         }
         this.loginTriggered = false
-    }
 
+        getSystemInfo()
+            .then(res => {
+                if (res.platform === 'android') {
+                    setTimeout(() => {
+                        this.getData();
+                    }, 1000)
+
+                } else {
+                    this.getData();
+                }
+            })
+
+    }
     componentWillReceiveProps(nextProps) {
         const { data: prevData, data: { homeActiveTab: prevTab, auth = {} } } = this.props;
         const { data: nextData, data: { homeActiveTab: nextTab } } = nextProps;
         const { status: prevListStatus } = prevData[`offer_list_${prevTab}`] || {};
         const { status: nextListStatus, data: listData } = nextData[`offer_list_${nextTab}`] || {};
+        // console.log({
+        //     prevTab, nextTab, nextListStatus, prevListStatus
+        // })
         if (prevTab !== nextTab && nextListStatus === 'success') {
             this.startQueueRender(listData, 'updated');
         }
@@ -142,7 +157,7 @@ export default class Home extends Component {
                 Tip.success('登录成功');
             })
     }
-    startQueueRender(full, type) {
+    startQueueRender(full = [], type) {
         this.setState({
             queueRenderList: []
         }, () => {
@@ -155,7 +170,7 @@ export default class Home extends Component {
         clearTimeout(this.timeout);
         const { queueRenderList } = this.state;
         if (list.length) {
-            const chunk = list.splice(0, 5);
+            const chunk = list.splice(0, 1);
             this.setState({
                 queueRenderList: queueRenderList.concat(chunk)
             });

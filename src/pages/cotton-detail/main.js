@@ -18,6 +18,7 @@ import { navigate, asyncActionWrapper } from '../../actions';
 const tabList = ["现货指标", "仓单证书"];
 const includeList = ['新疆棉', '拍储棉'];
 const defaultTabData = {
+    default: true,
     list: [],
     key: {}
 };
@@ -36,8 +37,10 @@ export default class CottonDetail extends Component {
     getParams() {
         return this.props.navigation.state.params;
     }
-    componentDidMount() {
+    componentWillMount() {
+        //console.log(this.getParams(),'getParams');
         const { id, defaultData, type } = this.getParams();
+        //0为只有 现货 1为只有仓单 2 全有
         const activeTab = type === '1' ? '仓单证书' : '现货指标';
         this.setState({
             defaultData,
@@ -45,6 +48,7 @@ export default class CottonDetail extends Component {
             activeTab
         }, this.getData);
         setPageTitle(`${id}|详情`);
+
         this.getKf();
     }
     getKf() {
@@ -53,7 +57,6 @@ export default class CottonDetail extends Component {
             .then(res => {
                 const { key, list } = res;
                 const arr = list || []
-                console.log(arr,'arr')
                 if (arr && arr[0]) {
                     this.setState({
                         kfContact: arr.map(item => (
@@ -73,11 +76,11 @@ export default class CottonDetail extends Component {
     }
 
     getData() {
-        const { activeTab } = this.state;
-        const { id, cottonType, defaultData, key } = this.getParams();
-
-        const cd = defaultData[key['仓单']];
-        if ((['0', '2'].includes(cd) && activeTab === '现货指标') && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
+        const { activeTab, xhzb, cdzs } = this.state;
+        const { id, cottonType } = this.getParams();
+        const cd = this.g('仓单');
+        console.log(cd,'cd')
+        if (['0', '2'].includes(cd) && activeTab === '现货指标' && xhzb.default && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
             getSpotIndicators({
                 '加工批号': id
             })
@@ -87,13 +90,11 @@ export default class CottonDetail extends Component {
                     });
                 })
         }
-
-        if ((['1', '2'].includes(cd) && activeTab === '仓单证书') && !['进口棉$', '进口棉￥'].includes(cottonType)) {
+        if (['1', '2'].includes(cd) && activeTab === '仓单证书' && cdzs.default && !['进口棉$', '进口棉￥'].includes(cottonType)) {
             getCertificate({
                 '加工批号': id
             })
                 .then(res => {
-
                     this.setState({
                         cdzs: res
                     });
@@ -109,8 +110,8 @@ export default class CottonDetail extends Component {
             current
         });
     }
-    goQuotationList(data) {
-        const { key = {} } = this.getTabData();
+    goQuotationList(data,key) {
+        console.log({ data, key })
         navigate({ routeName: 'quotation-list', params: { data, key } });
     }
     goPackageDetail() {
@@ -137,25 +138,29 @@ export default class CottonDetail extends Component {
             })
 
     }
-    assign(o = {}, t = {}) {
-        const result = {};
-        for (const key in o) {
-            result[key] = t[key] || o[key];
+    //当为仓单证书 只采用二检数据
+    assign(tab = '现货指标', o = {}, t = {}) {
+        if (tab === '现货指标') {
+            const result = {};
+            for (const key in o) {
+                result[key] = t[key] || o[key];
+            }
+            return Object.assign({}, t, result);
         }
-        return Object.assign({}, t, result);
+        return t;
+
     }
     getFullConfig(tab) {
         const { defaultData, } = this.state;
         const { list, key } = this.getTabData(tab);
-        const { key: k } = this.props.navigation.state.params;
-
+        const { key: k } = this.getParams();
         return {
-            fullData: this.assign(defaultData, list[0]),
+            fullData: this.assign(tab, defaultData, list[0]),
             fullKey: Object.assign({}, k, key)
         };
     }
     getContactMobile = () => {
-        const { key } = this.props.navigation.state.params;
+        const { key } = this.getParams();
         if (key['客服']) {
             return this.gTab('客服');
         }
@@ -170,12 +175,12 @@ export default class CottonDetail extends Component {
         return fullData[fullKey[k]];
     }
     toFixed(n) {
-        const v = parseInt(n);
+        const v = Number(n);
         return v.toFixed(2);
     }
     getDiff = () => {
         const { gTab } = this;
-        const { cottonType } = this.props.navigation.state.params;
+        const { cottonType } = this.getParams();
         const { activeTab } = this.state;
         if (cottonType === '新疆棉') {
             if (activeTab === '现货指标') {
@@ -183,29 +188,30 @@ export default class CottonDetail extends Component {
                     price: gTab('报价'),
                     weight: gTab(`合计${gTab('重量类型')}`),
                 }
-            } else {
+            }
+            if (activeTab === '仓单证书') {
+                const weightType = gTab('重量类型', '现货指标');
                 return {
-                    price: this.toFixed(gTab('重量类型') === '公重' ?
+                    price: this.toFixed(weightType === '公重' ?
                         gTab('报价', '现货指标') / gTab('合计公重', '现货指标') * gTab('合计公重') :
                         gTab('合计毛重', '现货指标') / gTab('报价', '现货指标') * gTab('合计毛重'))
                     ,
-                    weight: gTab(`合计${gTab('重量类型')}`),
+                    weight: gTab(`合计${weightType}`),
                 }
             }
-        } else {
-
-            return {
-                price: gTab('报价')
-            }
+        }
+        return {
+            price: gTab('报价'),
+            weight: gTab(`合计公重`),
         }
     }
     render() {
         const { type, activeTab, kfContact } = this.state;
-        const { cottonType } = this.props.navigation.state.params;
+        const { cottonType } = this.getParams();
         const { fullData, fullKey } = this.getFullConfig();
         const { price, weight } = this.getDiff();
         let isShowDetail = false;
-console.log(kfContact,'kfContact');
+
         if (includeList.includes(cottonType) || (cottonType === '地产棉') && activeTab === '仓单证书') {
             isShowDetail = true;
         }
@@ -241,7 +247,7 @@ console.log(kfContact,'kfContact');
                                         <Text className='link-button-text'>点击查看186包棉包详情</Text>
                                     </View>
                                 </TButton>
-                                <TButton onClick={() => this.goQuotationList(fullData)}>
+                                <TButton onClick={() => this.goQuotationList(fullData,fullKey)}>
                                     <View className='link-button'>
                                         <Text className='link-button-text'>点击查看完整现货指标</Text>
                                     </View>

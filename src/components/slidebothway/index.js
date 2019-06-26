@@ -81,8 +81,8 @@ export default class Slidebothway extends Component {
     getValue() {
         const { start, end } = this.state;
         const { option } = this.props;
-        const starting = Number(option[0]);
-        const ending = Number(option[option.length - 1]);
+        const starting = Number(option ? option[0] : 0);
+        const ending = Number(option ? option[option.length - 1] : 0);
         const range = ending - starting;
         return {
             min: (start / maxLeft * range + starting).toFixed(1),
