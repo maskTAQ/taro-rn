@@ -369,13 +369,11 @@ export default class Home extends Component {
                     <ListWrapper status={listStatus} data={listData}>
                         {
                             listStatus === 'success' && queueRenderList.map((item, i) => {
-                                const key = item[listData.key['主键']];
                                 return (
                                     <OfferItem
-                                        key={key}
+                                        key={ item.c_ybj1}
                                         isHome={true}
                                         data={item}
-                                        map={listData.key}
                                     />
                                 )
                             })

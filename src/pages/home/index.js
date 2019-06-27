@@ -11,7 +11,8 @@ export default class Home extends Component {
   }
   config = {
     navigationBarTitleText: '首页',
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    
   }
   onShareAppMessage() {
     return {
@@ -21,6 +22,9 @@ export default class Home extends Component {
   onPullDownRefresh() {
     this.main.getOfferData();
     Taro.stopPullDownRefresh();
+  }
+  onReachBottom(){
+    console.log('loadmore');
   }
   changeTimeStamp = () => {
     this.setState({
