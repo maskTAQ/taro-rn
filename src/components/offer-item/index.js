@@ -40,18 +40,6 @@ export default class OfferItem extends Component {
     call(mobile) {
         call(mobile)
     }
-    g = k => {
-        const { map, data } = this.props;
-        if (map && data) {
-            // console.log({
-            //     zh:k,
-            //     en:map[k]
-            // })
-            return map[k];
-        } else {
-            return ''
-        }
-    }
     handleClickShoppingCar = (v) => {
         const { status, data } = this.props.user;
         if (status !== 'success') {
@@ -100,28 +88,26 @@ export default class OfferItem extends Component {
             })
     }
     goDetail() {
-        const { data, map, isHome } = this.props;
+        const { data, isHome } = this.props;
         if (isHome) {
             this.saveToHistory(data.c_ybj1)
                 .then(res => {
                     navigate({
                         routeName: 'cotton-detail', params: {
-                            key: map,
                             cottonType: productTypesLabel[data.c_ybj19],
                             id: data.c_ybj4 || data.c_ybj2,
-                            userId: data[map['用户ID']],
+                            userId: data.c_ybj21,
                             defaultData: data,
-                            type: data[map['仓单']]
+                            type: data.c_ybj40
                         }
                     });
                 })
         } else {
             navigate({
                 routeName: 'cotton-detail', params: {
-                    key: map,
                     cottonType: productTypesLabel[data.c_ybj19],
                     id: data.c_ybj4,
-                    userId: data[map['用户ID']],
+                    userId: data.c_ybj21,
                     defaultData: data,
                     type: data.c_ybj22
                 }

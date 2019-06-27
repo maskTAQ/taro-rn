@@ -3,9 +3,9 @@
 import React from 'react';
 import { Component, connect } from '../../platform';
 
-import { View, ScrollView,  TButton, Image } from '../../ui';
-import { OfferItem, ListWrapper ,SearchTool} from '../../components';
-import { getMyCloudOfferList ,deleteMyCloudOffer} from '../../api';
+import { View, ScrollView, TButton, Image } from '../../ui';
+import { OfferItem, ListWrapper, SearchTool } from '../../components';
+import { getMyCloudOfferList, deleteMyCloudOffer } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 
 import './main.scss';
@@ -48,7 +48,7 @@ export default class MyCloudOffer extends Component {
         itemDescList: ['mj', 'cgjs', 'shd', 'zwjhsj'],
         offerItemDescList: ['xqbh', 'mj'],
         current: 0,
-        search:''
+        search: ''
     };
     componentWillMount() {
         this.getData();
@@ -58,18 +58,18 @@ export default class MyCloudOffer extends Component {
         const userId = data.id;
         asyncActionWrapper({
             call: getMyCloudOfferList,
-            params: { '用户ID': userId,search:this.state.search },
+            params: { '用户ID': userId, search: this.state.search },
             type: 'data',
             key: `my_cloud_offer_list`
         });
 
     }
-    handleSearchChange=search=>{
+    handleSearchChange = search => {
         this.setState({
             search
         });
     }
-    search=()=>{
+    search = () => {
         this.getData();
     }
     delete = (id) => {
@@ -86,20 +86,20 @@ export default class MyCloudOffer extends Component {
         return (
             <View className='container'>
                 <ScrollView>
-                    <SearchTool 
-                    isHome={false} 
-                    value={this.state.search } 
-                    onInput={this.handleSearchChange} 
-                    onSearch={this.search}
-                    placeholder="通过批号/提单号/报价编号搜索"
+                    <SearchTool
+                        isHome={false}
+                        value={this.state.search}
+                        onInput={this.handleSearchChange}
+                        onSearch={this.search}
+                        placeholder="通过批号/提单号/报价编号搜索"
                     />
                     <ListWrapper status={my_offer_list_status} data={my_offer_list_data}>
                         {
                             my_offer_list_status === 'success' && my_offer_list_data.list.map((item) => {
                                 return (
-                                    <OfferItem  data={item} map={my_offer_list_data.key} key={item.id}>
+                                    <OfferItem data={item} map={my_offer_list_data.key} key={item.id}>
                                         <View className="tool-btn-group">
-                                            <TButton onClick={this.delete.bind(this,item[my_offer_list_data.key['主键']])}>
+                                            <TButton onClick={this.delete.bind(this, item[my_offer_list_data.key['主键']])}>
                                                 <View className="btn">
                                                     <Text className="btn-text">删除</Text>
                                                 </View>

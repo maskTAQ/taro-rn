@@ -28,5 +28,9 @@ export default {
         if (callNumber === 0) {
             Taro.hideLoading();
         }
+    },
+    reset(){
+        callNumber = 0;
+        Taro.hideLoading();
     }
 }

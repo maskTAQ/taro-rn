@@ -6,13 +6,9 @@ import './component.scss';
 
 
 export default class Home extends Component {
-  state = {
-    timeStamp: '',
-  }
   config = {
     navigationBarTitleText: '首页',
     "enablePullDownRefresh": true,
-    
   }
   onShareAppMessage() {
     return {
@@ -20,21 +16,15 @@ export default class Home extends Component {
     }
   }
   onPullDownRefresh() {
-    this.main.getOfferData();
+    this.main.refreshList();
     Taro.stopPullDownRefresh();
   }
-  onReachBottom(){
-    console.log('loadmore');
-  }
-  changeTimeStamp = () => {
-    this.setState({
-      timeStamp: Date.now()
-    });
+  onReachBottom() {
+    this.main.loadMoreList();
   }
   render() {
-    const { timeStamp } = this.state;
     const navigation = injectNavParams(this.$router);
-    return <Main onChange={this.changeTimeStamp} timeStamp={timeStamp} navigation={navigation} ref={e => this.main = e} />
+    return <Main navigation={navigation} ref={e => this.main = e} />
   }
 }
 

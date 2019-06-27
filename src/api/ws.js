@@ -123,6 +123,6 @@ export function send({ action, pcClientId = '', data }) {
                 Tip.fail(action === 'login' ? '登录超时' : '批号验证超时,请重试')
                 reject(action === 'login' ? '登录超时' : '批号验证超时,请重试');
             }
-        }, 50000);
+        }, 3000);
     })
 }

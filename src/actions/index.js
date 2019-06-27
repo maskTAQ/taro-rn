@@ -2,6 +2,7 @@
 import Taro from '@tarojs/taro';
 import { getOpenId, login } from '../api';
 import asyncActionWrapper from './asyncActionWrapper';
+import { Tip } from '../utils';
 const tabPages = ['home', 'demand', 'offer-tool', 'shopping-car-tab', 'user'];
 const paramsToUrl = params => {
     let u = [];
@@ -26,6 +27,7 @@ const stringify = d => {
     return result;
 }
 const navigate = ({ routeName, params }) => {
+    Tip.reset();
     if (tabPages.includes(routeName)) {
         Taro.switchTab({
             url: `/pages/${routeName}/index` + paramsToUrl(stringify(params))
@@ -64,5 +66,5 @@ const loginAction = () => {
         })
 }
 export {
-    navigate, call, loginAction as login, asyncActionWrapper,back
+    navigate, call, loginAction as login, asyncActionWrapper, back
 }

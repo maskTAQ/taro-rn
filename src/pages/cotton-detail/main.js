@@ -52,7 +52,7 @@ export default class CottonDetail extends Component {
         this.getKf();
     }
     getKf() {
-        const userId = this.g('用户ID');
+        const { userId } = this.getParams();
         getKFList({ '用户ID': userId })
             .then(res => {
                 const { key, list } = res;
@@ -77,8 +77,8 @@ export default class CottonDetail extends Component {
 
     getData() {
         const { activeTab, xhzb, cdzs } = this.state;
-        const { id, cottonType } = this.getParams();
-        const cd = this.g('仓单');
+        const { id, cottonType,defaultData } = this.getParams();
+        const cd = defaultData.c_ybj22;
         console.log(cd,'cd')
         if (['0', '2'].includes(cd) && activeTab === '现货指标' && xhzb.default && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
             getSpotIndicators({
@@ -166,11 +166,7 @@ export default class CottonDetail extends Component {
         }
         return false;
     }
-    g = k => {
-        const { defaultData, key } = this.getParams();
-        return defaultData[key[k]] || '';
-    }
-    gTab = (k, tab) => {
+   gTab = (k, tab) => {
         const { fullData, fullKey } = this.getFullConfig(tab || this.state.activeTab);
         return fullData[fullKey[k]];
     }

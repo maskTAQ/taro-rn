@@ -2,6 +2,8 @@
 
 .container {
     padding: 10px 20px;
+    position: relative;
+    // border: 1px solid red;
 }
 
 .fixed {
@@ -47,11 +49,13 @@
 .mr {
     margin-right: 20px;
 }
+
 .icon-btn-box {
     @extend .flex;
     justify-content: center;
     align-items: center;
 }
+
 .icon-btn {
     width: 40px;
     height: 40px;

@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro';
+import Taro, { Component, getLaunchOptionsSync } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 
 const parse = d => {
@@ -26,4 +26,4 @@ const getSystemInfo = () => {
     return Taro.getSystemInfo();
 }
 export default Taro;
-export { Component, connect, injectNavParams, setPageTitle, getSystemInfo };
+export { Component, connect, injectNavParams, setPageTitle, getSystemInfo, getLaunchOptionsSync };
