@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro';
 import { getOpenId, login } from '../api';
 import asyncActionWrapper from './asyncActionWrapper';
 import { Tip } from '../utils';
-const tabPages = ['home', 'demand', 'offer-tool', 'shopping-car-tab', 'user'];
+const tabPages = ['home', 'demand', 'offer-tool', 'shopping-car', 'user'];
 const paramsToUrl = params => {
     let u = [];
     for (const key in params) {

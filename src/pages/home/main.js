@@ -106,30 +106,9 @@ export default class Home extends Component {
         const { data: nextData, data: { homeActiveTab: nextTab } } = nextProps;
 
         if (prevData.user.status !== 'success' && nextData.user.status === 'success' && !['loading', 'success'].includes(auth.status)) {
-            console.log('获取成功');
             this.emitPcLogin(nextData.user.data);
             this.getAuthInfo(nextData.user.data)
         }
-
-        // //判断是否触发登录
-        // if (this.isFirstLoad) {
-        //     //如果是首次加载的 并且等用户信息获取成功后 触发pc登录
-        //     if (prevData.user.status !== 'success' && nextData.user.status === 'success' && nextProps.navigation.state.params.client_id) {
-        //         this.emitPcLogin({
-        //             pcClientId: nextProps.navigation.state.params.client_id,
-        //             userData: nextData.user.data
-        //         });
-        //     }
-        // } else {
-        //     //如果接收到pcid 并且之前没有触发过pc登录 则登录
-        //     if (nextData.user.status === 'success' && nextProps.navigation.state.params.client_id && !this.loginTriggered) {
-        //         this.emitPcLogin({
-        //             pcClientId: nextProps.navigation.state.params.client_id,
-        //             userData: nextData.user.data
-        //         });
-        //     }
-        // }
-
     }
     getAuthInfo(data) {
         // console.log(data, 'data')
@@ -143,7 +122,6 @@ export default class Home extends Component {
     emitPcLogin(userData) {
         if (this.hasTriggerPcLogin) {
             const { query: { client_id } } = getLaunchOptionsSync();
-            console.log('登录pc',userData);
             send({ action: 'login', mpClientId: clientId, pcClientId: client_id, data: userData })
                 .then(res => {
                     Tip.success('登录成功');
@@ -206,7 +184,6 @@ export default class Home extends Component {
         } else {
             return getOfferList({ '棉花云报价类型': productTypesValue[homeActiveTab], ...params })
                 .then(res => {
-                    console.log((current - 1) * pageSize, current * pageSize)
                     this.list.getDataThen(res.list.splice((current - 1) * pageSize, current * pageSize));
                 })
                 .catch(e => {

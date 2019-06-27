@@ -59,7 +59,7 @@ export default class OfferItem extends Component {
                     Tip.success('添加成功!');
                     setTimeout(() => {
                         navigate({
-                            routeName: 'shopping-car-tab'
+                            routeName: 'shopping-car'
                         });
                     }, 1000);
                 })
@@ -115,7 +115,7 @@ export default class OfferItem extends Component {
         }
     }
     render() {
-        const { g, split } = this;
+        const { split } = this;
         const { showShoppinCar, data } = this.props;
         let key = '仓库';
         let pihao = '批号'
