@@ -96,7 +96,7 @@ export default class ListView extends Component {
         const { pageSize } = this.props;
         const { nextCurrent: current, dataSource } = this.state;
         if (res.length === 0) {
-           if (current === 1 && dataSource.length) {
+            if (current === 1 && dataSource.length) {
                 this.setState({
                     current,
                     dataSource: [],
@@ -145,15 +145,11 @@ export default class ListView extends Component {
         const { status } = this.state;
         return (
             <View className="list-view-box">
-            
-                {
-                    ['loading'].includes(status) && <TLoading />
-                }
                 {this.props.children}
                 {
                     ['loadmoreing', 'loaded'].includes(status) && <AtLoadMore
-                    status={statusMap[status]}
-                  />
+                        status={statusMap[status]}
+                    />
                 }
             </View>
         );

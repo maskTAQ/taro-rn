@@ -17,8 +17,6 @@ import MyOfferItem from './my-offer-item.js';
 
 @connect(({ data }) => ({ data }))
 export default class MyDemand extends Component {
-
-
     state = {
         activeTab: '我的需求',
     };
@@ -102,7 +100,7 @@ export default class MyDemand extends Component {
                                     <View>
                                         {
                                             activeTab === '我的需求' ? (
-                                                <OfferItem  data={item} map={data.key} key={item.id}>
+                                                <OfferItem data={item} map={data.key} key={item.id}>
                                                     <View className="tool-btn-group">
                                                         <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>
                                                             <View className="btn">

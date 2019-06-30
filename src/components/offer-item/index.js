@@ -6,27 +6,28 @@ import { productTypesLabel } from '../../constants';
 import { call, asyncActionWrapper, navigate } from '../../actions';
 import { addShoppingCar, getShoppingCarList } from '../../api';
 import { Tip, Storage } from '../../utils';
+import { offerKeyMap } from '../../config';
 import './index.scss'
 import carImg from './img/car.png';
 const list = [
-    { label: "年度", key: "c_ybj24", includes: ['进口棉￥', '进口棉$'] },
-    { label: "产地", key: "c_ybj23", includes: ['进口棉￥', '进口棉$'] },
-    { label: "等级", key: "c_ybj26" },
-    { label: "长度", key: "c_ybj28" },
-    { label: "强力", key: "c_ybj29" },
-    { label: "马值", key: "c_ybj30" },
-    { label: "叶屑", key: "c_ybj34", includes: ['进口棉￥', '进口棉$'] },
+    { label: "年度", key: "年份", includes: ['进口棉￥', '进口棉$'] },
+    { label: "产地", key: "产地", includes: ['进口棉￥', '进口棉$'] },
+    { label: "等级", key: "颜色级" },
+    { label: "长度", key: "长度" },
+    { label: "强力", key: "强力" },
+    { label: "马值", key: "马克隆值" },
+    { label: "叶屑", key: "叶屑", includes: ['进口棉￥', '进口棉$'] },
     {
         label: "含杂",
-        key: "c_ybj32",
+        key: "平均含杂",
         noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "回潮",
-        key: "c_ybj31",
+        key: "回潮",
         noInclude: ['进口棉￥', '进口棉$']
     }, {
         label: "长整",
-        key: "c_ybj33",
+        key: "整齐度",
         noInclude: ['进口棉￥', '进口棉$']
     }];
 @connect(({ data }) => ({ user: data.user }))
@@ -39,6 +40,15 @@ export default class OfferItem extends Component {
     }
     call(mobile) {
         call(mobile)
+    }
+    g = k => {
+        const { data,map } = this.props;
+        const m = map || offerKeyMap;
+        if (data) {
+            return data[m[k]] || '';
+        } else {
+            return ''
+        }
     }
     handleClickShoppingCar = (v) => {
         const { status, data } = this.props.user;
@@ -59,7 +69,7 @@ export default class OfferItem extends Component {
                     Tip.success('添加成功!');
                     setTimeout(() => {
                         navigate({
-                            routeName: 'shopping-car'
+                            routeName: 'shopping-car-tab'
                         });
                     }, 1000);
                 })
@@ -88,39 +98,35 @@ export default class OfferItem extends Component {
             })
     }
     goDetail() {
-        const { data, isHome } = this.props;
+        const { g } = this;
+        const { isHome } = this.props;
         if (isHome) {
-            this.saveToHistory(data.c_ybj1)
-                .then(res => {
-                    navigate({
-                        routeName: 'cotton-detail', params: {
-                            cottonType: productTypesLabel[data.c_ybj19],
-                            id: data.c_ybj4 || data.c_ybj2,
-                            userId: data.c_ybj21,
-                            defaultData: data,
-                            type: data.c_ybj40
-                        }
-                    });
-                })
+            this.saveToHistory(g('主键'))
+                .then(this.goDetailCore)
         } else {
-            navigate({
-                routeName: 'cotton-detail', params: {
-                    cottonType: productTypesLabel[data.c_ybj19],
-                    id: data.c_ybj4,
-                    userId: data.c_ybj21,
-                    defaultData: data,
-                    type: data.c_ybj22
-                }
-            });
+            this.goDetailCore()
         }
     }
+    goDetailCore = () => {
+        const { g } = this;
+        const { data,map } = this.props;
+        navigate({
+            routeName: 'cotton-detail', params: {
+                key: map,
+                cottonType: productTypesLabel[g('棉花云报价类型')],
+                id: g('批号') || g('报价号'),
+                userId: g('用户ID'),
+                defaultData: data,
+                type: g('仓单')
+            }
+        });
+    }
     render() {
-        const { split } = this;
-        const { showShoppinCar, data } = this.props;
+        const { g, split } = this;
+        const { showShoppinCar, isHome } = this.props;
         let key = '仓库';
         let pihao = '批号'
-        let pihaoKey = 'c_ybj4'
-        let type = productTypesLabel[data.c_ybj19];
+        let type = productTypesLabel[g('棉花云报价类型')];
         if (['地产棉', '进口棉￥'].includes(type)) {
             key = '仓库';
         }
@@ -128,20 +134,19 @@ export default class OfferItem extends Component {
         //是否显示包数
         let isShowBS = true;
         if (['进口棉$', '进口棉￥'].includes(type)) {
-            pihao = '报价号';
-            pihaoKey = 'c_ybj2';
-            tidanhao = data.c_ybj47;
+            pihao = '报价号'
+            tidanhao = g('提单号');
             isShowBS = false
         }
-        const offerType = data.c_ybj11;
-        const peie = Number(data.c_ybj48);
+        const offerType = g('报价类型');
+        const peie = Number(g('配额比'));
         return (
             <TButton onClick={this.goDetail}>
                 <View className="container">
                     <View className="content">
                         <View className="top">
                             <View className="top-left">
-                                <Text className="title">{pihao}({data[pihaoKey]}) {tidanhao ? `提单号(${tidanhao})` : ''} {data.c_ybj23} {data.c_ybj25} {isShowBS ? '   ' + data.c_ybj6 : ''}</Text>
+                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS ? '   ' + g('包数') : ''}</Text>
                             </View>
                             <View className="top-right">
                                 {
@@ -169,11 +174,11 @@ export default class OfferItem extends Component {
                                         }
 
                                     }).map(item => {
-                                        const { label, key: itemKey } = item;
+                                        const { label, key } = item;
                                         return (
-                                            <View key={itemKey} className="item">
+                                            <View key={key} className="item">
                                                 <Text className="item-label">{label}</Text>
-                                                <Text className="item-value">{data[itemKey]}</Text>
+                                                <Text className="item-value">{g(key)}</Text>
                                             </View>
                                         )
                                     })
@@ -181,7 +186,7 @@ export default class OfferItem extends Component {
                             </View>
                             <View className="center-right">
                                 {
-                                    ['0', '2'].includes(data.c_ybj22) && (
+                                    ['0', '2'].includes(g('仓单')) && (
                                         <TButton>
                                             <View className="tag xh">
                                                 <Text className="tag-text">现货</Text>
@@ -190,7 +195,7 @@ export default class OfferItem extends Component {
                                     )
                                 }
                                 {
-                                    ['1', '2'].includes(data.c_ybj22) && (
+                                    ['1', '2'].includes(g('仓单')) && (
                                         <TButton>
                                             <View className="tag cd">
                                                 <Text className="tag-text">仓单</Text>
@@ -204,11 +209,11 @@ export default class OfferItem extends Component {
 
                         <View className="row">
                             <View className="row-left">
-                                <Text className="row-text">{key}:{split(data.c_ybj40, 6)}</Text>
+                                <Text className="row-text">{key}:{split(g('交货仓库或方式'), 6)}</Text>
 
                             </View>
                             <View className="row-right">
-                                <Text className="row-text">卖家:{split(data.c_ybj15, 6)}</Text>
+                                <Text className="row-text">卖家:{split(g('公司'), 6)}</Text>
                             </View>
                         </View>
                         <View className="offer">
@@ -222,12 +227,12 @@ export default class OfferItem extends Component {
                                         <View className="offer-left">
 
                                             <View className="offer-left-top">
-                                                <Text className="jc-label">{data.c_ybj12}</Text>
-                                                <Text className="jc-value">{data.c_ybj13}</Text>
+                                                <Text className="jc-label">{g('基差类型')}</Text>
+                                                <Text className="jc-value">{g('基差值')}</Text>
                                             </View>
                                             <View className="offer-left-bottom">
                                                 <Text className="jc-label">基   差</Text>
-                                                <Text className="jc-value">{data.c_ybj50}</Text>
+                                                <Text className="jc-value">{g('基差值升贴水')}</Text>
                                             </View>
                                         </View>
 
@@ -236,12 +241,12 @@ export default class OfferItem extends Component {
 
                             <View className="offer-right">
                                 <View className="row-right-row-left">
-                                    <Text className="price">{type === '进口棉$' ? '$' : '￥'}{data.c_ybj14} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
-                                    <Text className="weight">{data.c_ybj37} {data.c_ybj39}</Text>
+                                    <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
+                                    <Text className="weight">{g('重量')} {g('重量类型')}</Text>
                                 </View>
                                 {
                                     showShoppinCar !== false && (
-                                        <TButton onClick={this.handleClickShoppingCar.bind(this, data.c_ybj1)}>
+                                        <TButton onClick={this.handleClickShoppingCar.bind(this, g('主键'))}>
                                             <View className="btn">
                                                 <Image className="btn-icon" src={carImg} />
 
@@ -259,5 +264,3 @@ export default class OfferItem extends Component {
         )
     }
 }
-
-

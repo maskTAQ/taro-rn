@@ -5,7 +5,7 @@ import { Component, connect, getLaunchOptionsSync } from '../../platform';
 import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal, ListView } from '../../ui';
-import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, ListWrapper, FixedTool } from '../../components';
+import { SearchTool, NoticeTool, SearchCondition, OfferItem, Authorization, FixedTool } from '../../components';
 import { getFilterLayout, getHome, getOfferList, getAuthInfo, getSearchOfferList } from '../../api';
 import { asyncActionWrapper, login } from '../../actions';
 import { productTypes, productTypesValue } from '../../constants';
@@ -35,11 +35,8 @@ export default class Home extends Component {
     };
     hasTriggerPcLogin = false;
     componentWillMount() {
-        const { onChange, data, navigation, activeTab } = this.props;
-        // const { client_id } = navigation.state.params;
+        const { data, activeTab } = this.props;
         const { status } = data.user;
-        const { status: listStatus, data: listData } = data[`offer_list_${activeTab}`] || {};
-
         const { query: { client_id, params } } = getLaunchOptionsSync();
 
         if (client_id) {
@@ -71,41 +68,10 @@ export default class Home extends Component {
                 });
                 this.setState(res);
             })
-        // //判断是否触发扫码
-        // if (status !== 'init') {
-        //     this.isFirstLoad = false;
-        //     if (status === 'success') {
-        //         this.getAuthInfo(data.user.data);
-        //         if (client_id) {
-        //this.emitPcLogin(client_id);
-        //         } else {
-        //             setTimeout(() => {
-        //                 this.emitPcLogin({
-        //                     pcClientId: this.props.navigation.state.params.client_id,
-        //                     userData: data.user.data
-        //                 });
-        //                 //Tip.success(this.props.navigation.state.params.client_id || '没有')
-        //                 /*
-        //                 1.扫码携带的参数在组件挂载时获取不到 只能在componentWillReceiveProps中获取
-        //                 2.android不能触发componentWillReceiveProps
-        //                 3.强制更改props
-        //                 */
-        //                 //onChange()
-        //             }, 1000)
-        //         }
-        //     } else {
-        //         Tip.fail('请重试!');
-        //     }
-        //     // this.updateLog(navigation.state.params);
-
-        // } else {
-        //     this.isFirstLoad = true;
-        // }
-        // this.loginTriggered = false
     }
     componentWillReceiveProps(nextProps) {
-        const { data: prevData, data: { homeActiveTab: prevTab, auth = {} } } = this.props;
-        const { data: nextData, data: { homeActiveTab: nextTab } } = nextProps;
+        const { data: prevData, data: { auth = {} } } = this.props;
+        const { data: nextData } = nextProps;
 
         if (prevData.user.status !== 'success' && nextData.user.status === 'success' && !['loading', 'success'].includes(auth.status)) {
             this.emitPcLogin(nextData.user.data);

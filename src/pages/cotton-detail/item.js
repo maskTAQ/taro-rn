@@ -1,3 +1,4 @@
+
 import React from 'react';
 import moment from 'moment';
 import { Component } from '../../platform';
@@ -6,7 +7,6 @@ import { View, Text, TButton, } from '../../ui';
 import { navigate, call } from '../../actions';
 import { productTypesLabel } from '../../constants';
 import { split } from '../../utils';
-import { getFullKeyMap } from '../../config';
 import './item.scss'
 
 
@@ -64,6 +64,10 @@ export default class Item extends Component {
     static options = {
         addGlobalClass: true
     }
+    g = k => {
+        const { map, data } = this.props;
+        return data[map[k]] || '';
+    }
     goMapDetail = () => {
         navigate({ routeName: 'map-detail' });
     }
@@ -83,10 +87,7 @@ export default class Item extends Component {
             call(mobile);
         }
     }
-    g = k => {
-        const { data,type } = this.props;
-        return data[getFullKeyMap(type)[k]] || '';
-    }
+
     render() {
         const { g } = this;
         const { cottonType, price, kfContact, weight } = this.props;
@@ -259,5 +260,3 @@ export default class Item extends Component {
         )
     }
 }
-
-

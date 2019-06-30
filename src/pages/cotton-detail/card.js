@@ -2,10 +2,8 @@ import React from 'react';
 import { Component } from '../../platform';
 import classnames from 'classnames';
 
-import { getFullKeyMap } from '../../config';
 import { View, Text } from '../../ui'
 import './card.scss';
-
 
 const cardList = [
     {
@@ -128,7 +126,7 @@ const cardList = [
                 label: 'A',
                 type: 'visible'
             },
-
+            
             {
                 key: '马克隆B1档平均值比率',
                 label: 'B1',
@@ -196,10 +194,12 @@ const cardList = [
         ]
     }
 ]
+
+
 export default class Card extends Component {
     g = k => {
-        const { data,type } = this.props;
-        return data[getFullKeyMap(type)[k]] || '';
+        const { map, data } = this.props;
+        return data[map[k]] || '';
     }
     hasValue = v => {
         if (Number(v) === 0) {
@@ -212,8 +212,6 @@ export default class Card extends Component {
     }
     render() {
         const { g } = this;
-        const { data } = this.props;
-        console.log(data,'data')
         return (
             <View>
                 {
