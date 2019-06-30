@@ -239,9 +239,7 @@ export default class SearchCondition extends Component {
                 {
                     status === 'error' && <Text>error</Text>
                 }
-                {
-                    loading && <TLoading />
-                }
+               
             </View>
 
         )

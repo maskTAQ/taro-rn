@@ -2,45 +2,11 @@ import React from 'react';
 import { Component } from '../../platform';
 import classnames from 'classnames';
 
+import { getFullKeyMap } from '../../config';
 import { View, Text } from '../../ui'
 import './card.scss';
 
-const data = {
-    a: '186包',
-    b: '--',
-    c: '41.11',
-    d: '4.4',
-    e: '214.1kg',
-    f: '2.1',
-    i: '41.23',
-    j: '32.21',
 
-    t1: '白棉2级',
-    a1: '44.6',
-    b1: '55.4',
-
-    t2: '',
-    a2: '10.8',
-    b2: '55.4',
-    c2: '20.2',
-
-    t3: 'A',
-    a3: '3.6',
-    b3: '10.2',
-    c3: '85.5',
-    d3: '0.5',
-
-    t4: '',
-    a4: '77.8',
-    b4: '84.3',
-    c4: '80.5',
-
-    t5: '',
-    a5: '26',
-    b5: '84.3',
-    c5: '80.5',
-    d5: '77.6'
-};
 const cardList = [
     {
         title: '总览',
@@ -162,7 +128,7 @@ const cardList = [
                 label: 'A',
                 type: 'visible'
             },
-            
+
             {
                 key: '马克隆B1档平均值比率',
                 label: 'B1',
@@ -230,12 +196,10 @@ const cardList = [
         ]
     }
 ]
-
-
 export default class Card extends Component {
     g = k => {
-        const { map, data } = this.props;
-        return data[map[k]] || '';
+        const { data,type } = this.props;
+        return data[getFullKeyMap(type)[k]] || '';
     }
     hasValue = v => {
         if (Number(v) === 0) {
@@ -248,6 +212,8 @@ export default class Card extends Component {
     }
     render() {
         const { g } = this;
+        const { data } = this.props;
+        console.log(data,'data')
         return (
             <View>
                 {

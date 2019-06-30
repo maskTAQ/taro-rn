@@ -15,7 +15,7 @@ import { terms } from '../../constants';
 import carImg from './img/car.png';
 import { navigate, asyncActionWrapper } from '../../actions';
 
-const tabList = ["现货指标", "仓单证书"];
+const tabList = ["仓单证书","现货指标"];
 const includeList = ['新疆棉', '拍储棉'];
 const defaultTabData = {
     default: true,
@@ -26,8 +26,6 @@ const defaultTabData = {
 export default class CottonDetail extends Component {
     state = {
         activeTab: '',
-        //列表页携带来的数据
-        defaultData: {},
         kfContact: [],
         //现货指标
         xhzb: defaultTabData,
@@ -38,17 +36,13 @@ export default class CottonDetail extends Component {
         return this.props.navigation.state.params;
     }
     componentWillMount() {
-        //console.log(this.getParams(),'getParams');
-        const { id, defaultData, type } = this.getParams();
-        //0为只有 现货 1为只有仓单 2 全有
-        const activeTab = type === '1' ? '仓单证书' : '现货指标';
-        this.setState({
-            defaultData,
-            type,
-            activeTab
-        }, this.getData);
+        //设置标题
+        const { id } = this.getParams();
         setPageTitle(`${id}|详情`);
-
+        const type = this.gTab('22');
+        //0为只有 现货 1为只有仓单 2 全有
+        const activeTab = type === '0' ? '现货指标':'仓单证书';
+        this.setState({ type, activeTab }, this.getData);
         this.getKf();
     }
     getKf() {
@@ -77,9 +71,8 @@ export default class CottonDetail extends Component {
 
     getData() {
         const { activeTab, xhzb, cdzs } = this.state;
-        const { id, cottonType,defaultData } = this.getParams();
-        const cd = defaultData.c_ybj22;
-        console.log(cd,'cd')
+        const { id, cottonType, defaultData } = this.getParams();
+        const cd = this.gTab('22');
         if (['0', '2'].includes(cd) && activeTab === '现货指标' && xhzb.default && !['地产棉', '进口棉$', '进口棉￥'].includes(cottonType)) {
             getSpotIndicators({
                 '加工批号': id
@@ -101,28 +94,24 @@ export default class CottonDetail extends Component {
                 })
         }
     }
-    getTabData(tab) {
-        const { activeTab, xhzb, cdzs } = this.state;
-        return (tab || activeTab) === '仓单证书' ? cdzs : xhzb
-    }
+
     handleClick = (current) => {
         this.setState({
             current
         });
     }
-    goQuotationList(data,key) {
-        console.log({ data, key })
-        navigate({ routeName: 'quotation-list', params: { data, key } });
+    goQuotationList(data) {
+        navigate({ routeName: 'quotation-list', params: { data, type: this.state.activeTab } });
     }
     goPackageDetail() {
         navigate({ routeName: 'package-detail' });
     }
 
     goShoppingCar() {
-        const { key, defaultData } = this.getParams();
+        const { defaultData } = this.getParams();
         const { data } = this.props.user;
         addShoppingCar({
-            '云报价主键': defaultData[key['主键']],
+            '云报价主键': this.gTab('1'),
             '用户ID': data.id
         })
             .then(res => {
@@ -138,26 +127,36 @@ export default class CottonDetail extends Component {
             })
 
     }
+    getTabData(tab) {
+        const { activeTab, xhzb, cdzs } = this.state;
+        return (tab || activeTab) === '仓单证书' ? cdzs : xhzb
+    }
     //当为仓单证书 只采用二检数据
     assign(tab = '现货指标', o = {}, t = {}) {
-        if (tab === '现货指标') {
-            const result = {};
-            for (const key in o) {
-                result[key] = t[key] || o[key];
-            }
-            return Object.assign({}, t, result);
+        //if (tab === '现货指标') {
+        const result = {};
+        for (const key in o) {
+            result[key] = t[key] || o[key];
         }
-        return t;
+        return Object.assign({}, t, result);
+        // }
+        // return t;
 
     }
-    getFullConfig(tab) {
-        const { defaultData, } = this.state;
-        const { list, key } = this.getTabData(tab);
-        const { key: k } = this.getParams();
-        return {
-            fullData: this.assign(tab, defaultData, list[0]),
-            fullKey: Object.assign({}, k, key)
-        };
+    getFullData(tab) {
+        const { defaultData } = this.getParams();
+        const { list } = this.getTabData(tab);
+        return this.assign(tab, defaultData, list[0])
+    }
+    gTab = (k, tab) => {
+        const isOne = (tab || this.state.activeTab) === '现货指标';
+        const fullData = this.getFullData(tab);
+        //c_zj 一检 c_2zj二检 //c_ybj列表数据
+        return isOne ? fullData[`c_zj${k}`] || fullData[`c_ybj${k}`] : fullData[`c_z2j${k}`] || fullData[`c_ybj${k}`];
+    }
+    g = (k) => {
+        const { defaultData } = this.getParams();
+        return defaultData[`c_ybj${k}`]
     }
     getContactMobile = () => {
         const { key } = this.getParams();
@@ -166,45 +165,45 @@ export default class CottonDetail extends Component {
         }
         return false;
     }
-   gTab = (k, tab) => {
-        const { fullData, fullKey } = this.getFullConfig(tab || this.state.activeTab);
-        return fullData[fullKey[k]];
-    }
+
     toFixed(n) {
         const v = Number(n);
         return v.toFixed(2);
     }
     getDiff = () => {
-        const { gTab } = this;
+        const { g, gTab } = this;
         const { cottonType } = this.getParams();
         const { activeTab } = this.state;
         if (cottonType === '新疆棉') {
+            const weightType = g('39', '现货指标');
+            console.log(g('14'))
             if (activeTab === '现货指标') {
+
                 return {
-                    price: gTab('报价'),
-                    weight: gTab(`合计${gTab('重量类型')}`),
+                    price: g('14'),
+                    weight: weightType === '公重' ? gTab('14') : gTab('9'),
                 }
             }
             if (activeTab === '仓单证书') {
-                const weightType = gTab('重量类型', '现货指标');
+
                 return {
                     price: this.toFixed(weightType === '公重' ?
-                        gTab('报价', '现货指标') / gTab('合计公重', '现货指标') * gTab('合计公重') :
-                        gTab('合计毛重', '现货指标') / gTab('报价', '现货指标') * gTab('合计毛重'))
+                        g('14', '现货指标') / gTab('14', '现货指标') * gTab('14') :
+                        gTab('9', '现货指标') / g('14', '现货指标') * gTab('9'))
                     ,
-                    weight: gTab(`合计${weightType}`),
+                    weight: weightType === '公重' ? gTab('14', '现货指标') : gTab('9', '现货指标'),
                 }
             }
         }
         return {
-            price: gTab('报价'),
-            weight: gTab(`合计公重`),
+            price: g('14'),
+            weight: gTab(`14`),
         }
     }
     render() {
         const { type, activeTab, kfContact } = this.state;
         const { cottonType } = this.getParams();
-        const { fullData, fullKey } = this.getFullConfig();
+        const fullData = this.getFullData();
         const { price, weight } = this.getDiff();
         let isShowDetail = false;
 
@@ -215,7 +214,7 @@ export default class CottonDetail extends Component {
             <View className="container">
                 <ScrollView>
                     {type === '2' && <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />}
-                    <Item data={fullData} map={fullKey} cottonType={cottonType} activeTab={activeTab} kfContact={kfContact} price={price} weight={weight} />
+                    <Item data={fullData} type={activeTab} cottonType={cottonType} activeTab={activeTab} kfContact={kfContact} price={price} weight={weight} />
                     <View className="terms">
                         <View className="terms-label">
                             <Text className="terms-label-text">条款</Text>
@@ -234,7 +233,7 @@ export default class CottonDetail extends Component {
                             }
                         </View>
                     </View>
-                    {isShowDetail && <Card data={fullData} map={fullKey} />}
+                    {isShowDetail && <Card data={fullData} type={activeTab} />}
                     {
                         isShowDetail && (
                             <View className={classnames('link-btn-group')}>
@@ -243,7 +242,7 @@ export default class CottonDetail extends Component {
                                         <Text className='link-button-text'>点击查看186包棉包详情</Text>
                                     </View>
                                 </TButton>
-                                <TButton onClick={() => this.goQuotationList(fullData,fullKey)}>
+                                <TButton onClick={() => this.goQuotationList(fullData)}>
                                     <View className='link-button'>
                                         <Text className='link-button-text'>点击查看完整现货指标</Text>
                                     </View>

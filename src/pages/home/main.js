@@ -30,6 +30,8 @@ export default class Home extends Component {
         hasClickAddShoppingCar: false,
         log: [],
         queueRenderList: [],
+        pageSize: 10,
+        count: {}
     };
     hasTriggerPcLogin = false;
     componentWillMount() {
@@ -126,7 +128,7 @@ export default class Home extends Component {
                 .then(res => {
                     Tip.success('登录成功');
                 })
-                .catch(e=>{
+                .catch(e => {
                     console.log('登录失败');
                 })
             this.hasTriggerPcLogin = false;
@@ -148,7 +150,7 @@ export default class Home extends Component {
         if (params) {
             this.setState({
                 params
-            }, this.getOfferData)
+            }, this.refreshList)
         }
     }
     getParams() {
@@ -167,29 +169,40 @@ export default class Home extends Component {
             });
         }
     }
+
     getOfferData = (pageParams) => {
-        const { current, pageSize, tab } = pageParams || { current: 1, pageSize: 20 }
+        const { current, pageSize, tab = this.state.activeTab } = pageParams || { current: 1, pageSize: this.state.pageSize }
         const { params } = this.state;
         const { homeActiveTab } = this.props.data;
-        if (params.search) {
-            return getSearchOfferList(
-                { '棉花云报价类型': productTypesValue[tab || homeActiveTab], ...params }
-            )
-                .then(res => {
-                    this.list.getDataThen(res.list.splice((current - 1) * pageSize, current * pageSize));
-                })
-                .catch(e => {
-                    this.list.getDataCatch(e);
-                })
-        } else {
-            return getOfferList({ '棉花云报价类型': productTypesValue[homeActiveTab], ...params })
-                .then(res => {
-                    this.list.getDataThen(res.list.splice((current - 1) * pageSize, current * pageSize));
-                })
-                .catch(e => {
-                    this.list.getDataCatch(e);
-                })
-        }
+        this.forceUpdate();
+
+        setTimeout(() => {
+            if (params.search) {
+                return getSearchOfferList(
+                    { '棉花云报价类型': productTypesValue[tab || homeActiveTab], ...params }
+                )
+                    .then(res => {
+                        this.list.getDataThen(res.list.splice((current - 1) * pageSize, current * pageSize));
+                    })
+                    .catch(e => {
+                        this.list.getDataCatch(e);
+                    })
+            } else {
+                return getOfferList({ '棉花云报价类型': productTypesValue[homeActiveTab], ...params })
+                    .then(res => {
+                        if (res.list[0]) {
+                            this.setState({
+                                count: res.list[0].c_count
+                            })
+                        }
+                        this.list.getDataThen(res.list.splice((current - 1) * pageSize, current * pageSize));
+                    })
+                    .catch(e => {
+                        this.list.getDataCatch(e);
+                    })
+            }
+        }, 100)
+
     }
 
     handleTabChange = activeTab => {
@@ -202,7 +215,7 @@ export default class Home extends Component {
         });
         // clearTimeout(this.timeout);
         this.getFilterLayout(activeTab);
-        this.getOfferData({ current: 1, pageSize: 20, tab: activeTab })
+        this.refreshList()
 
     }
 
@@ -248,10 +261,10 @@ export default class Home extends Component {
     resetParams = () => {
         this.setState({
             params: {}
-        }, this.getOfferData);
+        }, this.refreshList);
     }
     submit = () => {
-        this.getOfferData();
+        this.refreshList();
         this.s.folder();
     }
 
@@ -287,7 +300,7 @@ export default class Home extends Component {
         return this.list ? this.list.state.dataSource : [];
     }
     render() {
-        const { picker, ad, news, params, url, hasClickAddShoppingCar, timestamp } = this.state;
+        const { picker, ad, news, params, url, hasClickAddShoppingCar, count, pageSize } = this.state;
         const { data, layout } = this.props;
         const activeTab = data.homeActiveTab;
         const { status: loginStatus } = data.user;
@@ -296,7 +309,7 @@ export default class Home extends Component {
             <View className="container">
                 <Authorization />
                 <ScrollView className="scroll-container">
-                    <SearchTool isHome={true} value={params.search} onInput={this.handleSearchChange} onSearch={() => this.getOfferData()} />
+                    <SearchTool isHome={true} value={params.search} onInput={this.handleSearchChange} onSearch={() => this.refreshList()} />
                     <Swiper
                         className='swiper'
                         indicatorColor='#999'
@@ -319,7 +332,7 @@ export default class Home extends Component {
                         }
                     </Swiper>
                     <NoticeTool data={news} />
-                    <TSTab list={productTypes} active={activeTab} onTabChange={this.handleTabChange} />
+                    <TSTab list={productTypes} active={activeTab} tag={count} onTabChange={this.handleTabChange} />
                     <SearchCondition
                         status={status}
                         loading={loading}
@@ -336,8 +349,10 @@ export default class Home extends Component {
                         onRequestGetData={this.getOfferData}
                         allowRefresh={true}
                         ref={e => this.list = e}
-                        key={timestamp}
-                        onDataSourceChange={this.forceUpdate}>
+                        //key={timestamp}
+                        onDataSourceChange={this.forceUpdate}
+                        pageSize={pageSize}
+                    >
                         <View>
                             {this.getList().map((item, i) => {
                                 return (

@@ -8,14 +8,19 @@ export default class TSingleTab extends Component {
         addGlobalClass: true
     }
     render() {
-        const { list, active ,onTabChange} = this.props;
+        const { list, active, tag, onTabChange } = this.props;
+        const t = tag || {};
         return (
             <View className="container">
                 {
                     list.map(item => {
                         return (
-                            <View key={item} onClick={() => onTabChange(item)} className="item" style={{ borderBottom: active === item ? '2px solid #44bdf7' : '2px solid transparent' }}>
-                                <Text className="item-text" style={{ color: active === item ? '#44bdf7' : '#000' }}>{item}</Text>
+                            <View
+                                key={item}
+                                onClick={() => onTabChange(item)}
+                                className="item"
+                                style={{ borderBottom: active === item ? '2px solid #44bdf7' : '2px solid transparent' }}>
+                                <Text className="item-text" style={{ color: active === item ? '#44bdf7' : '#000' }}>{item}{t[item] || ''}</Text>
                             </View>
                         )
                     })

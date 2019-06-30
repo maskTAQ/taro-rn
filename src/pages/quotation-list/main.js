@@ -5,6 +5,7 @@ import { Component, setPageTitle, connect } from '../../platform';
 import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
 import { Tip } from '../../utils';
+import { getFullKeyMap } from '../../config';
 
 import './main.scss'
 const data = {
@@ -50,16 +51,15 @@ const createImg = (src, callback) => {
 export default class QuotationList extends Component {
 
     config = {
-        navigationBarTitleText: '闹钟'
+        navigationBarTitleText: '报价单'
     }
-
     state = {
         width: 0,
         height: 0,
     }
     g = k => {
-        const { data, key } = this.props.navigation.state.params;
-        return `${data[key[k]] || ''}`;
+        const { data,type} = this.props.navigation.state.params;
+        return `${data[getFullKeyMap(type)[k]] || ''}`;
     }
     drawTable = ctx => {
         const { g } = this;
