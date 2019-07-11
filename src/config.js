@@ -199,6 +199,7 @@ const oneKeyMap = {
   "升贴水": "c_zj98",
   "轧工": "c_zj99",
   "mhph": "c_zj100",
+  "报价": "c_zj100",
   "批号": "c_zj4",
   "客服": null
 };
@@ -302,7 +303,7 @@ const twoKeyMap = {
   "用户ID": "c_2zj97",
   "升贴水": "c_2zj98",
   "轧工": "c_2zj99",
-  "mhph": "c_2zj100",
+  "报价": "c_2zj100",
   "批号": "c_2zj4",
   "客服": null,
   "颜色级": "c_2zj30",
@@ -311,12 +312,17 @@ const twoKeyMap = {
   "马克隆值": "c_2zj49",
   "含杂": "c_2zj13",
   "回潮": "c_2zj12",
-  "整齐度": "c_2zj78"
+  "整齐度": "c_2zj78",
+  "基差值升贴水": "c_2zj100",
 }
 const one = Object.assign({}, offerKeyMap, oneKeyMap);
 const two = Object.assign({}, offerKeyMap, twoKeyMap);
 export function getFullKeyMap(type) {
   return type === '现货指标' ? one : two;
 }
+export function g({ data, type, k }) {
+  const typeK = type === '现货指标' ? oneKeyMap : twoKeyMap;
+  return data[typeK[k]] || data[offerKeyMap[k]] || '';
+}
 export default config;
-export { offerKeyMap };
+export { offerKeyMap, oneKeyMap, twoKeyMap };

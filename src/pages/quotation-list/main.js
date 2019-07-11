@@ -5,7 +5,7 @@ import { Component, setPageTitle, connect } from '../../platform';
 import { Canvas } from '@tarojs/components';
 import { TButton, Text } from '../../ui';
 import { Tip } from '../../utils';
-import { getFullKeyMap } from '../../config';
+import { g } from '../../config';
 
 import './main.scss'
 const data = {
@@ -19,7 +19,7 @@ const data = {
     gzjgValue: '14322',
     s_tLabel: '生/贴(元/吨):',
     s_tValue: '30132.1',
-    bz: '标准:郑商所(17/18年度)',
+    bz: '',
     remark: '指标来源一检现货指标，其中期货升贴水依据郑交所相关公告计算，交割库存升贴水未计算在内。',
 };
 const layout = {
@@ -58,8 +58,9 @@ export default class QuotationList extends Component {
         height: 0,
     }
     g = k => {
-        const { data,type} = this.props.navigation.state.params;
-        return `${data[getFullKeyMap(type)[k]] || ''}`;
+        const { quotationListParams } = this.props.data;
+        const { type } = this.props.navigation.state.params;
+        return g({ data: quotationListParams, type, k });
     }
     drawTable = ctx => {
         const { g } = this;

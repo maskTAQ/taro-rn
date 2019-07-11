@@ -66,7 +66,7 @@ const listBottom = [
     },
     {
         icon: demandImg,
-        label: '我的需求',
+        label: '我的报价',
         value: '',
         routeName: 'my-demand'
     },

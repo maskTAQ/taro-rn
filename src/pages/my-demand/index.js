@@ -5,7 +5,7 @@ import './component.scss'
 
 export default class MyDemand extends Component {
   config = {
-    navigationBarTitleText: '我的供需'
+    navigationBarTitleText: '我的报价'
   }
   render() {
     return <Main />

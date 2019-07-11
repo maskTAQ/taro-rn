@@ -7,6 +7,7 @@ import { View, Text, TButton, } from '../../ui';
 import { navigate, call } from '../../actions';
 import { productTypesLabel } from '../../constants';
 import { split } from '../../utils';
+import { g } from '../../config';
 import './item.scss'
 
 
@@ -65,8 +66,8 @@ export default class Item extends Component {
         addGlobalClass: true
     }
     g = k => {
-        const { map, data } = this.props;
-        return data[map[k]] || '';
+        const { data, type } = this.props;
+        return g({data,type,k});
     }
     goMapDetail = () => {
         navigate({ routeName: 'map-detail' });
@@ -90,9 +91,9 @@ export default class Item extends Component {
 
     render() {
         const { g } = this;
-        const { cottonType, price, kfContact, weight } = this.props;
+        const { price, kfContact, weight } = this.props;
         let type = productTypesLabel[g('棉花云报价类型')];
-        let pihao = '批号'
+        let pihao = '批号';
         let tidanhao;
         //是否显示包数
         let isShowBS = true;
@@ -108,7 +109,7 @@ export default class Item extends Component {
                 <View className="content">
                     <View className="top">
                         <View className="top-left">
-                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS?'  ' + g('包数'):''}</Text>
+                            <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS ? '  ' + g('包数') : ''}</Text>
                         </View>
                         <View className="top-right">
                             {
@@ -123,9 +124,9 @@ export default class Item extends Component {
                             {
                                 list.filter(({ noInclude = [], includes = 'all' }) => {
                                     if (includes === 'all') {
-                                        return !noInclude.includes(cottonType)
+                                        return !noInclude.includes(type)
                                     } else {
-                                        return !noInclude.includes(cottonType) && includes.includes(cottonType)
+                                        return !noInclude.includes(type) && includes.includes(type)
                                     }
 
                                 }).map(item => {
@@ -140,25 +141,7 @@ export default class Item extends Component {
                             }
                         </View>
                         <View className="center-right">
-                            {
-                                ['0', '2'].includes(g('仓单')) && (
-                                    <TButton>
-                                        <View className="tag xh">
-                                            <Text className="tag-text">现货</Text>
-                                        </View>
-                                    </TButton>
-                                )
-                            }
-                            {
-                                ['1', '2'].includes(g('仓单')) && (
-                                    <TButton>
-                                        <View className="tag cd">
-                                            <Text className="tag-text">仓单</Text>
-                                        </View>
-                                    </TButton>
-                                )
-                            }
-
+                            
                         </View>
                     </View>
 
@@ -168,14 +151,14 @@ export default class Item extends Component {
                             <Text className="origin-text">{this.formatTime(g('发布日期'))}</Text>
                         </View>
                         {
-                            cottonType === '进口棉$' && peie && (
+                            type === '进口棉$' && peie && (
                                 <View className="peie-box">
                                     <Text className="origin-text">自带配额{g('peie')}%</Text>
                                 </View>
                             )
                         }
                         {
-                            this.getList(cottonType).map(item => {
+                            this.getList(type).map(item => {
                                 const { label, key, hasDetail } = item;
                                 return (
                                     <View className="desc-item">
@@ -245,7 +228,7 @@ export default class Item extends Component {
                             <View className="offer-right">
                                 <View className="offer-right-top">
                                     <Text className="price-value">{price}</Text>
-                                    <Text className="price-label">{cottonType === '进口棉$' ? '美元/吨' : '元/吨'}</Text>
+                                    <Text className="price-label">{type === '进口棉$' ? '美元/吨' : '元/吨'}</Text>
                                 </View>
                                 <View className="offer-right-bottom">
                                     <Text className="weight-label">{g('重量类型')}</Text>

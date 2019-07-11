@@ -1,3 +1,4 @@
+import { getNetworkType, showModal } from '../platform';
 import { Tip } from '../utils';
 import { MQTT, Public, clientId } from '../utils'
 var Publisher = new Public();
@@ -9,6 +10,16 @@ let serverStatus = {
 const mpClientId = clientId;
 //建立客户端实例  
 const client = new MQTT.Client("s.chncot.com", 443, mpClientId);
+getNetworkType()
+    .then(({ networkType }) => {
+        if (networkType === 'none') {
+            showModal({
+                title: '警告!',
+                content: '小程序需要在有网的环境下才能正常使用。',
+                showCancel: false
+            });
+        }
+    })
 function connect() {
     console.log('连接mqtt')
     serverStatus = {
@@ -28,10 +39,19 @@ function connect() {
         },
         onFailure(e) {
             console.log(e, '连接失败');
-            serverStatus = {
-                connected: false,
-                msg: '连接失败'
-            };
+            try {
+                serverStatus = {
+                    connected: false,
+                    msg: JSON.stringify(e)
+                };
+            } catch (e) {
+                serverStatus = {
+                    connected: false,
+                    msg: e
+                };
+            }
+
+
         }
     });//连接服务器并注册连接成功处理事件 
 }
@@ -57,7 +77,7 @@ function onMessageArrived(message) {
 
 export function send({ action, pcClientId = '', data }) {
     if (!serverStatus.connected) {
-        Tip.fail(serverStatus.msg)
+        // Tip.fail(serverStatus.msg)
         return Promise.reject(serverStatus.msg);
     }
     let message;
@@ -100,11 +120,16 @@ export function send({ action, pcClientId = '', data }) {
     client.send(message);
 
     return new Promise((resolve, reject) => {
-        Tip.loading(action === 'login' ? '登录中' : '验证中');
+        if (action !== 'login') {
+            Tip.loading(action === 'login' ? '登录中' : '验证中');
+        }
+
         let isCall = false;
         const callback = (data) => {
             isCall = true
-            Tip.dismiss();
+            if (action !== 'login') {
+                Tip.dismiss();
+            }
             const { code, msg } = data;
             Publisher.off(messageId, callback);
             if (code == 200) {
@@ -119,9 +144,12 @@ export function send({ action, pcClientId = '', data }) {
         Publisher.on(messageId, callback);
         setTimeout(() => {
             if (!isCall) {
-                Tip.dismiss();
-                Tip.fail(action === 'login' ? '登录超时' : '批号验证超时,请重试')
-                reject(action === 'login' ? '登录超时' : '批号验证超时,请重试');
+                if (action !== 'login') {
+                    Tip.dismiss();
+                    Tip.fail(action === 'login' ? '登录超时' : '批号验证超时,请重试')
+                }
+
+                reject(action === 'login' ? '未收到pc端响应,请检查pc端网络环境,登录超时!' : '批号验证超时,请重试');
             }
         }, 3000);
     })

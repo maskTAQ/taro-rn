@@ -28,7 +28,7 @@ export default class Item extends Component {
         return data[map[k]] || '';
     }
     render() {
-        const { data, map, checkedOfferList } = this.props;
+        const { data, checkedOfferList } = this.props;
         const checked = checkedOfferList.includes(this.g('主键'));
         return (
             <View className="container">
@@ -38,7 +38,7 @@ export default class Item extends Component {
                     </TButton>
                 </View>
                 <View className='content'>
-                    <OfferItem data={data} map={map} showShoppinCar={false} />
+                    <OfferItem data={data} showShoppinCar={false} />
                 </View>
             </View>
         )

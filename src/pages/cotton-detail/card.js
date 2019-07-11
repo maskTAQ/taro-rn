@@ -2,7 +2,8 @@ import React from 'react';
 import { Component } from '../../platform';
 import classnames from 'classnames';
 
-import { View, Text } from '../../ui'
+import { View, Text } from '../../ui';
+import { g } from '../../config';
 import './card.scss';
 
 const cardList = [
@@ -126,7 +127,7 @@ const cardList = [
                 label: 'A',
                 type: 'visible'
             },
-            
+
             {
                 key: '马克隆B1档平均值比率',
                 label: 'B1',
@@ -198,8 +199,8 @@ const cardList = [
 
 export default class Card extends Component {
     g = k => {
-        const { map, data } = this.props;
-        return data[map[k]] || '';
+        const { data, type } = this.props;
+        return g({ data, type, k });
     }
     hasValue = v => {
         if (Number(v) === 0) {

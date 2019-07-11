@@ -57,32 +57,49 @@ export default class SelfPart extends Component {
         const { g } = this;
         const { data, onEdit } = this.props;
         return (
-            <View className="bottom">
-                <View className="btn-group-left">
-                    <TButton>
-                        <View className="btn-column" onClick={onEdit.bind(this, data)}>
-                            <Image src={editIcon} className="btn-icon" />
-                            <Text className="btn-text edit-btn-text">修改</Text>
-                        </View>
-                    </TButton>
-                    <TButton onClick={this.delete.bind(this, g('主键'))}>
-                        <View className="btn-column">
-                            <Image src={deleteIcon} className="btn-icon" />
-                            <Text className="btn-text delete-btn-text">删除</Text>
-                        </View>
-                    </TButton>
+            <View>
+                <View className="desc-list">
+                    <View className="desc-text-box">
+                        <Text className="desc-text">交货地:{g('交货地')}</Text>
+                    </View>
+                    <View className="desc-text-box">
+                        <Text className="desc-text">买家:{g('买家')}</Text>
+                    </View>
                 </View>
-                <View className="btn-group-center">
-                    <Text className="price-value">15257</Text>
-                    <Text className="price-label">平台最优价格</Text>
-                </View>
-                <View className="btn-group-right">
-                    <TButton onClick={this.goHome.bind(this, g('主键'))}>
-                        <View className="view-resource-btn">
-                            <Image src={viewIcon} className="btn-icon" />
-                            <Text className="view-resource-btn-text">查看资源</Text>
-                        </View>
-                    </TButton>
+                <View className="bottom">
+                    <View className="bottom-left">
+                        <Text className="jiaohuo-label">最晚交货时间</Text>
+                        <Text className="jiaohuo-value">{g('最晚交货时间')}</Text>
+
+                    </View>
+                    <View className="btn-group-center">
+                        <Text className="buy-label">{g('价格最低')}元-{g('价格最高')}元</Text>
+                        <Text className="buy-value">{g('数量')}{g('数量单位')}</Text>
+                    </View>
+                    <View className="btn-group-right">
+                        {
+                            /*
+                            <TButton onClick={this.goHome.bind(this, g('主键'))}>
+                            <View className="btn-column">
+                                <Image src={viewIcon} className="btn-icon" />
+                                <Text className="btn-text view-btn-text">查看</Text>
+                            </View>
+                        </TButton>
+                            */
+                        }
+                        <TButton>
+                            <View className="btn-column" onClick={onEdit.bind(this, data)}>
+                                <Image src={editIcon} className="btn-icon" />
+                                <Text className="btn-text edit-btn-text">修改</Text>
+                            </View>
+                        </TButton>
+                        <TButton onClick={this.delete.bind(this, g('主键'))}>
+                            <View className="btn-column">
+                                <Image src={deleteIcon} className="btn-icon" />
+                                <Text className="btn-text delete-btn-text">删除</Text>
+                            </View>
+                        </TButton>
+                    </View>
                 </View>
             </View>
         )

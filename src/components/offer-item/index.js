@@ -1,12 +1,13 @@
 import React from 'react';
 import { Component, connect } from '../../platform';
+import classnames from 'classnames';
 
 import { View, Text, Image, TButton, } from '../../ui';
 import { productTypesLabel } from '../../constants';
 import { call, asyncActionWrapper, navigate } from '../../actions';
-import { addShoppingCar, getShoppingCarList } from '../../api';
+import { addShoppingCar, getShoppingCarList, getCertificate } from '../../api';
 import { Tip, Storage } from '../../utils';
-import { offerKeyMap } from '../../config';
+import { offerKeyMap, twoKeyMap } from '../../config';
 import './index.scss'
 import carImg from './img/car.png';
 const list = [
@@ -36,18 +37,82 @@ export default class OfferItem extends Component {
         addGlobalClass: true
     }
     state = {
+        cdData: {},
+        cdDataStatus: 'init',
+        dataType: '现货',
         itemValueList: ['jc', 'y/d', 'gz'],
+    }
+    componentWillMount() {
+        if (['1', '2'].includes(this.g('仓单'))) {
+            this.toggleData('仓单');
+        }
+    }
+    toggleData = dataType => {
+        if (this.props.isHome) {
+            if (dataType === '仓单') {
+                this.getCDData();
+            }
+            this.setState({ dataType });
+        }
+    }
+    getCDData() {
+        const { g } = this;
+        const { cdDataStatus } = this.state;
+        if (!['loading', 'success'].includes(cdDataStatus)) {
+            this.setState({
+                cdDataStatus: 'loading'
+            });
+            getCertificate({
+                '加工批号': g('批号') || g('报价号')
+            })
+                .then(res => {
+                    this.data = res;
+                    this.setState({
+                        cdData: res.list[0],
+                        cdDataStatus: 'success'
+                    });
+                })
+                .catch(e => {
+                    this.setState({
+                        cdDataStatus: 'error'
+                    });
+                })
+        }
+
     }
     call(mobile) {
         call(mobile)
     }
     g = k => {
-        const { data,map } = this.props;
+        const { data, map } = this.props;
         const m = map || offerKeyMap;
         if (data) {
             return data[m[k]] || '';
         } else {
             return ''
+        }
+    }
+    gType = k => {
+        const { dataType } = this.state;
+        const { data, map } = this.props;
+        const cottonType = this.getCottonType();
+        if (cottonType === '新疆棉' && dataType === '仓单') {
+            const { cdData } = this.state;
+            const m = map || offerKeyMap;
+            if (cdData) {
+                return cdData[twoKeyMap[k]] || data[m[k]] || '';
+            } else {
+                return ''
+            }
+
+        } else {
+            const { data, map } = this.props;
+            const m = map || offerKeyMap;
+            if (data) {
+                return data[m[k]] || '';
+            } else {
+                return ''
+            }
         }
     }
     handleClickShoppingCar = (v) => {
@@ -107,13 +172,15 @@ export default class OfferItem extends Component {
             this.goDetailCore()
         }
     }
+    getCottonType() {
+        return productTypesLabel[this.g('棉花云报价类型')] || '';
+    }
     goDetailCore = () => {
         const { g } = this;
-        const { data,map } = this.props;
+        const { data } = this.props;
         navigate({
             routeName: 'cotton-detail', params: {
-                key: map,
-                cottonType: productTypesLabel[g('棉花云报价类型')],
+                cottonType: this.getCottonType(),
                 id: g('批号') || g('报价号'),
                 userId: g('用户ID'),
                 defaultData: data,
@@ -122,8 +189,10 @@ export default class OfferItem extends Component {
         });
     }
     render() {
-        const { g, split } = this;
-        const { showShoppinCar, isHome } = this.props;
+        const { g, gType, split } = this;
+        const { showShoppinCar } = this.props;
+        const cottonType = this.getCottonType();
+        const { dataType } = this.state;
         let key = '仓库';
         let pihao = '批号'
         let type = productTypesLabel[g('棉花云报价类型')];
@@ -140,13 +209,16 @@ export default class OfferItem extends Component {
         }
         const offerType = g('报价类型');
         const peie = Number(g('配额比'));
+        const cd = g('仓单');
+        const weightType = g('重量类型');
+        const price = g('报价类型') === '基差' ? +g('基差值') + (+gType('基差值升贴水')) : gType('报价');
         return (
             <TButton onClick={this.goDetail}>
                 <View className="container">
-                    <View className="content">
+                <View className="content">
                         <View className="top">
                             <View className="top-left">
-                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {g('产地')} {g('类型')} {isShowBS ? '   ' + g('包数') : ''}</Text>
+                                <Text className="title">{pihao}({g(pihao)}) {tidanhao ? `提单号(${tidanhao})` : ''} {gType('产地')} {gType('类型')} {isShowBS ? '   ' + gType('包数') : ''}</Text>
                             </View>
                             <View className="top-right">
                                 {
@@ -178,38 +250,41 @@ export default class OfferItem extends Component {
                                         return (
                                             <View key={key} className="item">
                                                 <Text className="item-label">{label}</Text>
-                                                <Text className="item-value">{g(key)}</Text>
+                                                <Text className={classnames("item-value", {
+                                                    "item-value-xh": dataType === '现货',
+                                                    "item-value-cd": dataType === '仓单',
+                                                })}>{gType(key)}</Text>
                                             </View>
                                         )
                                     })
                                 }
                             </View>
                             <View className="center-right">
+
                                 {
-                                    ['0', '2'].includes(g('仓单')) && (
-                                        <TButton>
-                                            <View className="tag xh">
-                                                <Text className="tag-text">现货</Text>
-                                            </View>
-                                        </TButton>
-                                    )
-                                }
-                                {
-                                    ['1', '2'].includes(g('仓单')) && (
-                                        <TButton>
+                                    ['1', '2'].includes(cd) && (
+                                        <TButton onClick={this.toggleData.bind(this, '仓单')}>
                                             <View className="tag cd">
                                                 <Text className="tag-text">仓单</Text>
                                             </View>
                                         </TButton>
                                     )
                                 }
-
+                                {
+                                    ['0', '2'].includes(cd) && (
+                                        <TButton onClick={this.toggleData.bind(this, '现货')}>
+                                            <View className="tag xh">
+                                                <Text className="tag-text">现货</Text>
+                                            </View>
+                                        </TButton>
+                                    )
+                                }
                             </View>
                         </View>
 
                         <View className="row">
                             <View className="row-left">
-                                <Text className="row-text">{key}:{split(g('交货仓库或方式'), 6)}</Text>
+                                <Text className="row-text">{key}:{split(gType('仓库'), 6)}</Text>
 
                             </View>
                             <View className="row-right">
@@ -227,12 +302,12 @@ export default class OfferItem extends Component {
                                         <View className="offer-left">
 
                                             <View className="offer-left-top">
-                                                <Text className="jc-label">{g('基差类型')}</Text>
-                                                <Text className="jc-value">{g('基差值')}</Text>
+                                                <Text className="jc-label">{gType('基差类型')}</Text>
+                                                <Text className="jc-value">{gType('基差值')}</Text>
                                             </View>
                                             <View className="offer-left-bottom">
                                                 <Text className="jc-label">基   差</Text>
-                                                <Text className="jc-value">{g('基差值升贴水')}</Text>
+                                                <Text className="jc-value">{gType('基差值升贴水')}</Text>
                                             </View>
                                         </View>
 
@@ -241,8 +316,8 @@ export default class OfferItem extends Component {
 
                             <View className="offer-right">
                                 <View className="row-right-row-left">
-                                    <Text className="price">{type === '进口棉$' ? '$' : '￥'}{g('报价')} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
-                                    <Text className="weight">{g('重量')} {g('重量类型')}</Text>
+                                    <Text className="price">{type === '进口棉$' ? '$' : '￥'}{price} {type === '进口棉$' ? '  即期' : '元/吨'}</Text>
+                                    <Text className="weight">{dataType === '仓单' && cottonType === '新疆棉' ? gType(`合计${weightType}`) : g('重量')} {weightType}</Text>
                                 </View>
                                 {
                                     showShoppinCar !== false && (

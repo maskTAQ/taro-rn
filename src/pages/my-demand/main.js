@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, connect } from '../../platform';
 
 import { View, ScrollView, TSTab, TButton, Image } from '../../ui';
-import { OfferItem, ListWrapper } from '../../components';
+import { DemandItem, ListWrapper } from '../../components';
 import { getMyOfferList, getMySelfDemandList, deleteMyDemand, deleteMyOffer } from '../../api';
 import { asyncActionWrapper } from '../../actions';
 import { Tip } from '../../utils';
@@ -18,14 +18,14 @@ import MyOfferItem from './my-offer-item.js';
 @connect(({ data }) => ({ data }))
 export default class MyDemand extends Component {
     state = {
-        activeTab: '我的需求',
+        activeTab: '我的报价',
     };
     componentWillMount() {
         this.getData();
     }
     getData() {
         this.getMyOffer();
-        this.getMyDemand();
+        //this.getMyDemand();
     }
     getMyOffer = () => {
         const { data } = this.props.data.user;
@@ -92,64 +92,33 @@ export default class MyDemand extends Component {
             <View className='container'>
 
                 <ScrollView>
-                    <TSTab list={tabList} active={activeTab} onTabChange={this.handleTabChange} />
                     <ListWrapper data={data} status={status}>
                         {
                             status === 'success' && data.list.map((item) => {
                                 return (
-                                    <View>
-                                        {
-                                            activeTab === '我的需求' ? (
-                                                <OfferItem data={item} map={data.key} key={item.id}>
-                                                    <View className="tool-btn-group">
-                                                        <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>
-                                                            <View className="btn">
-                                                                <Text className="btn-text">删除</Text>
-                                                            </View>
-                                                        </TButton>
-                                                        <View className="btn-group-right">
-                                                            <TButton onClick={this.getData}>
-                                                                <View className="btn mr">
-                                                                    <Image className="btn-icon" src={refreshImg} />
-                                                                    <Text className="btn-text">刷新</Text>
-                                                                </View>
-                                                            </TButton>
-                                                            <TButton onClick={this.edit}>
-                                                                <View className="btn">
-                                                                    <Image className="btn-icon" src={editImg} />
-                                                                    <Text className="btn-text">编辑</Text>
-                                                                </View>
-                                                            </TButton>
-                                                        </View>
-                                                    </View>
-                                                </OfferItem>
-                                            ) : (<MyOfferItem data={item} map={data.key} key={item.id}>
-                                                <View className="tool-btn-group">
-                                                    <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>
-                                                        <View className="btn">
-                                                            <Text className="btn-text">删除</Text>
-                                                        </View>
-                                                    </TButton>
-                                                    <View className="btn-group-right">
-                                                        <TButton onClick={this.getData}>
-                                                            <View className="btn mr">
-                                                                <Image className="btn-icon" src={refreshImg} />
-                                                                <Text className="btn-text">刷新</Text>
-                                                            </View>
-                                                        </TButton>
-                                                        <TButton onClick={this.edit}>
-                                                            <View className="btn">
-                                                                <Image className="btn-icon" src={editImg} />
-                                                                <Text className="btn-text">编辑</Text>
-                                                            </View>
-                                                        </TButton>
-                                                    </View>
+                                    <MyOfferItem data={item} map={data.key} key={item.id}>
+                                        <View className="tool-btn-group">
+                                            <TButton onClick={this.delete.bind(this, item[data.key['主键']])}>
+                                                <View className="btn">
+                                                    <Text className="btn-text">删除</Text>
                                                 </View>
-                                            </MyOfferItem>)
-                                        }
-
-
-                                    </View>
+                                            </TButton>
+                                            <View className="btn-group-right">
+                                                <TButton onClick={this.getData}>
+                                                    <View className="btn mr">
+                                                        <Image className="btn-icon" src={refreshImg} />
+                                                        <Text className="btn-text">刷新</Text>
+                                                    </View>
+                                                </TButton>
+                                                <TButton onClick={this.edit}>
+                                                    <View className="btn">
+                                                        <Image className="btn-icon" src={editImg} />
+                                                        <Text className="btn-text">编辑</Text>
+                                                    </View>
+                                                </TButton>
+                                            </View>
+                                        </View>
+                                    </MyOfferItem>
                                 )
                             })
                         }

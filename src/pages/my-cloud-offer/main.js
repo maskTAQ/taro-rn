@@ -97,7 +97,7 @@ export default class MyCloudOffer extends Component {
                         {
                             my_offer_list_status === 'success' && my_offer_list_data.list.map((item) => {
                                 return (
-                                    <OfferItem data={item} map={my_offer_list_data.key} key={item.id}>
+                                    <OfferItem data={item} key={item.id}>
                                         <View className="tool-btn-group">
                                             <TButton onClick={this.delete.bind(this, item[my_offer_list_data.key['主键']])}>
                                                 <View className="btn">

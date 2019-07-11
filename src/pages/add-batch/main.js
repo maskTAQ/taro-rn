@@ -309,9 +309,6 @@ export default class AddBatch extends Component {
         const { params: navParams } = this.props.navigation.state;
         const { picker, params } = this.state;
         const { status, loading, data, msg } = this.props.layout[`offer_${navParams.type}`];
-        console.log({
-            data,params
-        })
         return (
             <View className='container'>
                 <ScrollView>

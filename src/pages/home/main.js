@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { Component, connect, getLaunchOptionsSync } from '../../platform';
+import { Component, connect, getLaunchOptionsSync, showModal } from '../../platform';
 import update from 'immutability-helper';
 
 import { Swiper, SwiperItem, View, Image, ScrollView, TPicker, TSTab, TModal, ListView } from '../../ui';
@@ -13,6 +13,11 @@ import './main.scss';
 import { Tip, clientId } from '../../utils';
 import { send } from '../../api/ws';
 
+const statusMap = {
+    init: '等待用户信息中,获取成功之后发送登录指令!',
+    'loading': '用户信息获取中,获取成功之后发送登录指令!',
+    'error': '用户信息获取失败,请退出重试!'
+};
 @connect(({ layout, data }) => ({ layout, data }))
 export default class Home extends Component {
     state = {
@@ -35,16 +40,23 @@ export default class Home extends Component {
     };
     hasTriggerPcLogin = false;
     componentWillMount() {
-        const { data, activeTab } = this.props;
+        const { data } = this.props;
         const { status } = data.user;
         const { query: { client_id, params } } = getLaunchOptionsSync();
 
         if (client_id) {
             this.hasTriggerPcLogin = true;
+            if (status === 'success') {
+                this.emitPcLogin(data.user.data);
+            } else {
+                showModal({
+                    title: '扫码登录提示',
+                    content: statusMap[status],
+                    showCancel: false
+                });
+            }
         }
-        if (status === 'success') {
-            this.emitPcLogin(data.user.data);
-        }
+
         if (params) {
             try {
                 const p = JSON.parse(params);
@@ -77,6 +89,13 @@ export default class Home extends Component {
             this.emitPcLogin(nextData.user.data);
             this.getAuthInfo(nextData.user.data)
         }
+        if (prevData.user.status !== 'error' && nextData.user.status === 'error') {
+            showModal({
+                title: '扫码登录提示',
+                content: statusMap.error,
+                showCancel: false
+            });
+        }
     }
     getAuthInfo(data) {
         // console.log(data, 'data')
@@ -92,10 +111,20 @@ export default class Home extends Component {
             const { query: { client_id } } = getLaunchOptionsSync();
             send({ action: 'login', mpClientId: clientId, pcClientId: client_id, data: userData })
                 .then(res => {
-                    Tip.success('登录成功');
+                    console.log(res, 'res');
+                    showModal({
+                        title: '扫码登录提示',
+                        content: '登录成功',
+                        showCancel: false
+                    });
                 })
                 .catch(e => {
-                    console.log('登录失败');
+                    console.log(e, '登录失败');
+                    showModal({
+                        title: '扫码登录提示',
+                        content: e,
+                        showCancel: false
+                    });
                 })
             this.hasTriggerPcLogin = false;
         }
@@ -324,6 +353,7 @@ export default class Home extends Component {
                                 return (
                                     <OfferItem
                                         key={item.c_ybj1}
+                                        cottonType={activeTab}
                                         isHome={true}
                                         data={item}
                                     />
