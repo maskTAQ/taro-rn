@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.1.2",
     "@tarojs/components": "^1.2.12",
     "@tarojs/components-rn": "^1.2.12",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "events": "^3.0.0",
     "expo": "^32.0.5",
     "immutability-helper": "^2.8.1",
